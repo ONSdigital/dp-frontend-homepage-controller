@@ -6,6 +6,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/ONSdigital/dp-api-clients-go/renderer"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
@@ -33,9 +34,9 @@ func main() {
 		os.Exit(1)
 	}
 
-    log.Event(ctx, "got service configuration", log.Data{"config": cfg})
+	log.Event(ctx, "got service configuration", log.Data{"config": cfg})
 
-    versionInfo, err := health.NewVersionInfo(
+	versionInfo, err := health.NewVersionInfo(
 		BuildTime,
 		GitCommit,
 		Version,
@@ -43,13 +44,15 @@ func main() {
 
 	r := mux.NewRouter()
 
-    healthcheck := health.New(versionInfo, cfg.HealthCheckCriticalTimeout, cfg.HealthCheckInterval)
-	if err = registerCheckers(ctx, &healthcheck); err != nil {
-    	os.Exit(1)
-    }
-	routes.Init(ctx, r, cfg, healthcheck)
+	rend := renderer.New(cfg.RendererURL)
 
-    healthcheck.Start(ctx)
+	healthcheck := health.New(versionInfo, cfg.HealthCheckCriticalTimeout, cfg.HealthCheckInterval)
+	if err = registerCheckers(ctx, &healthcheck); err != nil {
+		os.Exit(1)
+	}
+	routes.Init(ctx, r, healthcheck, rend)
+
+	healthcheck.Start(ctx)
 
 	s := server.New(cfg.BindAddr, r)
 	s.HandleOSSignals = false
