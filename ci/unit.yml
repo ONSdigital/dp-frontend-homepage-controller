@@ -11,7 +11,7 @@ image_resource:
 inputs:
   - name: dp-frontend-homepage-controller
 
-  caches:
+caches:
   - path: go/
 
 run:
