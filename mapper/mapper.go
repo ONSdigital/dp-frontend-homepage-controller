@@ -2,24 +2,13 @@ package mapper
 
 import (
 	"context"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
-	"fmt"
+
+	"github.com/ONSdigital/dp-frontend-models/model/homepage"
 )
 
-type HelloModel struct {
-	Greeting string `json:"greeting"`
-	Who      string `json:"who"`
-}
-
-type HelloWorldModel struct {
-	HelloWho string `json:"hello-who"`
-}
-
-func HelloWorld(ctx context.Context, hm HelloModel, cfg config.Config) HelloWorldModel {
-	var hwm HelloWorldModel
-	hwm.HelloWho = fmt.Sprintf("%s %s", hm.Greeting, hm.Who)
-	if cfg.Emphasise {
-		hwm.HelloWho += "!"
-	}
-	return hwm
+// Homepage maps data to our homepage frontend model
+func Homepage(ctx context.Context) homepage.Page {
+	var page homepage.Page
+	page.Type = "homepage"
+	return page
 }
