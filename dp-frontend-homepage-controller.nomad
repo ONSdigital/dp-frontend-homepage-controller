@@ -39,10 +39,6 @@ job "dp-frontend-homepage-controller" {
         args = ["./dp-frontend-homepage-controller"]
 
         image = "{{ECR_URL}}:concourse-{{REVISION}}"
-
-        port_map {
-          http = 8080
-        }
       }
 
       service {
@@ -106,10 +102,6 @@ job "dp-frontend-homepage-controller" {
         args = ["./dp-frontend-homepage-controller"]
 
         image = "{{ECR_URL}}:concourse-{{REVISION}}"
-
-        port_map {
-          http = 
-        }
       }
 
       service {
