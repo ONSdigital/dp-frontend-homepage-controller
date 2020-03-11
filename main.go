@@ -9,6 +9,7 @@ import (
 
 	"github.com/ONSdigital/dp-api-clients-go/renderer"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
+	"github.com/pkg/errors"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
@@ -71,19 +72,19 @@ func run(ctx context.Context) error {
 
 	log.Event(ctx, "Starting server", log.Data{"config": cfg})
 
+	serverErrors := make(chan error, 1)
 	go func() {
 		if err := s.ListenAndServe(); err != nil {
-			log.Event(ctx, "failed to start http listen and serve", log.Error(err))
-			return
+			serverErrors <- errors.Wrap(err, "failure in  http listen and serve")
 		}
 	}()
 
-	for {
-		select {
-		case <-signals:
-			log.Event(nil, "os signal received")
-			return gracefulShutdown(cfg, s, healthcheck)
-		}
+	select {
+	case err := <-serversErrors:
+		return errors.Wrap(err, "server error received")
+	case <-signals:
+		log.Event(nil, "os signal received")
+		return gracefulShutdown(cfg, s, healthcheck)
 	}
 	// protective programming, shouldn't get to this... but just in case
 	// nil translates to exit code 0
