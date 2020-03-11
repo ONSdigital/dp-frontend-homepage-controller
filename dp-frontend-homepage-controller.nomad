@@ -30,7 +30,7 @@ job "dp-frontend-homepage-controller" {
       driver = "docker"
 
       artifact {
-        source = "s3::https://s3-eu-west-1.amazonaws.com/{{DEPLOYMENT_BUCKET}}/dp-frontend-homepage-controller/{{REVISION}}.tar.gz"
+        source = "s3::https://s3-eu-west-1.amazonaws.com/{{DEPLOYMENT_BUCKET}}/dp-frontend-homepage-controller/{{PROFILE}}/{{RELEASE}}.tar.gz"
       }
 
       config {
