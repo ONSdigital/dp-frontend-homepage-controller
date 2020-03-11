@@ -80,7 +80,7 @@ func run(ctx context.Context) error {
 	}()
 
 	select {
-	case err := <-serversErrors:
+	case err := <-serverErrors:
 		return errors.Wrap(err, "server error received")
 	case <-signals:
 		log.Event(nil, "os signal received")
