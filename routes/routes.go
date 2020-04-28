@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/ONSdigital/dp-api-clients-go/renderer"
+	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
@@ -12,8 +13,8 @@ import (
 )
 
 // Init initialises routes for the service
-func Init(ctx context.Context, r *mux.Router, hc health.HealthCheck, rend *renderer.Renderer) {
+func Init(ctx context.Context, r *mux.Router, hc health.HealthCheck, rend *renderer.Renderer, zcli *zebedee.Client) {
 	log.Event(ctx, "adding routes")
 	r.StrictSlash(true).Path("/health").HandlerFunc(hc.Handler)
-	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(*rend))
+	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(*rend, zcli))
 }

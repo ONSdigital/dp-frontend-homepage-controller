@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/ONSdigital/dp-api-clients-go/renderer"
+	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	"github.com/ONSdigital/log.go/log"
 )
@@ -16,7 +17,7 @@ func Handler(rend renderer.Renderer) http.HandlerFunc {
 	}
 }
 
-func handle(w http.ResponseWriter, req *http.Request, rend renderer.Renderer) {
+func handle(w http.ResponseWriter, req *http.Request, rend renderer.Renderer, zcli *zebedee.Client) {
 	ctx := req.Context()
 
 	m := mapper.Homepage(ctx)
