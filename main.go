@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/ONSdigital/dp-api-clients-go/renderer"
+	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
 	"github.com/pkg/errors"
 
@@ -58,12 +59,13 @@ func run(ctx context.Context) error {
 	r := mux.NewRouter()
 
 	rend := renderer.New(cfg.RendererURL)
+	zcli := zebedee.New(cfg.ZebedeeURL)
 
 	healthcheck := health.New(versionInfo, cfg.HealthCheckCriticalTimeout, cfg.HealthCheckInterval)
 	if err = registerCheckers(ctx, &healthcheck, rend); err != nil {
 		return err
 	}
-	routes.Init(ctx, r, healthcheck, rend)
+	routes.Init(ctx, r, healthcheck, rend, zcli)
 
 	healthcheck.Start(ctx)
 
