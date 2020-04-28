@@ -11,9 +11,9 @@ import (
 )
 
 // Handler handles requests to homepage endpoint
-func Handler(rend renderer.Renderer) http.HandlerFunc {
+func Handler(rend renderer.Renderer, zcli *zebedee.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		handle(w, req, rend)
+		handle(w, req, rend, zcli)
 	}
 }
 
