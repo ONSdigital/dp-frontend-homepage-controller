@@ -7,8 +7,16 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/renderer"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
+	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
+	"github.com/davecgh/go-spew/spew"
 )
+
+type MainFigure struct {
+	uri        string
+	datePeriod string
+	data       zebedee.TimeseriesMainFigure
+}
 
 // Handler handles requests to homepage endpoint
 func Handler(rend renderer.Renderer, zcli *zebedee.Client) http.HandlerFunc {
@@ -20,7 +28,22 @@ func Handler(rend renderer.Renderer, zcli *zebedee.Client) http.HandlerFunc {
 func handle(w http.ResponseWriter, req *http.Request, rend renderer.Renderer, zcli *zebedee.Client) {
 	ctx := req.Context()
 
-	m := mapper.Homepage(ctx)
+	mainFiguresList := getMainFiguresList()
+	var mappedMainFigures []model.MainFigure
+
+	for _, value := range mainFiguresList {
+		zebResp, err := zcli.GetTimeseriesMainFigure(ctx, "", value.uri)
+		if err != nil {
+			log.Event(ctx, "error getting timeseries data", log.Error(err))
+			http.Error(w, "error getting timeseries data", http.StatusBadRequest)
+		}
+		mappedMainFigure := mapper.MainFigure(ctx, value.datePeriod, zebResp)
+		mappedMainFigures = append(mappedMainFigures, mappedMainFigure)
+	}
+
+	m := mapper.Homepage(ctx, mappedMainFigures)
+
+	spew.Dump(m)
 
 	b, err := json.Marshal(m)
 	if err != nil {
@@ -38,4 +61,51 @@ func handle(w http.ResponseWriter, req *http.Request, rend renderer.Renderer, zc
 
 	w.Write(templateHTML)
 	return
+}
+
+const (
+	PERIOD_YEARS    = "years"
+	PERIOD_QUARTERS = "quarters"
+	PERIOD_MONTHS   = "months"
+)
+
+func getMainFiguresList() map[string]MainFigure {
+	mainFigureMap := make(map[string]MainFigure)
+
+	// Employment
+	// mainFigureMap["LF24"] = mainFigure{
+	// 	uri:  "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
+	//  datePeriod: PERIOD_MONTHS,
+	// 	data: zebedee.TimeseriesMainFigure{},
+	// }
+
+	// Unemployment
+	// mainFigureMap["MGSX"] = mainFigure{
+	// 	uri:  "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
+	//  datePeriod: PERIOD_MONTHS,
+	// 	data: zebedee.TimeseriesMainFigure{},
+	// }
+
+	// Inflation (CPIH)
+	mainFigureMap["L55O"] = MainFigure{
+		uri:        "/economy/inflationandpriceindices/timeseries/l55o/mm23",
+		datePeriod: PERIOD_MONTHS,
+		data:       zebedee.TimeseriesMainFigure{},
+	}
+
+	// GDP
+	mainFigureMap["IHYQ"] = MainFigure{
+		uri:        "/economy/grossdomesticproductgdp/timeseries/ihyq/qna",
+		datePeriod: PERIOD_QUARTERS,
+		data:       zebedee.TimeseriesMainFigure{},
+	}
+
+	// Population
+	mainFigureMap["UKPOP"] = MainFigure{
+		uri:        "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/ukpop/pop",
+		datePeriod: PERIOD_YEARS,
+		data:       zebedee.TimeseriesMainFigure{},
+	}
+
+	return mainFigureMap
 }
