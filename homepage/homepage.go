@@ -70,14 +70,14 @@ func getMainFiguresList() map[string]MainFigure {
 	mainFigureMap := make(map[string]MainFigure)
 
 	// Employment
-	mainFigureMap["LF24"] = mainFigure{
+	mainFigureMap["LF24"] = MainFigure{
 		uri:        "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
 		datePeriod: PERIOD_MONTHS,
 		data:       zebedee.TimeseriesMainFigure{},
 	}
 
 	// Unemployment
-	mainFigureMap["MGSX"] = mainFigure{
+	mainFigureMap["MGSX"] = MainFigure{
 		uri:        "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
 		datePeriod: PERIOD_MONTHS,
 		data:       zebedee.TimeseriesMainFigure{},
