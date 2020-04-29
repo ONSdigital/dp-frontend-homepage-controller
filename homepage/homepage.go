@@ -9,7 +9,6 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type MainFigure struct {
@@ -43,8 +42,6 @@ func handle(w http.ResponseWriter, req *http.Request, rend renderer.Renderer, zc
 
 	m := mapper.Homepage(ctx, mappedMainFigures)
 
-	spew.Dump(m)
-
 	b, err := json.Marshal(m)
 	if err != nil {
 		log.Event(ctx, "error marsahlling body data to json", log.Error(err))
@@ -73,18 +70,18 @@ func getMainFiguresList() map[string]MainFigure {
 	mainFigureMap := make(map[string]MainFigure)
 
 	// Employment
-	// mainFigureMap["LF24"] = mainFigure{
-	// 	uri:  "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
-	//  datePeriod: PERIOD_MONTHS,
-	// 	data: zebedee.TimeseriesMainFigure{},
-	// }
+	mainFigureMap["LF24"] = mainFigure{
+		uri:        "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
+		datePeriod: PERIOD_MONTHS,
+		data:       zebedee.TimeseriesMainFigure{},
+	}
 
 	// Unemployment
-	// mainFigureMap["MGSX"] = mainFigure{
-	// 	uri:  "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
-	//  datePeriod: PERIOD_MONTHS,
-	// 	data: zebedee.TimeseriesMainFigure{},
-	// }
+	mainFigureMap["MGSX"] = mainFigure{
+		uri:        "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
+		datePeriod: PERIOD_MONTHS,
+		data:       zebedee.TimeseriesMainFigure{},
+	}
 
 	// Inflation (CPIH)
 	mainFigureMap["L55O"] = MainFigure{
