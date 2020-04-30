@@ -48,6 +48,7 @@ func MainFigure(ctx context.Context, datePeriod string, data zebedee.TimeseriesM
 	return mf
 }
 
+// getDataByPeriod returns the data for the time period set
 func getDataByPeriod(datePeriod string, data zebedee.TimeseriesMainFigure) []zebedee.TimeseriesDataPoint {
 	var mf []zebedee.TimeseriesDataPoint
 	switch datePeriod {
@@ -61,6 +62,7 @@ func getDataByPeriod(datePeriod string, data zebedee.TimeseriesMainFigure) []zeb
 	return mf
 }
 
+// getTrend returns trend boolean value based on latest and previous figures
 func getTrend(latest, previous float64) model.Trend {
 	if latest > previous {
 		return model.Trend{IsUp: true}
@@ -76,6 +78,7 @@ func getTrend(latest, previous float64) model.Trend {
 	return model.Trend{}
 }
 
+// getTrendDescription returns a string describing the trend with the difference from the current figure from the previous
 func getTrendDescription(latest, previous float64, unit, datePeriod string) string {
 	diff := float64(latest - previous)
 	//delta := (diff / previous) * 100
