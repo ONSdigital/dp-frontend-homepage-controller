@@ -16,5 +16,5 @@ import (
 func Init(ctx context.Context, r *mux.Router, hc health.HealthCheck, rend *renderer.Renderer, zcli *zebedee.Client) {
 	log.Event(ctx, "adding routes")
 	r.StrictSlash(true).Path("/health").HandlerFunc(hc.Handler)
-	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(*rend, zcli))
+	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(rend, zcli))
 }
