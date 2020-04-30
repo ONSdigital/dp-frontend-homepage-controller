@@ -20,6 +20,18 @@ type MainFigure struct {
 	data       zebedee.TimeseriesMainFigure
 }
 
+//go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient RenderClient
+
+// ZebedeeClient is an interface with methods required for a zebedee client
+type ZebedeeClient interface {
+	GetTimeseriesMainFigure(ctx context.Context, userAuthToken, uri string) (m zebedee.TimeseriesMainFigure, err error)
+}
+
+// RenderClient is an interface with methods for require for rendering a template
+type RenderClient interface {
+	Do(string, []byte) ([]byte, error)
+}
+
 // Handler handles requests to homepage endpoint
 func Handler(rend renderer.Renderer, zcli *zebedee.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
@@ -27,7 +39,7 @@ func Handler(rend renderer.Renderer, zcli *zebedee.Client) http.HandlerFunc {
 	}
 }
 
-func handle(w http.ResponseWriter, req *http.Request, rend renderer.Renderer, zcli *zebedee.Client) {
+func handle(w http.ResponseWriter, req *http.Request, rend renderer.Renderer, zcli ZebedeeClient) {
 	ctx := req.Context()
 	mainFiguresList := getMainFiguresList()
 
@@ -36,7 +48,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend renderer.Renderer, zc
 	var mutex = &sync.Mutex{}
 	for _, value := range mainFiguresList {
 		wg.Add(1)
-		go func(ctx context.Context, zcli *zebedee.Client, value MainFigure) {
+		go func(ctx context.Context, zcli ZebedeeClient, value MainFigure) {
 			defer wg.Done()
 			zebResp, err := zcli.GetTimeseriesMainFigure(ctx, "", value.uri)
 			if err != nil {
