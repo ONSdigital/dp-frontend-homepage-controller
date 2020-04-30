@@ -2,10 +2,6 @@ module github.com/ONSdigital/dp-frontend-homepage-controller
 
 go 1.13
 
-replace github.com/ONSdigital/dp-api-clients-go => /Users/jon/dev/dp-api-clients-go
-
-replace github.com/ONSdigital/dp-frontend-models => /Users/jon/dev/dp-frontend-models
-
 require (
 	github.com/ONSdigital/dp-api-clients-go v1.9.0
 	github.com/ONSdigital/dp-frontend-models v1.5.0
