@@ -11,7 +11,6 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type MainFigure struct {
@@ -76,8 +75,6 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	wg.Wait()
 
 	m := mapper.Homepage(ctx, mappedMainFigures)
-
-	spew.Dump(m)
 
 	b, err := json.Marshal(m)
 	if err != nil {

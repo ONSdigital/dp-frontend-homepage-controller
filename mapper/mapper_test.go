@@ -6,7 +6,6 @@ import (
 
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
-	"github.com/davecgh/go-spew/spew"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -77,7 +76,6 @@ func TestUnitMapper(t *testing.T) {
 
 	Convey("test main figures mapping works", t, func() {
 		mainFigures := MainFigure(ctx, "months", mockedZebedeeData[0])
-		spew.Dump(mainFigures)
 		So(mainFigures.Date, ShouldEqual, "Feb 2020")
 		So(mainFigures.Figure, ShouldEqual, "679.6")
 		So(mainFigures.Trend.IsDown, ShouldEqual, false)
@@ -101,7 +99,6 @@ func TestUnitMapper(t *testing.T) {
 		trendPositive := getTrend(5.8, 4.5672)
 		trendNegative := getTrend(9.99, 10.21)
 		trendFlat := getTrend(8.88, 8.88)
-		spew.Dump(trendPositive, trendNegative, trendFlat)
 		So(trendPositive, ShouldResemble, model.Trend{IsUp: true, IsDown: false, IsFlat: false})
 		So(trendNegative, ShouldResemble, model.Trend{IsUp: false, IsDown: true, IsFlat: false})
 		So(trendFlat, ShouldResemble, model.Trend{IsUp: false, IsDown: false, IsFlat: true})
