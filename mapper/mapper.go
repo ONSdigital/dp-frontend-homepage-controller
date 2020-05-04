@@ -14,6 +14,7 @@ import (
 func Homepage(ctx context.Context, mainFigures []model.MainFigure) model.Page {
 	var page model.Page
 	page.Type = "homepage"
+	page.Metadata.Title = "home"
 	page.Data.MainFigures = mainFigures
 	return page
 }
