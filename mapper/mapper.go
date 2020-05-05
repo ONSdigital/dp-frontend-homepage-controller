@@ -8,6 +8,7 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
+	"github.com/dustin/go-humanize"
 )
 
 // Homepage maps data to our homepage frontend model
@@ -39,7 +40,8 @@ func MainFigure(ctx context.Context, datePeriod string, figure zebedee.Timeserie
 		return mf
 	}
 
-	mf.Figure = fmt.Sprintf("%0.1f", latestFigure)
+	latestFigureFormatted := humanize.CommafWithDigits(latestFigure, 2)
+	mf.Figure = latestFigureFormatted
 	mf.Date = latestData.Label
 	mf.Unit = figure.Description.Unit
 	mf.Trend = getTrend(latestFigure, previousFigure)
