@@ -20,12 +20,14 @@ func Homepage(ctx context.Context, mainFigures []model.MainFigure) model.Page {
 }
 
 // MainFigure maps a single main figure object
-func MainFigure(ctx context.Context, datePeriod string, data zebedee.TimeseriesMainFigure) model.MainFigure {
+func MainFigure(ctx context.Context, datePeriod string, figure zebedee.TimeseriesMainFigure) model.MainFigure {
 	var mf model.MainFigure
 
-	mfData := getDataByPeriod(datePeriod, data)
-	latestData := mfData[(len(mfData) - 1)]
-	previousData := mfData[(len(mfData) - 2)]
+	mfData := getDataByPeriod(datePeriod, figure)
+	latestDataIndex := len(mfData) - 1
+	previousDataIndex := len(mfData) - 2
+	latestData := mfData[latestDataIndex]
+	previousData := mfData[previousDataIndex]
 	latestFigure, err := strconv.ParseFloat(latestData.Value, 64)
 	if err != nil {
 		log.Event(ctx, "error getting trend description: error parsing float", log.Error(err))
@@ -39,13 +41,13 @@ func MainFigure(ctx context.Context, datePeriod string, data zebedee.TimeseriesM
 
 	mf.Figure = fmt.Sprintf("%0.1f", latestFigure)
 	mf.Date = latestData.Label
-	mf.Unit = data.Description.Unit
+	mf.Unit = figure.Description.Unit
 	mf.Trend = getTrend(latestFigure, previousFigure)
-	mf.TrendDescription = getTrendDescription(latestFigure, previousFigure, data.Description.Unit, datePeriod)
-	if len(data.RelatedDocuments) > 0 {
-		mf.FigureURIs.Analysis = data.RelatedDocuments[0].URI
+	mf.TrendDescription = getTrendDescription(latestFigure, previousFigure, figure.Description.Unit, datePeriod)
+	if len(figure.RelatedDocuments) > 0 {
+		mf.FigureURIs.Analysis = figure.RelatedDocuments[0].URI
 	}
-	mf.FigureURIs.Data = data.URI
+	mf.FigureURIs.Data = figure.URI
 	return mf
 }
 
