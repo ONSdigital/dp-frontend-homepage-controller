@@ -91,6 +91,5 @@ func getTrend(latest, previous float64) model.Trend {
 // getTrendDescription returns a string describing the trend with the difference from the current figure from the previous
 func getTrendDescription(latest, previous float64, unit, datePeriod string) string {
 	diff := float64(latest - previous)
-	//delta := (diff / previous) * 100
 	return fmt.Sprintf("%0.2f%v on previous %v", diff, unit, datePeriod)
 }
