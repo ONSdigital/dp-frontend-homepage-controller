@@ -14,6 +14,8 @@ import (
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
+	"github.com/ONSdigital/go-ns/handlers/collectionID"
+	"github.com/ONSdigital/go-ns/handlers/localeCode"
 	"github.com/ONSdigital/go-ns/server"
 	"github.com/ONSdigital/log.go/log"
 	"github.com/gorilla/mux"
@@ -71,6 +73,12 @@ func run(ctx context.Context) error {
 
 	s := server.New(cfg.BindAddr, r)
 	s.HandleOSSignals = false
+
+	s.Middleware["CollectionID"] = collectionID.CheckCookie
+	s.MiddlewareOrder = append(s.MiddlewareOrder, "CollectionID")
+
+	s.Middleware["LocaleCode"] = localeCode.CheckHeaderValueAndForwardWithRequestContext
+	s.MiddlewareOrder = append(s.MiddlewareOrder, "LocaleCode")
 
 	log.Event(ctx, "Starting server", log.Data{"config": cfg})
 
