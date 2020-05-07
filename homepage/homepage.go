@@ -3,6 +3,7 @@ package homepage
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"sync"
 
@@ -10,6 +11,7 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
+	"github.com/ONSdigital/go-ns/common"
 	"github.com/ONSdigital/log.go/log"
 )
 
@@ -49,6 +51,15 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		userAccessToken = ""
 	}
 
+	var localeCode string
+	if ctx.Value(common.LocaleHeaderKey) != nil {
+		var ok bool
+		localeCode, ok = ctx.Value(common.LocaleHeaderKey).(string)
+		if !ok {
+			log.Event(ctx, "error retrieving locale code", log.WARN, log.Error(errors.New("error casting locale code to string")))
+		}
+	}
+
 	mappedMainFigures := make(map[string]*model.MainFigure)
 	var wg sync.WaitGroup
 	responses := make(chan *model.MainFigure, len(mainFigureMap))
@@ -75,7 +86,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		mappedMainFigures[response.ID] = response
 	}
 
-	m := mapper.Homepage(ctx, mappedMainFigures)
+	m := mapper.Homepage(ctx, localeCode, mappedMainFigures)
 
 	b, err := json.Marshal(m)
 	if err != nil {
@@ -108,18 +119,18 @@ func init() {
 	mainFigureMap = make(map[string]MainFigure)
 
 	// Employment
-	mainFigureMap["LF24"] = MainFigure{
-		uri:        "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
-		datePeriod: PeriodMonths,
-		data:       zebedee.TimeseriesMainFigure{},
-	}
+	// mainFigureMap["LF24"] = MainFigure{
+	// 	uri:        "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
+	// 	datePeriod: PeriodMonths,
+	// 	data:       zebedee.TimeseriesMainFigure{},
+	// }
 
 	// Unemployment
-	mainFigureMap["MGSX"] = MainFigure{
-		uri:        "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
-		datePeriod: PeriodMonths,
-		data:       zebedee.TimeseriesMainFigure{},
-	}
+	// mainFigureMap["MGSX"] = MainFigure{
+	// 	uri:        "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
+	// 	datePeriod: PeriodMonths,
+	// 	data:       zebedee.TimeseriesMainFigure{},
+	// }
 
 	// Inflation (CPIH)
 	mainFigureMap["L55O"] = MainFigure{
