@@ -12,7 +12,7 @@ import (
 )
 
 // Homepage maps data to our homepage frontend model
-func Homepage(ctx context.Context, mainFigures []model.MainFigure) model.Page {
+func Homepage(ctx context.Context, mainFigures map[string]*model.MainFigure) model.Page {
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
@@ -21,8 +21,10 @@ func Homepage(ctx context.Context, mainFigures []model.MainFigure) model.Page {
 }
 
 // MainFigure maps a single main figure object
-func MainFigure(ctx context.Context, datePeriod string, figure zebedee.TimeseriesMainFigure) model.MainFigure {
+func MainFigure(ctx context.Context, id, datePeriod string, figure zebedee.TimeseriesMainFigure) *model.MainFigure {
 	var mf model.MainFigure
+
+	mf.ID = id
 
 	mfData := getDataByPeriod(datePeriod, figure)
 	latestDataIndex := len(mfData) - 1
@@ -32,15 +34,16 @@ func MainFigure(ctx context.Context, datePeriod string, figure zebedee.Timeserie
 	latestFigure, err := strconv.ParseFloat(latestData.Value, 64)
 	if err != nil {
 		log.Event(ctx, "error getting trend description: error parsing float", log.Error(err))
-		return mf
+		return &mf
 	}
 	previousFigure, err := strconv.ParseFloat(previousData.Value, 64)
 	if err != nil {
 		log.Event(ctx, "error getting trend description: error parsing float", log.Error(err))
-		return mf
+		return &mf
 	}
 
 	latestFigureFormatted := humanize.CommafWithDigits(latestFigure, 2)
+
 	mf.Figure = latestFigureFormatted
 	mf.Date = latestData.Label
 	mf.Unit = figure.Description.Unit
@@ -50,7 +53,7 @@ func MainFigure(ctx context.Context, datePeriod string, figure zebedee.Timeserie
 		mf.FigureURIs.Analysis = figure.RelatedDocuments[0].URI
 	}
 	mf.FigureURIs.Data = figure.URI
-	return mf
+	return &mf
 }
 
 // getDataByPeriod returns the data for the time period set

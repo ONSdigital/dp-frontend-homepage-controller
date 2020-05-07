@@ -57,27 +57,30 @@ func TestUnitMapper(t *testing.T) {
 		URI: "test/uri/timeseries/456",
 	})
 
-	var mockedMainFigures []model.MainFigure
-	mockedMainFigures = append(mockedMainFigures, model.MainFigure{
+	mockedMainFigures := make(map[string]*model.MainFigure)
+	mockedMainFigure := model.MainFigure{
 		Date:             "Jun 2020",
 		Figure:           "39.9",
 		Trend:            model.Trend{IsUp: true},
 		TrendDescription: "0.2%% on previous month",
 		Unit:             "%",
 		FigureURIs:       model.FigureURIs{Analysis: "test/uri/1/2/"},
-	})
+	}
+	mockedMainFigures["test_id"] = &mockedMainFigure
 
 	Convey("test homepage mapping works", t, func() {
 		page := Homepage(ctx, mockedMainFigures)
 
 		So(page.Type, ShouldEqual, "homepage")
-		So(page.Data.MainFigures[0], ShouldResemble, mockedMainFigures[0])
+		So(page.Data.MainFigures["test_id"].Figure, ShouldEqual, mockedMainFigure.Figure)
+		So(page.Data.MainFigures["test_id"].TrendDescription, ShouldEqual, mockedMainFigure.TrendDescription)
+		So(page.Data.MainFigures["test_id"].Trend, ShouldResemble, mockedMainFigure.Trend)
 	})
 
 	Convey("test main figures mapping works", t, func() {
-		mainFigures := MainFigure(ctx, "months", mockedZebedeeData[0])
+		mainFigures := MainFigure(ctx, "months", "cdid", mockedZebedeeData[0])
 		So(mainFigures.Date, ShouldEqual, "Feb 2020")
-		So(mainFigures.Figure, ShouldEqual, "679.6")
+		So(mainFigures.Figure, ShouldEqual, "679.56")
 		So(mainFigures.Trend.IsDown, ShouldEqual, false)
 		So(mainFigures.Trend.IsUp, ShouldEqual, true)
 		So(mainFigures.Trend.IsFlat, ShouldEqual, false)
