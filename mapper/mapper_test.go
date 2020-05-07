@@ -69,7 +69,7 @@ func TestUnitMapper(t *testing.T) {
 	mockedMainFigures["test_id"] = &mockedMainFigure
 
 	Convey("test homepage mapping works", t, func() {
-		page := Homepage(ctx, mockedMainFigures)
+		page := Homepage(ctx, "en", mockedMainFigures)
 
 		So(page.Type, ShouldEqual, "homepage")
 		So(page.Data.MainFigures["test_id"].Figure, ShouldEqual, mockedMainFigure.Figure)
