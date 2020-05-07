@@ -108,11 +108,11 @@ func TestUnitMapper(t *testing.T) {
 		So(trendFlat, ShouldResemble, model.Trend{IsUp: false, IsDown: false, IsFlat: true})
 	})
 
-	Convey("test getTrendDescription returns the current string", t, func() {
-		trendDescriptionPositive := getTrendDescription(10.55, 8.568, "million", "month")
-		trendDescriptionNegative := getTrendDescription(10.5, 18.7, "%", "year")
-		So(trendDescriptionPositive, ShouldEqual, "1.98million on previous month")
-		So(trendDescriptionNegative, ShouldEqual, "-8.20% on previous year")
+	Convey("test getTrendDiffference returns the current string", t, func() {
+		trendDescriptionPositive := getTrendDifference(10.55, 8.568, "million")
+		trendDescriptionNegative := getTrendDifference(10.5, 18.7, "%")
+		So(trendDescriptionPositive, ShouldEqual, "1.98million")
+		So(trendDescriptionNegative, ShouldEqual, "-8.2%")
 	})
 
 }

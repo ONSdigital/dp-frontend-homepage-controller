@@ -48,7 +48,8 @@ func MainFigure(ctx context.Context, id, datePeriod string, figure zebedee.Times
 	mf.Date = latestData.Label
 	mf.Unit = figure.Description.Unit
 	mf.Trend = getTrend(latestFigure, previousFigure)
-	mf.TrendDescription = getTrendDescription(latestFigure, previousFigure, figure.Description.Unit, datePeriod)
+	mf.Trend.Difference = getTrendDifference(latestFigure, previousFigure, figure.Description.Unit)
+	mf.Trend.Period = datePeriod
 	if len(figure.RelatedDocuments) > 0 {
 		mf.FigureURIs.Analysis = figure.RelatedDocuments[0].URI
 	}
@@ -88,8 +89,9 @@ func getTrend(latest, previous float64) model.Trend {
 	return model.Trend{}
 }
 
-// getTrendDescription returns a string describing the trend with the difference from the current figure from the previous
-func getTrendDescription(latest, previous float64, unit, datePeriod string) string {
+// getTrendDifference returns string value of the difference between latest and previous
+func getTrendDifference(latest, previous float64, unit string) string {
 	diff := float64(latest - previous)
-	return fmt.Sprintf("%0.2f%v on previous %v", diff, unit, datePeriod)
+	formattedDiff := humanize.CommafWithDigits(diff, 2)
+	return fmt.Sprintf("%v%v", formattedDiff, unit)
 }
