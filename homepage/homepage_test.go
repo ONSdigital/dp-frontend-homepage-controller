@@ -90,10 +90,4 @@ func TestUnitMapper(t *testing.T) {
 			So(response, ShouldEqual, expectedSuccessResponse)
 		})
 	})
-
-	Convey("get main figures list func returns correctly", t, func() {
-		list := getMainFiguresList()
-		So(list, ShouldNotBeEmpty)
-	})
-
 }
