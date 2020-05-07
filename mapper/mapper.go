@@ -8,13 +8,11 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/dustin/go-humanize"
 )
 
 // Homepage maps data to our homepage frontend model
 func Homepage(ctx context.Context, localeCode string, mainFigures map[string]*model.MainFigure) model.Page {
-	spew.Dump(localeCode)
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
