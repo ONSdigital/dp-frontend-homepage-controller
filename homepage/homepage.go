@@ -11,7 +11,6 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
-	"github.com/davecgh/go-spew/spew"
 )
 
 type MainFigure struct {
@@ -19,6 +18,8 @@ type MainFigure struct {
 	datePeriod string
 	data       zebedee.TimeseriesMainFigure
 }
+
+var mainFigureMap map[string]MainFigure
 
 //go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient RenderClient
 
@@ -43,45 +44,43 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	ctx := req.Context()
 
 	userAccessToken, err := headers.GetUserAuthToken(req)
-	if err == headers.ErrHeaderNotFound {
-		log.Event(ctx, "no user access token header set", log.ERROR, log.Error(err))
-		userAccessToken = ""
-	}
 	if err != nil {
 		log.Event(ctx, "error getting user access token from header", log.ERROR, log.Error(err))
 		userAccessToken = ""
 	}
 
-	mainFiguresList := getMainFiguresList()
-
-	var mappedMainFigures []model.MainFigure
+	mappedMainFigures := make(map[string]*model.MainFigure)
 	var wg sync.WaitGroup
-	var mutex = &sync.Mutex{}
-	for _, value := range mainFiguresList {
+	responses := make(chan *model.MainFigure, len(mainFigureMap))
+	for id, figure := range mainFigureMap {
 		wg.Add(1)
-		go func(ctx context.Context, zcli ZebedeeClient, value MainFigure) {
+		go func(ctx context.Context, zcli ZebedeeClient, id string, figure MainFigure) {
 			defer wg.Done()
-			zebResp, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, value.uri)
+			zebResp, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, figure.uri)
 			if err != nil {
 				log.Event(ctx, "error getting timeseries data", log.Error(err))
-				http.Error(w, "error getting timeseries data", http.StatusBadRequest)
+				mappedErrorFigure := &model.MainFigure{ID: id}
+				responses <- mappedErrorFigure
+				return
 			}
-			mappedMainFigure := mapper.MainFigure(ctx, value.datePeriod, zebResp)
-			mutex.Lock()
-			defer mutex.Unlock()
-			mappedMainFigures = append(mappedMainFigures, mappedMainFigure)
+			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, zebResp)
+			responses <- mappedMainFigure
 			return
-		}(ctx, zcli, value)
+		}(ctx, zcli, id, figure)
 	}
 	wg.Wait()
+	close(responses)
+
+	for response := range responses {
+		mappedMainFigures[response.ID] = response
+	}
 
 	m := mapper.Homepage(ctx, mappedMainFigures)
-	spew.Dump(m)
 
 	b, err := json.Marshal(m)
 	if err != nil {
-		log.Event(ctx, "error marsahlling body data to json", log.Error(err))
-		http.Error(w, "error marsahlling body data to json", http.StatusBadRequest)
+		log.Event(ctx, "error marshalling body data to json", log.Error(err))
+		http.Error(w, "error marshalling body data to json", http.StatusInternalServerError)
 		return
 	}
 
@@ -105,22 +104,22 @@ const (
 	PeriodMonths = "months"
 )
 
-func getMainFiguresList() map[string]MainFigure {
-	mainFigureMap := make(map[string]MainFigure)
+func init() {
+	mainFigureMap = make(map[string]MainFigure)
 
 	// Employment
-	// mainFigureMap["LF24"] = MainFigure{
-	// 	uri:        "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
-	// 	datePeriod: PeriodMonths,
-	// 	data:       zebedee.TimeseriesMainFigure{},
-	// }
+	mainFigureMap["LF24"] = MainFigure{
+		uri:        "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
+		datePeriod: PeriodMonths,
+		data:       zebedee.TimeseriesMainFigure{},
+	}
 
 	// Unemployment
-	// mainFigureMap["MGSX"] = MainFigure{
-	// 	uri:        "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
-	// 	datePeriod: PeriodMonths,
-	// 	data:       zebedee.TimeseriesMainFigure{},
-	// }
+	mainFigureMap["MGSX"] = MainFigure{
+		uri:        "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
+		datePeriod: PeriodMonths,
+		data:       zebedee.TimeseriesMainFigure{},
+	}
 
 	// Inflation (CPIH)
 	mainFigureMap["L55O"] = MainFigure{
@@ -143,5 +142,4 @@ func getMainFiguresList() map[string]MainFigure {
 		data:       zebedee.TimeseriesMainFigure{},
 	}
 
-	return mainFigureMap
 }
