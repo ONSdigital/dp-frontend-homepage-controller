@@ -78,7 +78,8 @@ func TestUnitMapper(t *testing.T) {
 	})
 
 	Convey("test main figures mapping works", t, func() {
-		mainFigures := MainFigure(ctx, "months", "cdid", mockedZebedeeData[0])
+		mockedTestData := mockedZebedeeData[0]
+		mainFigures := MainFigure(ctx, "cdid", "months", mockedTestData)
 		So(mainFigures.Date, ShouldEqual, "Feb 2020")
 		So(mainFigures.Figure, ShouldEqual, "679.56")
 		So(mainFigures.Trend.IsDown, ShouldEqual, false)

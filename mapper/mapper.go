@@ -66,6 +66,8 @@ func getDataByPeriod(datePeriod string, data zebedee.TimeseriesMainFigure) []zeb
 		mf = data.Quarters
 	case "months":
 		mf = data.Months
+	default:
+		mf = []zebedee.TimeseriesDataPoint{}
 	}
 	return mf
 }
