@@ -3,11 +3,15 @@ github.com/ONSdigital/dp-api-clients-go v1.9.0 h1:ru8jBPAxXfibYOF41/tU/ZtOt4tUVE
 github.com/ONSdigital/dp-api-clients-go v1.9.0/go.mod h1:SM0b/NXDWndJ9EulmAGdfDY4DxPxK+pNsP8eZlIWiqM=
 github.com/ONSdigital/dp-api-clients-go v1.9.1-0.20200429185509-b88d54406cbe h1:eWL9fIDZy0/vMXgM8lKUQBkfJevh0J3g/+YNQeIj6HM=
 github.com/ONSdigital/dp-api-clients-go v1.9.1-0.20200429185509-b88d54406cbe/go.mod h1:JjxArqZjHzSZC9CGBAy/CQzw56fpk08oGvXgeuwQKnM=
+github.com/ONSdigital/dp-api-clients-go v1.10.0 h1:XfbnSO7iwC5u/1kjuJjJMcL3E4PRbWnpjiKTdf7ueWU=
+github.com/ONSdigital/dp-api-clients-go v1.10.0/go.mod h1:JjxArqZjHzSZC9CGBAy/CQzw56fpk08oGvXgeuwQKnM=
 github.com/ONSdigital/dp-frontend-models v1.1.0/go.mod h1:TT96P7Mi69N3Tc/jFNdbjiwG4GAaMjP26HLotFQ6BPw=
 github.com/ONSdigital/dp-frontend-models v1.5.0 h1:FZngursXY984WuCW5x4+VzyDOkoEUQleh3OT4/w1NNU=
 github.com/ONSdigital/dp-frontend-models v1.5.0/go.mod h1:K4n0EwATkzbuWzSajBHja+uc9zvqnKiq6WtUwLav4Kg=
 github.com/ONSdigital/dp-frontend-models v1.5.1-0.20200428191352-f6d79bd3a7f8 h1:vSJGv2mC3x8MtKgoWLzZWNNhnYKpmtXI+eXvb73/7fU=
 github.com/ONSdigital/dp-frontend-models v1.5.1-0.20200428191352-f6d79bd3a7f8/go.mod h1:K4n0EwATkzbuWzSajBHja+uc9zvqnKiq6WtUwLav4Kg=
+github.com/ONSdigital/dp-frontend-models v1.5.1 h1:L+DHGwt7Ujxwr8GgoPlV9BozOoi0x+VSLFG3ps2CVMA=
+github.com/ONSdigital/dp-frontend-models v1.5.1/go.mod h1:K4n0EwATkzbuWzSajBHja+uc9zvqnKiq6WtUwLav4Kg=
 github.com/ONSdigital/dp-healthcheck v0.0.0-20200131122546-9db6d3f0494e/go.mod h1:zighxZ/0m5u7zo0eAr8XFlA+Dz2ic7A1vna6YXvhCjQ=
 github.com/ONSdigital/dp-healthcheck v1.0.0 h1:bySQU8kQRs4n3WbgH8QtVwCJLqG9ri722saATjvNNfc=
 github.com/ONSdigital/dp-healthcheck v1.0.0/go.mod h1:zighxZ/0m5u7zo0eAr8XFlA+Dz2ic7A1vna6YXvhCjQ=
