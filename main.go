@@ -8,11 +8,14 @@ import (
 	"syscall"
 
 	"github.com/ONSdigital/dp-api-clients-go/renderer"
+	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
 	"github.com/pkg/errors"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
+	"github.com/ONSdigital/go-ns/handlers/collectionID"
+	"github.com/ONSdigital/go-ns/handlers/localeCode"
 	"github.com/ONSdigital/go-ns/server"
 	"github.com/ONSdigital/log.go/log"
 	"github.com/gorilla/mux"
@@ -58,17 +61,24 @@ func run(ctx context.Context) error {
 	r := mux.NewRouter()
 
 	rend := renderer.New(cfg.RendererURL)
+	zcli := zebedee.New(cfg.ZebedeeURL)
 
 	healthcheck := health.New(versionInfo, cfg.HealthCheckCriticalTimeout, cfg.HealthCheckInterval)
 	if err = registerCheckers(ctx, &healthcheck, rend); err != nil {
 		return err
 	}
-	routes.Init(ctx, r, healthcheck, rend)
+	routes.Init(ctx, r, healthcheck, rend, zcli)
 
 	healthcheck.Start(ctx)
 
 	s := server.New(cfg.BindAddr, r)
 	s.HandleOSSignals = false
+
+	s.Middleware["CollectionID"] = collectionID.CheckCookie
+	s.MiddlewareOrder = append(s.MiddlewareOrder, "CollectionID")
+
+	s.Middleware["LocaleCode"] = localeCode.CheckHeaderValueAndForwardWithRequestContext
+	s.MiddlewareOrder = append(s.MiddlewareOrder, "LocaleCode")
 
 	log.Event(ctx, "Starting server", log.Data{"config": cfg})
 
