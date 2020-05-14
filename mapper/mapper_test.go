@@ -112,7 +112,7 @@ func TestUnitMapper(t *testing.T) {
 		trendDescriptionPositive := getTrendDifference(10.55, 8.568, "million")
 		trendDescriptionNegative := getTrendDifference(10.5, 18.7, "%")
 		So(trendDescriptionPositive, ShouldEqual, "1.98million")
-		So(trendDescriptionNegative, ShouldEqual, "-8.2%")
+		So(trendDescriptionNegative, ShouldEqual, "-8.2pp")
 	})
 
 }
