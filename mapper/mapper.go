@@ -92,7 +92,14 @@ func getTrend(latest, previous float64) model.Trend {
 
 // getTrendDifference returns string value of the difference between latest and previous
 func getTrendDifference(latest, previous float64, unit string) string {
+	var trendUnit string
+	switch unit {
+	case "%":
+		trendUnit = "pp"
+	default:
+		trendUnit = unit
+	}
 	diff := float64(latest - previous)
 	formattedDiff := humanize.CommafWithDigits(diff, 2)
-	return fmt.Sprintf("%v%v", formattedDiff, unit)
+	return fmt.Sprintf("%v%v", formattedDiff, trendUnit)
 }
