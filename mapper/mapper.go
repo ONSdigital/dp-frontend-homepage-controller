@@ -71,6 +71,13 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
 	var latestReleases []model.Release
 
+	// Removed canceled releases
+	for i := len(rawReleases) - 1; i >= 0; i-- {
+		if rawReleases[i].Description.Cancelled {
+			rawReleases = append(rawReleases[:i], rawReleases[i+1:]...)
+		}
+	}
+
 	// Reverse order
 	sort.Slice(rawReleases, func(i, j int) bool {
 		return rawReleases[i].Description.ReleaseDate.After(rawReleases[j].Description.ReleaseDate)
