@@ -55,7 +55,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 
 	userAccessToken, err := headers.GetUserAuthToken(req)
 	if err != nil {
-		log.Event(ctx, "error getting user access token from header", log.ERROR, log.Error(err))
+		log.Event(ctx, "unable to get user access token from header", log.WARN, log.Error(err))
 		userAccessToken = ""
 	}
 
@@ -77,7 +77,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 			defer wg.Done()
 			zebResp, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, figure.uri)
 			if err != nil {
-				log.Event(ctx, "error getting timeseries data", log.Error(err))
+				log.Event(ctx, "error getting timeseries data", log.Error(err), log.Data{"timeseries-data": figure.uri})
 				mappedErrorFigure := &model.MainFigure{ID: id}
 				responses <- mappedErrorFigure
 				return
@@ -94,21 +94,12 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		mappedMainFigures[response.ID] = response
 	}
 
-	//TODO convert to todays date, day, month, year
 	currentTime := time.Now()
 	dateFromDay := currentTime.Format("02")
 	dateFromMonth := currentTime.Format("01")
 	dateFromYear := currentTime.Format("2006")
 	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
 	releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
-
-	if err != nil {
-		log.Event(ctx, "error getting timeseries data", log.Error(err))
-		mappedErrorFigure := &model.MainFigure{ID: id}
-		responses <- mappedErrorFigure
-		return
-	}
-
 
 	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData)
 
