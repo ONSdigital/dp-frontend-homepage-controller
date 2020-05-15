@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/headers"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
@@ -30,19 +32,25 @@ type ZebedeeClient interface {
 	GetTimeseriesMainFigure(ctx context.Context, userAuthToken, uri string) (m zebedee.TimeseriesMainFigure, err error)
 }
 
+// BabbageClient is an interface with methods required for a babbage client
+
+type BabbageClient interface {
+	GetReleaseCalendar(ctx context.Context, userAuthToken, dateFromDay, dateFromMonth, dateFromYear string) (m release_calendar.ReleaseCalendar, err error)
+}
+
 // RenderClient is an interface with methods for require for rendering a template
 type RenderClient interface {
 	Do(string, []byte) ([]byte, error)
 }
 
 // Handler handles requests to homepage endpoint
-func Handler(rend RenderClient, zcli ZebedeeClient) http.HandlerFunc {
+func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		handle(w, req, rend, zcli)
+		handle(w, req, rend, zcli, bcli)
 	}
 }
 
-func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient) {
+func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient) {
 	ctx := req.Context()
 
 	userAccessToken, err := headers.GetUserAuthToken(req)
@@ -86,7 +94,21 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		mappedMainFigures[response.ID] = response
 	}
 
-	m := mapper.Homepage(ctx, localeCode, mappedMainFigures)
+	//TODO convert to todays date, day, month, year
+	currentTime := time.Now()
+	dateFromDay := currentTime.Format("02")
+	dateFromMonth := currentTime.Format("01")
+	dateFromYear := currentTime.Format("2006")
+	releaseCal, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
+	if err != nil {
+		log.Event(ctx, "error getting timeseries data", log.Error(err))
+		mappedErrorFigure := &model.MainFigure{ID: id}
+		responses <- mappedErrorFigure
+		return
+	}
+
+
+	m := mapper.Homepage(ctx, localeCode, mappedMainFigures, releaseCal)
 
 	b, err := json.Marshal(m)
 	if err != nil {

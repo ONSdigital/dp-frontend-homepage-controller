@@ -3,6 +3,7 @@ package mapper
 import (
 	"context"
 	"fmt"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"strconv"
 
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
@@ -12,7 +13,7 @@ import (
 )
 
 // Homepage maps data to our homepage frontend model
-func Homepage(ctx context.Context, localeCode string, mainFigures map[string]*model.MainFigure) model.Page {
+func Homepage(ctx context.Context, localeCode string, mainFigures map[string]*model.MainFigure, releaseCal release_calendar.ReleaseCalendar) model.Page {
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"

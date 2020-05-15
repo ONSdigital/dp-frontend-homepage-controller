@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"os"
 	"os/signal"
 	"syscall"
@@ -60,14 +61,18 @@ func run(ctx context.Context) error {
 
 	r := mux.NewRouter()
 
-	rend := renderer.New(cfg.RendererURL)
-	zcli := zebedee.New(cfg.ZebedeeURL)
+	clients := routes.Clients{
+		Renderer: renderer.New(cfg.RendererURL),
+		Zebedee:  zebedee.New(cfg.ZebedeeURL),
+		Babbage:  release_calendar.New(cfg.BabbageURL),
+	}
+
 
 	healthcheck := health.New(versionInfo, cfg.HealthCheckCriticalTimeout, cfg.HealthCheckInterval)
-	if err = registerCheckers(ctx, &healthcheck, rend); err != nil {
+	if err = registerCheckers(ctx, &healthcheck, clients.Renderer, clients.Zebedee, clients.Babbage); err != nil {
 		return err
 	}
-	routes.Init(ctx, r, healthcheck, rend, zcli)
+	routes.Init(ctx, r, healthcheck, clients)
 
 	healthcheck.Start(ctx)
 
@@ -117,9 +122,15 @@ func gracefulShutdown(cfg *config.Config, s *server.Server, hc health.HealthChec
 	return nil
 }
 
-func registerCheckers(ctx context.Context, h *health.HealthCheck, r *renderer.Renderer) (err error) {
+func registerCheckers(ctx context.Context, h *health.HealthCheck, r *renderer.Renderer, z *zebedee.Client, b release_calendar.Client) (err error) {
 	if err = h.AddCheck("frontend renderer", r.Checker); err != nil {
 		log.Event(ctx, "failed to add frontend renderer checker", log.Error(err))
+	}
+	if err = h.AddCheck("Zebedee", z.Checker); err != nil {
+		log.Event(ctx, "failed to add Zebedee checker", log.Error(err))
+	}
+	if err = h.AddCheck("Babbage", b.Checker); err != nil {
+		log.Event(ctx, "failed to add babbage checker", log.Error(err))
 	}
 	return
 }
