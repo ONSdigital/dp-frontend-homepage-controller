@@ -6,7 +6,7 @@ type ReleaseCalendar struct {
 	Type     string    `json:"type, omitempty"`
 	ListType string    `json:"listType, omitempty"`
 	URI      string    `json:"uri, omitempty"`
-	Result   *[]Result `json:"result"`
+	Result   Result `json:"result"`
 }
 
 type Result struct {
@@ -19,7 +19,7 @@ type Result struct {
 }
 
 type Results struct {
-	Type        string         `json:"_type"`
+	Type        string         `json:"type"`
 	Description *Descritpion   `json:"description"`
 	SearchBoost *[]interface{} `json:"searchBoost"`
 	URI         string         `json:"uri"`

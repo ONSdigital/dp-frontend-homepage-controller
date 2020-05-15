@@ -3,22 +3,23 @@ package mapper
 import (
 	"context"
 	"fmt"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
-	"strconv"
-
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
 	"github.com/dustin/go-humanize"
+	"sort"
+	"strconv"
 )
 
 // Homepage maps data to our homepage frontend model
-func Homepage(ctx context.Context, localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar) model.Page {
+func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar) model.Page {
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
+	page.Data.ReleaseCalendar = *releaseCal
 	return page
 }
 
@@ -59,10 +60,33 @@ func MainFigure(ctx context.Context, id, datePeriod string, figure zebedee.Times
 	return &mf
 }
 
-func ReleaseCalendar(ctx context.Context, rawReleaseCalendar release_calendar.ReleaseCalendar) *model.ReleaseCalendar{
-	var rc model.ReleaseCalendar
+func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model.ReleaseCalendar {
+	rc := model.ReleaseCalendar{
+		Releases:         getLatestReleases(*rawReleaseCalendar.Result.Results),
+		NumberOfReleases: strconv.Itoa(rawReleaseCalendar.Result.NumberOfResults),
+	}
 	return &rc
 }
+
+func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
+	var latestReleases []model.Release
+
+	// Reverse order
+	sort.Slice(rawReleases, func(i, j int) bool {
+		return rawReleases[i].Description.ReleaseDate.After(rawReleases[j].Description.ReleaseDate)
+	})
+	for i := 0; i < 3; i++ {
+		if len(rawReleases)-1 >= i {
+			latestReleases = append(latestReleases, model.Release{
+				Title:       rawReleases[i].Description.Title,
+				URI:         rawReleases[i].URI,
+				ReleaseDate: rawReleases[i].Description.ReleaseDate.Format("01 January 2006"),
+			})
+		}
+	}
+	return latestReleases
+}
+
 // getDataByPeriod returns the data for the time period set
 func getDataByPeriod(datePeriod string, data zebedee.TimeseriesMainFigure) []zebedee.TimeseriesDataPoint {
 	var mf []zebedee.TimeseriesDataPoint

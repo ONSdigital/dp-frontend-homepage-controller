@@ -100,7 +100,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	dateFromMonth := currentTime.Format("01")
 	dateFromYear := currentTime.Format("2006")
 	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
-	releaseCalModelData := mapper.ReleaseCalendar(ctx, releaseCalResp)
+	releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
 
 	if err != nil {
 		log.Event(ctx, "error getting timeseries data", log.Error(err))
@@ -110,7 +110,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	}
 
 
-	m := mapper.Homepage(ctx, localeCode, mappedMainFigures, releaseCalModelData)
+	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData)
 
 	b, err := json.Marshal(m)
 	if err != nil {
