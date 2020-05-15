@@ -13,7 +13,7 @@ import (
 )
 
 // Homepage maps data to our homepage frontend model
-func Homepage(ctx context.Context, localeCode string, mainFigures map[string]*model.MainFigure, releaseCal release_calendar.ReleaseCalendar) model.Page {
+func Homepage(ctx context.Context, localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar) model.Page {
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
@@ -59,6 +59,10 @@ func MainFigure(ctx context.Context, id, datePeriod string, figure zebedee.Times
 	return &mf
 }
 
+func ReleaseCalendar(ctx context.Context, rawReleaseCalendar release_calendar.ReleaseCalendar) *model.ReleaseCalendar{
+	var rc model.ReleaseCalendar
+	return &rc
+}
 // getDataByPeriod returns the data for the time period set
 func getDataByPeriod(datePeriod string, data zebedee.TimeseriesMainFigure) []zebedee.TimeseriesDataPoint {
 	var mf []zebedee.TimeseriesDataPoint

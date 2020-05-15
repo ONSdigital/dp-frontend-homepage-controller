@@ -122,12 +122,12 @@ func gracefulShutdown(cfg *config.Config, s *server.Server, hc health.HealthChec
 	return nil
 }
 
-func registerCheckers(ctx context.Context, h *health.HealthCheck, r *renderer.Renderer, z *zebedee.Client, b release_calendar.Client) (err error) {
+func registerCheckers(ctx context.Context, h *health.HealthCheck, r *renderer.Renderer, z *zebedee.Client, b *release_calendar.Client) (err error) {
 	if err = h.AddCheck("frontend renderer", r.Checker); err != nil {
 		log.Event(ctx, "failed to add frontend renderer checker", log.Error(err))
 	}
 	if err = h.AddCheck("Zebedee", z.Checker); err != nil {
-		log.Event(ctx, "failed to add Zebedee checker", log.Error(err))
+		log.Event(ctx, "failed to add zebedee checker", log.Error(err))
 	}
 	if err = h.AddCheck("Babbage", b.Checker); err != nil {
 		log.Event(ctx, "failed to add babbage checker", log.Error(err))

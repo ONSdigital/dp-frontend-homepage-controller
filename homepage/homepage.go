@@ -99,7 +99,9 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	dateFromDay := currentTime.Format("02")
 	dateFromMonth := currentTime.Format("01")
 	dateFromYear := currentTime.Format("2006")
-	releaseCal, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
+	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
+	releaseCalModelData := mapper.ReleaseCalendar(ctx, releaseCalResp)
+
 	if err != nil {
 		log.Event(ctx, "error getting timeseries data", log.Error(err))
 		mappedErrorFigure := &model.MainFigure{ID: id}
@@ -108,7 +110,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	}
 
 
-	m := mapper.Homepage(ctx, localeCode, mappedMainFigures, releaseCal)
+	m := mapper.Homepage(ctx, localeCode, mappedMainFigures, releaseCalModelData)
 
 	b, err := json.Marshal(m)
 	if err != nil {
