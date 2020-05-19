@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"net/http"
 	"sync"
 	"time"
@@ -24,24 +23,6 @@ type MainFigure struct {
 }
 
 var mainFigureMap map[string]MainFigure
-
-//go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient RenderClient
-
-// ZebedeeClient is an interface with methods required for a zebedee client
-type ZebedeeClient interface {
-	GetTimeseriesMainFigure(ctx context.Context, userAuthToken, uri string) (m zebedee.TimeseriesMainFigure, err error)
-}
-
-// BabbageClient is an interface with methods required for a babbage client
-
-type BabbageClient interface {
-	GetReleaseCalendar(ctx context.Context, userAuthToken, dateFromDay, dateFromMonth, dateFromYear string) (m release_calendar.ReleaseCalendar, err error)
-}
-
-// RenderClient is an interface with methods for require for rendering a template
-type RenderClient interface {
-	Do(string, []byte) ([]byte, error)
-}
 
 // Handler handles requests to homepage endpoint
 func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient) http.HandlerFunc {

@@ -2,6 +2,7 @@ package homepage
 
 import (
 	"context"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -58,12 +59,20 @@ func TestUnitMapper(t *testing.T) {
 		URI: "test/uri/timeseries/456",
 	})
 
+	var mockedBabbageData release_calendar.ReleaseCalendar
+
 	expectedSuccessResponse := "<html><body><h1>Some HTML from renderer!</h1></body></html>"
 
 	Convey("test homepage handler", t, func() {
 		mockZebedeeClient := &ZebedeeClientMock{
 			GetTimeseriesMainFigureFunc: func(ctx context.Context, userAuthToken, uri string) (m zebedee.TimeseriesMainFigure, err error) {
 				return mockedZebedeeData[0], nil
+			},
+		}
+
+		mockBabbageClient := &BabbageClientMock{
+			GetReleaseCalendarFunc: func(ctx context.Context, userAuthToken, dateFromDay, dateFromMonth, dateFromYear string) (m release_calendar.ReleaseCalendar, err error) {
+				return mockedBabbageData, nil
 			},
 		}
 
@@ -77,7 +86,7 @@ func TestUnitMapper(t *testing.T) {
 		req.Header.Set("X-Florence-Token", "testuser")
 		rec := httptest.NewRecorder()
 		router := mux.NewRouter()
-		router.Path("/").HandlerFunc(Handler(mockRenderClient, mockZebedeeClient))
+		router.Path("/").HandlerFunc(Handler(mockRenderClient, mockZebedeeClient, mockBabbageClient))
 
 		Convey("returns 200 response", func() {
 			router.ServeHTTP(rec, req)

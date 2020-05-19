@@ -65,13 +65,13 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 	numReleasesScheduled := rawReleaseCalendar.Result.NumberOfResults
 
 	for i := len(releaseResults) - 1; i >= 0; i-- {
-		if releaseResults[i].Description.Cancelled {
+		if releaseResults[i].Description.Cancelled || !releaseResults[i].Description.Published {
 			numReleasesScheduled--
 		}
 	}
 	rc := model.ReleaseCalendar{
 		Releases:         getLatestReleases(releaseResults),
-		NumberOfReleases : strconv.Itoa(numReleasesScheduled),
+		NumberOfReleases: strconv.Itoa(numReleasesScheduled),
 	}
 	return &rc
 }
@@ -79,9 +79,9 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
 	var latestReleases []model.Release
 
-	// Removed canceled releases
+	// Removed canceled releases or unpublished releases
 	for i := len(rawReleases) - 1; i >= 0; i-- {
-		if rawReleases[i].Description.Cancelled {
+		if rawReleases[i].Description.Cancelled || !rawReleases[i].Description.Published {
 			rawReleases = append(rawReleases[:i], rawReleases[i+1:]...)
 		}
 	}

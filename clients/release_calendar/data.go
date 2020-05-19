@@ -20,12 +20,12 @@ type Result struct {
 
 type Results struct {
 	Type        string         `json:"type"`
-	Description *Descritpion   `json:"description"`
+	Description *Description   `json:"description"`
 	SearchBoost *[]interface{} `json:"searchBoost"`
 	URI         string         `json:"uri"`
 }
 
-type Descritpion struct {
+type Description struct {
 	Summary            string    `json:"summary"`
 	NextRelease        string    `json:"nextRelease"`
 	ReleaseDate        time.Time `json:"releaseDate"`
