@@ -61,9 +61,17 @@ func MainFigure(ctx context.Context, id, datePeriod string, figure zebedee.Times
 }
 
 func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model.ReleaseCalendar {
+	releaseResults := *rawReleaseCalendar.Result.Results
+	numReleasesScheduled := rawReleaseCalendar.Result.NumberOfResults
+
+	for i := len(releaseResults) - 1; i >= 0; i-- {
+		if releaseResults[i].Description.Cancelled {
+			numReleasesScheduled--
+		}
+	}
 	rc := model.ReleaseCalendar{
-		Releases:         getLatestReleases(*rawReleaseCalendar.Result.Results),
-		NumberOfReleases: strconv.Itoa(rawReleaseCalendar.Result.NumberOfResults),
+		Releases:         getLatestReleases(releaseResults),
+		NumberOfReleases : strconv.Itoa(numReleasesScheduled),
 	}
 	return &rc
 }

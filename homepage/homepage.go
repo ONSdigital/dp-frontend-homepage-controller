@@ -55,7 +55,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 
 	userAccessToken, err := headers.GetUserAuthToken(req)
 	if err != nil {
-		log.Event(ctx, "unable to get user access token from header", log.WARN, log.Error(err))
+		log.Event(ctx, "unable to get user access token from header setting it to empty value", log.WARN, log.Error(err))
 		userAccessToken = ""
 	}
 
@@ -116,8 +116,11 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		http.Error(w, "error rendering page", http.StatusInternalServerError)
 		return
 	}
-
-	w.Write(templateHTML)
+	if _, err := w.Write(templateHTML); err != nil {
+		log.Event(ctx, "failed to write response for homepage", log.ERROR, log.Error(err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	return
 }
 
