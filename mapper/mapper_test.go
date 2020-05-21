@@ -71,27 +71,27 @@ func TestUnitMapper(t *testing.T) {
 	mockedMainFigures["test_id"] = &mockedMainFigure
 	mockedDescriptions := [5]*release_calendar.Description{
 		{
-			ReleaseDate: time.Now().AddDate(0,0,1),
+			ReleaseDate: time.Now().AddDate(0,0,-1),
 			Cancelled: false,
 			Published: true,
 			Title: "Foo",
 		},{
-			ReleaseDate: time.Now().AddDate(0,0,2),
+			ReleaseDate: time.Now().AddDate(0,0,-2),
 			Cancelled: false,
 			Published: true,
 			Title: "bAr",
 		},{
-			ReleaseDate: time.Now().AddDate(0,0,3),
+			ReleaseDate: time.Now().AddDate(0,0,-3),
 			Cancelled: false,
 			Published: true,
 			Title: "BAZ",
 		},{
-			ReleaseDate: time.Now().AddDate(0,0,4),
+			ReleaseDate: time.Now().AddDate(0,0,-4),
 			Cancelled: false,
 			Published: true,
 			Title: "qux",
 		},{
-			ReleaseDate: time.Now().AddDate(0,0,5),
+			ReleaseDate: time.Now().AddDate(0,0,-5),
 			Cancelled: true,
 			Published: false,
 			Title: "Qu ux",
@@ -102,31 +102,31 @@ func TestUnitMapper(t *testing.T) {
 			Type: "release",
 			Description: mockedDescriptions[0],
 			SearchBoost: nil,
-			URI: "releases/foo",
+			URI: "/releases/foo",
 		},
 		{
 			Type: "release",
 			Description: mockedDescriptions[1],
 			SearchBoost: nil,
-			URI: "releases/bar",
+			URI: "/releases/bar",
 		},
 		{
 			Type: "release",
 			Description: mockedDescriptions[2],
 			SearchBoost: nil,
-			URI: "releases/baz",
+			URI: "/releases/baz",
 		},
 		{
 			Type: "release",
 			Description: mockedDescriptions[3],
 			SearchBoost: nil,
-			URI: "releases/qux",
+			URI: "/releases/qux",
 		},
 		{
 			Type: "release",
 			Description: mockedDescriptions[4],
 			SearchBoost: nil,
-			URI: "releases/quux",
+			URI: "/releases/quux",
 		},
 	}
 	mockedBabbageRelease := release_calendar.ReleaseCalendar{
@@ -147,17 +147,17 @@ func TestUnitMapper(t *testing.T) {
 			{
 				Title: "Foo",
 				URI: "/releases/foo",
-				ReleaseDate:"",
+				ReleaseDate: time.Now().AddDate(0,0,-1).Format("01 January 2006"),
 			},
 			{
 				Title: "bAr",
 				URI: "/releases/bar",
-				ReleaseDate:"",
+				ReleaseDate: time.Now().AddDate(0,0,-2).Format("01 January 2006"),
 			},
 			{
 				Title: "BAZ",
 				URI: "/releases/baz",
-				ReleaseDate:"",
+				ReleaseDate: time.Now().AddDate(0,0,-3).Format("01 January 2006"),
 			},
 		},
 		NumberOfReleases: "4",
@@ -211,7 +211,7 @@ func TestUnitMapper(t *testing.T) {
 	})
 
 	Convey("test release calendar maps data correctly", t, func() {
-		So(ReleaseCalendar(mockedBabbageRelease), ShouldResemble, mockedReleaseData)
+		So(ReleaseCalendar(mockedBabbageRelease), ShouldResemble, &mockedReleaseData)
 	})
 
 }
