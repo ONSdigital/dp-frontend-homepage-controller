@@ -3,9 +3,9 @@ package release_calendar
 import "time"
 
 type ReleaseCalendar struct {
-	Type     string    `json:"type, omitempty"`
-	ListType string    `json:"listType, omitempty"`
-	URI      string    `json:"uri, omitempty"`
+	Type     string `json:"type, omitempty"`
+	ListType string `json:"listType, omitempty"`
+	URI      string `json:"uri, omitempty"`
 	Result   Result `json:"result"`
 }
 

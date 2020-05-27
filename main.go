@@ -126,11 +126,11 @@ func registerCheckers(ctx context.Context, h *health.HealthCheck, r *renderer.Re
 	if err = h.AddCheck("frontend renderer", r.Checker); err != nil {
 		log.Event(ctx, "failed to add frontend renderer checker", log.Error(err))
 	}
-	//if err = h.AddCheck("Zebedee", z.Checker); err != nil {
-	//	log.Event(ctx, "failed to add zebedee checker", log.Error(err))
-	//}
-	//if err = h.AddCheck("Babbage", b.Checker); err != nil {
-	//	log.Event(ctx, "failed to add babbage checker", log.Error(err))
-	//}
+	if err = h.AddCheck("Zebedee", z.Checker); err != nil {
+		log.Event(ctx, "failed to add zebedee checker", log.Error(err))
+	}
+	if err = h.AddCheck("Babbage", b.Checker); err != nil {
+		log.Event(ctx, "failed to add babbage checker", log.Error(err))
+	}
 	return
 }

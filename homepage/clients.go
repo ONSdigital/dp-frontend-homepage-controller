@@ -18,7 +18,7 @@ type BabbageClient interface {
 	GetReleaseCalendar(ctx context.Context, userAuthToken, dateFromDay, dateFromMonth, dateFromYear string) (m release_calendar.ReleaseCalendar, err error)
 }
 
-// RenderClient is an interface with methods for require for rendering a template
+// RenderClient is an interface with methods required for rendering a template
 type RenderClient interface {
 	Do(string, []byte) ([]byte, error)
 }

@@ -14,7 +14,7 @@ import (
 
 const service = "Babbage"
 
-// Client represents a zebedee client
+// Client represents a babbage client
 type Client struct {
 	cli rchttp.Clienter
 	url string
@@ -30,12 +30,12 @@ func (e ErrInvalidBabbageResponse) Error() string {
 	return fmt.Sprintf("invalid response from babbage service - status %d", e.responseCode)
 }
 
-// Code returns the status code received from renderer if an error is returned
+// Code returns the status code received from babbage if an error is returned
 func (e ErrInvalidBabbageResponse) Code() int {
 	return e.responseCode
 }
 
-// New creates a new instance of Client with a given filter api url
+// New creates a new instance of Client with a given babbage url
 func New(babbageURL string) *Client {
 	hcClient := healthcheck.NewClient(service, babbageURL)
 
@@ -45,7 +45,7 @@ func New(babbageURL string) *Client {
 	}
 }
 
-// Checker calls dataset api health endpoint and returns a check object to the caller.
+// Checker calls babbage health endpoint and returns a check object to the caller.
 func (c *Client) Checker(ctx context.Context, check *health.CheckState) error {
 	hcClient := healthcheck.Client{
 		Client: c.cli,
@@ -57,7 +57,7 @@ func (c *Client) Checker(ctx context.Context, check *health.CheckState) error {
 }
 
 func (c *Client) GetReleaseCalendar(ctx context.Context, userAccessToken, fromDay, fromMonth, fromYear string) (rc ReleaseCalendar, err error) {
-	reqURL := fmt.Sprintf(c.url + "/releasecalendar/data?fromDateDay=%s&fromDateMonth=%s&fromDateYear=%s)", fromDay, fromMonth, fromYear)
+	reqURL := fmt.Sprintf(c.url+"/releasecalendar/data?fromDateDay=%s&fromDateMonth=%s&fromDateYear=%s)", fromDay, fromMonth, fromYear)
 	resp, err := c.get(ctx, reqURL)
 	if err != nil {
 		return rc, err

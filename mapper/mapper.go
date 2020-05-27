@@ -90,7 +90,8 @@ func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
 	sort.Slice(rawReleases, func(i, j int) bool {
 		return rawReleases[i].Description.ReleaseDate.After(rawReleases[j].Description.ReleaseDate)
 	})
-	for i := 0; i < 3; i++ {
+	displayedReleases := 3
+	for i := 0; i < displayedReleases; i++ {
 		if len(rawReleases)-1 >= i {
 			latestReleases = append(latestReleases, model.Release{
 				Title:       rawReleases[i].Description.Title,
