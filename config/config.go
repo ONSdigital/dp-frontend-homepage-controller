@@ -14,6 +14,7 @@ type Config struct {
 	HealthCheckCriticalTimeout time.Duration `envconfig:"HEALTHCHECK_CRITICAL_TIMEOUT"`
 	RendererURL                string        `envconfig:"RENDERER_URL"`
 	ZebedeeURL                 string        `envconfig:"ZEBEDEE_URL"`
+	BabbageURL                 string        `envconfig:"BABBAGE_URL"`
 }
 
 var cfg *Config
@@ -32,6 +33,7 @@ func Get() (*Config, error) {
 		HealthCheckCriticalTimeout: 90 * time.Second,
 		RendererURL:                "http://localhost:20010",
 		ZebedeeURL:                 "http://localhost:8082",
+		BabbageURL:                 "http://localhost:8080",
 	}
 
 	return cfg, envconfig.Process("", cfg)

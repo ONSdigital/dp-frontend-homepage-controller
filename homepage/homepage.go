@@ -6,6 +6,7 @@ import (
 	"errors"
 	"net/http"
 	"sync"
+	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/headers"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
@@ -23,31 +24,19 @@ type MainFigure struct {
 
 var mainFigureMap map[string]MainFigure
 
-//go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient RenderClient
-
-// ZebedeeClient is an interface with methods required for a zebedee client
-type ZebedeeClient interface {
-	GetTimeseriesMainFigure(ctx context.Context, userAuthToken, uri string) (m zebedee.TimeseriesMainFigure, err error)
-}
-
-// RenderClient is an interface with methods for require for rendering a template
-type RenderClient interface {
-	Do(string, []byte) ([]byte, error)
-}
-
 // Handler handles requests to homepage endpoint
-func Handler(rend RenderClient, zcli ZebedeeClient) http.HandlerFunc {
+func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		handle(w, req, rend, zcli)
+		handle(w, req, rend, zcli, bcli)
 	}
 }
 
-func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient) {
+func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient) {
 	ctx := req.Context()
 
 	userAccessToken, err := headers.GetUserAuthToken(req)
 	if err != nil {
-		log.Event(ctx, "error getting user access token from header", log.ERROR, log.Error(err))
+		log.Event(ctx, "unable to get user access token from header setting it to empty value", log.WARN, log.Error(err))
 		userAccessToken = ""
 	}
 
@@ -69,7 +58,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 			defer wg.Done()
 			zebResp, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, figure.uri)
 			if err != nil {
-				log.Event(ctx, "error getting timeseries data", log.Error(err))
+				log.Event(ctx, "error getting timeseries data", log.Error(err), log.Data{"timeseries-data": figure.uri})
 				mappedErrorFigure := &model.MainFigure{ID: id}
 				responses <- mappedErrorFigure
 				return
@@ -86,7 +75,14 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		mappedMainFigures[response.ID] = response
 	}
 
-	m := mapper.Homepage(ctx, localeCode, mappedMainFigures)
+	currentTime := time.Now()
+	dateFromDay := currentTime.Format("02")
+	dateFromMonth := currentTime.Format("01")
+	dateFromYear := currentTime.Format("2006")
+	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
+	releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
+
+	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData)
 
 	b, err := json.Marshal(m)
 	if err != nil {
@@ -101,8 +97,11 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		http.Error(w, "error rendering page", http.StatusInternalServerError)
 		return
 	}
-
-	w.Write(templateHTML)
+	if _, err := w.Write(templateHTML); err != nil {
+		log.Event(ctx, "failed to write response for homepage", log.ERROR, log.Error(err))
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	return
 }
 
