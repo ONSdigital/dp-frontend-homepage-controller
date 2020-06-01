@@ -3,13 +3,14 @@ package mapper
 import (
 	"context"
 	"fmt"
+	"sort"
+	"strconv"
+
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
 	"github.com/dustin/go-humanize"
-	"sort"
-	"strconv"
 )
 
 // Homepage maps data to our homepage frontend model
@@ -107,11 +108,11 @@ func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
 func getDataByPeriod(datePeriod string, data zebedee.TimeseriesMainFigure) []zebedee.TimeseriesDataPoint {
 	var mf []zebedee.TimeseriesDataPoint
 	switch datePeriod {
-	case "years":
+	case "year":
 		mf = data.Years
-	case "quarters":
+	case "quarter":
 		mf = data.Quarters
-	case "months":
+	case "month":
 		mf = data.Months
 	default:
 		mf = []zebedee.TimeseriesDataPoint{}

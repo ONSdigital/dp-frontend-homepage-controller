@@ -107,11 +107,11 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 
 const (
 	// PeriodYears is the string value for years time period
-	PeriodYears = "years"
+	PeriodYears = "year"
 	// PeriodQuarters is the string value for quarters time period
-	PeriodQuarters = "quarters"
+	PeriodQuarters = "quarter"
 	// PeriodMonths is the string value for months time period
-	PeriodMonths = "months"
+	PeriodMonths = "month"
 )
 
 func init() {
