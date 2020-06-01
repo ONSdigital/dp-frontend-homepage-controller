@@ -106,12 +106,12 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 }
 
 const (
-	// PeriodYears is the string value for years time period
-	PeriodYears = "year"
-	// PeriodQuarters is the string value for quarters time period
-	PeriodQuarters = "quarter"
-	// PeriodMonths is the string value for months time period
-	PeriodMonths = "month"
+	// PeriodYear is the string value for year time period
+	PeriodYear = "year"
+	// PeriodQuarter is the string value for quarter time period
+	PeriodQuarter = "quarter"
+	// PeriodMonth is the string value for month time period
+	PeriodMonth = "month"
 )
 
 func init() {
@@ -120,35 +120,35 @@ func init() {
 	// Employment
 	mainFigureMap["LF24"] = MainFigure{
 		uri:        "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
-		datePeriod: PeriodMonths,
+		datePeriod: PeriodMonth,
 		data:       zebedee.TimeseriesMainFigure{},
 	}
 
 	// Unemployment
 	mainFigureMap["MGSX"] = MainFigure{
 		uri:        "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
-		datePeriod: PeriodMonths,
+		datePeriod: PeriodMonth,
 		data:       zebedee.TimeseriesMainFigure{},
 	}
 
 	// Inflation (CPIH)
 	mainFigureMap["L55O"] = MainFigure{
 		uri:        "/economy/inflationandpriceindices/timeseries/l55o/mm23",
-		datePeriod: PeriodMonths,
+		datePeriod: PeriodMonth,
 		data:       zebedee.TimeseriesMainFigure{},
 	}
 
 	// GDP
 	mainFigureMap["IHYQ"] = MainFigure{
 		uri:        "/economy/grossdomesticproductgdp/timeseries/ihyq/pn2",
-		datePeriod: PeriodQuarters,
+		datePeriod: PeriodQuarter,
 		data:       zebedee.TimeseriesMainFigure{},
 	}
 
 	// Population
 	mainFigureMap["UKPOP"] = MainFigure{
 		uri:        "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/ukpop/pop",
-		datePeriod: PeriodYears,
+		datePeriod: PeriodYear,
 		data:       zebedee.TimeseriesMainFigure{},
 	}
 
