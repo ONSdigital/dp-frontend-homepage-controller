@@ -161,7 +161,7 @@ func TestUnitMapper(t *testing.T) {
 				ReleaseDate: time.Now().AddDate(0, 0, -3).Format("01 January 2006"),
 			},
 		},
-		NumberOfReleases: "4",
+		NumberOfOtherReleasesInSevenDays: 1,
 	}
 
 	Convey("test homepage mapping works", t, func() {

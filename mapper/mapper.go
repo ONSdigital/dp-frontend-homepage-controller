@@ -71,8 +71,8 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 		}
 	}
 	rc := model.ReleaseCalendar{
-		Releases:         getLatestReleases(releaseResults),
-		NumberOfReleases: strconv.Itoa(numReleasesScheduled),
+		Releases:                         getLatestReleases(releaseResults),
+		NumberOfOtherReleasesInSevenDays: numReleasesScheduled - len(getLatestReleases(releaseResults)),
 	}
 	return &rc
 }
