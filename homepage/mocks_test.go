@@ -178,7 +178,7 @@ var _ BabbageClient = &BabbageClientMock{}
 //
 //         // make and configure a mocked BabbageClient
 //         mockedBabbageClient := &BabbageClientMock{
-//             GetReleaseCalendarFunc: func(ctx context.Context, userAuthToken string, dateFromDay string, dateFromMonth string, dateFromYear string) (release_calendar.ReleaseCalendar, error) {
+//             GetReleaseCalendarFunc: func(ctx context.Context, userAuthToken string) (release_calendar.ReleaseCalendar, error) {
 // 	               panic("mock out the GetReleaseCalendar method")
 //             },
 //         }
@@ -189,7 +189,7 @@ var _ BabbageClient = &BabbageClientMock{}
 //     }
 type BabbageClientMock struct {
 	// GetReleaseCalendarFunc mocks the GetReleaseCalendar method.
-	GetReleaseCalendarFunc func(ctx context.Context, userAuthToken string, dateFromDay string, dateFromMonth string, dateFromYear string) (release_calendar.ReleaseCalendar, error)
+	GetReleaseCalendarFunc func(ctx context.Context, userAuthToken string) (release_calendar.ReleaseCalendar, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
@@ -199,38 +199,26 @@ type BabbageClientMock struct {
 			Ctx context.Context
 			// UserAuthToken is the userAuthToken argument value.
 			UserAuthToken string
-			// DateFromDay is the dateFromDay argument value.
-			DateFromDay string
-			// DateFromMonth is the dateFromMonth argument value.
-			DateFromMonth string
-			// DateFromYear is the dateFromYear argument value.
-			DateFromYear string
 		}
 	}
 }
 
 // GetReleaseCalendar calls GetReleaseCalendarFunc.
-func (mock *BabbageClientMock) GetReleaseCalendar(ctx context.Context, userAuthToken string, dateFromDay string, dateFromMonth string, dateFromYear string) (release_calendar.ReleaseCalendar, error) {
+func (mock *BabbageClientMock) GetReleaseCalendar(ctx context.Context, userAuthToken string) (release_calendar.ReleaseCalendar, error) {
 	if mock.GetReleaseCalendarFunc == nil {
 		panic("BabbageClientMock.GetReleaseCalendarFunc: method is nil but BabbageClient.GetReleaseCalendar was just called")
 	}
 	callInfo := struct {
 		Ctx           context.Context
 		UserAuthToken string
-		DateFromDay   string
-		DateFromMonth string
-		DateFromYear  string
 	}{
 		Ctx:           ctx,
 		UserAuthToken: userAuthToken,
-		DateFromDay:   dateFromDay,
-		DateFromMonth: dateFromMonth,
-		DateFromYear:  dateFromYear,
 	}
 	lockBabbageClientMockGetReleaseCalendar.Lock()
 	mock.calls.GetReleaseCalendar = append(mock.calls.GetReleaseCalendar, callInfo)
 	lockBabbageClientMockGetReleaseCalendar.Unlock()
-	return mock.GetReleaseCalendarFunc(ctx, userAuthToken, dateFromDay, dateFromMonth, dateFromYear)
+	return mock.GetReleaseCalendarFunc(ctx, userAuthToken)
 }
 
 // GetReleaseCalendarCalls gets all the calls that were made to GetReleaseCalendar.
@@ -239,16 +227,10 @@ func (mock *BabbageClientMock) GetReleaseCalendar(ctx context.Context, userAuthT
 func (mock *BabbageClientMock) GetReleaseCalendarCalls() []struct {
 	Ctx           context.Context
 	UserAuthToken string
-	DateFromDay   string
-	DateFromMonth string
-	DateFromYear  string
 } {
 	var calls []struct {
 		Ctx           context.Context
 		UserAuthToken string
-		DateFromDay   string
-		DateFromMonth string
-		DateFromYear  string
 	}
 	lockBabbageClientMockGetReleaseCalendar.RLock()
 	calls = mock.calls.GetReleaseCalendar
