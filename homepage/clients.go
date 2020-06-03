@@ -16,7 +16,7 @@ type ZebedeeClient interface {
 
 // BabbageClient is an interface with methods required for a babbage client
 type BabbageClient interface {
-	GetReleaseCalendar(ctx context.Context, userAuthToken string) (m release_calendar.ReleaseCalendar, err error)
+	GetReleaseCalendar(ctx context.Context, userAccessToken, fromDay, fromMonth, fromYear, toDay, toMonth, toYear string) (m release_calendar.ReleaseCalendar, err error)
 }
 
 // RenderClient is an interface with methods required for rendering a template
