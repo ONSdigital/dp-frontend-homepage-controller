@@ -4,12 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+
 	healthcheck "github.com/ONSdigital/dp-api-clients-go/health"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
 	rchttp "github.com/ONSdigital/dp-rchttp"
 	"github.com/ONSdigital/log.go/log"
-	"io/ioutil"
-	"net/http"
 )
 
 const service = "Babbage"
@@ -56,8 +57,8 @@ func (c *Client) Checker(ctx context.Context, check *health.CheckState) error {
 	return hcClient.Checker(ctx, check)
 }
 
-func (c *Client) GetReleaseCalendar(ctx context.Context, userAccessToken, fromDay, fromMonth, fromYear string) (rc ReleaseCalendar, err error) {
-	reqURL := fmt.Sprintf(c.url+"/releasecalendar/data?fromDateDay=%s&fromDateMonth=%s&fromDateYear=%s)", fromDay, fromMonth, fromYear)
+func (c *Client) GetReleaseCalendar(ctx context.Context, userAccessToken string) (rc ReleaseCalendar, err error) {
+	reqURL := fmt.Sprintf(c.url + "/releasecalendar/data)")
 	resp, err := c.get(ctx, reqURL)
 	if err != nil {
 		return rc, err

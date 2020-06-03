@@ -6,7 +6,6 @@ import (
 	"errors"
 	"net/http"
 	"sync"
-	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/headers"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
@@ -75,11 +74,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		mappedMainFigures[response.ID] = response
 	}
 
-	currentTime := time.Now()
-	dateFromDay := currentTime.Format("02")
-	dateFromMonth := currentTime.Format("01")
-	dateFromYear := currentTime.Format("2006")
-	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
+	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken)
 	releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
 
 	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData)

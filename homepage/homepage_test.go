@@ -2,11 +2,12 @@ package homepage
 
 import (
 	"context"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
+
+	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/gorilla/mux"
@@ -62,69 +63,69 @@ func TestUnitMapper(t *testing.T) {
 
 	mockedDescriptions := [5]*release_calendar.Description{
 		{
-			ReleaseDate: time.Now().AddDate(0,0,-1),
-			Cancelled: false,
-			Published: true,
-			Title: "Foo",
-		},{
-			ReleaseDate: time.Now().AddDate(0,0,-2),
-			Cancelled: false,
-			Published: true,
-			Title: "bAr",
-		},{
-			ReleaseDate: time.Now().AddDate(0,0,-3),
-			Cancelled: false,
-			Published: true,
-			Title: "BAZ",
-		},{
-			ReleaseDate: time.Now().AddDate(0,0,-4),
-			Cancelled: false,
-			Published: true,
-			Title: "qux",
-		},{
-			ReleaseDate: time.Now().AddDate(0,0,-5),
-			Cancelled: true,
-			Published: false,
-			Title: "Qu ux",
+			ReleaseDate: time.Now().AddDate(0, 0, -1),
+			Cancelled:   false,
+			Published:   true,
+			Title:       "Foo",
+		}, {
+			ReleaseDate: time.Now().AddDate(0, 0, -2),
+			Cancelled:   false,
+			Published:   true,
+			Title:       "bAr",
+		}, {
+			ReleaseDate: time.Now().AddDate(0, 0, -3),
+			Cancelled:   false,
+			Published:   true,
+			Title:       "BAZ",
+		}, {
+			ReleaseDate: time.Now().AddDate(0, 0, -4),
+			Cancelled:   false,
+			Published:   true,
+			Title:       "qux",
+		}, {
+			ReleaseDate: time.Now().AddDate(0, 0, -5),
+			Cancelled:   true,
+			Published:   false,
+			Title:       "Qu ux",
 		},
 	}
 	mockedResults := []release_calendar.Results{
 		{
-			Type: "release",
+			Type:        "release",
 			Description: mockedDescriptions[0],
 			SearchBoost: nil,
-			URI: "/releases/foo",
+			URI:         "/releases/foo",
 		},
 		{
-			Type: "release",
+			Type:        "release",
 			Description: mockedDescriptions[1],
 			SearchBoost: nil,
-			URI: "/releases/bar",
+			URI:         "/releases/bar",
 		},
 		{
-			Type: "release",
+			Type:        "release",
 			Description: mockedDescriptions[2],
 			SearchBoost: nil,
-			URI: "/releases/baz",
+			URI:         "/releases/baz",
 		},
 		{
-			Type: "release",
+			Type:        "release",
 			Description: mockedDescriptions[3],
 			SearchBoost: nil,
-			URI: "/releases/qux",
+			URI:         "/releases/qux",
 		},
 		{
-			Type: "release",
+			Type:        "release",
 			Description: mockedDescriptions[4],
 			SearchBoost: nil,
-			URI: "/releases/quux",
+			URI:         "/releases/quux",
 		},
 	}
 	mockedBabbageRelease := release_calendar.ReleaseCalendar{
 		Type:     "list",
 		ListType: "releasecalendar",
 		URI:      "/releasecalendar/data",
-		Result:   release_calendar.Result{
+		Result: release_calendar.Result{
 			NumberOfResults: 5,
 			Took:            3,
 			Results:         &mockedResults,
@@ -143,7 +144,7 @@ func TestUnitMapper(t *testing.T) {
 		}
 
 		mockBabbageClient := &BabbageClientMock{
-			GetReleaseCalendarFunc: func(ctx context.Context, userAuthToken, dateFromDay, dateFromMonth, dateFromYear string) (m release_calendar.ReleaseCalendar, err error) {
+			GetReleaseCalendarFunc: func(ctx context.Context, userAuthToken string) (m release_calendar.ReleaseCalendar, err error) {
 				return mockedBabbageRelease, nil
 			},
 		}
