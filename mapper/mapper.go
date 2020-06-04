@@ -97,7 +97,7 @@ func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
 			latestReleases = append(latestReleases, model.Release{
 				Title:       rawReleases[i].Description.Title,
 				URI:         rawReleases[i].URI,
-				ReleaseDate: rawReleases[i].Description.ReleaseDate.Format("01 January 2006"),
+				ReleaseDate: rawReleases[i].Description.ReleaseDate.Format("2 January 2006"),
 			})
 		}
 	}
