@@ -148,17 +148,17 @@ func TestUnitMapper(t *testing.T) {
 			{
 				Title:       "Foo",
 				URI:         "/releases/foo",
-				ReleaseDate: time.Now().AddDate(0, 0, -1).Format("01 January 2006"),
+				ReleaseDate: time.Now().AddDate(0, 0, -1).Format("2 January 2006"),
 			},
 			{
 				Title:       "bAr",
 				URI:         "/releases/bar",
-				ReleaseDate: time.Now().AddDate(0, 0, -2).Format("01 January 2006"),
+				ReleaseDate: time.Now().AddDate(0, 0, -2).Format("2 January 2006"),
 			},
 			{
 				Title:       "BAZ",
 				URI:         "/releases/baz",
-				ReleaseDate: time.Now().AddDate(0, 0, -3).Format("01 January 2006"),
+				ReleaseDate: time.Now().AddDate(0, 0, -3).Format("2 January 2006"),
 			},
 		},
 		NumberOfOtherReleasesInSevenDays: 1,
