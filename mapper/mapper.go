@@ -3,21 +3,24 @@ package mapper
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strconv"
 
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
 	"github.com/dustin/go-humanize"
 )
 
 // Homepage maps data to our homepage frontend model
-func Homepage(ctx context.Context, localeCode string, mainFigures map[string]*model.MainFigure) model.Page {
+func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar) model.Page {
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
+	page.Data.ReleaseCalendar = *releaseCal
 	return page
 }
 
@@ -58,15 +61,58 @@ func MainFigure(ctx context.Context, id, datePeriod string, figure zebedee.Times
 	return &mf
 }
 
+func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model.ReleaseCalendar {
+	releaseResults := *rawReleaseCalendar.Result.Results
+	numReleasesScheduled := rawReleaseCalendar.Result.NumberOfResults
+
+	for i := len(releaseResults) - 1; i >= 0; i-- {
+		if releaseResults[i].Description.Cancelled || !releaseResults[i].Description.Published {
+			numReleasesScheduled--
+		}
+	}
+	rc := model.ReleaseCalendar{
+		Releases:                         getLatestReleases(releaseResults),
+		NumberOfOtherReleasesInSevenDays: numReleasesScheduled - len(getLatestReleases(releaseResults)),
+	}
+	return &rc
+}
+
+func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
+	var latestReleases []model.Release
+
+	// Removed canceled releases or unpublished releases
+	for i := len(rawReleases) - 1; i >= 0; i-- {
+		if rawReleases[i].Description.Cancelled || !rawReleases[i].Description.Published {
+			rawReleases = append(rawReleases[:i], rawReleases[i+1:]...)
+		}
+	}
+
+	// Reverse order
+	sort.Slice(rawReleases, func(i, j int) bool {
+		return rawReleases[i].Description.ReleaseDate.After(rawReleases[j].Description.ReleaseDate)
+	})
+	displayedReleases := 3
+	for i := 0; i < displayedReleases; i++ {
+		if len(rawReleases)-1 >= i {
+			latestReleases = append(latestReleases, model.Release{
+				Title:       rawReleases[i].Description.Title,
+				URI:         rawReleases[i].URI,
+				ReleaseDate: rawReleases[i].Description.ReleaseDate.Format("2 January 2006"),
+			})
+		}
+	}
+	return latestReleases
+}
+
 // getDataByPeriod returns the data for the time period set
 func getDataByPeriod(datePeriod string, data zebedee.TimeseriesMainFigure) []zebedee.TimeseriesDataPoint {
 	var mf []zebedee.TimeseriesDataPoint
 	switch datePeriod {
-	case "years":
+	case "year":
 		mf = data.Years
-	case "quarters":
+	case "quarter":
 		mf = data.Quarters
-	case "months":
+	case "month":
 		mf = data.Months
 	default:
 		mf = []zebedee.TimeseriesDataPoint{}

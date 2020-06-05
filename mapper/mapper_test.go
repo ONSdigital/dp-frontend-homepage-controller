@@ -3,6 +3,9 @@ package mapper
 import (
 	"context"
 	"testing"
+	"time"
+
+	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
@@ -10,6 +13,7 @@ import (
 )
 
 func TestUnitMapper(t *testing.T) {
+	t.Parallel()
 	ctx := context.Background()
 
 	var mockedZebedeeData []zebedee.TimeseriesMainFigure
@@ -56,7 +60,6 @@ func TestUnitMapper(t *testing.T) {
 		},
 		URI: "test/uri/timeseries/456",
 	})
-
 	mockedMainFigures := make(map[string]*model.MainFigure)
 	mockedMainFigure := model.MainFigure{
 		Date:             "Jun 2020",
@@ -67,9 +70,102 @@ func TestUnitMapper(t *testing.T) {
 		FigureURIs:       model.FigureURIs{Analysis: "test/uri/1/2/"},
 	}
 	mockedMainFigures["test_id"] = &mockedMainFigure
+	mockedDescriptions := [5]*release_calendar.Description{
+		{
+			ReleaseDate: time.Now().AddDate(0, 0, -1),
+			Cancelled:   false,
+			Published:   true,
+			Title:       "Foo",
+		}, {
+			ReleaseDate: time.Now().AddDate(0, 0, -2),
+			Cancelled:   false,
+			Published:   true,
+			Title:       "bAr",
+		}, {
+			ReleaseDate: time.Now().AddDate(0, 0, -3),
+			Cancelled:   false,
+			Published:   true,
+			Title:       "BAZ",
+		}, {
+			ReleaseDate: time.Now().AddDate(0, 0, -4),
+			Cancelled:   false,
+			Published:   true,
+			Title:       "qux",
+		}, {
+			ReleaseDate: time.Now().AddDate(0, 0, -5),
+			Cancelled:   true,
+			Published:   false,
+			Title:       "Qu ux",
+		},
+	}
+	mockedResults := []release_calendar.Results{
+		{
+			Type:        "release",
+			Description: mockedDescriptions[0],
+			SearchBoost: nil,
+			URI:         "/releases/foo",
+		},
+		{
+			Type:        "release",
+			Description: mockedDescriptions[1],
+			SearchBoost: nil,
+			URI:         "/releases/bar",
+		},
+		{
+			Type:        "release",
+			Description: mockedDescriptions[2],
+			SearchBoost: nil,
+			URI:         "/releases/baz",
+		},
+		{
+			Type:        "release",
+			Description: mockedDescriptions[3],
+			SearchBoost: nil,
+			URI:         "/releases/qux",
+		},
+		{
+			Type:        "release",
+			Description: mockedDescriptions[4],
+			SearchBoost: nil,
+			URI:         "/releases/quux",
+		},
+	}
+	mockedBabbageRelease := release_calendar.ReleaseCalendar{
+		Type:     "list",
+		ListType: "releasecalendar",
+		URI:      "/releasecalendar/data",
+		Result: release_calendar.Result{
+			NumberOfResults: 5,
+			Took:            3,
+			Results:         &mockedResults,
+			Suggestions:     nil,
+			DocCounts:       struct{}{},
+			SortBy:          "release_date",
+		},
+	}
+	var mockedReleaseData = model.ReleaseCalendar{
+		Releases: []model.Release{
+			{
+				Title:       "Foo",
+				URI:         "/releases/foo",
+				ReleaseDate: time.Now().AddDate(0, 0, -1).Format("2 January 2006"),
+			},
+			{
+				Title:       "bAr",
+				URI:         "/releases/bar",
+				ReleaseDate: time.Now().AddDate(0, 0, -2).Format("2 January 2006"),
+			},
+			{
+				Title:       "BAZ",
+				URI:         "/releases/baz",
+				ReleaseDate: time.Now().AddDate(0, 0, -3).Format("2 January 2006"),
+			},
+		},
+		NumberOfOtherReleasesInSevenDays: 1,
+	}
 
 	Convey("test homepage mapping works", t, func() {
-		page := Homepage(ctx, "en", mockedMainFigures)
+		page := Homepage("en", mockedMainFigures, &mockedReleaseData)
 
 		So(page.Type, ShouldEqual, "homepage")
 		So(page.Data.MainFigures["test_id"].Figure, ShouldEqual, mockedMainFigure.Figure)
@@ -79,7 +175,7 @@ func TestUnitMapper(t *testing.T) {
 
 	Convey("test main figures mapping works", t, func() {
 		mockedTestData := mockedZebedeeData[0]
-		mainFigures := MainFigure(ctx, "cdid", "months", mockedTestData)
+		mainFigures := MainFigure(ctx, "cdid", "month", mockedTestData)
 		So(mainFigures.Date, ShouldEqual, "Feb 2020")
 		So(mainFigures.Figure, ShouldEqual, "679.56")
 		So(mainFigures.Trend.IsDown, ShouldEqual, false)
@@ -91,9 +187,9 @@ func TestUnitMapper(t *testing.T) {
 	})
 
 	Convey("test getDataByPeriod returns correct data struct", t, func() {
-		dataForYears := getDataByPeriod("years", mockedZebedeeData[0])
-		dataForMonths := getDataByPeriod("months", mockedZebedeeData[0])
-		dataForQuarters := getDataByPeriod("quarters", mockedZebedeeData[0])
+		dataForYears := getDataByPeriod("year", mockedZebedeeData[0])
+		dataForMonths := getDataByPeriod("month", mockedZebedeeData[0])
+		dataForQuarters := getDataByPeriod("quarter", mockedZebedeeData[0])
 		So(dataForYears, ShouldResemble, mockedZebedeeData[0].Years)
 		So(dataForMonths, ShouldResemble, mockedZebedeeData[0].Months)
 		So(dataForQuarters, ShouldResemble, mockedZebedeeData[0].Quarters)
@@ -113,6 +209,10 @@ func TestUnitMapper(t *testing.T) {
 		trendDescriptionNegative := getTrendDifference(10.5, 18.7, "%")
 		So(trendDescriptionPositive, ShouldEqual, "1.98million")
 		So(trendDescriptionNegative, ShouldEqual, "-8.2pp")
+	})
+
+	Convey("test release calendar maps data correctly", t, func() {
+		So(ReleaseCalendar(mockedBabbageRelease), ShouldResemble, &mockedReleaseData)
 	})
 
 }

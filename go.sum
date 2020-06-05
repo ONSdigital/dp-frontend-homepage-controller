@@ -5,6 +5,8 @@ github.com/ONSdigital/dp-api-clients-go v1.9.1-0.20200429185509-b88d54406cbe h1:
 github.com/ONSdigital/dp-api-clients-go v1.9.1-0.20200429185509-b88d54406cbe/go.mod h1:JjxArqZjHzSZC9CGBAy/CQzw56fpk08oGvXgeuwQKnM=
 github.com/ONSdigital/dp-api-clients-go v1.10.0 h1:XfbnSO7iwC5u/1kjuJjJMcL3E4PRbWnpjiKTdf7ueWU=
 github.com/ONSdigital/dp-api-clients-go v1.10.0/go.mod h1:JjxArqZjHzSZC9CGBAy/CQzw56fpk08oGvXgeuwQKnM=
+github.com/ONSdigital/dp-cookies v0.1.0 h1:dP9wN8slCCr3nkybFmGIMXPsEjKHNIKi2iRjMi9E2bY=
+github.com/ONSdigital/dp-cookies v0.1.0/go.mod h1:7HvRBm+mU0xz2pryTa+vwphKxe5HYpXtmPe/e6FEIJU=
 github.com/ONSdigital/dp-frontend-models v1.1.0/go.mod h1:TT96P7Mi69N3Tc/jFNdbjiwG4GAaMjP26HLotFQ6BPw=
 github.com/ONSdigital/dp-frontend-models v1.5.0 h1:FZngursXY984WuCW5x4+VzyDOkoEUQleh3OT4/w1NNU=
 github.com/ONSdigital/dp-frontend-models v1.5.0/go.mod h1:K4n0EwATkzbuWzSajBHja+uc9zvqnKiq6WtUwLav4Kg=
@@ -14,6 +16,10 @@ github.com/ONSdigital/dp-frontend-models v1.5.1 h1:L+DHGwt7Ujxwr8GgoPlV9BozOoi0x
 github.com/ONSdigital/dp-frontend-models v1.5.1/go.mod h1:K4n0EwATkzbuWzSajBHja+uc9zvqnKiq6WtUwLav4Kg=
 github.com/ONSdigital/dp-frontend-models v1.5.2 h1:tKkDGvaYSjP4kazsRLRNmXSdyrVMRzCnLh36ujmo6yE=
 github.com/ONSdigital/dp-frontend-models v1.5.2/go.mod h1:K4n0EwATkzbuWzSajBHja+uc9zvqnKiq6WtUwLav4Kg=
+github.com/ONSdigital/dp-frontend-models v1.5.4 h1:aJDHnFgivyr1KvtE95kaPNn/de/19FMMQmLnfN+TGsk=
+github.com/ONSdigital/dp-frontend-models v1.5.4/go.mod h1:K4n0EwATkzbuWzSajBHja+uc9zvqnKiq6WtUwLav4Kg=
+github.com/ONSdigital/dp-frontend-models v1.5.5 h1:a15CXDPsCqmaIC4mxBzwa6WBIql+dZ1Aa6kq4jR9DJY=
+github.com/ONSdigital/dp-frontend-models v1.5.5/go.mod h1:K4n0EwATkzbuWzSajBHja+uc9zvqnKiq6WtUwLav4Kg=
 github.com/ONSdigital/dp-healthcheck v0.0.0-20200131122546-9db6d3f0494e/go.mod h1:zighxZ/0m5u7zo0eAr8XFlA+Dz2ic7A1vna6YXvhCjQ=
 github.com/ONSdigital/dp-healthcheck v1.0.0 h1:bySQU8kQRs4n3WbgH8QtVwCJLqG9ri722saATjvNNfc=
 github.com/ONSdigital/dp-healthcheck v1.0.0/go.mod h1:zighxZ/0m5u7zo0eAr8XFlA+Dz2ic7A1vna6YXvhCjQ=
@@ -57,6 +63,8 @@ github.com/justinas/alice v1.2.0 h1:+MHSA/vccVCF4Uq37S42jwlkvI2Xzl7zTPCN5BnZNVo=
 github.com/justinas/alice v1.2.0/go.mod h1:fN5HRH/reO/zrUflLfTN43t3vXvKzvZIENsNEe7i7qA=
 github.com/kelseyhightower/envconfig v1.4.0 h1:Im6hONhd3pLkfDFsbRgu68RDNkGF1r3dvMUtDTo2cv8=
 github.com/kelseyhightower/envconfig v1.4.0/go.mod h1:cccZRl6mQpaq41TPp5QxidR+Sa3axMbJDNb//FQX6Gg=
+github.com/matryer/moq v0.0.0-20191105074349-1206bf1e2aad h1:ezt0XQSy84K4HO3G8PTGGk4fSnH/BDnUwyLMjJGthyo=
+github.com/matryer/moq v0.0.0-20191105074349-1206bf1e2aad/go.mod h1:9ELz6aaclSIGnZBoaSLZ3NAl1VTufbOrXBPvtcy6WiQ=
 github.com/mattn/go-colorable v0.1.4 h1:snbPLB8fVfU9iwbbo30TPtbLRzwWu6aJS6Xh4eaaviA=
 github.com/mattn/go-colorable v0.1.4/go.mod h1:U0ppj6V5qS13XJ6of8GYAs25YV2eR4EVcfRqFIhoBtE=
 github.com/mattn/go-colorable v0.1.6 h1:6Su7aK7lXmJ/U79bYtBjLNaha4Fs1Rg9plHpcH+vvnE=
@@ -94,4 +102,5 @@ golang.org/x/sys v0.0.0-20200427175716-29b57079015a/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/text v0.3.0 h1:g61tztE5qeGQ89tm6NTjjM9VPIm088od1l6aSorWRWg=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/tools v0.0.0-20190328211700-ab21143f2384/go.mod h1:LCzVGOaR6xXOjkQ3onu1FJEFr0SW1gC7cKk1uF8kGRs=
+golang.org/x/tools v0.0.0-20190425150028-36563e24a262 h1:qsl9y/CJx34tuA7QCPNp86JNJe4spst6Ff8MjvPUdPg=
 golang.org/x/tools v0.0.0-20190425150028-36563e24a262/go.mod h1:RgjU9mgBXZiqYHBnxXauZ1Gv1EHHAz9KjViQ78xBX0Q=
