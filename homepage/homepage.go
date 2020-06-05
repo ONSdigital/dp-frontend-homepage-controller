@@ -76,14 +76,10 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	}
 
 	weekAgoTime := time.Now().AddDate(0, 0, -7)
-	currentTime := time.Now()
 	dateFromDay := weekAgoTime.Format("02")
 	dateFromMonth := weekAgoTime.Format("01")
 	dateFromYear := weekAgoTime.Format("2006")
-	dateToDay := currentTime.Format("02")
-	dateToMonth := currentTime.Format("01")
-	dateToYear := currentTime.Format("2006")
-	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear, dateToDay, dateToMonth, dateToYear)
+	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
 	releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
 
 	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData)

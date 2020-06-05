@@ -57,8 +57,8 @@ func (c *Client) Checker(ctx context.Context, check *health.CheckState) error {
 	return hcClient.Checker(ctx, check)
 }
 
-func (c *Client) GetReleaseCalendar(ctx context.Context, userAccessToken, fromDay, fromMonth, fromYear, toDay, toMonth, toYear string) (rc ReleaseCalendar, err error) {
-	reqURL := fmt.Sprintf(c.url+"/releasecalendar/data?fromDateDay=%s&fromDateMonth=%s&fromDateYear=%s&toDateDay=%s&toDateMonth=%s&toDateYear=%s", fromDay, fromMonth, fromYear, toDay, toMonth, toYear)
+func (c *Client) GetReleaseCalendar(ctx context.Context, userAccessToken, fromDay, fromMonth, fromYear string) (rc ReleaseCalendar, err error) {
+	reqURL := fmt.Sprintf(c.url+"/releasecalendar/data?fromDateDay=%s&fromDateMonth=%s&fromDateYear=%s", fromDay, fromMonth, fromYear)
 	resp, err := c.get(ctx, reqURL)
 	if err != nil {
 		return rc, err

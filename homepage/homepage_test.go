@@ -144,7 +144,7 @@ func TestUnitMapper(t *testing.T) {
 		}
 
 		mockBabbageClient := &BabbageClientMock{
-			GetReleaseCalendarFunc: func(ctx context.Context, userAuthToken, fromDay, fromMonth, fromYear, toDay, toMonth, toYear string) (m release_calendar.ReleaseCalendar, err error) {
+			GetReleaseCalendarFunc: func(ctx context.Context, userAuthToken, fromDay, fromMonth, fromYear string) (m release_calendar.ReleaseCalendar, err error) {
 				return mockedBabbageRelease, nil
 			},
 		}
