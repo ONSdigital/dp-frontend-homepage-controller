@@ -161,6 +161,7 @@ func TestUnitMapper(t *testing.T) {
 				ReleaseDate: time.Now().AddDate(0, 0, -3).Format("2 January 2006"),
 			},
 		},
+		NumberOfReleases:                 3,
 		NumberOfOtherReleasesInSevenDays: 1,
 	}
 
