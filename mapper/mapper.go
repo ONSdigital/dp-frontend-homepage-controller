@@ -72,7 +72,6 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 	}
 
 	latestReleases := getLatestReleases(releaseResults)
-	fmt.Println(numReleasesScheduled)
 	rc := model.ReleaseCalendar{
 		Releases:                         latestReleases,
 		NumberOfReleases:                 numReleasesScheduled,
