@@ -70,9 +70,13 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 			numReleasesScheduled--
 		}
 	}
+
+	latestReleases := getLatestReleases(releaseResults)
+
 	rc := model.ReleaseCalendar{
-		Releases:                         getLatestReleases(releaseResults),
-		NumberOfOtherReleasesInSevenDays: numReleasesScheduled - len(getLatestReleases(releaseResults)),
+		Releases:                         latestReleases,
+		NumberOfReleases:                 len(latestReleases),
+		NumberOfOtherReleasesInSevenDays: numReleasesScheduled - len(latestReleases),
 	}
 	return &rc
 }
