@@ -72,10 +72,10 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 	}
 
 	latestReleases := getLatestReleases(releaseResults)
-
+	fmt.Println(numReleasesScheduled)
 	rc := model.ReleaseCalendar{
 		Releases:                         latestReleases,
-		NumberOfReleases:                 len(latestReleases),
+		NumberOfReleases:                 numReleasesScheduled,
 		NumberOfOtherReleasesInSevenDays: numReleasesScheduled - len(latestReleases),
 	}
 	return &rc
@@ -95,7 +95,7 @@ func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
 	sort.Slice(rawReleases, func(i, j int) bool {
 		return rawReleases[i].Description.ReleaseDate.After(rawReleases[j].Description.ReleaseDate)
 	})
-	displayedReleases := len(rawReleases)
+	displayedReleases := 3
 	for i := 0; i < displayedReleases; i++ {
 		if len(rawReleases)-1 >= i {
 			latestReleases = append(latestReleases, model.Release{
