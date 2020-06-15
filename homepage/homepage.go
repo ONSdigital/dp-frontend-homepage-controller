@@ -88,7 +88,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		log.Event(ctx, "error getting homepage data", log.Error(err), log.Data{"content-path": HomepagePath})
 	}
 	mappedFeaturedContent := mapper.FeaturedContent(homepageContent)
-	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData, mappedFeaturedContent)
+	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent)
 
 	b, err := json.Marshal(m)
 	if err != nil {

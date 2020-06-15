@@ -164,9 +164,67 @@ func TestUnitMapper(t *testing.T) {
 		NumberOfReleases:                 4,
 		NumberOfOtherReleasesInSevenDays: 1,
 	}
+	var mockedHomepageData = zebedee.HomepageContent{
+		Intro: zebedee.Intro{
+			Title:    "Welcome to the Office for National Statistics",
+			Markdown: "Markdown text here",
+		},
+		FeaturedContent: []zebedee.Featured{
+			{
+				Title:       "Featured content one",
+				Description: "Featured content one description",
+				URI:         "Featured content one URI",
+				ImageURL:    "Featured content one imageURL",
+			},
+			{
+				Title:       "Featured content two",
+				Description: "Featured content two description",
+				URI:         "Featured content two URI",
+				ImageURL:    "Featured content two imageURL",
+			},
+			{
+				Title:       "Featured content three",
+				Description: "Featured content three description",
+				URI:         "Featured content three URI",
+				ImageURL:    "Featured content three imageURL",
+			},
+		},
+		ServiceMessage: "",
+		URI:            "/",
+		Type:           "",
+		Description: zebedee.HomepageDescription{
+			Title:           "Homepage description title",
+			Summary:         "Homepage description summary",
+			Keywords:        []string{"keyword one", "keyword two"},
+			MetaDescription: "",
+			Unit:            "",
+			PreUnit:         "",
+			Source:          "",
+		},
+	}
+	var mockedFeaturedContent = []model.Feature{
+		{
+			Title:       "Featured content one",
+			Description: "Featured content one description",
+			URI:         "Featured content one URI",
+			ImageURL:    "Featured content one imageURL",
+		},
+		{
+			Title:       "Featured content two",
+			Description: "Featured content two description",
+			URI:         "Featured content two URI",
+			ImageURL:    "Featured content two imageURL",
+		},
+		{
+			Title:       "Featured content three",
+			Description: "Featured content three description",
+			URI:         "Featured content three URI",
+			ImageURL:    "Featured content three imageURL",
+		},
+	}
 
 	Convey("test homepage mapping works", t, func() {
-		page := Homepage("en", mockedMainFigures, &mockedReleaseData)
+		page := Homepage("en", mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent)
 
 		So(page.Type, ShouldEqual, "homepage")
 		So(page.Data.MainFigures["test_id"].Figure, ShouldEqual, mockedMainFigure.Figure)
@@ -185,6 +243,18 @@ func TestUnitMapper(t *testing.T) {
 		So(mainFigures.FigureURIs.Analysis, ShouldEqual, "test/uri/timeseries/123")
 		So(mainFigures.FigureURIs.Data, ShouldEqual, "test/uri/timeseries/456")
 		So(mainFigures.Unit, ShouldEqual, "%")
+	})
+
+	Convey("test featured content mapping aligns with expectations", t, func() {
+		mockedTestData := mockedHomepageData
+		featuredContent := FeaturedContent(mockedTestData)
+		So(len(featuredContent), ShouldEqual, 3)
+		for i := 0; i < len(featuredContent); i++ {
+			So(featuredContent[i].Title, ShouldEqual, mockedTestData.FeaturedContent[i].Title)
+			So(featuredContent[i].Description, ShouldEqual, mockedTestData.FeaturedContent[i].Description)
+			So(featuredContent[i].URI, ShouldEqual, mockedTestData.FeaturedContent[i].URI)
+			So(featuredContent[i].ImageURL, ShouldEqual, mockedTestData.FeaturedContent[i].ImageURL)
+		}
 	})
 
 	Convey("test getDataByPeriod returns correct data struct", t, func() {
