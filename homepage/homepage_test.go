@@ -134,12 +134,53 @@ func TestUnitMapper(t *testing.T) {
 			SortBy:          "release_date",
 		},
 	}
+	mockedHomepageData := zebedee.HomepageContent{
+		Intro: zebedee.Intro{
+			Title:    "Welcome to the Office for National Statistics",
+			Markdown: "Markdown text here",
+		},
+		FeaturedContent: []zebedee.Featured{
+			{
+				Title:       "Featured content one",
+				Description: "Featured content one description",
+				URI:         "Featured content one URI",
+				ImageURL:    "Featured content one imageURL",
+			},
+			{
+				Title:       "Featured content two",
+				Description: "Featured content two description",
+				URI:         "Featured content two URI",
+				ImageURL:    "Featured content two imageURL",
+			},
+			{
+				Title:       "Featured content three",
+				Description: "Featured content three description",
+				URI:         "Featured content three URI",
+				ImageURL:    "Featured content three imageURL",
+			},
+		},
+		ServiceMessage: "",
+		URI:            "/",
+		Type:           "",
+		Description: zebedee.HomepageDescription{
+			Title:           "Homepage description title",
+			Summary:         "Homepage description summary",
+			Keywords:        []string{"keyword one", "keyword two"},
+			MetaDescription: "",
+			Unit:            "",
+			PreUnit:         "",
+			Source:          "",
+		},
+	}
 	expectedSuccessResponse := "<html><body><h1>Some HTML from renderer!</h1></body></html>"
 
 	Convey("test homepage handler", t, func() {
 		mockZebedeeClient := &ZebedeeClientMock{
 			GetTimeseriesMainFigureFunc: func(ctx context.Context, userAuthToken, uri string) (m zebedee.TimeseriesMainFigure, err error) {
 				return mockedZebedeeData[0], nil
+			},
+			GetHomepageContentFunc: func(ctx context.Context, userAuthToken, uri string) (m zebedee.HomepageContent, err error) {
+				return mockedHomepageData, nil
 			},
 		}
 

@@ -14,13 +14,14 @@ import (
 )
 
 // Homepage maps data to our homepage frontend model
-func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar) model.Page {
+func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature) model.Page {
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
 	page.Data.ReleaseCalendar = *releaseCal
+	page.Data.Featured = *featuredContent
 	return page
 }
 
@@ -78,6 +79,20 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 		NumberOfOtherReleasesInSevenDays: numReleasesScheduled - len(latestReleases),
 	}
 	return &rc
+}
+
+// FeaturedContent takes the homepageContent as returned from the client and returns an array of featured content
+func FeaturedContent(homepageData zebedee.HomepageContent) *[]model.Feature {
+	var mappedFeaturesArray []model.Feature
+	for i := 0; i < len(homepageData.FeaturedContent); i++ {
+		mappedFeaturesArray = append(mappedFeaturesArray, model.Feature{
+			Title:       homepageData.FeaturedContent[i].Title,
+			Description: homepageData.FeaturedContent[i].Description,
+			URI:         homepageData.FeaturedContent[i].URI,
+			ImageURL:    homepageData.FeaturedContent[i].ImageURL,
+		})
+	}
+	return &mappedFeaturesArray
 }
 
 func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {

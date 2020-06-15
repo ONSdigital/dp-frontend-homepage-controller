@@ -82,7 +82,13 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
 	releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
 
-	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData)
+	// Get homepage data from Zebedee
+	homepageContent, err := zcli.GetHomepageContent(ctx, userAccessToken, HomepagePath)
+	if err != nil {
+		log.Event(ctx, "error getting homepage data", log.Error(err), log.Data{"content-path": HomepagePath})
+	}
+	mappedFeaturedContent := mapper.FeaturedContent(homepageContent)
+	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData, mappedFeaturedContent)
 
 	b, err := json.Marshal(m)
 	if err != nil {
@@ -112,6 +118,8 @@ const (
 	PeriodQuarter = "quarter"
 	// PeriodMonth is the string value for month time period
 	PeriodMonth = "month"
+	// HomepagePath is the string value which contains the URI to get the homepage's data.json
+	HomepagePath = "/"
 )
 
 func init() {

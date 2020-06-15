@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	lockZebedeeClientMockGetHomepageContent      sync.RWMutex
 	lockZebedeeClientMockGetTimeseriesMainFigure sync.RWMutex
 )
 
@@ -24,6 +25,9 @@ var _ ZebedeeClient = &ZebedeeClientMock{}
 //
 //         // make and configure a mocked ZebedeeClient
 //         mockedZebedeeClient := &ZebedeeClientMock{
+//             GetHomepageContentFunc: func(ctx context.Context, userAccessToken string, path string) (zebedee.HomepageContent, error) {
+// 	               panic("mock out the GetHomepageContent method")
+//             },
 //             GetTimeseriesMainFigureFunc: func(ctx context.Context, userAuthToken string, uri string) (zebedee.TimeseriesMainFigure, error) {
 // 	               panic("mock out the GetTimeseriesMainFigure method")
 //             },
@@ -34,11 +38,23 @@ var _ ZebedeeClient = &ZebedeeClientMock{}
 //
 //     }
 type ZebedeeClientMock struct {
+	// GetHomepageContentFunc mocks the GetHomepageContent method.
+	GetHomepageContentFunc func(ctx context.Context, userAccessToken string, path string) (zebedee.HomepageContent, error)
+
 	// GetTimeseriesMainFigureFunc mocks the GetTimeseriesMainFigure method.
 	GetTimeseriesMainFigureFunc func(ctx context.Context, userAuthToken string, uri string) (zebedee.TimeseriesMainFigure, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
+		// GetHomepageContent holds details about calls to the GetHomepageContent method.
+		GetHomepageContent []struct {
+			// Ctx is the ctx argument value.
+			Ctx context.Context
+			// UserAccessToken is the userAccessToken argument value.
+			UserAccessToken string
+			// Path is the path argument value.
+			Path string
+		}
 		// GetTimeseriesMainFigure holds details about calls to the GetTimeseriesMainFigure method.
 		GetTimeseriesMainFigure []struct {
 			// Ctx is the ctx argument value.
@@ -49,6 +65,45 @@ type ZebedeeClientMock struct {
 			URI string
 		}
 	}
+}
+
+// GetHomepageContent calls GetHomepageContentFunc.
+func (mock *ZebedeeClientMock) GetHomepageContent(ctx context.Context, userAccessToken string, path string) (zebedee.HomepageContent, error) {
+	if mock.GetHomepageContentFunc == nil {
+		panic("ZebedeeClientMock.GetHomepageContentFunc: method is nil but ZebedeeClient.GetHomepageContent was just called")
+	}
+	callInfo := struct {
+		Ctx             context.Context
+		UserAccessToken string
+		Path            string
+	}{
+		Ctx:             ctx,
+		UserAccessToken: userAccessToken,
+		Path:            path,
+	}
+	lockZebedeeClientMockGetHomepageContent.Lock()
+	mock.calls.GetHomepageContent = append(mock.calls.GetHomepageContent, callInfo)
+	lockZebedeeClientMockGetHomepageContent.Unlock()
+	return mock.GetHomepageContentFunc(ctx, userAccessToken, path)
+}
+
+// GetHomepageContentCalls gets all the calls that were made to GetHomepageContent.
+// Check the length with:
+//     len(mockedZebedeeClient.GetHomepageContentCalls())
+func (mock *ZebedeeClientMock) GetHomepageContentCalls() []struct {
+	Ctx             context.Context
+	UserAccessToken string
+	Path            string
+} {
+	var calls []struct {
+		Ctx             context.Context
+		UserAccessToken string
+		Path            string
+	}
+	lockZebedeeClientMockGetHomepageContent.RLock()
+	calls = mock.calls.GetHomepageContent
+	lockZebedeeClientMockGetHomepageContent.RUnlock()
+	return calls
 }
 
 // GetTimeseriesMainFigure calls GetTimeseriesMainFigureFunc.
@@ -87,80 +142,6 @@ func (mock *ZebedeeClientMock) GetTimeseriesMainFigureCalls() []struct {
 	lockZebedeeClientMockGetTimeseriesMainFigure.RLock()
 	calls = mock.calls.GetTimeseriesMainFigure
 	lockZebedeeClientMockGetTimeseriesMainFigure.RUnlock()
-	return calls
-}
-
-var (
-	lockRenderClientMockDo sync.RWMutex
-)
-
-// Ensure, that RenderClientMock does implement RenderClient.
-// If this is not the case, regenerate this file with moq.
-var _ RenderClient = &RenderClientMock{}
-
-// RenderClientMock is a mock implementation of RenderClient.
-//
-//     func TestSomethingThatUsesRenderClient(t *testing.T) {
-//
-//         // make and configure a mocked RenderClient
-//         mockedRenderClient := &RenderClientMock{
-//             DoFunc: func(in1 string, in2 []byte) ([]byte, error) {
-// 	               panic("mock out the Do method")
-//             },
-//         }
-//
-//         // use mockedRenderClient in code that requires RenderClient
-//         // and then make assertions.
-//
-//     }
-type RenderClientMock struct {
-	// DoFunc mocks the Do method.
-	DoFunc func(in1 string, in2 []byte) ([]byte, error)
-
-	// calls tracks calls to the methods.
-	calls struct {
-		// Do holds details about calls to the Do method.
-		Do []struct {
-			// In1 is the in1 argument value.
-			In1 string
-			// In2 is the in2 argument value.
-			In2 []byte
-		}
-	}
-}
-
-// Do calls DoFunc.
-func (mock *RenderClientMock) Do(in1 string, in2 []byte) ([]byte, error) {
-	if mock.DoFunc == nil {
-		panic("RenderClientMock.DoFunc: method is nil but RenderClient.Do was just called")
-	}
-	callInfo := struct {
-		In1 string
-		In2 []byte
-	}{
-		In1: in1,
-		In2: in2,
-	}
-	lockRenderClientMockDo.Lock()
-	mock.calls.Do = append(mock.calls.Do, callInfo)
-	lockRenderClientMockDo.Unlock()
-	return mock.DoFunc(in1, in2)
-}
-
-// DoCalls gets all the calls that were made to Do.
-// Check the length with:
-//     len(mockedRenderClient.DoCalls())
-func (mock *RenderClientMock) DoCalls() []struct {
-	In1 string
-	In2 []byte
-} {
-	var calls []struct {
-		In1 string
-		In2 []byte
-	}
-	lockRenderClientMockDo.RLock()
-	calls = mock.calls.Do
-	lockRenderClientMockDo.RUnlock()
 	return calls
 }
 
@@ -253,5 +234,79 @@ func (mock *BabbageClientMock) GetReleaseCalendarCalls() []struct {
 	lockBabbageClientMockGetReleaseCalendar.RLock()
 	calls = mock.calls.GetReleaseCalendar
 	lockBabbageClientMockGetReleaseCalendar.RUnlock()
+	return calls
+}
+
+var (
+	lockRenderClientMockDo sync.RWMutex
+)
+
+// Ensure, that RenderClientMock does implement RenderClient.
+// If this is not the case, regenerate this file with moq.
+var _ RenderClient = &RenderClientMock{}
+
+// RenderClientMock is a mock implementation of RenderClient.
+//
+//     func TestSomethingThatUsesRenderClient(t *testing.T) {
+//
+//         // make and configure a mocked RenderClient
+//         mockedRenderClient := &RenderClientMock{
+//             DoFunc: func(in1 string, in2 []byte) ([]byte, error) {
+// 	               panic("mock out the Do method")
+//             },
+//         }
+//
+//         // use mockedRenderClient in code that requires RenderClient
+//         // and then make assertions.
+//
+//     }
+type RenderClientMock struct {
+	// DoFunc mocks the Do method.
+	DoFunc func(in1 string, in2 []byte) ([]byte, error)
+
+	// calls tracks calls to the methods.
+	calls struct {
+		// Do holds details about calls to the Do method.
+		Do []struct {
+			// In1 is the in1 argument value.
+			In1 string
+			// In2 is the in2 argument value.
+			In2 []byte
+		}
+	}
+}
+
+// Do calls DoFunc.
+func (mock *RenderClientMock) Do(in1 string, in2 []byte) ([]byte, error) {
+	if mock.DoFunc == nil {
+		panic("RenderClientMock.DoFunc: method is nil but RenderClient.Do was just called")
+	}
+	callInfo := struct {
+		In1 string
+		In2 []byte
+	}{
+		In1: in1,
+		In2: in2,
+	}
+	lockRenderClientMockDo.Lock()
+	mock.calls.Do = append(mock.calls.Do, callInfo)
+	lockRenderClientMockDo.Unlock()
+	return mock.DoFunc(in1, in2)
+}
+
+// DoCalls gets all the calls that were made to Do.
+// Check the length with:
+//     len(mockedRenderClient.DoCalls())
+func (mock *RenderClientMock) DoCalls() []struct {
+	In1 string
+	In2 []byte
+} {
+	var calls []struct {
+		In1 string
+		In2 []byte
+	}
+	lockRenderClientMockDo.RLock()
+	calls = mock.calls.Do
+	lockRenderClientMockDo.RUnlock()
 	return calls
 }
