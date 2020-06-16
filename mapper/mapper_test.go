@@ -245,16 +245,24 @@ func TestUnitMapper(t *testing.T) {
 		So(mainFigures.Unit, ShouldEqual, "%")
 	})
 
-	Convey("test featured content mapping aligns with expectations", t, func() {
-		mockedTestData := mockedHomepageData
-		featuredContent := FeaturedContent(mockedTestData)
-		So(len(featuredContent), ShouldEqual, 3)
-		for i := 0; i < len(featuredContent); i++ {
-			So(featuredContent[i].Title, ShouldEqual, mockedTestData.FeaturedContent[i].Title)
-			So(featuredContent[i].Description, ShouldEqual, mockedTestData.FeaturedContent[i].Description)
-			So(featuredContent[i].URI, ShouldEqual, mockedTestData.FeaturedContent[i].URI)
-			So(featuredContent[i].ImageURL, ShouldEqual, mockedTestData.FeaturedContent[i].ImageURL)
-		}
+	Convey("test FeaturedContent", t, func() {
+		Convey("FeaturedContent handles when no homepage data is passed in", func() {
+			mockedTestData := zebedee.HomepageContent{}
+			featuredContent := FeaturedContent(mockedTestData)
+			So(featuredContent, ShouldBeNil)
+		})
+
+		Convey("FeaturedContent maps mock data to page model correctly", func() {
+			mockedTestData := mockedHomepageData
+			featuredContent := FeaturedContent(mockedTestData)
+			So(len(featuredContent), ShouldEqual, 3)
+			for i := 0; i < len(featuredContent); i++ {
+				So(featuredContent[i].Title, ShouldEqual, mockedTestData.FeaturedContent[i].Title)
+				So(featuredContent[i].Description, ShouldEqual, mockedTestData.FeaturedContent[i].Description)
+				So(featuredContent[i].URI, ShouldEqual, mockedTestData.FeaturedContent[i].URI)
+				So(featuredContent[i].ImageURL, ShouldEqual, mockedTestData.FeaturedContent[i].ImageURL)
+			}
+		})
 	})
 
 	Convey("test getDataByPeriod returns correct data struct", t, func() {

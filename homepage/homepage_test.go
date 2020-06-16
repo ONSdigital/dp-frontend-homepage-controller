@@ -146,31 +146,11 @@ func TestUnitMapper(t *testing.T) {
 				URI:         "Featured content one URI",
 				ImageURL:    "Featured content one imageURL",
 			},
-			{
-				Title:       "Featured content two",
-				Description: "Featured content two description",
-				URI:         "Featured content two URI",
-				ImageURL:    "Featured content two imageURL",
-			},
-			{
-				Title:       "Featured content three",
-				Description: "Featured content three description",
-				URI:         "Featured content three URI",
-				ImageURL:    "Featured content three imageURL",
-			},
 		},
 		ServiceMessage: "",
 		URI:            "/",
 		Type:           "",
-		Description: zebedee.HomepageDescription{
-			Title:           "Homepage description title",
-			Summary:         "Homepage description summary",
-			Keywords:        []string{"keyword one", "keyword two"},
-			MetaDescription: "",
-			Unit:            "",
-			PreUnit:         "",
-			Source:          "",
-		},
+		Description:    zebedee.HomepageDescription{},
 	}
 	expectedSuccessResponse := "<html><body><h1>Some HTML from renderer!</h1></body></html>"
 

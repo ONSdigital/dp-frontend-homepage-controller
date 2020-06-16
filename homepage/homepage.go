@@ -85,9 +85,10 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	// Get homepage data from Zebedee
 	homepageContent, err := zcli.GetHomepageContent(ctx, userAccessToken, HomepagePath)
 	if err != nil {
-		log.Event(ctx, "error getting homepage data", log.Error(err), log.Data{"content-path": HomepagePath})
+		log.Event(ctx, "error getting homepage data from client", log.Error(err), log.Data{"content-path": HomepagePath})
 	}
 	mappedFeaturedContent := mapper.FeaturedContent(homepageContent)
+
 	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent)
 
 	b, err := json.Marshal(m)
