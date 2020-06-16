@@ -230,6 +230,7 @@ func TestUnitMapper(t *testing.T) {
 		So(page.Data.MainFigures["test_id"].Figure, ShouldEqual, mockedMainFigure.Figure)
 		So(page.Data.MainFigures["test_id"].TrendDescription, ShouldEqual, mockedMainFigure.TrendDescription)
 		So(page.Data.MainFigures["test_id"].Trend, ShouldResemble, mockedMainFigure.Trend)
+		So(len(page.Data.Featured), ShouldEqual, 3)
 	})
 
 	Convey("test main figures mapping works", t, func() {
