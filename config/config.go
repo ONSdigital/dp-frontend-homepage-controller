@@ -15,6 +15,7 @@ type Config struct {
 	RendererURL                string        `envconfig:"RENDERER_URL"`
 	ZebedeeURL                 string        `envconfig:"ZEBEDEE_URL"`
 	BabbageURL                 string        `envconfig:"BABBAGE_URL"`
+	ImageURL                   string        `envconfig:"IMAGE_URL"`
 }
 
 var cfg *Config
@@ -34,6 +35,7 @@ func Get() (*Config, error) {
 		RendererURL:                "http://localhost:20010",
 		ZebedeeURL:                 "http://localhost:8082",
 		BabbageURL:                 "http://localhost:8080",
+		ImageURL:                   "http://localhost:24700",
 	}
 
 	return cfg, envconfig.Process("", cfg)
