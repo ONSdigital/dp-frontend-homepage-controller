@@ -3,11 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
+
+	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/renderer"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
@@ -65,8 +67,8 @@ func run(ctx context.Context) error {
 		Renderer: renderer.New(cfg.RendererURL),
 		Zebedee:  zebedee.New(cfg.ZebedeeURL),
 		Babbage:  release_calendar.New(cfg.BabbageURL),
+		ImageAPI: image.NewAPIClient(cfg.ImageURL),
 	}
-
 
 	healthcheck := health.New(versionInfo, cfg.HealthCheckCriticalTimeout, cfg.HealthCheckInterval)
 	if err = registerCheckers(ctx, &healthcheck, clients.Renderer, clients.Zebedee, clients.Babbage); err != nil {
