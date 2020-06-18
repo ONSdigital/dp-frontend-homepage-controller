@@ -144,7 +144,6 @@ func TestUnitMapper(t *testing.T) {
 				Title:       "Featured content one",
 				Description: "Featured content one description",
 				URI:         "Featured content one URI",
-				ImageURL:    "Featured content one imageURL",
 			},
 		},
 		ServiceMessage: "",

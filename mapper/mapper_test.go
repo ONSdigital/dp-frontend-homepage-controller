@@ -174,19 +174,19 @@ func TestUnitMapper(t *testing.T) {
 				Title:       "Featured content one",
 				Description: "Featured content one description",
 				URI:         "Featured content one URI",
-				ImageURL:    "Featured content one imageURL",
+				ImageID:     "1-id",
 			},
 			{
 				Title:       "Featured content two",
 				Description: "Featured content two description",
 				URI:         "Featured content two URI",
-				ImageURL:    "Featured content two imageURL",
+				ImageID:     "2-id",
 			},
 			{
 				Title:       "Featured content three",
 				Description: "Featured content three description",
 				URI:         "Featured content three URI",
-				ImageURL:    "Featured content three imageURL",
+				ImageID:     "3-id",
 			},
 		},
 		ServiceMessage: "",
@@ -207,19 +207,19 @@ func TestUnitMapper(t *testing.T) {
 			Title:       "Featured content one",
 			Description: "Featured content one description",
 			URI:         "Featured content one URI",
-			ImageURL:    "Featured content one imageURL",
+			ImageURL:    "/1-id.svg",
 		},
 		{
 			Title:       "Featured content two",
 			Description: "Featured content two description",
 			URI:         "Featured content two URI",
-			ImageURL:    "Featured content two imageURL",
+			ImageURL:    "/2-id.svg",
 		},
 		{
 			Title:       "Featured content three",
 			Description: "Featured content three description",
 			URI:         "Featured content three URI",
-			ImageURL:    "Featured content three imageURL",
+			ImageURL:    "/3-id.svg",
 		},
 	}
 
@@ -261,7 +261,6 @@ func TestUnitMapper(t *testing.T) {
 				So(featuredContent[i].Title, ShouldEqual, mockedTestData.FeaturedContent[i].Title)
 				So(featuredContent[i].Description, ShouldEqual, mockedTestData.FeaturedContent[i].Description)
 				So(featuredContent[i].URI, ShouldEqual, mockedTestData.FeaturedContent[i].URI)
-				So(featuredContent[i].ImageURL, ShouldEqual, mockedTestData.FeaturedContent[i].ImageURL)
 			}
 		})
 	})

@@ -16,6 +16,17 @@ import (
 	"github.com/ONSdigital/log.go/log"
 )
 
+const (
+	// PeriodYear is the string value for year time period
+	PeriodYear = "year"
+	// PeriodQuarter is the string value for quarter time period
+	PeriodQuarter = "quarter"
+	// PeriodMonth is the string value for month time period
+	PeriodMonth = "month"
+	// HomepagePath is the string value which contains the URI to get the homepage's data.json
+	HomepagePath = "/"
+)
+
 type MainFigure struct {
 	uri        string
 	datePeriod string
@@ -111,17 +122,6 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	}
 	return
 }
-
-const (
-	// PeriodYear is the string value for year time period
-	PeriodYear = "year"
-	// PeriodQuarter is the string value for quarter time period
-	PeriodQuarter = "quarter"
-	// PeriodMonth is the string value for month time period
-	PeriodMonth = "month"
-	// HomepagePath is the string value which contains the URI to get the homepage's data.json
-	HomepagePath = "/"
-)
 
 func init() {
 	mainFigureMap = make(map[string]MainFigure)
