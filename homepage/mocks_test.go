@@ -5,6 +5,7 @@ package homepage
 
 import (
 	"context"
+	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"sync"
@@ -234,6 +235,98 @@ func (mock *BabbageClientMock) GetReleaseCalendarCalls() []struct {
 	lockBabbageClientMockGetReleaseCalendar.RLock()
 	calls = mock.calls.GetReleaseCalendar
 	lockBabbageClientMockGetReleaseCalendar.RUnlock()
+	return calls
+}
+
+var (
+	lockImageClientMockGetImage sync.RWMutex
+)
+
+// Ensure, that ImageClientMock does implement ImageClient.
+// If this is not the case, regenerate this file with moq.
+var _ ImageClient = &ImageClientMock{}
+
+// ImageClientMock is a mock implementation of ImageClient.
+//
+//     func TestSomethingThatUsesImageClient(t *testing.T) {
+//
+//         // make and configure a mocked ImageClient
+//         mockedImageClient := &ImageClientMock{
+//             GetImageFunc: func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string) (image.Image, error) {
+// 	               panic("mock out the GetImage method")
+//             },
+//         }
+//
+//         // use mockedImageClient in code that requires ImageClient
+//         // and then make assertions.
+//
+//     }
+type ImageClientMock struct {
+	// GetImageFunc mocks the GetImage method.
+	GetImageFunc func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string) (image.Image, error)
+
+	// calls tracks calls to the methods.
+	calls struct {
+		// GetImage holds details about calls to the GetImage method.
+		GetImage []struct {
+			// Ctx is the ctx argument value.
+			Ctx context.Context
+			// UserAuthToken is the userAuthToken argument value.
+			UserAuthToken string
+			// ServiceAuthToken is the serviceAuthToken argument value.
+			ServiceAuthToken string
+			// CollectionID is the collectionID argument value.
+			CollectionID string
+			// ImageID is the imageID argument value.
+			ImageID string
+		}
+	}
+}
+
+// GetImage calls GetImageFunc.
+func (mock *ImageClientMock) GetImage(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string) (image.Image, error) {
+	if mock.GetImageFunc == nil {
+		panic("ImageClientMock.GetImageFunc: method is nil but ImageClient.GetImage was just called")
+	}
+	callInfo := struct {
+		Ctx              context.Context
+		UserAuthToken    string
+		ServiceAuthToken string
+		CollectionID     string
+		ImageID          string
+	}{
+		Ctx:              ctx,
+		UserAuthToken:    userAuthToken,
+		ServiceAuthToken: serviceAuthToken,
+		CollectionID:     collectionID,
+		ImageID:          imageID,
+	}
+	lockImageClientMockGetImage.Lock()
+	mock.calls.GetImage = append(mock.calls.GetImage, callInfo)
+	lockImageClientMockGetImage.Unlock()
+	return mock.GetImageFunc(ctx, userAuthToken, serviceAuthToken, collectionID, imageID)
+}
+
+// GetImageCalls gets all the calls that were made to GetImage.
+// Check the length with:
+//     len(mockedImageClient.GetImageCalls())
+func (mock *ImageClientMock) GetImageCalls() []struct {
+	Ctx              context.Context
+	UserAuthToken    string
+	ServiceAuthToken string
+	CollectionID     string
+	ImageID          string
+} {
+	var calls []struct {
+		Ctx              context.Context
+		UserAuthToken    string
+		ServiceAuthToken string
+		CollectionID     string
+		ImageID          string
+	}
+	lockImageClientMockGetImage.RLock()
+	calls = mock.calls.GetImage
+	lockImageClientMockGetImage.RUnlock()
 	return calls
 }
 

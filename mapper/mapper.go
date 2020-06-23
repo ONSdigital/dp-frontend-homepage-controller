@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strconv"
 
+	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
@@ -82,16 +83,27 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 }
 
 // FeaturedContent takes the homepageContent as returned from the client and returns an array of featured content
-func FeaturedContent(homepageData zebedee.HomepageContent) []model.Feature {
+func FeaturedContent(homepageData zebedee.HomepageContent, imageObjects []image.Image) []model.Feature {
 	var mappedFeaturesArray []model.Feature
-	for _, fc := range homepageData.FeaturedContent {
+	for i, fc := range homepageData.FeaturedContent {
+		imageHref := findMatchingImageHref(homepageData.FeaturedContent[i].ImageID, imageObjects)
 		mappedFeaturesArray = append(mappedFeaturesArray, model.Feature{
 			Title:       fc.Title,
 			Description: fc.Description,
 			URI:         fc.URI,
+			ImageURL:    imageHref,
 		})
 	}
 	return mappedFeaturesArray
+}
+
+func findMatchingImageHref(imageID string, imageObjects []image.Image) string {
+	for i := range imageObjects {
+		if imageObjects[i].Id == imageID {
+			return imageObjects[i].Downloads["png"]["thumbnail"].Href
+		}
+	}
+	return ""
 }
 
 func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {

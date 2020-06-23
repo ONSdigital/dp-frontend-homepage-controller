@@ -9,6 +9,7 @@ import (
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 
+	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/gorilla/mux"
 	. "github.com/smartystreets/goconvey/convey"
@@ -144,12 +145,51 @@ func TestUnitMapper(t *testing.T) {
 				Title:       "Featured content one",
 				Description: "Featured content one description",
 				URI:         "Featured content one URI",
+				ImageID:     "123",
+			},
+			{
+				Title:       "Featured content two",
+				Description: "Featured content two description",
+				URI:         "Featured content two URI",
+				ImageID:     "456",
+			},
+			{
+				Title:       "Featured content three",
+				Description: "Featured content three description",
+				URI:         "Featured content three URI",
+				ImageID:     "",
 			},
 		},
 		ServiceMessage: "",
 		URI:            "/",
 		Type:           "",
 		Description:    zebedee.HomepageDescription{},
+	}
+	mockedImageObjects := []image.Image{
+		{
+			Id:           "123",
+			CollectionId: "",
+			Filename:     "123.png",
+			Downloads: map[string]map[string]image.ImageDownload{
+				"png": {
+					"thumbnail": {
+						Href: "path/to/123.png",
+					},
+				},
+			},
+		},
+		{
+			Id:           "456",
+			CollectionId: "",
+			Filename:     "456.png",
+			Downloads: map[string]map[string]image.ImageDownload{
+				"png": {
+					"thumbnail": {
+						Href: "path/to/456.png",
+					},
+				},
+			},
+		},
 	}
 	expectedSuccessResponse := "<html><body><h1>Some HTML from renderer!</h1></body></html>"
 
@@ -169,6 +209,18 @@ func TestUnitMapper(t *testing.T) {
 			},
 		}
 
+		mockImageClient := &ImageClientMock{
+			GetImageFunc: func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string) (image.Image, error) {
+				var matchingImage image.Image
+				for _, image := range mockedImageObjects {
+					if image.Id == imageID {
+						matchingImage = image
+					}
+				}
+				return matchingImage, nil
+			},
+		}
+
 		mockRenderClient := &RenderClientMock{
 			DoFunc: func(string, []byte) ([]byte, error) {
 				return []byte(expectedSuccessResponse), nil
@@ -179,7 +231,7 @@ func TestUnitMapper(t *testing.T) {
 		req.Header.Set("X-Florence-Token", "testuser")
 		rec := httptest.NewRecorder()
 		router := mux.NewRouter()
-		router.Path("/").HandlerFunc(Handler(mockRenderClient, mockZebedeeClient, mockBabbageClient))
+		router.Path("/").HandlerFunc(Handler(mockRenderClient, mockZebedeeClient, mockBabbageClient, mockImageClient))
 
 		Convey("returns 200 response", func() {
 			router.ServeHTTP(rec, req)

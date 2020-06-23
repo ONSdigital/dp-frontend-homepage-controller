@@ -7,6 +7,7 @@ import (
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 
+	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	. "github.com/smartystreets/goconvey/convey"
@@ -174,19 +175,19 @@ func TestUnitMapper(t *testing.T) {
 				Title:       "Featured content one",
 				Description: "Featured content one description",
 				URI:         "Featured content one URI",
-				ImageID:     "1-id",
+				ImageID:     "123",
 			},
 			{
 				Title:       "Featured content two",
 				Description: "Featured content two description",
 				URI:         "Featured content two URI",
-				ImageID:     "2-id",
+				ImageID:     "456",
 			},
 			{
 				Title:       "Featured content three",
 				Description: "Featured content three description",
 				URI:         "Featured content three URI",
-				ImageID:     "3-id",
+				ImageID:     "",
 			},
 		},
 		ServiceMessage: "",
@@ -207,19 +208,45 @@ func TestUnitMapper(t *testing.T) {
 			Title:       "Featured content one",
 			Description: "Featured content one description",
 			URI:         "Featured content one URI",
-			ImageURL:    "/1-id.svg",
+			ImageURL:    "path/to/123.png",
 		},
 		{
 			Title:       "Featured content two",
 			Description: "Featured content two description",
 			URI:         "Featured content two URI",
-			ImageURL:    "/2-id.svg",
+			ImageURL:    "path/to/456.png",
 		},
 		{
 			Title:       "Featured content three",
 			Description: "Featured content three description",
 			URI:         "Featured content three URI",
-			ImageURL:    "/3-id.svg",
+			ImageURL:    "",
+		},
+	}
+	var mockedImageData = []image.Image{
+		{
+			Id:           "123",
+			CollectionId: "",
+			Filename:     "123.png",
+			Downloads: map[string]map[string]image.ImageDownload{
+				"png": {
+					"thumbnail": {
+						Href: "path/to/123.png",
+					},
+				},
+			},
+		},
+		{
+			Id:           "456",
+			CollectionId: "",
+			Filename:     "456.png",
+			Downloads: map[string]map[string]image.ImageDownload{
+				"png": {
+					"thumbnail": {
+						Href: "path/to/456.png",
+					},
+				},
+			},
 		},
 	}
 
@@ -249,18 +276,23 @@ func TestUnitMapper(t *testing.T) {
 	Convey("test FeaturedContent", t, func() {
 		Convey("FeaturedContent handles when no homepage data is passed in", func() {
 			mockedTestData := zebedee.HomepageContent{}
-			featuredContent := FeaturedContent(mockedTestData)
+			mockedImageTestData := []image.Image{}
+			featuredContent := FeaturedContent(mockedTestData, mockedImageTestData)
 			So(featuredContent, ShouldBeNil)
 		})
 
 		Convey("FeaturedContent maps mock data to page model correctly", func() {
 			mockedTestData := mockedHomepageData
-			featuredContent := FeaturedContent(mockedTestData)
+			mockedImageTestData := mockedImageData
+			featuredContent := FeaturedContent(mockedTestData, mockedImageTestData)
 			So(len(featuredContent), ShouldEqual, 3)
 			for i := 0; i < len(featuredContent); i++ {
 				So(featuredContent[i].Title, ShouldEqual, mockedTestData.FeaturedContent[i].Title)
 				So(featuredContent[i].Description, ShouldEqual, mockedTestData.FeaturedContent[i].Description)
 				So(featuredContent[i].URI, ShouldEqual, mockedTestData.FeaturedContent[i].URI)
+				if featuredContent[i].ImageURL != "" {
+					So(featuredContent[i].ImageURL, ShouldEqual, mockedImageData[i].Downloads["png"]["thumbnail"].Href)
+				}
 			}
 		})
 	})

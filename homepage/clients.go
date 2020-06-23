@@ -3,6 +3,7 @@ package homepage
 import (
 	"context"
 
+	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 )
@@ -18,6 +19,11 @@ type ZebedeeClient interface {
 // BabbageClient is an interface with methods required for a babbage client
 type BabbageClient interface {
 	GetReleaseCalendar(ctx context.Context, userAccessToken, fromDay, fromMonth, fromYear string) (m release_calendar.ReleaseCalendar, err error)
+}
+
+// ImageClient is an interface with methods required for the Image API service client
+type ImageClient interface {
+	GetImage(ctx context.Context, userAuthToken, serviceAuthToken, collectionID, imageID string) (m image.Image, err error)
 }
 
 // RenderClient is an interface with methods required for rendering a template

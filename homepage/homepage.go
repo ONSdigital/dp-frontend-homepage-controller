@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/headers"
+	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
@@ -36,13 +37,13 @@ type MainFigure struct {
 var mainFigureMap map[string]MainFigure
 
 // Handler handles requests to homepage endpoint
-func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient) http.HandlerFunc {
+func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		handle(w, req, rend, zcli, bcli)
+		handle(w, req, rend, zcli, bcli, icli)
 	}
 }
 
-func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient) {
+func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) {
 	ctx := req.Context()
 
 	userAccessToken, err := headers.GetUserAuthToken(req)
@@ -98,7 +99,16 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	if err != nil {
 		log.Event(ctx, "error getting homepage data from client", log.Error(err), log.Data{"content-path": HomepagePath})
 	}
-	mappedFeaturedContent := mapper.FeaturedContent(homepageContent)
+	imageObjects := []image.Image{}
+	for _, fc := range homepageContent.FeaturedContent {
+		image, err := icli.GetImage(ctx, userAccessToken, "", "", fc.ImageID)
+		if err != nil {
+			log.Event(ctx, "error getting image", log.Error(err), log.Data{"featured-content-entry": fc.Title})
+		}
+		imageObjects = append(imageObjects, image)
+	}
+
+	mappedFeaturedContent := mapper.FeaturedContent(homepageContent, imageObjects)
 
 	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent)
 
