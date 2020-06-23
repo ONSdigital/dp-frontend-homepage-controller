@@ -83,15 +83,15 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 
 // FeaturedContent takes the homepageContent as returned from the client and returns an array of featured content
 func FeaturedContent(homepageData zebedee.HomepageContent) []model.Feature {
-	var mappedFeaturesArray []model.Feature
+	var mappedFeaturesContent []model.Feature
 	for _, fc := range homepageData.FeaturedContent {
-		mappedFeaturesArray = append(mappedFeaturesArray, model.Feature{
+		mappedFeaturesContent = append(mappedFeaturesContent, model.Feature{
 			Title:       fc.Title,
 			Description: fc.Description,
 			URI:         fc.URI,
 		})
 	}
-	return mappedFeaturesArray
+	return mappedFeaturesContent
 }
 
 func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
