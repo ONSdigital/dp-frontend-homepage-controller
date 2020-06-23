@@ -84,17 +84,17 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 
 // FeaturedContent takes the homepageContent as returned from the client and returns an array of featured content
 func FeaturedContent(homepageData zebedee.HomepageContent, imageObjects []image.Image) []model.Feature {
-	var mappedFeaturesArray []model.Feature
+	var mappedFeaturesContent []model.Feature
 	for i, fc := range homepageData.FeaturedContent {
 		imageHref := findMatchingImageHref(homepageData.FeaturedContent[i].ImageID, imageObjects)
-		mappedFeaturesArray = append(mappedFeaturesArray, model.Feature{
+		mappedFeaturesContent = append(mappedFeaturesContent, model.Feature{
 			Title:       fc.Title,
 			Description: fc.Description,
 			URI:         fc.URI,
 			ImageURL:    imageHref,
 		})
 	}
-	return mappedFeaturesArray
+	return mappedFeaturesContent
 }
 
 func findMatchingImageHref(imageID string, imageObjects []image.Image) string {
