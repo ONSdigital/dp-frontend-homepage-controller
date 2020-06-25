@@ -294,6 +294,7 @@ func TestUnitMapper(t *testing.T) {
 					So(featuredContent[i].ImageURL, ShouldEqual, mockedImageData[i].Downloads["png"]["thumbnail"].Href)
 				}
 			}
+			So(featuredContent[2].ImageURL, ShouldEqual, "")
 		})
 	})
 
