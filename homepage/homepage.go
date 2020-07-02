@@ -159,7 +159,7 @@ func init() {
 
 	// GDP
 	mainFigureMap["IHYQ"] = MainFigure{
-		uri:        "/economy/grossdomesticproductgdp/timeseries/ihyq/pn2",
+		uri:        "/economy/grossdomesticproductgdp/timeseries/ihyq/qna",
 		datePeriod: PeriodQuarter,
 		data:       zebedee.TimeseriesMainFigure{},
 	}
