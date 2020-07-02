@@ -139,14 +139,14 @@ func init() {
 	// Employment
 	mainFigureMap["LF24"] = MainFigure{
 		uri:        "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
-		datePeriod: PeriodMonth,
+		datePeriod: PeriodYear,
 		data:       zebedee.TimeseriesMainFigure{},
 	}
 
 	// Unemployment
 	mainFigureMap["MGSX"] = MainFigure{
 		uri:        "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
-		datePeriod: PeriodMonth,
+		datePeriod: PeriodYear,
 		data:       zebedee.TimeseriesMainFigure{},
 	}
 
