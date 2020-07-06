@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
+	"github.com/shopspring/decimal"
 
 	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
@@ -250,6 +251,15 @@ func TestUnitMapper(t *testing.T) {
 		},
 	}
 
+	testFigure1, _ := decimal.NewFromString("12.345")
+	testFigure2, _ := decimal.NewFromString("8.90")
+	testFigure3, _ := decimal.NewFromString("100.2")
+	testFigure4, _ := decimal.NewFromString("101.423")
+	testFigure5, _ := decimal.NewFromString("88.8888")
+	testFigure6, _ := decimal.NewFromString("64890980.683628")
+	testFigure7, _ := decimal.NewFromString("1000.2")
+	testFigure8, _ := decimal.NewFromString("88789.12")
+
 	Convey("test homepage mapping works", t, func() {
 		page := Homepage("en", mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent)
 
@@ -264,7 +274,7 @@ func TestUnitMapper(t *testing.T) {
 		mockedTestData := mockedZebedeeData[0]
 		mainFigures := MainFigure(ctx, "cdid", "month", mockedTestData)
 		So(mainFigures.Date, ShouldEqual, "Feb 2020")
-		So(mainFigures.Figure, ShouldEqual, "679.56")
+		So(mainFigures.Figure, ShouldEqual, "679.6")
 		So(mainFigures.Trend.IsDown, ShouldEqual, false)
 		So(mainFigures.Trend.IsUp, ShouldEqual, true)
 		So(mainFigures.Trend.IsFlat, ShouldEqual, false)
@@ -308,23 +318,30 @@ func TestUnitMapper(t *testing.T) {
 	})
 
 	Convey("test getTrend returns current struct of bools", t, func() {
-		trendPositive := getTrend(5.8, 4.5672)
-		trendNegative := getTrend(9.99, 10.21)
-		trendFlat := getTrend(8.88, 8.88)
+		trendPositive := getTrend(testFigure1, testFigure2)
+		trendNegative := getTrend(testFigure3, testFigure4)
+		trendFlat := getTrend(testFigure5, testFigure5)
 		So(trendPositive, ShouldResemble, model.Trend{IsUp: true, IsDown: false, IsFlat: false})
 		So(trendNegative, ShouldResemble, model.Trend{IsUp: false, IsDown: true, IsFlat: false})
 		So(trendFlat, ShouldResemble, model.Trend{IsUp: false, IsDown: false, IsFlat: true})
 	})
 
 	Convey("test getTrendDiffference returns the current string", t, func() {
-		trendDescriptionPositive := getTrendDifference(10.55, 8.568, "million")
-		trendDescriptionNegative := getTrendDifference(10.5, 18.7, "%")
-		So(trendDescriptionPositive, ShouldEqual, "1.98million")
-		So(trendDescriptionNegative, ShouldEqual, "-8.2pp")
+		trendDescriptionPositive := getTrendDifference(testFigure1, testFigure2, "million")
+		trendDescriptionNegative := getTrendDifference(testFigure3, testFigure4, "%")
+		So(trendDescriptionPositive, ShouldEqual, "3.4million")
+		So(trendDescriptionNegative, ShouldEqual, "-1.2pp")
 	})
 
 	Convey("test release calendar maps data correctly", t, func() {
 		So(ReleaseCalendar(mockedBabbageRelease), ShouldResemble, &mockedReleaseData)
+	})
+
+	Convey("test formatCommas returns correctly formatted numbers as string", t, func() {
+		So(formatCommas(testFigure1), ShouldEqual, "12.3")
+		So(formatCommas(testFigure6), ShouldEqual, "64,890,980.7")
+		So(formatCommas(testFigure7), ShouldEqual, "1,000.2")
+		So(formatCommas(testFigure8), ShouldEqual, "88,789.1")
 	})
 
 }

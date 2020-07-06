@@ -3,15 +3,15 @@ package mapper
 import (
 	"context"
 	"fmt"
+	"regexp"
 	"sort"
-	"strconv"
 
 	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
-	"github.com/dustin/go-humanize"
+	"github.com/shopspring/decimal"
 )
 
 // Homepage maps data to our homepage frontend model
@@ -37,20 +37,18 @@ func MainFigure(ctx context.Context, id, datePeriod string, figure zebedee.Times
 	previousDataIndex := len(mfData) - 2
 	latestData := mfData[latestDataIndex]
 	previousData := mfData[previousDataIndex]
-	latestFigure, err := strconv.ParseFloat(latestData.Value, 64)
+	latestFigure, err := decimal.NewFromString(latestData.Value)
 	if err != nil {
-		log.Event(ctx, "error getting trend description: error parsing float", log.Error(err))
+		log.Event(ctx, "error getting trend description: error converting string to decimal type", log.Error(err))
 		return &mf
 	}
-	previousFigure, err := strconv.ParseFloat(previousData.Value, 64)
+	previousFigure, err := decimal.NewFromString(previousData.Value)
 	if err != nil {
-		log.Event(ctx, "error getting trend description: error parsing float", log.Error(err))
+		log.Event(ctx, "error getting trend description: error converting string to decimal type", log.Error(err))
 		return &mf
 	}
 
-	latestFigureFormatted := humanize.CommafWithDigits(latestFigure, 2)
-
-	mf.Figure = latestFigureFormatted
+	mf.Figure = formatCommas(latestFigure)
 	mf.Date = latestData.Label
 	mf.Unit = figure.Description.Unit
 	mf.Trend = getTrend(latestFigure, previousFigure)
@@ -150,23 +148,23 @@ func getDataByPeriod(datePeriod string, data zebedee.TimeseriesMainFigure) []zeb
 }
 
 // getTrend returns trend boolean value based on latest and previous figures
-func getTrend(latest, previous float64) model.Trend {
-	if latest > previous {
+func getTrend(latest, previous decimal.Decimal) model.Trend {
+	if latest.GreaterThan(previous) {
 		return model.Trend{IsUp: true}
 	}
 
-	if latest < previous {
+	if latest.LessThan(previous) {
 		return model.Trend{IsDown: true}
 	}
 
-	if latest == previous {
+	if latest.Equal(previous) {
 		return model.Trend{IsFlat: true}
 	}
 	return model.Trend{}
 }
 
 // getTrendDifference returns string value of the difference between latest and previous
-func getTrendDifference(latest, previous float64, unit string) string {
+func getTrendDifference(latest, previous decimal.Decimal, unit string) string {
 	var trendUnit string
 	switch unit {
 	case "%":
@@ -174,7 +172,19 @@ func getTrendDifference(latest, previous float64, unit string) string {
 	default:
 		trendUnit = unit
 	}
-	diff := float64(latest - previous)
-	formattedDiff := humanize.CommafWithDigits(diff, 2)
-	return fmt.Sprintf("%v%v", formattedDiff, trendUnit)
+	diff := latest.Sub(previous)
+	diffStr := diff.StringFixed(1)
+	//formattedDiff := humanize.CommafWithDigits(diff, 2)
+	return fmt.Sprintf("%v%v", diffStr, trendUnit)
+}
+
+// formats large numbers to contain comma separators e.g. 1000000 => 1,000,000
+func formatCommas(num decimal.Decimal) string {
+	str := fmt.Sprintf("%v", num.StringFixed(1))
+	re := regexp.MustCompile("(\\d+)(\\d{3})")
+	for n := ""; n != str; {
+		n = str
+		str = re.ReplaceAllString(str, "$1,$2")
+	}
+	return str
 }
