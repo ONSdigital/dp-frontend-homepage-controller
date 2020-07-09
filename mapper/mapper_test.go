@@ -228,11 +228,9 @@ func TestUnitMapper(t *testing.T) {
 			Id:           "123",
 			CollectionId: "",
 			Filename:     "123.png",
-			Downloads: map[string]map[string]image.ImageDownload{
+			Downloads: map[string]image.ImageDownload{
 				"png": {
-					"thumbnail": {
-						Href: "path/to/123.png",
-					},
+					Href: "path/to/123.png",
 				},
 			},
 		},
@@ -240,11 +238,9 @@ func TestUnitMapper(t *testing.T) {
 			Id:           "456",
 			CollectionId: "",
 			Filename:     "456.png",
-			Downloads: map[string]map[string]image.ImageDownload{
+			Downloads: map[string]image.ImageDownload{
 				"png": {
-					"thumbnail": {
-						Href: "path/to/456.png",
-					},
+					Href: "path/to/456.png",
 				},
 			},
 		},
@@ -291,7 +287,7 @@ func TestUnitMapper(t *testing.T) {
 				So(featuredContent[i].Description, ShouldEqual, mockedTestData.FeaturedContent[i].Description)
 				So(featuredContent[i].URI, ShouldEqual, mockedTestData.FeaturedContent[i].URI)
 				if featuredContent[i].ImageURL != "" {
-					So(featuredContent[i].ImageURL, ShouldEqual, mockedImageData[i].Downloads["png"]["thumbnail"].Href)
+					So(featuredContent[i].ImageURL, ShouldEqual, mockedImageData[i].Downloads["png"].Href)
 				}
 			}
 			So(featuredContent[2].ImageURL, ShouldEqual, "")

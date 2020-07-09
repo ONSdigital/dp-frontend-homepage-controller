@@ -100,7 +100,7 @@ func FeaturedContent(homepageData zebedee.HomepageContent, imageObjects []image.
 func findMatchingImageHref(imageID string, imageObjects []image.Image) string {
 	for i := range imageObjects {
 		if imageObjects[i].Id == imageID {
-			return imageObjects[i].Downloads["png"]["thumbnail"].Href
+			return imageObjects[i].Downloads["png"].Href
 		}
 	}
 	return ""
