@@ -3,9 +3,9 @@ module github.com/ONSdigital/dp-frontend-homepage-controller
 go 1.13
 
 require (
-	github.com/ONSdigital/dp-api-clients-go v1.13.1
+	github.com/ONSdigital/dp-api-clients-go v1.17.0
 	github.com/ONSdigital/dp-cookies v0.1.0 // indirect
-	github.com/ONSdigital/dp-frontend-models v1.5.7
+	github.com/ONSdigital/dp-frontend-models v1.6.0
 	github.com/ONSdigital/dp-healthcheck v1.0.4
 	github.com/ONSdigital/dp-rchttp v1.0.0
 	github.com/ONSdigital/go-ns v0.0.0-20200205115900-a11716f93bad
