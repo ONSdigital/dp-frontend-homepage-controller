@@ -256,9 +256,6 @@ func TestUnitMapper(t *testing.T) {
 	testFigure3, _ := decimal.NewFromString("100.2")
 	testFigure4, _ := decimal.NewFromString("101.423")
 	testFigure5, _ := decimal.NewFromString("88.8888")
-	testFigure6, _ := decimal.NewFromString("64890980.683628")
-	testFigure7, _ := decimal.NewFromString("1000.2")
-	testFigure8, _ := decimal.NewFromString("88789.12")
 
 	Convey("test homepage mapping works", t, func() {
 		page := Homepage("en", mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent)
@@ -338,10 +335,10 @@ func TestUnitMapper(t *testing.T) {
 	})
 
 	Convey("test formatCommas returns correctly formatted numbers as string", t, func() {
-		So(formatCommas(testFigure1), ShouldEqual, "12.3")
-		So(formatCommas(testFigure6), ShouldEqual, "64,890,980.7")
-		So(formatCommas(testFigure7), ShouldEqual, "1,000.2")
-		So(formatCommas(testFigure8), ShouldEqual, "88,789.1")
+		So(formatCommas("12.3"), ShouldEqual, "12.3")
+		So(formatCommas("64890980.7"), ShouldEqual, "64,890,980.7")
+		So(formatCommas("1000.2"), ShouldEqual, "1,000.2")
+		So(formatCommas("88789.1"), ShouldEqual, "88,789.1")
 	})
 
 }

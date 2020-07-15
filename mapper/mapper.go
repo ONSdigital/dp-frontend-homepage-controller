@@ -14,6 +14,10 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// decimalPointDisplayThreshold is a number where we no longer want to
+// display numbers with decimals. This number was a product decision
+var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
+
 // Homepage maps data to our homepage frontend model
 func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature) model.Page {
 	var page model.Page
@@ -48,7 +52,14 @@ func MainFigure(ctx context.Context, id, datePeriod string, figure zebedee.Times
 		return &mf
 	}
 
-	mf.Figure = formatCommas(latestFigure)
+	var formattedLatestFigure string
+	if latestFigure.GreaterThanOrEqual(decimalPointDisplayThreshold) {
+		formattedLatestFigure = latestFigure.String()
+	} else {
+		formattedLatestFigure = latestFigure.StringFixed(1)
+	}
+
+	mf.Figure = formatCommas(formattedLatestFigure)
 	mf.Date = latestData.Label
 	mf.Unit = figure.Description.Unit
 	mf.Trend = getTrend(latestFigure, previousFigure)
@@ -179,8 +190,7 @@ func getTrendDifference(latest, previous decimal.Decimal, unit string) string {
 }
 
 // formats large numbers to contain comma separators e.g. 1000000 => 1,000,000
-func formatCommas(num decimal.Decimal) string {
-	str := fmt.Sprintf("%v", num.StringFixed(1))
+func formatCommas(str string) string {
 	re := regexp.MustCompile("(\\d+)(\\d{3})")
 	for n := ""; n != str; {
 		n = str
