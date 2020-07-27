@@ -265,7 +265,7 @@ func TestUnitMapper(t *testing.T) {
 
 	Convey("test main figures mapping works", t, func() {
 		mockedTestData := mockedZebedeeData[0]
-		mainFigures := MainFigure(ctx, "cdid", "month", mockedTestData)
+		mainFigures := MainFigure(ctx, "cdid", PeriodMonth, PeriodMonth, mockedTestData)
 		So(mainFigures.Date, ShouldEqual, "Feb 2020")
 		So(mainFigures.Figure, ShouldEqual, "679.6")
 		So(mainFigures.Trend.IsDown, ShouldEqual, false)
@@ -337,4 +337,11 @@ func TestUnitMapper(t *testing.T) {
 		So(formatCommas("88789.1"), ShouldEqual, "88,789.1")
 	})
 
+	Convey("test getDifferenceOffset returns correct offset value", t, func() {
+		So(getDifferenceOffset(PeriodMonth, PeriodMonth), ShouldEqual, 1)
+		So(getDifferenceOffset(PeriodYear, PeriodYear), ShouldEqual, 1)
+		So(getDifferenceOffset(PeriodQuarter, PeriodYear), ShouldEqual, 4)
+		So(getDifferenceOffset(PeriodMonth, PeriodYear), ShouldEqual, 12)
+		So(getDifferenceOffset(PeriodMonth, PeriodQuarter), ShouldEqual, 3)
+	})
 }
