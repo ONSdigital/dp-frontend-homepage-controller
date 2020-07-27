@@ -48,7 +48,7 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 
 	mfData := getDataByPeriod(datePeriod, figure)
 	previousDataOffset := getDifferenceOffset(datePeriod, differenceInterval) + 1
-	if len(mfData) > previousDataOffset {
+	if len(mfData) < previousDataOffset {
 		log.Event(ctx, "error: too few observations in timeseries array", log.Error(errors.New("too few observations in timeseries array")))
 		return &mf
 	}
