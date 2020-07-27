@@ -2,6 +2,7 @@ package mapper
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"regexp"
 	"sort"
@@ -12,6 +13,15 @@ import (
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
 	"github.com/shopspring/decimal"
+)
+
+const (
+	// PeriodYear is the string value for year time period
+	PeriodYear = "year"
+	// PeriodQuarter is the string value for quarter time period
+	PeriodQuarter = "quarter"
+	// PeriodMonth is the string value for month time period
+	PeriodMonth = "month"
 )
 
 // decimalPointDisplayThreshold is a number where we no longer want to
@@ -31,14 +41,19 @@ func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, relea
 }
 
 // MainFigure maps a single main figure object
-func MainFigure(ctx context.Context, id, datePeriod string, figure zebedee.TimeseriesMainFigure) *model.MainFigure {
+func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, figure zebedee.TimeseriesMainFigure) *model.MainFigure {
 	var mf model.MainFigure
 
 	mf.ID = id
 
 	mfData := getDataByPeriod(datePeriod, figure)
+	previousDataOffset := getDifferenceOffset(datePeriod, differenceInterval) + 1
+	if len(mfData) < previousDataOffset {
+		log.Event(ctx, "error: too few observations in timeseries array", log.Error(errors.New("too few observations in timeseries array")))
+		return &mf
+	}
 	latestDataIndex := len(mfData) - 1
-	previousDataIndex := len(mfData) - 2
+	previousDataIndex := len(mfData) - previousDataOffset
 	latestData := mfData[latestDataIndex]
 	previousData := mfData[previousDataIndex]
 	latestFigure, err := decimal.NewFromString(latestData.Value)
@@ -64,7 +79,7 @@ func MainFigure(ctx context.Context, id, datePeriod string, figure zebedee.Times
 	mf.Unit = figure.Description.Unit
 	mf.Trend = getTrend(latestFigure, previousFigure)
 	mf.Trend.Difference = getTrendDifference(latestFigure, previousFigure, figure.Description.Unit)
-	mf.Trend.Period = datePeriod
+	mf.Trend.Period = differenceInterval
 	if len(figure.RelatedDocuments) > 0 {
 		mf.FigureURIs.Analysis = figure.RelatedDocuments[0].URI
 	}
@@ -146,11 +161,11 @@ func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
 func getDataByPeriod(datePeriod string, data zebedee.TimeseriesMainFigure) []zebedee.TimeseriesDataPoint {
 	var mf []zebedee.TimeseriesDataPoint
 	switch datePeriod {
-	case "year":
+	case PeriodYear:
 		mf = data.Years
-	case "quarter":
+	case PeriodQuarter:
 		mf = data.Quarters
-	case "month":
+	case PeriodMonth:
 		mf = data.Months
 	default:
 		mf = []zebedee.TimeseriesDataPoint{}
@@ -197,4 +212,27 @@ func formatCommas(str string) string {
 		str = re.ReplaceAllString(str, "$1,$2")
 	}
 	return str
+}
+
+// getDifferenceOffset works out a numeric value that represents the
+// offset of values to compare from data in a timeseries
+func getDifferenceOffset(period, interval string) int {
+	if period == interval {
+		return 1
+	}
+
+	if period == PeriodQuarter && interval == PeriodYear {
+		return 4
+	}
+
+	if period == PeriodMonth {
+		if interval == PeriodYear {
+			return 12
+		}
+		if interval == PeriodQuarter {
+			return 3
+		}
+	}
+	// only gets here if incomparable options are chosen in code
+	panic("unable to get difference offset from choosen period and interval values")
 }

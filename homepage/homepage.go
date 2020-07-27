@@ -18,20 +18,15 @@ import (
 )
 
 const (
-	// PeriodYear is the string value for year time period
-	PeriodYear = "year"
-	// PeriodQuarter is the string value for quarter time period
-	PeriodQuarter = "quarter"
-	// PeriodMonth is the string value for month time period
-	PeriodMonth = "month"
 	// HomepagePath is the string value which contains the URI to get the homepage's data.json
 	HomepagePath = "/"
 )
 
 type MainFigure struct {
-	uri        string
-	datePeriod string
-	data       zebedee.TimeseriesMainFigure
+	uri                string
+	datePeriod         string
+	data               zebedee.TimeseriesMainFigure
+	differenceInterval string
 }
 
 var mainFigureMap map[string]MainFigure
@@ -75,7 +70,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 				responses <- mappedErrorFigure
 				return
 			}
-			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, zebResp)
+			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, figure.differenceInterval, zebResp)
 			responses <- mappedMainFigure
 			return
 		}(ctx, zcli, id, figure)
@@ -138,37 +133,42 @@ func init() {
 
 	// Employment
 	mainFigureMap["LF24"] = MainFigure{
-		uri:        "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
-		datePeriod: PeriodMonth,
-		data:       zebedee.TimeseriesMainFigure{},
+		uri:                "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
+		datePeriod:         mapper.PeriodMonth,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodYear,
 	}
 
 	// Unemployment
 	mainFigureMap["MGSX"] = MainFigure{
-		uri:        "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
-		datePeriod: PeriodMonth,
-		data:       zebedee.TimeseriesMainFigure{},
+		uri:                "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
+		datePeriod:         mapper.PeriodMonth,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodYear,
 	}
 
 	// Inflation (CPIH)
 	mainFigureMap["L55O"] = MainFigure{
-		uri:        "/economy/inflationandpriceindices/timeseries/l55o/mm23",
-		datePeriod: PeriodMonth,
-		data:       zebedee.TimeseriesMainFigure{},
+		uri:                "/economy/inflationandpriceindices/timeseries/l55o/mm23",
+		datePeriod:         mapper.PeriodMonth,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodMonth,
 	}
 
 	// GDP
 	mainFigureMap["IHYQ"] = MainFigure{
-		uri:        "/economy/grossdomesticproductgdp/timeseries/ihyq/qna",
-		datePeriod: PeriodQuarter,
-		data:       zebedee.TimeseriesMainFigure{},
+		uri:                "/economy/grossdomesticproductgdp/timeseries/ihyq/qna",
+		datePeriod:         mapper.PeriodQuarter,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodQuarter,
 	}
 
 	// Population
 	mainFigureMap["UKPOP"] = MainFigure{
-		uri:        "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/ukpop/pop",
-		datePeriod: PeriodYear,
-		data:       zebedee.TimeseriesMainFigure{},
+		uri:                "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/ukpop/pop",
+		datePeriod:         mapper.PeriodYear,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodYear,
 	}
 
 }
