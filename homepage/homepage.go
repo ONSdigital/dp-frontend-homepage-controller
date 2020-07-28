@@ -23,7 +23,7 @@ const (
 )
 
 type MainFigure struct {
-	uri                string
+	uris               []string
 	datePeriod         string
 	data               zebedee.TimeseriesMainFigure
 	differenceInterval string
@@ -63,14 +63,18 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		wg.Add(1)
 		go func(ctx context.Context, zcli ZebedeeClient, id string, figure MainFigure) {
 			defer wg.Done()
-			zebResp, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, figure.uri)
-			if err != nil {
-				log.Event(ctx, "error getting timeseries data", log.Error(err), log.Data{"timeseries-data": figure.uri})
-				mappedErrorFigure := &model.MainFigure{ID: id}
-				responses <- mappedErrorFigure
-				return
+			zebResponses := []zebedee.TimeseriesMainFigure{}
+			for _, uri := range figure.uris {
+				zebResponse, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, uri)
+				if err != nil {
+					log.Event(ctx, "error getting timeseries data", log.Error(err), log.Data{"timeseries-data": uri})
+					mappedErrorFigure := &model.MainFigure{ID: id}
+					responses <- mappedErrorFigure
+					return
+				}
+				zebResponses = append(zebResponses, zebResponse)
 			}
-			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, figure.differenceInterval, zebResp)
+			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, figure.differenceInterval, zebResponses[0])
 			responses <- mappedMainFigure
 			return
 		}(ctx, zcli, id, figure)
@@ -133,7 +137,7 @@ func init() {
 
 	// Employment
 	mainFigureMap["LF24"] = MainFigure{
-		uri:                "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
+		uris:               []string{"/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms"},
 		datePeriod:         mapper.PeriodMonth,
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodYear,
@@ -141,7 +145,7 @@ func init() {
 
 	// Unemployment
 	mainFigureMap["MGSX"] = MainFigure{
-		uri:                "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
+		uris:               []string{"/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms"},
 		datePeriod:         mapper.PeriodMonth,
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodYear,
@@ -149,7 +153,7 @@ func init() {
 
 	// Inflation (CPIH)
 	mainFigureMap["L55O"] = MainFigure{
-		uri:                "/economy/inflationandpriceindices/timeseries/l55o/mm23",
+		uris:               []string{"/economy/inflationandpriceindices/timeseries/l55o/mm23"},
 		datePeriod:         mapper.PeriodMonth,
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodMonth,
@@ -157,7 +161,7 @@ func init() {
 
 	// GDP
 	mainFigureMap["IHYQ"] = MainFigure{
-		uri:                "/economy/grossdomesticproductgdp/timeseries/ihyq/qna",
+		uris:               []string{"/economy/grossdomesticproductgdp/timeseries/ihyq/qna"},
 		datePeriod:         mapper.PeriodQuarter,
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodQuarter,
@@ -165,7 +169,7 @@ func init() {
 
 	// Population
 	mainFigureMap["UKPOP"] = MainFigure{
-		uri:                "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/ukpop/pop",
+		uris:               []string{"/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/ukpop/pop"},
 		datePeriod:         mapper.PeriodYear,
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodYear,
