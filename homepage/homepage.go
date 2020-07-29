@@ -74,7 +74,8 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 				}
 				zebResponses = append(zebResponses, zebResponse)
 			}
-			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, figure.differenceInterval, zebResponses[0])
+			latestMainFigure := getLatestTimeSeriesData(ctx, zebResponses)
+			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, figure.differenceInterval, latestMainFigure)
 			responses <- mappedMainFigure
 			return
 		}(ctx, zcli, id, figure)
@@ -161,7 +162,7 @@ func init() {
 
 	// GDP
 	mainFigureMap["IHYQ"] = MainFigure{
-		uris:               []string{"/economy/grossdomesticproductgdp/timeseries/ihyq/qna"},
+		uris:               []string{"/economy/grossdomesticproductgdp/timeseries/ihyq/qna", "/economy/grossdomesticproductgdp/timeseries/ihyq/pn2"},
 		datePeriod:         mapper.PeriodQuarter,
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodQuarter,
@@ -175,4 +176,27 @@ func init() {
 		differenceInterval: mapper.PeriodYear,
 	}
 
+}
+
+func getLatestTimeSeriesData(ctx context.Context, zts []zebedee.TimeseriesMainFigure) zebedee.TimeseriesMainFigure {
+	var latest zebedee.TimeseriesMainFigure
+
+	for _, ts := range zts {
+		releaseDate, err := time.Parse(time.RFC3339, ts.Description.ReleaseDate)
+		if err != nil {
+			log.Event(ctx, "failed to parse release date", log.Error(err), log.Data{"release_date": ts.Description.ReleaseDate})
+			return ts
+		}
+		latestReleaseDate, err := time.Parse(time.RFC3339, latest.Description.ReleaseDate)
+		if err != nil {
+			log.Event(ctx, "failed to parse release date", log.Error(err), log.Data{"release_date": latest.Description.ReleaseDate})
+			return ts
+		}
+		if latest.URI == "" {
+			latest = ts
+		} else if releaseDate.After(latestReleaseDate) {
+			latest = ts
+		}
+	}
+	return latest
 }
