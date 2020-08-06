@@ -33,6 +33,7 @@ func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, relea
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
+	page.HasJSONLD = true
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
 	page.Data.ReleaseCalendar = *releaseCal
