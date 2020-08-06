@@ -182,6 +182,9 @@ func getLatestTimeSeriesData(ctx context.Context, zts []zebedee.TimeseriesMainFi
 	var latest zebedee.TimeseriesMainFigure
 
 	for _, ts := range zts {
+		if latest.URI == "" {
+			latest = ts
+		}
 		releaseDate, err := time.Parse(time.RFC3339, ts.Description.ReleaseDate)
 		if err != nil {
 			log.Event(ctx, "failed to parse release date", log.Error(err), log.Data{"release_date": ts.Description.ReleaseDate})
@@ -192,9 +195,7 @@ func getLatestTimeSeriesData(ctx context.Context, zts []zebedee.TimeseriesMainFi
 			log.Event(ctx, "failed to parse release date", log.Error(err), log.Data{"release_date": latest.Description.ReleaseDate})
 			return ts
 		}
-		if latest.URI == "" {
-			latest = ts
-		} else if releaseDate.After(latestReleaseDate) {
+		if releaseDate.After(latestReleaseDate) {
 			latest = ts
 		}
 	}
