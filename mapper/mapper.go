@@ -33,7 +33,6 @@ func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, relea
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
-	page.Metadata.Description = "The UK's largest independent producer of official statistics and the recognised national statistical institute of the UK."
 	page.HasJSONLD = true
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
