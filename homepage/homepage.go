@@ -20,6 +20,9 @@ import (
 const (
 	// HomepagePath is the string value which contains the URI to get the homepage's data.json
 	HomepagePath = "/"
+
+	// ImageVariant is the image variant to use for the homepage
+	ImageVariant = "original"
 )
 
 type MainFigure struct {
@@ -99,13 +102,15 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	if err != nil {
 		log.Event(ctx, "error getting homepage data from client", log.Error(err), log.Data{"content-path": HomepagePath})
 	}
-	imageObjects := []image.Image{}
+	imageObjects := map[string]image.ImageDownload{}
 	for _, fc := range homepageContent.FeaturedContent {
-		image, err := icli.GetImage(ctx, userAccessToken, "", "", fc.ImageID)
-		if err != nil {
-			log.Event(ctx, "error getting image", log.Error(err), log.Data{"featured-content-entry": fc.Title})
+		if fc.ImageID != "" {
+			image, err := icli.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
+			if err != nil {
+				log.Event(ctx, "error getting image download variant", log.Error(err), log.Data{"featured-content-entry": fc.Title})
+			}
+			imageObjects[fc.ImageID] = image
 		}
-		imageObjects = append(imageObjects, image)
 	}
 
 	mappedFeaturedContent := mapper.FeaturedContent(homepageContent, imageObjects)

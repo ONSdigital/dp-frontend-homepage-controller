@@ -8,7 +8,7 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 )
 
-//go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient RenderClient BabbageClient
+//go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient RenderClient BabbageClient ImageClient
 
 // ZebedeeClient is an interface with methods required for a zebedee client
 type ZebedeeClient interface {
@@ -23,7 +23,7 @@ type BabbageClient interface {
 
 // ImageClient is an interface with methods required for the Image API service client
 type ImageClient interface {
-	GetImage(ctx context.Context, userAuthToken, serviceAuthToken, collectionID, imageID string) (m image.Image, err error)
+	GetDownloadVariant(ctx context.Context, userAuthToken, serviceAuthToken, collectionID, imageID, variant string) (m image.ImageDownload, err error)
 }
 
 // RenderClient is an interface with methods required for rendering a template

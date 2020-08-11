@@ -147,6 +147,80 @@ func (mock *ZebedeeClientMock) GetTimeseriesMainFigureCalls() []struct {
 }
 
 var (
+	lockRenderClientMockDo sync.RWMutex
+)
+
+// Ensure, that RenderClientMock does implement RenderClient.
+// If this is not the case, regenerate this file with moq.
+var _ RenderClient = &RenderClientMock{}
+
+// RenderClientMock is a mock implementation of RenderClient.
+//
+//     func TestSomethingThatUsesRenderClient(t *testing.T) {
+//
+//         // make and configure a mocked RenderClient
+//         mockedRenderClient := &RenderClientMock{
+//             DoFunc: func(in1 string, in2 []byte) ([]byte, error) {
+// 	               panic("mock out the Do method")
+//             },
+//         }
+//
+//         // use mockedRenderClient in code that requires RenderClient
+//         // and then make assertions.
+//
+//     }
+type RenderClientMock struct {
+	// DoFunc mocks the Do method.
+	DoFunc func(in1 string, in2 []byte) ([]byte, error)
+
+	// calls tracks calls to the methods.
+	calls struct {
+		// Do holds details about calls to the Do method.
+		Do []struct {
+			// In1 is the in1 argument value.
+			In1 string
+			// In2 is the in2 argument value.
+			In2 []byte
+		}
+	}
+}
+
+// Do calls DoFunc.
+func (mock *RenderClientMock) Do(in1 string, in2 []byte) ([]byte, error) {
+	if mock.DoFunc == nil {
+		panic("RenderClientMock.DoFunc: method is nil but RenderClient.Do was just called")
+	}
+	callInfo := struct {
+		In1 string
+		In2 []byte
+	}{
+		In1: in1,
+		In2: in2,
+	}
+	lockRenderClientMockDo.Lock()
+	mock.calls.Do = append(mock.calls.Do, callInfo)
+	lockRenderClientMockDo.Unlock()
+	return mock.DoFunc(in1, in2)
+}
+
+// DoCalls gets all the calls that were made to Do.
+// Check the length with:
+//     len(mockedRenderClient.DoCalls())
+func (mock *RenderClientMock) DoCalls() []struct {
+	In1 string
+	In2 []byte
+} {
+	var calls []struct {
+		In1 string
+		In2 []byte
+	}
+	lockRenderClientMockDo.RLock()
+	calls = mock.calls.Do
+	lockRenderClientMockDo.RUnlock()
+	return calls
+}
+
+var (
 	lockBabbageClientMockGetReleaseCalendar sync.RWMutex
 )
 
@@ -239,7 +313,7 @@ func (mock *BabbageClientMock) GetReleaseCalendarCalls() []struct {
 }
 
 var (
-	lockImageClientMockGetImage sync.RWMutex
+	lockImageClientMockGetDownloadVariant sync.RWMutex
 )
 
 // Ensure, that ImageClientMock does implement ImageClient.
@@ -252,8 +326,8 @@ var _ ImageClient = &ImageClientMock{}
 //
 //         // make and configure a mocked ImageClient
 //         mockedImageClient := &ImageClientMock{
-//             GetImageFunc: func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string) (image.Image, error) {
-// 	               panic("mock out the GetImage method")
+//             GetDownloadVariantFunc: func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string, variant string) (image.ImageDownload, error) {
+// 	               panic("mock out the GetDownloadVariant method")
 //             },
 //         }
 //
@@ -262,13 +336,13 @@ var _ ImageClient = &ImageClientMock{}
 //
 //     }
 type ImageClientMock struct {
-	// GetImageFunc mocks the GetImage method.
-	GetImageFunc func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string) (image.Image, error)
+	// GetDownloadVariantFunc mocks the GetDownloadVariant method.
+	GetDownloadVariantFunc func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string, variant string) (image.ImageDownload, error)
 
 	// calls tracks calls to the methods.
 	calls struct {
-		// GetImage holds details about calls to the GetImage method.
-		GetImage []struct {
+		// GetDownloadVariant holds details about calls to the GetDownloadVariant method.
+		GetDownloadVariant []struct {
 			// Ctx is the ctx argument value.
 			Ctx context.Context
 			// UserAuthToken is the userAuthToken argument value.
@@ -279,14 +353,16 @@ type ImageClientMock struct {
 			CollectionID string
 			// ImageID is the imageID argument value.
 			ImageID string
+			// Variant is the variant argument value.
+			Variant string
 		}
 	}
 }
 
-// GetImage calls GetImageFunc.
-func (mock *ImageClientMock) GetImage(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string) (image.Image, error) {
-	if mock.GetImageFunc == nil {
-		panic("ImageClientMock.GetImageFunc: method is nil but ImageClient.GetImage was just called")
+// GetDownloadVariant calls GetDownloadVariantFunc.
+func (mock *ImageClientMock) GetDownloadVariant(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string, variant string) (image.ImageDownload, error) {
+	if mock.GetDownloadVariantFunc == nil {
+		panic("ImageClientMock.GetDownloadVariantFunc: method is nil but ImageClient.GetDownloadVariant was just called")
 	}
 	callInfo := struct {
 		Ctx              context.Context
@@ -294,28 +370,31 @@ func (mock *ImageClientMock) GetImage(ctx context.Context, userAuthToken string,
 		ServiceAuthToken string
 		CollectionID     string
 		ImageID          string
+		Variant          string
 	}{
 		Ctx:              ctx,
 		UserAuthToken:    userAuthToken,
 		ServiceAuthToken: serviceAuthToken,
 		CollectionID:     collectionID,
 		ImageID:          imageID,
+		Variant:          variant,
 	}
-	lockImageClientMockGetImage.Lock()
-	mock.calls.GetImage = append(mock.calls.GetImage, callInfo)
-	lockImageClientMockGetImage.Unlock()
-	return mock.GetImageFunc(ctx, userAuthToken, serviceAuthToken, collectionID, imageID)
+	lockImageClientMockGetDownloadVariant.Lock()
+	mock.calls.GetDownloadVariant = append(mock.calls.GetDownloadVariant, callInfo)
+	lockImageClientMockGetDownloadVariant.Unlock()
+	return mock.GetDownloadVariantFunc(ctx, userAuthToken, serviceAuthToken, collectionID, imageID, variant)
 }
 
-// GetImageCalls gets all the calls that were made to GetImage.
+// GetDownloadVariantCalls gets all the calls that were made to GetDownloadVariant.
 // Check the length with:
-//     len(mockedImageClient.GetImageCalls())
-func (mock *ImageClientMock) GetImageCalls() []struct {
+//     len(mockedImageClient.GetDownloadVariantCalls())
+func (mock *ImageClientMock) GetDownloadVariantCalls() []struct {
 	Ctx              context.Context
 	UserAuthToken    string
 	ServiceAuthToken string
 	CollectionID     string
 	ImageID          string
+	Variant          string
 } {
 	var calls []struct {
 		Ctx              context.Context
@@ -323,83 +402,10 @@ func (mock *ImageClientMock) GetImageCalls() []struct {
 		ServiceAuthToken string
 		CollectionID     string
 		ImageID          string
+		Variant          string
 	}
-	lockImageClientMockGetImage.RLock()
-	calls = mock.calls.GetImage
-	lockImageClientMockGetImage.RUnlock()
-	return calls
-}
-
-var (
-	lockRenderClientMockDo sync.RWMutex
-)
-
-// Ensure, that RenderClientMock does implement RenderClient.
-// If this is not the case, regenerate this file with moq.
-var _ RenderClient = &RenderClientMock{}
-
-// RenderClientMock is a mock implementation of RenderClient.
-//
-//     func TestSomethingThatUsesRenderClient(t *testing.T) {
-//
-//         // make and configure a mocked RenderClient
-//         mockedRenderClient := &RenderClientMock{
-//             DoFunc: func(in1 string, in2 []byte) ([]byte, error) {
-// 	               panic("mock out the Do method")
-//             },
-//         }
-//
-//         // use mockedRenderClient in code that requires RenderClient
-//         // and then make assertions.
-//
-//     }
-type RenderClientMock struct {
-	// DoFunc mocks the Do method.
-	DoFunc func(in1 string, in2 []byte) ([]byte, error)
-
-	// calls tracks calls to the methods.
-	calls struct {
-		// Do holds details about calls to the Do method.
-		Do []struct {
-			// In1 is the in1 argument value.
-			In1 string
-			// In2 is the in2 argument value.
-			In2 []byte
-		}
-	}
-}
-
-// Do calls DoFunc.
-func (mock *RenderClientMock) Do(in1 string, in2 []byte) ([]byte, error) {
-	if mock.DoFunc == nil {
-		panic("RenderClientMock.DoFunc: method is nil but RenderClient.Do was just called")
-	}
-	callInfo := struct {
-		In1 string
-		In2 []byte
-	}{
-		In1: in1,
-		In2: in2,
-	}
-	lockRenderClientMockDo.Lock()
-	mock.calls.Do = append(mock.calls.Do, callInfo)
-	lockRenderClientMockDo.Unlock()
-	return mock.DoFunc(in1, in2)
-}
-
-// DoCalls gets all the calls that were made to Do.
-// Check the length with:
-//     len(mockedRenderClient.DoCalls())
-func (mock *RenderClientMock) DoCalls() []struct {
-	In1 string
-	In2 []byte
-} {
-	var calls []struct {
-		In1 string
-		In2 []byte
-	}
-	lockRenderClientMockDo.RLock()
-	calls = mock.calls.Do
-	lockRenderClientMockDo.RUnlock()
+	lockImageClientMockGetDownloadVariant.RLock()
+	calls = mock.calls.GetDownloadVariant
+	lockImageClientMockGetDownloadVariant.RUnlock()
 	return calls
 }
