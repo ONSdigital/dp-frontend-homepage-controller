@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/headers"
+	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
@@ -16,22 +17,31 @@ import (
 	"github.com/ONSdigital/log.go/log"
 )
 
+const (
+	// HomepagePath is the string value which contains the URI to get the homepage's data.json
+	HomepagePath = "/"
+
+	// ImageVariant is the image variant to use for the homepage
+	ImageVariant = "original"
+)
+
 type MainFigure struct {
-	uri        string
-	datePeriod string
-	data       zebedee.TimeseriesMainFigure
+	uris               []string
+	datePeriod         string
+	data               zebedee.TimeseriesMainFigure
+	differenceInterval string
 }
 
 var mainFigureMap map[string]MainFigure
 
 // Handler handles requests to homepage endpoint
-func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient) http.HandlerFunc {
+func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		handle(w, req, rend, zcli, bcli)
+		handle(w, req, rend, zcli, bcli, icli)
 	}
 }
 
-func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient) {
+func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) {
 	ctx := req.Context()
 
 	userAccessToken, err := headers.GetUserAuthToken(req)
@@ -56,14 +66,19 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		wg.Add(1)
 		go func(ctx context.Context, zcli ZebedeeClient, id string, figure MainFigure) {
 			defer wg.Done()
-			zebResp, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, figure.uri)
-			if err != nil {
-				log.Event(ctx, "error getting timeseries data", log.Error(err), log.Data{"timeseries-data": figure.uri})
-				mappedErrorFigure := &model.MainFigure{ID: id}
-				responses <- mappedErrorFigure
-				return
+			zebResponses := []zebedee.TimeseriesMainFigure{}
+			for _, uri := range figure.uris {
+				zebResponse, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, uri)
+				if err != nil {
+					log.Event(ctx, "error getting timeseries data", log.Error(err), log.Data{"timeseries-data": uri})
+					mappedErrorFigure := &model.MainFigure{ID: id}
+					responses <- mappedErrorFigure
+					return
+				}
+				zebResponses = append(zebResponses, zebResponse)
 			}
-			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, zebResp)
+			latestMainFigure := getLatestTimeSeriesData(ctx, zebResponses)
+			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, figure.differenceInterval, latestMainFigure)
 			responses <- mappedMainFigure
 			return
 		}(ctx, zcli, id, figure)
@@ -82,7 +97,25 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
 	releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
 
-	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData)
+	// Get homepage data from Zebedee
+	homepageContent, err := zcli.GetHomepageContent(ctx, userAccessToken, HomepagePath)
+	if err != nil {
+		log.Event(ctx, "error getting homepage data from client", log.Error(err), log.Data{"content-path": HomepagePath})
+	}
+	imageObjects := map[string]image.ImageDownload{}
+	for _, fc := range homepageContent.FeaturedContent {
+		if fc.ImageID != "" {
+			image, err := icli.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
+			if err != nil {
+				log.Event(ctx, "error getting image download variant", log.Error(err), log.Data{"featured-content-entry": fc.Title})
+			}
+			imageObjects[fc.ImageID] = image
+		}
+	}
+
+	mappedFeaturedContent := mapper.FeaturedContent(homepageContent, imageObjects)
+
+	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent)
 
 	b, err := json.Marshal(m)
 	if err != nil {
@@ -105,51 +138,71 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	return
 }
 
-const (
-	// PeriodYear is the string value for year time period
-	PeriodYear = "year"
-	// PeriodQuarter is the string value for quarter time period
-	PeriodQuarter = "quarter"
-	// PeriodMonth is the string value for month time period
-	PeriodMonth = "month"
-)
-
 func init() {
 	mainFigureMap = make(map[string]MainFigure)
 
 	// Employment
 	mainFigureMap["LF24"] = MainFigure{
-		uri:        "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms",
-		datePeriod: PeriodMonth,
-		data:       zebedee.TimeseriesMainFigure{},
+		uris:               []string{"/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms"},
+		datePeriod:         mapper.PeriodMonth,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodYear,
 	}
 
 	// Unemployment
 	mainFigureMap["MGSX"] = MainFigure{
-		uri:        "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms",
-		datePeriod: PeriodMonth,
-		data:       zebedee.TimeseriesMainFigure{},
+		uris:               []string{"/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms"},
+		datePeriod:         mapper.PeriodMonth,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodYear,
 	}
 
 	// Inflation (CPIH)
 	mainFigureMap["L55O"] = MainFigure{
-		uri:        "/economy/inflationandpriceindices/timeseries/l55o/mm23",
-		datePeriod: PeriodMonth,
-		data:       zebedee.TimeseriesMainFigure{},
+		uris:               []string{"/economy/inflationandpriceindices/timeseries/l55o/mm23"},
+		datePeriod:         mapper.PeriodMonth,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodMonth,
 	}
 
 	// GDP
 	mainFigureMap["IHYQ"] = MainFigure{
-		uri:        "/economy/grossdomesticproductgdp/timeseries/ihyq/qna",
-		datePeriod: PeriodQuarter,
-		data:       zebedee.TimeseriesMainFigure{},
+		uris:               []string{"/economy/grossdomesticproductgdp/timeseries/ihyq/qna", "/economy/grossdomesticproductgdp/timeseries/ihyq/pn2"},
+		datePeriod:         mapper.PeriodQuarter,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodQuarter,
 	}
 
 	// Population
 	mainFigureMap["UKPOP"] = MainFigure{
-		uri:        "/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/ukpop/pop",
-		datePeriod: PeriodYear,
-		data:       zebedee.TimeseriesMainFigure{},
+		uris:               []string{"/peoplepopulationandcommunity/populationandmigration/populationestimates/timeseries/ukpop/pop"},
+		datePeriod:         mapper.PeriodYear,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodYear,
 	}
 
+}
+
+func getLatestTimeSeriesData(ctx context.Context, zts []zebedee.TimeseriesMainFigure) zebedee.TimeseriesMainFigure {
+	var latest zebedee.TimeseriesMainFigure
+
+	for _, ts := range zts {
+		if latest.URI == "" {
+			latest = ts
+		}
+		releaseDate, err := time.Parse(time.RFC3339, ts.Description.ReleaseDate)
+		if err != nil {
+			log.Event(ctx, "failed to parse release date", log.Error(err), log.Data{"release_date": ts.Description.ReleaseDate})
+			return ts
+		}
+		latestReleaseDate, err := time.Parse(time.RFC3339, latest.Description.ReleaseDate)
+		if err != nil {
+			log.Event(ctx, "failed to parse release date", log.Error(err), log.Data{"release_date": latest.Description.ReleaseDate})
+			return ts
+		}
+		if releaseDate.After(latestReleaseDate) {
+			latest = ts
+		}
+	}
+	return latest
 }

@@ -3,11 +3,13 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
+
+	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/renderer"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
@@ -65,11 +67,11 @@ func run(ctx context.Context) error {
 		Renderer: renderer.New(cfg.RendererURL),
 		Zebedee:  zebedee.New(cfg.ZebedeeURL),
 		Babbage:  release_calendar.New(cfg.BabbageURL),
+		ImageAPI: image.NewAPIClient(cfg.ImageURL),
 	}
 
-
 	healthcheck := health.New(versionInfo, cfg.HealthCheckCriticalTimeout, cfg.HealthCheckInterval)
-	if err = registerCheckers(ctx, &healthcheck, clients.Renderer, clients.Zebedee, clients.Babbage); err != nil {
+	if err = registerCheckers(ctx, &healthcheck, clients.Renderer, clients.Zebedee, clients.Babbage, clients.ImageAPI); err != nil {
 		return err
 	}
 	routes.Init(ctx, r, healthcheck, clients)
@@ -122,7 +124,7 @@ func gracefulShutdown(cfg *config.Config, s *server.Server, hc health.HealthChec
 	return nil
 }
 
-func registerCheckers(ctx context.Context, h *health.HealthCheck, r *renderer.Renderer, z *zebedee.Client, b *release_calendar.Client) (err error) {
+func registerCheckers(ctx context.Context, h *health.HealthCheck, r *renderer.Renderer, z *zebedee.Client, b *release_calendar.Client, i *image.Client) (err error) {
 	if err = h.AddCheck("frontend renderer", r.Checker); err != nil {
 		log.Event(ctx, "failed to add frontend renderer checker", log.Error(err))
 	}
@@ -131,6 +133,9 @@ func registerCheckers(ctx context.Context, h *health.HealthCheck, r *renderer.Re
 	}
 	if err = h.AddCheck("Babbage", b.Checker); err != nil {
 		log.Event(ctx, "failed to add babbage checker", log.Error(err))
+	}
+	if err = h.AddCheck("Image API", i.Checker); err != nil {
+		log.Event(ctx, "failed to add image api checker", log.Error(err))
 	}
 	return
 }
