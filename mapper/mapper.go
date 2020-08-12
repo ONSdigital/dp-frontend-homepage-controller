@@ -108,27 +108,17 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 }
 
 // FeaturedContent takes the homepageContent as returned from the client and returns an array of featured content
-func FeaturedContent(homepageData zebedee.HomepageContent, imageObjects []image.Image) []model.Feature {
+func FeaturedContent(homepageData zebedee.HomepageContent, images map[string]image.ImageDownload) []model.Feature {
 	var mappedFeaturesContent []model.Feature
-	for i, fc := range homepageData.FeaturedContent {
-		imageHref := findMatchingImageHref(homepageData.FeaturedContent[i].ImageID, imageObjects)
+	for _, fc := range homepageData.FeaturedContent {
 		mappedFeaturesContent = append(mappedFeaturesContent, model.Feature{
 			Title:       fc.Title,
 			Description: fc.Description,
 			URI:         fc.URI,
-			ImageURL:    imageHref,
+			ImageURL:    images[fc.ImageID].Href,
 		})
 	}
 	return mappedFeaturesContent
-}
-
-func findMatchingImageHref(imageID string, imageObjects []image.Image) string {
-	for i := range imageObjects {
-		if imageObjects[i].Id == imageID {
-			return imageObjects[i].Downloads["png"].Href
-		}
-	}
-	return ""
 }
 
 func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {

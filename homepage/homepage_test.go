@@ -165,26 +165,18 @@ func TestUnitMapper(t *testing.T) {
 		Type:           "",
 		Description:    zebedee.HomepageDescription{},
 	}
-	mockedImageObjects := []image.Image{
-		{
-			Id:           "123",
-			CollectionId: "",
-			Filename:     "123.png",
-			Downloads: map[string]image.ImageDownload{
-				"png": {
-					Href: "path/to/123.png",
-				},
-			},
+	var mockedImageDownloadData = map[string]image.ImageDownload{
+		"123": {
+			Size:  111111,
+			Type:  "blah",
+			Href:  "http://www.example.com/images/123/original.png",
+			State: "completed",
 		},
-		{
-			Id:           "456",
-			CollectionId: "",
-			Filename:     "456.png",
-			Downloads: map[string]image.ImageDownload{
-				"png": {
-					Href: "path/to/456.png",
-				},
-			},
+		"456": {
+			Size:  111111,
+			Type:  "blah",
+			Href:  "http://www.example.com/images/456/original.png",
+			State: "completed",
 		},
 	}
 	expectedSuccessResponse := "<html><body><h1>Some HTML from renderer!</h1></body></html>"
@@ -206,14 +198,8 @@ func TestUnitMapper(t *testing.T) {
 		}
 
 		mockImageClient := &ImageClientMock{
-			GetImageFunc: func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string) (image.Image, error) {
-				var matchingImage image.Image
-				for _, image := range mockedImageObjects {
-					if image.Id == imageID {
-						matchingImage = image
-					}
-				}
-				return matchingImage, nil
+			GetDownloadVariantFunc: func(ctx context.Context, userAuthToken, serviceAuthToken, collectionID, imageID, variant string) (image.ImageDownload, error) {
+				return mockedImageDownloadData[imageID], nil
 			},
 		}
 

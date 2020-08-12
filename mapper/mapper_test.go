@@ -224,26 +224,18 @@ func TestUnitMapper(t *testing.T) {
 			ImageURL:    "",
 		},
 	}
-	var mockedImageData = []image.Image{
-		{
-			Id:           "123",
-			CollectionId: "",
-			Filename:     "123.png",
-			Downloads: map[string]image.ImageDownload{
-				"png": {
-					Href: "path/to/123.png",
-				},
-			},
+	var mockedImageDownloadsData = map[string]image.ImageDownload{
+		"123": {
+			Size:  111111,
+			Type:  "blah",
+			Href:  "http://www.example.com/images/123/original.png",
+			State: "completed",
 		},
-		{
-			Id:           "456",
-			CollectionId: "",
-			Filename:     "456.png",
-			Downloads: map[string]image.ImageDownload{
-				"png": {
-					Href: "path/to/456.png",
-				},
-			},
+		"456": {
+			Size:  111111,
+			Type:  "blah",
+			Href:  "http://www.example.com/images/456/original.png",
+			State: "completed",
 		},
 	}
 
@@ -279,14 +271,14 @@ func TestUnitMapper(t *testing.T) {
 	Convey("test FeaturedContent", t, func() {
 		Convey("FeaturedContent handles when no homepage data is passed in", func() {
 			mockedTestData := zebedee.HomepageContent{}
-			mockedImageTestData := []image.Image{}
+			mockedImageTestData := map[string]image.ImageDownload{}
 			featuredContent := FeaturedContent(mockedTestData, mockedImageTestData)
 			So(featuredContent, ShouldBeNil)
 		})
 
 		Convey("FeaturedContent maps mock data to page model correctly", func() {
 			mockedTestData := mockedHomepageData
-			mockedImageTestData := mockedImageData
+			mockedImageTestData := mockedImageDownloadsData
 			featuredContent := FeaturedContent(mockedTestData, mockedImageTestData)
 			So(len(featuredContent), ShouldEqual, 3)
 			for i := 0; i < len(featuredContent); i++ {
@@ -294,7 +286,7 @@ func TestUnitMapper(t *testing.T) {
 				So(featuredContent[i].Description, ShouldEqual, mockedTestData.FeaturedContent[i].Description)
 				So(featuredContent[i].URI, ShouldEqual, mockedTestData.FeaturedContent[i].URI)
 				if featuredContent[i].ImageURL != "" {
-					So(featuredContent[i].ImageURL, ShouldEqual, mockedImageData[i].Downloads["png"].Href)
+					So(featuredContent[i].ImageURL, ShouldEqual, mockedImageDownloadsData[mockedTestData.FeaturedContent[i].ImageID].Href)
 				}
 			}
 			So(featuredContent[2].ImageURL, ShouldEqual, "")
