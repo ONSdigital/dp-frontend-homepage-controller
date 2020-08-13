@@ -13,7 +13,7 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
-	"github.com/ONSdigital/go-ns/common"
+	dprequest "github.com/ONSdigital/dp-net/request"
 	"github.com/ONSdigital/log.go/log"
 )
 
@@ -51,9 +51,9 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	}
 
 	var localeCode string
-	if ctx.Value(common.LocaleHeaderKey) != nil {
+	if ctx.Value(dprequest.LocaleHeaderKey) != nil {
 		var ok bool
-		localeCode, ok = ctx.Value(common.LocaleHeaderKey).(string)
+		localeCode, ok = ctx.Value(dprequest.LocaleHeaderKey).(string)
 		if !ok {
 			log.Event(ctx, "error retrieving locale code", log.WARN, log.Error(errors.New("error casting locale code to string")))
 		}

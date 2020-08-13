@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 
@@ -10,11 +11,11 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 
-	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
 	"github.com/ONSdigital/log.go/log"
 	"github.com/gorilla/mux"
 )
 
+// Clients contains all the required Clients for frontend homepage controller
 type Clients struct {
 	Renderer *renderer.Renderer
 	Zebedee  *zebedee.Client
@@ -23,8 +24,8 @@ type Clients struct {
 }
 
 // Init initialises routes for the service
-func Init(ctx context.Context, r *mux.Router, hc health.HealthCheck, c Clients) {
+func Init(ctx context.Context, r *mux.Router, hcHandler func(http.ResponseWriter, *http.Request), c *Clients) {
 	log.Event(ctx, "adding routes")
-	r.StrictSlash(true).Path("/health").HandlerFunc(hc.Handler)
+	r.StrictSlash(true).Path("/health").HandlerFunc(hcHandler)
 	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(c.Renderer, c.Zebedee, c.Babbage, c.ImageAPI))
 }

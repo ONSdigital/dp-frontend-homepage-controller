@@ -9,7 +9,7 @@ import (
 
 	healthcheck "github.com/ONSdigital/dp-api-clients-go/health"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
-	rchttp "github.com/ONSdigital/dp-rchttp"
+	dphtth "github.com/ONSdigital/dp-net/http"
 	"github.com/ONSdigital/log.go/log"
 )
 
@@ -17,7 +17,7 @@ const service = "Babbage"
 
 // Client represents a babbage client
 type Client struct {
-	cli rchttp.Clienter
+	cli dphtth.Clienter
 	url string
 }
 
