@@ -55,7 +55,7 @@ func run(ctx context.Context) error {
 		return errors.Wrap(err, "running service failed")
 	}
 
-	// blocks until an os interrupt or a fatal error occurs
+	// Blocks until an os interrupt or a fatal error occurs
 	select {
 	case err := <-svcErrors:
 		log.Event(ctx, "service error received", log.ERROR, log.Error(err))
