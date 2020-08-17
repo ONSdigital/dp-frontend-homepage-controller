@@ -19,12 +19,12 @@ import (
 
 // Service contains all the configs, server and clients to run the frontend homepage controller
 type Service struct {
-	config             *config.Config
+	Config             *config.Config
 	routerHealthClient *health.Client
-	healthCheck        HealthChecker
-	server             HTTPServer
+	HealthCheck        HealthChecker
+	Server             HTTPServer
 	clients            *routes.Clients
-	serviceList        *ExternalServiceList
+	ServiceList        *ExternalServiceList
 }
 
 // Run the service
@@ -33,8 +33,8 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 
 	// Initialise Service struct
 	svc = &Service{
-		config:      cfg,
-		serviceList: serviceList,
+		Config:      cfg,
+		ServiceList: serviceList,
 	}
 
 	// Get health client for api router
@@ -49,7 +49,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	}
 
 	// Get healthcheck with checkers
-	svc.healthCheck, err = serviceList.GetHealthCheck(cfg, buildTime, gitCommit, version)
+	svc.HealthCheck, err = serviceList.GetHealthCheck(cfg, buildTime, gitCommit, version)
 	if err != nil {
 		log.Event(ctx, "failed to create health check", log.FATAL, log.Error(err))
 		return nil, err
@@ -60,15 +60,15 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 
 	// Initialise router
 	r := mux.NewRouter()
-	routes.Init(ctx, r, svc.healthCheck.Handler, svc.clients)
+	routes.Init(ctx, r, svc.HealthCheck.Handler, svc.clients)
 	m := createMiddleware(cfg)
-	svc.server = serviceList.GetHTTPServer(cfg.BindAddr, m.Then(r))
+	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, m.Then(r))
 
 	// Start Healthcheck and HTTP Server
 	log.Event(ctx, "Starting server", log.Data{"config": cfg})
-	svc.healthCheck.Start(ctx)
+	svc.HealthCheck.Start(ctx)
 	go func() {
-		if err := svc.server.ListenAndServe(); err != nil {
+		if err := svc.Server.ListenAndServe(); err != nil {
 			svcErrors <- errors.Wrap(err, "failure in http listen and serve")
 		}
 	}()
@@ -85,7 +85,7 @@ func createMiddleware(cfg *config.Config) alice.Chain {
 
 // Close gracefully shuts the service down in the required order, with timeout
 func (svc *Service) Close(ctx context.Context) error {
-	timeout := svc.config.GracefulShutdownTimeout
+	timeout := svc.Config.GracefulShutdownTimeout
 	log.Event(ctx, "commencing graceful shutdown", log.Data{"graceful_shutdown_timeout": timeout}, log.INFO)
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	hasShutdownError := false
@@ -94,12 +94,12 @@ func (svc *Service) Close(ctx context.Context) error {
 		defer cancel()
 
 		// stop healthcheck, as it depends on everything else
-		if svc.serviceList.HealthCheck {
-			svc.healthCheck.Stop()
+		if svc.ServiceList.HealthCheck {
+			svc.HealthCheck.Stop()
 		}
 
 		// stop any incoming requests
-		if err := svc.server.Shutdown(ctx); err != nil {
+		if err := svc.Server.Shutdown(ctx); err != nil {
 			log.Event(ctx, "failed to shutdown http server", log.Error(err), log.ERROR)
 			hasShutdownError = true
 		}
@@ -129,22 +129,22 @@ func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (e
 
 	hasErrors := false
 
-	if err = svc.healthCheck.AddCheck("frontend renderer", svc.clients.Renderer.Checker); err != nil {
+	if err = svc.HealthCheck.AddCheck("frontend renderer", svc.clients.Renderer.Checker); err != nil {
 		hasErrors = true
 		log.Event(ctx, "failed to add frontend renderer checker", log.Error(err))
 	}
 
-	if err = svc.healthCheck.AddCheck("Zebedee", svc.clients.Zebedee.Checker); err != nil {
+	if err = svc.HealthCheck.AddCheck("Zebedee", svc.clients.Zebedee.Checker); err != nil {
 		hasErrors = true
 		log.Event(ctx, "failed to add zebedee checker", log.Error(err))
 	}
 
-	if err = svc.healthCheck.AddCheck("Babbage", svc.clients.Babbage.Checker); err != nil {
+	if err = svc.HealthCheck.AddCheck("Babbage", svc.clients.Babbage.Checker); err != nil {
 		hasErrors = true
 		log.Event(ctx, "failed to add babbage checker", log.Error(err))
 	}
 
-	if err = svc.healthCheck.AddCheck("API Router (to access Image API)", svc.routerHealthClient.Checker); err != nil {
+	if err = svc.HealthCheck.AddCheck("API Router (to access Image API)", svc.routerHealthClient.Checker); err != nil {
 		hasErrors = true
 		log.Event(ctx, "failed to add image api checker", log.Error(err))
 	}
