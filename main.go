@@ -44,10 +44,10 @@ func run(ctx context.Context) error {
 	// Read config
 	cfg, err := config.Get()
 	if err != nil {
-		log.Event(ctx, "unable to retrieve service configuration", log.Error(err))
+		log.Event(ctx, "unable to retrieve service configuration", log.FATAL, log.Error(err))
 		return err
 	}
-	log.Event(ctx, "got service configuration", log.Data{"config": cfg})
+	log.Event(ctx, "got service configuration", log.INFO, log.Data{"config": cfg})
 
 	// Start service
 	svc, err := service.Run(ctx, cfg, svcList, BuildTime, GitCommit, Version, svcErrors)
@@ -60,7 +60,7 @@ func run(ctx context.Context) error {
 	case err := <-svcErrors:
 		log.Event(ctx, "service error received", log.ERROR, log.Error(err))
 	case sig := <-signals:
-		log.Event(ctx, "os signal received", log.Data{"signal": sig}, log.INFO)
+		log.Event(ctx, "os signal received", log.INFO, log.Data{"signal": sig})
 	}
 	return svc.Close(ctx)
 }

@@ -65,7 +65,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, m.Then(r))
 
 	// Start Healthcheck and HTTP Server
-	log.Event(ctx, "Starting server", log.Data{"config": cfg})
+	log.Event(ctx, "Starting server", log.INFO, log.Data{"config": cfg})
 	svc.HealthCheck.Start(ctx)
 	go func() {
 		if err := svc.Server.ListenAndServe(); err != nil {
@@ -86,7 +86,7 @@ func createMiddleware(cfg *config.Config) alice.Chain {
 // Close gracefully shuts the service down in the required order, with timeout
 func (svc *Service) Close(ctx context.Context) error {
 	timeout := svc.Config.GracefulShutdownTimeout
-	log.Event(ctx, "commencing graceful shutdown", log.Data{"graceful_shutdown_timeout": timeout}, log.INFO)
+	log.Event(ctx, "commencing graceful shutdown", log.INFO, log.Data{"graceful_shutdown_timeout": timeout})
 	ctx, cancel := context.WithTimeout(ctx, timeout)
 	hasShutdownError := false
 
@@ -131,22 +131,22 @@ func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (e
 
 	if err = svc.HealthCheck.AddCheck("frontend renderer", svc.clients.Renderer.Checker); err != nil {
 		hasErrors = true
-		log.Event(ctx, "failed to add frontend renderer checker", log.Error(err))
+		log.Event(ctx, "failed to add frontend renderer checker", log.ERROR, log.Error(err))
 	}
 
 	if err = svc.HealthCheck.AddCheck("Zebedee", svc.clients.Zebedee.Checker); err != nil {
 		hasErrors = true
-		log.Event(ctx, "failed to add zebedee checker", log.Error(err))
+		log.Event(ctx, "failed to add zebedee checker", log.ERROR, log.Error(err))
 	}
 
 	if err = svc.HealthCheck.AddCheck("Babbage", svc.clients.Babbage.Checker); err != nil {
 		hasErrors = true
-		log.Event(ctx, "failed to add babbage checker", log.Error(err))
+		log.Event(ctx, "failed to add babbage checker", log.ERROR, log.Error(err))
 	}
 
 	if err = svc.HealthCheck.AddCheck("API Router (to access Image API)", svc.routerHealthClient.Checker); err != nil {
 		hasErrors = true
-		log.Event(ctx, "failed to add image api checker", log.Error(err))
+		log.Event(ctx, "failed to add image api checker", log.ERROR, log.Error(err))
 	}
 
 	if hasErrors {

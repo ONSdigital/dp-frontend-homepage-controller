@@ -25,7 +25,7 @@ type Clients struct {
 
 // Init initialises routes for the service
 func Init(ctx context.Context, r *mux.Router, hcHandler func(http.ResponseWriter, *http.Request), c *Clients) {
-	log.Event(ctx, "adding routes")
+	log.Event(ctx, "adding routes", log.INFO)
 	r.StrictSlash(true).Path("/health").HandlerFunc(hcHandler)
 	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(c.Renderer, c.Zebedee, c.Babbage, c.ImageAPI))
 }
