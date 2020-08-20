@@ -43,7 +43,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	// Initialise clients
 	svc.clients = &routes.Clients{
 		Renderer: renderer.New(cfg.RendererURL),
-		Zebedee:  zebedee.New(cfg.ZebedeeURL),
+		Zebedee:  zebedee.NewWithHealthClient(svc.routerHealthClient),
 		Babbage:  release_calendar.New(cfg.BabbageURL),
 		ImageAPI: image.NewWithHealthClient(svc.routerHealthClient),
 	}
@@ -132,11 +132,6 @@ func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (e
 	if err = svc.HealthCheck.AddCheck("frontend renderer", svc.clients.Renderer.Checker); err != nil {
 		hasErrors = true
 		log.Event(ctx, "failed to add frontend renderer checker", log.ERROR, log.Error(err))
-	}
-
-	if err = svc.HealthCheck.AddCheck("Zebedee", svc.clients.Zebedee.Checker); err != nil {
-		hasErrors = true
-		log.Event(ctx, "failed to add zebedee checker", log.ERROR, log.Error(err))
 	}
 
 	if err = svc.HealthCheck.AddCheck("Babbage", svc.clients.Babbage.Checker); err != nil {
