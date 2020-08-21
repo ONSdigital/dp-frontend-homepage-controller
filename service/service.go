@@ -139,9 +139,9 @@ func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (e
 		log.Event(ctx, "failed to add babbage checker", log.ERROR, log.Error(err))
 	}
 
-	if err = svc.HealthCheck.AddCheck("API Router (to access Image API)", svc.routerHealthClient.Checker); err != nil {
+	if err = svc.HealthCheck.AddCheck("API router", svc.routerHealthClient.Checker); err != nil {
 		hasErrors = true
-		log.Event(ctx, "failed to add image api checker", log.ERROR, log.Error(err))
+		log.Event(ctx, "failed to add api router checker", log.ERROR, log.Error(err))
 	}
 
 	if hasErrors {
