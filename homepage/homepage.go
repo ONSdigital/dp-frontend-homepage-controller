@@ -3,16 +3,15 @@ package homepage
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"net/http"
 	"sync"
 	"time"
 
-	"github.com/ONSdigital/dp-api-clients-go/headers"
 	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
+	dphandlers "github.com/ONSdigital/dp-net/handlers"
 	dprequest "github.com/ONSdigital/dp-net/request"
 	"github.com/ONSdigital/log.go/log"
 )
@@ -36,28 +35,22 @@ var mainFigureMap map[string]MainFigure
 
 // Handler handles requests to homepage endpoint
 func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		handle(w, req, rend, zcli, bcli, icli)
+	var controllerHandlerFunc dphandlers.ControllerHandlerFunc = func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
+		r.Header.Set(dprequest.FlorenceHeaderKey, accessToken)
+		r.Header.Set(dprequest.LocaleHeaderKey, lang)
+		handle(w, r, rend, zcli, bcli, icli)
 	}
+
+	h := dphandlers.ControllerHandler(controllerHandlerFunc)
+
+	return h
 }
 
 func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) {
 	ctx := req.Context()
 
-	userAccessToken, err := headers.GetUserAuthToken(req)
-	if err != nil {
-		log.Event(ctx, "unable to get user access token from header setting it to empty value", log.WARN, log.Error(err))
-		userAccessToken = ""
-	}
-
-	var localeCode string
-	if ctx.Value(dprequest.LocaleHeaderKey) != nil {
-		var ok bool
-		localeCode, ok = ctx.Value(dprequest.LocaleHeaderKey).(string)
-		if !ok {
-			log.Event(ctx, "error retrieving locale code", log.WARN, log.Error(errors.New("error casting locale code to string")))
-		}
-	}
+	userAccessToken := req.Header.Get(dprequest.FlorenceHeaderKey)
+	localeCode := req.Header.Get(dprequest.LocaleHeaderKey)
 
 	mappedMainFigures := make(map[string]*model.MainFigure)
 	var wg sync.WaitGroup
