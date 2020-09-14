@@ -12,7 +12,6 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	dphandlers "github.com/ONSdigital/dp-net/handlers"
-	dprequest "github.com/ONSdigital/dp-net/request"
 	"github.com/ONSdigital/log.go/log"
 )
 
@@ -35,22 +34,14 @@ var mainFigureMap map[string]MainFigure
 
 // Handler handles requests to homepage endpoint
 func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) http.HandlerFunc {
-	var controllerHandlerFunc dphandlers.ControllerHandlerFunc = func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
-		r.Header.Set(dprequest.FlorenceHeaderKey, accessToken)
-		r.Header.Set(dprequest.LocaleHeaderKey, lang)
-		handle(w, r, rend, zcli, bcli, icli)
-	}
+	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
+		handle(w, r, rend, zcli, bcli, icli, accessToken, lang)
+	})
 
-	h := dphandlers.ControllerHandler(controllerHandlerFunc)
-
-	return h
 }
 
-func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) {
+func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient, userAccessToken, lang string) {
 	ctx := req.Context()
-
-	userAccessToken := req.Header.Get(dprequest.FlorenceHeaderKey)
-	localeCode := req.Header.Get(dprequest.LocaleHeaderKey)
 
 	mappedMainFigures := make(map[string]*model.MainFigure)
 	var wg sync.WaitGroup
@@ -108,7 +99,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 
 	mappedFeaturedContent := mapper.FeaturedContent(homepageContent, imageObjects)
 
-	m := mapper.Homepage(localeCode, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent)
+	m := mapper.Homepage(lang, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent)
 
 	b, err := json.Marshal(m)
 	if err != nil {
