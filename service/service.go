@@ -10,10 +10,8 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
-	"github.com/ONSdigital/dp-net/handlers"
 	"github.com/ONSdigital/log.go/log"
 	"github.com/gorilla/mux"
-	"github.com/justinas/alice"
 	"github.com/pkg/errors"
 )
 
@@ -61,8 +59,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	// Initialise router
 	r := mux.NewRouter()
 	routes.Init(ctx, r, svc.HealthCheck.Handler, svc.clients)
-	m := createMiddleware(cfg)
-	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, m.Then(r))
+	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
 
 	// Start Healthcheck and HTTP Server
 	log.Event(ctx, "Starting server", log.INFO, log.Data{"config": cfg})
@@ -74,13 +71,6 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	}()
 
 	return svc, nil
-}
-
-// CreateMiddleware creates an Alice middleware chain of handlers
-// to forward collectionID from cookie and locale from header
-func createMiddleware(cfg *config.Config) alice.Chain {
-	m := alice.New(handlers.CheckCookie(handlers.CollectionID))
-	return m.Append(handlers.CheckHeader(handlers.Locale))
 }
 
 // Close gracefully shuts the service down in the required order, with timeout
