@@ -33,6 +33,7 @@ func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, relea
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
+	page.HasJSONLD = true
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
 	page.Data.ReleaseCalendar = *releaseCal
@@ -49,7 +50,7 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 	mfData := getDataByPeriod(datePeriod, figure)
 	previousDataOffset := getDifferenceOffset(datePeriod, differenceInterval) + 1
 	if len(mfData) < previousDataOffset {
-		log.Event(ctx, "error: too few observations in timeseries array", log.Error(errors.New("too few observations in timeseries array")))
+		log.Event(ctx, "error: too few observations in timeseries array", log.ERROR, log.Error(errors.New("too few observations in timeseries array")))
 		return &mf
 	}
 	latestDataIndex := len(mfData) - 1
@@ -58,12 +59,12 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 	previousData := mfData[previousDataIndex]
 	latestFigure, err := decimal.NewFromString(latestData.Value)
 	if err != nil {
-		log.Event(ctx, "error getting trend description: error converting string to decimal type", log.Error(err))
+		log.Event(ctx, "error getting trend description: error converting string to decimal type", log.ERROR, log.Error(err))
 		return &mf
 	}
 	previousFigure, err := decimal.NewFromString(previousData.Value)
 	if err != nil {
-		log.Event(ctx, "error getting trend description: error converting string to decimal type", log.Error(err))
+		log.Event(ctx, "error getting trend description: error converting string to decimal type", log.ERROR, log.Error(err))
 		return &mf
 	}
 
