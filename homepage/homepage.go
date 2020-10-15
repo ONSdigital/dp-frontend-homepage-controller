@@ -99,7 +99,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 
 	mappedFeaturedContent := mapper.FeaturedContent(homepageContent, imageObjects)
 
-	m := mapper.Homepage(lang, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent)
+	m := mapper.Homepage(lang, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, homepageContent.ServiceMessage)
 
 	b, err := json.Marshal(m)
 	if err != nil {

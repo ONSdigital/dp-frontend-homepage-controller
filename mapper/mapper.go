@@ -29,11 +29,12 @@ const (
 var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
-func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature) model.Page {
+func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature, serviceMessage string) model.Page {
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
 	page.HasJSONLD = true
+	page.ServiceMessage = serviceMessage
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
 	page.Data.ReleaseCalendar = *releaseCal
