@@ -245,8 +245,10 @@ func TestUnitMapper(t *testing.T) {
 	testFigure4, _ := decimal.NewFromString("101.423")
 	testFigure5, _ := decimal.NewFromString("88.8888")
 
+	serviceMessage := "Test service message"
+
 	Convey("test homepage mapping works", t, func() {
-		page := Homepage("en", mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent)
+		page := Homepage("en", mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent, serviceMessage)
 
 		So(page.Type, ShouldEqual, "homepage")
 		So(page.Data.MainFigures["test_id"].Figure, ShouldEqual, mockedMainFigure.Figure)
