@@ -254,6 +254,8 @@ func TestUnitMapper(t *testing.T) {
 		So(page.Data.MainFigures["test_id"].Figure, ShouldEqual, mockedMainFigure.Figure)
 		So(page.Data.MainFigures["test_id"].TrendDescription, ShouldEqual, mockedMainFigure.TrendDescription)
 		So(page.Data.MainFigures["test_id"].Trend, ShouldResemble, mockedMainFigure.Trend)
+		So(page.Data.HasFeaturedContent, ShouldEqual, true)
+		So(page.Data.HasMainFigures, ShouldEqual, true)
 		So(len(page.Data.Featured), ShouldEqual, 3)
 	})
 
@@ -337,5 +339,14 @@ func TestUnitMapper(t *testing.T) {
 		So(getDifferenceOffset(PeriodQuarter, PeriodYear), ShouldEqual, 4)
 		So(getDifferenceOffset(PeriodMonth, PeriodYear), ShouldEqual, 12)
 		So(getDifferenceOffset(PeriodMonth, PeriodQuarter), ShouldEqual, 3)
+	})
+
+	Convey("test graceful degradation state is properly mapped", t, func() {
+		var mockedNoFeaturedContent []model.Feature
+		var mockedNoMainFigures = make(map[string]*model.MainFigure)
+
+		gracefulDegradationPage := Homepage("en", mockedNoMainFigures, &mockedReleaseData, &mockedNoFeaturedContent, serviceMessage)
+		So(gracefulDegradationPage.Data.HasFeaturedContent, ShouldEqual, false)
+		So(gracefulDegradationPage.Data.HasMainFigures, ShouldEqual, false)
 	})
 }

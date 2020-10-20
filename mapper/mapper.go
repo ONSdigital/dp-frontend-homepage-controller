@@ -33,6 +33,8 @@ func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, relea
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
+	page.Data.HasFeaturedContent = hasFeaturedContent(featuredContent)
+	page.Data.HasMainFigures = hasMainFigures(mainFigures)
 	page.HasJSONLD = true
 	page.ServiceMessage = serviceMessage
 	page.Language = localeCode
@@ -227,4 +229,20 @@ func getDifferenceOffset(period, interval string) int {
 	}
 	// only gets here if incomparable options are chosen in code
 	panic("unable to get difference offset from choosen period and interval values")
+}
+
+func hasFeaturedContent(featuredContent *[]model.Feature) bool {
+	if len(*featuredContent) > 0 {
+		return true
+	}
+	return false
+}
+
+func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
+	for _, value := range mainFigures {
+		if value.Figure != "" {
+			return true
+		}
+	}
+	return false
 }

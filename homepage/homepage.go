@@ -86,18 +86,21 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	if err != nil {
 		log.Event(ctx, "error getting homepage data from client", log.ERROR, log.Error(err), log.Data{"content-path": HomepagePath})
 	}
-	imageObjects := map[string]image.ImageDownload{}
-	for _, fc := range homepageContent.FeaturedContent {
-		if fc.ImageID != "" {
-			image, err := icli.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
-			if err != nil {
-				log.Event(ctx, "error getting image download variant", log.ERROR, log.Error(err), log.Data{"featured-content-entry": fc.Title})
-			}
-			imageObjects[fc.ImageID] = image
-		}
-	}
 
-	mappedFeaturedContent := mapper.FeaturedContent(homepageContent, imageObjects)
+	var mappedFeaturedContent []model.Feature
+	if len(homepageContent.FeaturedContent) > 0 {
+		imageObjects := map[string]image.ImageDownload{}
+		for _, fc := range homepageContent.FeaturedContent {
+			if fc.ImageID != "" {
+				image, err := icli.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
+				if err != nil {
+					log.Event(ctx, "error getting image download variant", log.ERROR, log.Error(err), log.Data{"featured-content-entry": fc.Title})
+				}
+				imageObjects[fc.ImageID] = image
+			}
+		}
+		mappedFeaturedContent = mapper.FeaturedContent(homepageContent, imageObjects)
+	}
 
 	m := mapper.Homepage(lang, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, homepageContent.ServiceMessage)
 
