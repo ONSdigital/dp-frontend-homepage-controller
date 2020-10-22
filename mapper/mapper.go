@@ -232,10 +232,7 @@ func getDifferenceOffset(period, interval string) int {
 }
 
 func hasFeaturedContent(featuredContent *[]model.Feature) bool {
-	if len(*featuredContent) > 0 {
-		return true
-	}
-	return false
+	return (len(*featuredContent) > 0)
 }
 
 func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
