@@ -29,11 +29,14 @@ const (
 var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
-func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature) model.Page {
+func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature, serviceMessage string) model.Page {
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
+	page.Data.HasFeaturedContent = hasFeaturedContent(featuredContent)
+	page.Data.HasMainFigures = hasMainFigures(mainFigures)
 	page.HasJSONLD = true
+	page.ServiceMessage = serviceMessage
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
 	page.Data.ReleaseCalendar = *releaseCal
@@ -226,4 +229,17 @@ func getDifferenceOffset(period, interval string) int {
 	}
 	// only gets here if incomparable options are chosen in code
 	panic("unable to get difference offset from choosen period and interval values")
+}
+
+func hasFeaturedContent(featuredContent *[]model.Feature) bool {
+	return (len(*featuredContent) > 0)
+}
+
+func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
+	for _, value := range mainFigures {
+		if value.Figure != "" {
+			return true
+		}
+	}
+	return false
 }
