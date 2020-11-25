@@ -183,10 +183,10 @@ func TestUnitMapper(t *testing.T) {
 
 	Convey("test homepage handler", t, func() {
 		mockZebedeeClient := &ZebedeeClientMock{
-			GetTimeseriesMainFigureFunc: func(ctx context.Context, userAuthToken, uri string) (m zebedee.TimeseriesMainFigure, err error) {
+			GetTimeseriesMainFigureFunc: func(ctx context.Context, userAuthToken, collectionID, lang, uri string) (m zebedee.TimeseriesMainFigure, err error) {
 				return mockedZebedeeData[0], nil
 			},
-			GetHomepageContentFunc: func(ctx context.Context, userAuthToken, uri string) (m zebedee.HomepageContent, err error) {
+			GetHomepageContentFunc: func(ctx context.Context, userAuthToken, collectionID, lang, uri string) (m zebedee.HomepageContent, err error) {
 				return mockedHomepageData, nil
 			},
 		}

@@ -35,12 +35,12 @@ var mainFigureMap map[string]MainFigure
 // Handler handles requests to homepage endpoint
 func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) http.HandlerFunc {
 	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
-		handle(w, r, rend, zcli, bcli, icli, accessToken, lang)
+		handle(w, r, rend, zcli, bcli, icli, accessToken, collectionID, lang )
 	})
 
 }
 
-func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient, userAccessToken, lang string) {
+func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient, userAccessToken, collectionID, lang string) {
 	ctx := req.Context()
 
 	mappedMainFigures := make(map[string]*model.MainFigure)
@@ -52,7 +52,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 			defer wg.Done()
 			zebResponses := []zebedee.TimeseriesMainFigure{}
 			for _, uri := range figure.uris {
-				zebResponse, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, uri)
+				zebResponse, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, collectionID, lang, uri)
 				if err != nil {
 					log.Event(ctx, "error getting timeseries data", log.ERROR, log.Error(err), log.Data{"timeseries-data": uri})
 					mappedErrorFigure := &model.MainFigure{ID: id}
@@ -82,7 +82,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
 
 	// Get homepage data from Zebedee
-	homepageContent, err := zcli.GetHomepageContent(ctx, userAccessToken, HomepagePath)
+	homepageContent, err := zcli.GetHomepageContent(ctx, userAccessToken, collectionID, lang, HomepagePath)
 	if err != nil {
 		log.Event(ctx, "error getting homepage data from client", log.ERROR, log.Error(err), log.Data{"content-path": HomepagePath})
 	}
