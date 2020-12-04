@@ -12,8 +12,8 @@ import (
 
 // ZebedeeClient is an interface with methods required for a zebedee client
 type ZebedeeClient interface {
-	GetTimeseriesMainFigure(ctx context.Context, userAuthToken, uri string) (m zebedee.TimeseriesMainFigure, err error)
-	GetHomepageContent(ctx context.Context, userAccessToken, path string) (m zebedee.HomepageContent, err error)
+	GetTimeseriesMainFigure(ctx context.Context, userAuthToken, collectionID, lang, uri string) (m zebedee.TimeseriesMainFigure, err error)
+	GetHomepageContent(ctx context.Context, userAccessToken, collectionID, lang, path string) (m zebedee.HomepageContent, err error)
 }
 
 // BabbageClient is an interface with methods required for a babbage client
