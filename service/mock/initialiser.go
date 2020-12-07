@@ -11,12 +11,6 @@ import (
 	"sync"
 )
 
-var (
-	lockInitialiserMockDoGetHTTPServer   sync.RWMutex
-	lockInitialiserMockDoGetHealthCheck  sync.RWMutex
-	lockInitialiserMockDoGetHealthClient sync.RWMutex
-)
-
 // Ensure, that InitialiserMock does implement service.Initialiser.
 // If this is not the case, regenerate this file with moq.
 var _ service.Initialiser = &InitialiserMock{}
@@ -80,6 +74,9 @@ type InitialiserMock struct {
 			URL string
 		}
 	}
+	lockDoGetHTTPServer   sync.RWMutex
+	lockDoGetHealthCheck  sync.RWMutex
+	lockDoGetHealthClient sync.RWMutex
 }
 
 // DoGetHTTPServer calls DoGetHTTPServerFunc.
@@ -94,9 +91,9 @@ func (mock *InitialiserMock) DoGetHTTPServer(bindAddr string, router http.Handle
 		BindAddr: bindAddr,
 		Router:   router,
 	}
-	lockInitialiserMockDoGetHTTPServer.Lock()
+	mock.lockDoGetHTTPServer.Lock()
 	mock.calls.DoGetHTTPServer = append(mock.calls.DoGetHTTPServer, callInfo)
-	lockInitialiserMockDoGetHTTPServer.Unlock()
+	mock.lockDoGetHTTPServer.Unlock()
 	return mock.DoGetHTTPServerFunc(bindAddr, router)
 }
 
@@ -111,9 +108,9 @@ func (mock *InitialiserMock) DoGetHTTPServerCalls() []struct {
 		BindAddr string
 		Router   http.Handler
 	}
-	lockInitialiserMockDoGetHTTPServer.RLock()
+	mock.lockDoGetHTTPServer.RLock()
 	calls = mock.calls.DoGetHTTPServer
-	lockInitialiserMockDoGetHTTPServer.RUnlock()
+	mock.lockDoGetHTTPServer.RUnlock()
 	return calls
 }
 
@@ -133,9 +130,9 @@ func (mock *InitialiserMock) DoGetHealthCheck(cfg *config.Config, buildTime stri
 		GitCommit: gitCommit,
 		Version:   version,
 	}
-	lockInitialiserMockDoGetHealthCheck.Lock()
+	mock.lockDoGetHealthCheck.Lock()
 	mock.calls.DoGetHealthCheck = append(mock.calls.DoGetHealthCheck, callInfo)
-	lockInitialiserMockDoGetHealthCheck.Unlock()
+	mock.lockDoGetHealthCheck.Unlock()
 	return mock.DoGetHealthCheckFunc(cfg, buildTime, gitCommit, version)
 }
 
@@ -154,9 +151,9 @@ func (mock *InitialiserMock) DoGetHealthCheckCalls() []struct {
 		GitCommit string
 		Version   string
 	}
-	lockInitialiserMockDoGetHealthCheck.RLock()
+	mock.lockDoGetHealthCheck.RLock()
 	calls = mock.calls.DoGetHealthCheck
-	lockInitialiserMockDoGetHealthCheck.RUnlock()
+	mock.lockDoGetHealthCheck.RUnlock()
 	return calls
 }
 
@@ -172,9 +169,9 @@ func (mock *InitialiserMock) DoGetHealthClient(name string, url string) *health.
 		Name: name,
 		URL:  url,
 	}
-	lockInitialiserMockDoGetHealthClient.Lock()
+	mock.lockDoGetHealthClient.Lock()
 	mock.calls.DoGetHealthClient = append(mock.calls.DoGetHealthClient, callInfo)
-	lockInitialiserMockDoGetHealthClient.Unlock()
+	mock.lockDoGetHealthClient.Unlock()
 	return mock.DoGetHealthClientFunc(name, url)
 }
 
@@ -189,8 +186,8 @@ func (mock *InitialiserMock) DoGetHealthClientCalls() []struct {
 		Name string
 		URL  string
 	}
-	lockInitialiserMockDoGetHealthClient.RLock()
+	mock.lockDoGetHealthClient.RLock()
 	calls = mock.calls.DoGetHealthClient
-	lockInitialiserMockDoGetHealthClient.RUnlock()
+	mock.lockDoGetHealthClient.RUnlock()
 	return calls
 }
