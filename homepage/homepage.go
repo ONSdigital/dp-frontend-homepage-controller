@@ -35,7 +35,7 @@ var mainFigureMap map[string]MainFigure
 // Handler handles requests to homepage endpoint
 func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) http.HandlerFunc {
 	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
-		handle(w, r, rend, zcli, bcli, icli, accessToken, collectionID, lang )
+		handle(w, r, rend, zcli, bcli, icli, accessToken, collectionID, lang)
 	})
 
 }
@@ -79,6 +79,9 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	dateFromMonth := weekAgoTime.Format("01")
 	dateFromYear := weekAgoTime.Format("2006")
 	releaseCalResp, err := bcli.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
+	if err != nil {
+		log.Event(ctx, "error failed to get release calendar data from babbage ", log.ERROR, log.Error(err))
+	}
 	releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
 
 	// Get homepage data from Zebedee

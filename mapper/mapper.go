@@ -92,6 +92,15 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 }
 
 func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model.ReleaseCalendar {
+	rc := model.ReleaseCalendar{
+		Releases:                         []model.Release{},
+		NumberOfReleases:                 0,
+		NumberOfOtherReleasesInSevenDays: 0,
+	}
+	// No releases found
+	if rawReleaseCalendar.Result.Results == nil {
+		return &rc
+	}
 	releaseResults := *rawReleaseCalendar.Result.Results
 	numReleasesScheduled := rawReleaseCalendar.Result.NumberOfResults
 
@@ -102,11 +111,9 @@ func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model
 	}
 
 	latestReleases := getLatestReleases(releaseResults)
-	rc := model.ReleaseCalendar{
-		Releases:                         latestReleases,
-		NumberOfReleases:                 numReleasesScheduled,
-		NumberOfOtherReleasesInSevenDays: numReleasesScheduled - len(latestReleases),
-	}
+	rc.Releases = latestReleases
+	rc.NumberOfReleases = numReleasesScheduled
+	rc.NumberOfOtherReleasesInSevenDays = numReleasesScheduled - len(latestReleases)
 	return &rc
 }
 
