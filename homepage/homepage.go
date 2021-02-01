@@ -25,6 +25,7 @@ const (
 
 type MainFigure struct {
 	uris               []string
+	trendURI           string
 	datePeriod         string
 	data               zebedee.TimeseriesMainFigure
 	differenceInterval string
@@ -61,8 +62,9 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 				}
 				zebResponses = append(zebResponses, zebResponse)
 			}
+			trendInfo := getTrendInfo(ctx, userAccessToken, collectionID, lang, zcli, figure)
 			latestMainFigure := getLatestTimeSeriesData(ctx, zebResponses)
-			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, figure.differenceInterval, latestMainFigure)
+			mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, figure.differenceInterval, latestMainFigure, trendInfo)
 			responses <- mappedMainFigure
 			return
 		}(ctx, zcli, id, figure)
@@ -71,6 +73,7 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	close(responses)
 
 	for response := range responses {
+		log.Event(ctx, "the response of this request was", log.ERROR, log.Data{"response": response})
 		mappedMainFigures[response.ID] = response
 	}
 
@@ -128,12 +131,37 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 	return
 }
 
+func getTrendInfo(ctx context.Context, userAccessToken, collectionID, lang string, zcli ZebedeeClient, figure MainFigure) mapper.TrendInfo {
+	trendResponse := zebedee.TimeseriesMainFigure{}
+	var err error
+	retrieveTrendFailed := false
+	isTimeseriesForTrend := false
+	if figure.trendURI != "" {
+		isTimeseriesForTrend = true
+		trendResponse, err = zcli.GetTimeseriesMainFigure(ctx, userAccessToken, collectionID, lang, figure.trendURI)
+		if err != nil {
+			// Error getting timeseries, log it but continue to construct rest of main figure tile
+			retrieveTrendFailed = true
+			log.Event(ctx, "error getting timeseries data for trend indication", log.ERROR, log.Error(err), log.Data{
+				"timeseries-data": figure.trendURI,
+				"trendResponse":   trendResponse,
+			})
+		}
+	}
+	return mapper.TrendInfo{
+		TrendFigure:          trendResponse,
+		IsTimeseriesForTrend: isTimeseriesForTrend,
+		RetrieveTrendFailed:  retrieveTrendFailed,
+	}
+}
+
 func init() {
 	mainFigureMap = make(map[string]MainFigure)
 
 	// Employment
 	mainFigureMap["LF24"] = MainFigure{
 		uris:               []string{"/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms"},
+		trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/FUX7/lms",
 		datePeriod:         mapper.PeriodMonth,
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodYear,
@@ -142,6 +170,7 @@ func init() {
 	// Unemployment
 	mainFigureMap["MGSX"] = MainFigure{
 		uris:               []string{"/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms"},
+		trendURI:           "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/FUU8/lms",
 		datePeriod:         mapper.PeriodMonth,
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodYear,
