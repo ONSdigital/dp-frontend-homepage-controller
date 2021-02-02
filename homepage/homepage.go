@@ -170,7 +170,7 @@ func init() {
 	// Unemployment
 	mainFigureMap["MGSX"] = MainFigure{
 		uris:               []string{"/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms"},
-		trendURI:           "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/FUU8/lms",
+		trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/fuu8/lms",
 		datePeriod:         mapper.PeriodMonth,
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodYear,
