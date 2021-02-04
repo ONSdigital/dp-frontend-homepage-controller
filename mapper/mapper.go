@@ -24,6 +24,13 @@ const (
 	PeriodMonth = "month"
 )
 
+// TrendInfo, stores all trend data for processing
+type TrendInfo struct {
+	TrendFigure          zebedee.TimeseriesMainFigure
+	IsTimeseriesForTrend bool
+	RetrieveTrendFailed  bool
+}
+
 // decimalPointDisplayThreshold is a number where we no longer want to
 // display numbers with decimals. This number was a product decision
 var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
@@ -45,9 +52,9 @@ func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, relea
 }
 
 // MainFigure maps a single main figure object
-func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, figure zebedee.TimeseriesMainFigure) *model.MainFigure {
+func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, figure zebedee.TimeseriesMainFigure, trendInfo TrendInfo) *model.MainFigure {
 	var mf model.MainFigure
-
+	mf.ShowTrend = !trendInfo.RetrieveTrendFailed
 	mf.ID = id
 
 	mfData := getDataByPeriod(datePeriod, figure)
@@ -56,6 +63,7 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 		log.Event(ctx, "error: too few observations in timeseries array", log.ERROR, log.Error(errors.New("too few observations in timeseries array")))
 		return &mf
 	}
+
 	latestDataIndex := len(mfData) - 1
 	previousDataIndex := len(mfData) - previousDataOffset
 	latestData := mfData[latestDataIndex]
@@ -77,13 +85,16 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 	} else {
 		formattedLatestFigure = latestFigure.StringFixed(1)
 	}
-
+	var trend = model.Trend{}
+	timeseriesTrendSuccess := trendInfo.IsTimeseriesForTrend && !trendInfo.RetrieveTrendFailed
+	if timeseriesTrendSuccess || !trendInfo.IsTimeseriesForTrend {
+		trend = resolveTrend(ctx, latestFigure, previousFigure, figure.Description.Unit, differenceInterval, datePeriod, trendInfo)
+	}
+	mf.Trend = trend
 	mf.Figure = formatCommas(formattedLatestFigure)
 	mf.Date = latestData.Label
 	mf.Unit = figure.Description.Unit
-	mf.Trend = getTrend(latestFigure, previousFigure)
-	mf.Trend.Difference = getTrendDifference(latestFigure, previousFigure, figure.Description.Unit)
-	mf.Trend.Period = differenceInterval
+
 	if len(figure.RelatedDocuments) > 0 {
 		mf.FigureURIs.Analysis = figure.RelatedDocuments[0].URI
 	}
@@ -174,6 +185,34 @@ func getDataByPeriod(datePeriod string, data zebedee.TimeseriesMainFigure) []zeb
 	return mf
 }
 
+// resolveTrend will use the timeseries trend value if present, otherwise will fallback to working it out.
+// If there is a timeseries but it fails then it will show no trend indication, this is by design.
+func resolveTrend(ctx context.Context, latestMF, previousMF decimal.Decimal, unit, differenceInterval, datePeriod string, trendInfo TrendInfo) model.Trend {
+	var trend model.Trend
+
+	// Timeseries data available that explicitly states the trend
+	if trendInfo.IsTimeseriesForTrend {
+		trendData := getDataByPeriod(datePeriod, trendInfo.TrendFigure)
+		latestDataIndex := len(trendData) - 1
+		latestData := trendData[latestDataIndex]
+		latestTrendFigure, err := decimal.NewFromString(latestData.Value)
+		if err != nil {
+			log.Event(ctx, "error converting string to decimal type", log.ERROR, log.Error(err))
+			return trend
+		}
+		trend = getTrend(latestTrendFigure, decimal.NewFromInt(0))
+		trend.Difference = formatTrend(latestTrendFigure, unit)
+		trend.Period = differenceInterval
+	} else {
+		// No timeseries that explicitly states the trend, therefore work it out
+		trend = getTrend(latestMF, previousMF)
+		diff := latestMF.Sub(previousMF)
+		trend.Difference = formatTrend(diff, unit)
+		trend.Period = differenceInterval
+	}
+	return trend
+}
+
 // getTrend returns trend boolean value based on latest and previous figures
 func getTrend(latest, previous decimal.Decimal) model.Trend {
 	if latest.GreaterThan(previous) {
@@ -190,8 +229,8 @@ func getTrend(latest, previous decimal.Decimal) model.Trend {
 	return model.Trend{}
 }
 
-// getTrendDifference returns string value of the difference between latest and previous
-func getTrendDifference(latest, previous decimal.Decimal, unit string) string {
+// formatTrend returns correctly formatted string value for a given decimal difference
+func formatTrend(diff decimal.Decimal, unit string) string {
 	var trendUnit string
 	switch unit {
 	case "%":
@@ -199,9 +238,7 @@ func getTrendDifference(latest, previous decimal.Decimal, unit string) string {
 	default:
 		trendUnit = unit
 	}
-	diff := latest.Sub(previous)
 	diffStr := diff.StringFixed(1)
-	//formattedDiff := humanize.CommafWithDigits(diff, 2)
 	return fmt.Sprintf("%v%v", diffStr, trendUnit)
 }
 
@@ -239,7 +276,7 @@ func getDifferenceOffset(period, interval string) int {
 }
 
 func hasFeaturedContent(featuredContent *[]model.Feature) bool {
-	return (len(*featuredContent) > 0)
+	return len(*featuredContent) > 0
 }
 
 func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
