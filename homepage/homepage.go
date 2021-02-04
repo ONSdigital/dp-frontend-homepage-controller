@@ -161,7 +161,7 @@ func init() {
 	// Employment
 	mainFigureMap["LF24"] = MainFigure{
 		uris:               []string{"/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms"},
-		trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/FUX7/lms",
+		trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/fux7/lms",
 		datePeriod:         mapper.PeriodMonth,
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodYear,
