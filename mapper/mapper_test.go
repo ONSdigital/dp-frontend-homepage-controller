@@ -18,6 +18,32 @@ func TestUnitMapper(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
 
+	mockedTrendData := TrendInfo{
+		TrendFigure: zebedee.TimeseriesMainFigure{
+			Description: zebedee.TimeseriesDescription{
+				CDID:        "",
+				Unit:        "%",
+				ReleaseDate: "",
+			},
+			Years:    nil,
+			Quarters: nil,
+			Months: []zebedee.TimeseriesDataPoint{
+				{
+					Label: "2020 SEP",
+					Value: "1.2",
+				},
+				{
+					Label: "2020 OCT",
+					Value: "1.2",
+				},
+			},
+			RelatedDocuments: nil,
+			URI:              "/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/FUU8/lms",
+		},
+		IsTimeseriesForTrend: false,
+		RetrieveTrendFailed:  false,
+	}
+
 	var mockedZebedeeData []zebedee.TimeseriesMainFigure
 	mockedZebedeeData = append(mockedZebedeeData, zebedee.TimeseriesMainFigure{
 		Months: []zebedee.TimeseriesDataPoint{
@@ -261,7 +287,7 @@ func TestUnitMapper(t *testing.T) {
 
 	Convey("test main figures mapping works", t, func() {
 		mockedTestData := mockedZebedeeData[0]
-		mainFigures := MainFigure(ctx, "cdid", PeriodMonth, PeriodMonth, mockedTestData)
+		mainFigures := MainFigure(ctx, "cdid", PeriodMonth, PeriodMonth, mockedTestData, mockedTrendData)
 		So(mainFigures.Date, ShouldEqual, "Feb 2020")
 		So(mainFigures.Figure, ShouldEqual, "679.6")
 		So(mainFigures.Trend.IsDown, ShouldEqual, false)
@@ -315,9 +341,11 @@ func TestUnitMapper(t *testing.T) {
 		So(trendFlat, ShouldResemble, model.Trend{IsUp: false, IsDown: false, IsFlat: true})
 	})
 
-	Convey("test getTrendDiffference returns the current string", t, func() {
-		trendDescriptionPositive := getTrendDifference(testFigure1, testFigure2, "million")
-		trendDescriptionNegative := getTrendDifference(testFigure3, testFigure4, "%")
+	Convey("test getTrendDifference returns the current string", t, func() {
+		diff := testFigure1.Sub(testFigure2)
+		trendDescriptionPositive := formatTrend(diff, "million")
+		diff = testFigure3.Sub(testFigure4)
+		trendDescriptionNegative := formatTrend(diff, "%")
 		So(trendDescriptionPositive, ShouldEqual, "3.4million")
 		So(trendDescriptionNegative, ShouldEqual, "-1.2pp")
 	})
