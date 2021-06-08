@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/health"
 	"github.com/ONSdigital/dp-api-clients-go/image"
@@ -13,6 +14,7 @@ import (
 	"github.com/ONSdigital/log.go/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"github.com/ReneKroon/ttlcache"
 )
 
 // Service contains all the configs, server and clients to run the frontend homepage controller
@@ -56,9 +58,15 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 		return nil, errors.Wrap(err, "unable to register checkers")
 	}
 
+	// Initialise the cache
+	cache := ttlcache.NewCache()
+	defer cache.Close()
+	cache.SetTTL(10 * time.Second)
+	cache.SkipTtlExtensionOnHit(true)
+
 	// Initialise router
 	r := mux.NewRouter()
-	routes.Init(ctx, r, svc.HealthCheck.Handler, svc.clients)
+	routes.Init(ctx, r, svc.HealthCheck.Handler, svc.clients, cache)
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
 
 	// Start Healthcheck and HTTP Server

@@ -3,6 +3,7 @@ package homepage
 import (
 	"context"
 	"encoding/json"
+	"github.com/ReneKroon/ttlcache"
 	"net/http"
 	"sync"
 	"time"
@@ -21,6 +22,9 @@ const (
 
 	// ImageVariant is the image variant to use for the homepage
 	ImageVariant = "original"
+
+	// HomepageCacheKey is used to cache the rendered homepage
+	HomepageCacheKey = "homepage-cache"
 )
 
 type MainFigure struct {
@@ -34,15 +38,27 @@ type MainFigure struct {
 var mainFigureMap map[string]MainFigure
 
 // Handler handles requests to homepage endpoint
-func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient) http.HandlerFunc {
+func Handler(rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient, cache *ttlcache.Cache) http.HandlerFunc {
 	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
-		handle(w, r, rend, zcli, bcli, icli, accessToken, collectionID, lang)
+		handle(w, r, rend, zcli, bcli, icli, accessToken, collectionID, lang, cache)
 	})
 
 }
 
-func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient, userAccessToken, collectionID, lang string) {
+func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli ZebedeeClient, bcli BabbageClient, icli ImageClient, userAccessToken, collectionID, lang string, cache *ttlcache.Cache) {
 	ctx := req.Context()
+	homePageCachedHTML, ok := cache.Get(HomepageCacheKey)
+	if ok {
+		homePageString, convertible := homePageCachedHTML.([]byte)
+		if convertible {
+			_, err := w.Write(homePageString)
+			if err == nil {
+				return
+			}
+
+			log.Event(ctx, "failed to write response for homepage from cache", log.ERROR, log.Error(err))
+		}
+	}
 
 	mappedMainFigures := make(map[string]*model.MainFigure)
 	var wg sync.WaitGroup
@@ -123,6 +139,9 @@ func handle(w http.ResponseWriter, req *http.Request, rend RenderClient, zcli Ze
 		http.Error(w, "error rendering page", http.StatusInternalServerError)
 		return
 	}
+
+	cache.Set(HomepageCacheKey, templateHTML)
+
 	if _, err := w.Write(templateHTML); err != nil {
 		log.Event(ctx, "failed to write response for homepage", log.ERROR, log.Error(err))
 		w.WriteHeader(http.StatusInternalServerError)
