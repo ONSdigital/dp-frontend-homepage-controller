@@ -2,6 +2,7 @@ package homepage
 
 import (
 	"context"
+	"github.com/ReneKroon/ttlcache"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -213,7 +214,9 @@ func TestUnitMapper(t *testing.T) {
 		req.Header.Set("X-Florence-Token", "testuser")
 		rec := httptest.NewRecorder()
 		router := mux.NewRouter()
-		router.Path("/").HandlerFunc(Handler(mockRenderClient, mockZebedeeClient, mockBabbageClient, mockImageClient))
+		cache := ttlcache.NewCache()
+		cache.SetTTL(10 * time.Millisecond)
+		router.Path("/").HandlerFunc(Handler(mockRenderClient, mockZebedeeClient, mockBabbageClient, mockImageClient, cache))
 
 		Convey("returns 200 response", func() {
 			router.ServeHTTP(rec, req)
