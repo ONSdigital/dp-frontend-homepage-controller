@@ -2,7 +2,6 @@ package routes
 
 import (
 	"context"
-	"github.com/ReneKroon/ttlcache"
 	"net/http"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
@@ -25,8 +24,8 @@ type Clients struct {
 }
 
 // Init initialises routes for the service
-func Init(ctx context.Context, r *mux.Router, hcHandler func(http.ResponseWriter, *http.Request), c *Clients, cache *ttlcache.Cache) {
+func Init(ctx context.Context, r *mux.Router, hcHandler func(http.ResponseWriter, *http.Request), homepageClient homepage.HomepageClienter) {
 	log.Event(ctx, "adding routes", log.INFO)
 	r.StrictSlash(true).Path("/health").HandlerFunc(hcHandler)
-	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(c.Renderer, c.Zebedee, c.Babbage, c.ImageAPI, cache))
+	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(homepageClient))
 }
