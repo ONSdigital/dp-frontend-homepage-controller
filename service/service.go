@@ -2,19 +2,18 @@ package service
 
 import (
 	"context"
-	"time"
-
 	"github.com/ONSdigital/dp-api-clients-go/health"
 	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/renderer"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
 	"github.com/ONSdigital/log.go/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"github.com/ReneKroon/ttlcache"
+	"strings"
 )
 
 // Service contains all the configs, server and clients to run the frontend homepage controller
@@ -58,15 +57,19 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 		return nil, errors.Wrap(err, "unable to register checkers")
 	}
 
-	// Initialise the cache
-	cache := ttlcache.NewCache()
-	defer cache.Close()
-	cache.SetTTL(10 * time.Second)
-	cache.SkipTtlExtensionOnHit(true)
+	var homepageClient homepage.HomepageClienter
+	if cfg.IsPublishingMode {
+		homepageClient = homepage.NewHomePagePublishingClient(svc.clients)
+	} else {
+		languages := strings.Split(cfg.Languages, ",")
+		homepageClient = homepage.NewHomePageWebClient(svc.clients, cfg.CacheUpdateInterval, languages)
+		homepageClient.StartBackgroundUpdate(ctx)
+		defer homepageClient.Close()
+	}
 
 	// Initialise router
 	r := mux.NewRouter()
-	routes.Init(ctx, r, svc.HealthCheck.Handler, svc.clients, cache)
+	routes.Init(ctx, r, svc.HealthCheck.Handler, homepageClient)
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
 
 	// Start Healthcheck and HTTP Server
