@@ -7,7 +7,6 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
 	"sync"
@@ -15,7 +14,7 @@ import (
 )
 
 type HomepageUpdater struct {
-	clients *routes.Clients
+	clients *Clients
 }
 
 func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessToken, collectionID, lang string) func() (string, error) {

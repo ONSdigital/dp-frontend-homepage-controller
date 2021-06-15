@@ -22,7 +22,7 @@ type Service struct {
 	routerHealthClient *health.Client
 	HealthCheck        HealthChecker
 	Server             HTTPServer
-	clients            *routes.Clients
+	clients            *homepage.Clients
 	ServiceList        *ExternalServiceList
 }
 
@@ -40,7 +40,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	svc.routerHealthClient = serviceList.GetHealthClient("api-router", cfg.APIRouterURL)
 
 	// Initialise clients
-	svc.clients = &routes.Clients{
+	svc.clients = &homepage.Clients{
 		Renderer: renderer.New(cfg.RendererURL),
 		Zebedee:  zebedee.NewWithHealthClient(svc.routerHealthClient),
 		Babbage:  release_calendar.New(cfg.BabbageURL),
@@ -63,7 +63,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	} else {
 		languages := strings.Split(cfg.Languages, ",")
 		homepageClient = homepage.NewHomePageWebClient(svc.clients, cfg.CacheUpdateInterval, languages)
-		homepageClient.StartBackgroundUpdate(ctx)
+		go homepageClient.StartBackgroundUpdate(ctx, svcErrors)
 		defer homepageClient.Close()
 	}
 

@@ -2,20 +2,19 @@ package homepage
 
 import (
 	"context"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
 )
 
 type HomepageClienter interface {
 	GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (string, error)
 	Close()
-	StartBackgroundUpdate(ctx context.Context)
+	StartBackgroundUpdate(ctx context.Context, errorChannel chan error)
 }
 
 type HomepagePublishingClient struct {
 	HomepageUpdater
 }
 
-func NewHomePagePublishingClient(clients *routes.Clients) HomepageClienter {
+func NewHomePagePublishingClient(clients *Clients) HomepageClienter {
 	return &HomepagePublishingClient{
 		HomepageUpdater: HomepageUpdater{
 			clients: clients,
@@ -28,4 +27,5 @@ func (hpc *HomepagePublishingClient) GetHomePage(ctx context.Context, userAccess
 }
 
 func (hpc *HomepagePublishingClient) Close() {}
-func (hpc *HomepagePublishingClient) StartBackgroundUpdate(ctx context.Context) {}
+func (hpc *HomepagePublishingClient) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
+}

@@ -13,7 +13,7 @@ type DpCacher interface {
 	Get(key string) (interface{}, bool)
 	Set(key string, data interface{})
 	AddUpdateFunc(key string, updateFunc func() (string, error))
-	StartUpdates(ctx context.Context)
+	StartUpdates(ctx context.Context, channel chan error)
 }
 
 type DpCache struct {
@@ -48,22 +48,35 @@ func (dc *DpCache) AddUpdateFunc(key string, updateFunc func() (string, error)) 
 	dc.updateFuncs[key] = updateFunc
 }
 
-func (dc *DpCache) StartUpdates(ctx context.Context) {
+func (dc *DpCache) UpdateContent(ctx context.Context) error {
+	for key, updateFunc := range dc.updateFuncs {
+		updatedContent, err := updateFunc()
+		if err != nil {
+			return fmt.Errorf("HOMEPAGE_CACHE_UPDATE_FAILED. failed to update homepage cache for %s. error: %v", key, err)
+		}
+		dc.Set(key, updatedContent)
+	}
+	return nil
+}
+
+func (dc *DpCache) StartUpdates(ctx context.Context, errorChannel chan error) {
 	ticker := time.NewTicker(dc.updateInterval)
 	if len(dc.updateFuncs) == 0 {
+		return
+	}
+
+	err := dc.UpdateContent(ctx)
+	if err != nil {
+		errorChannel <- err
 		return
 	}
 
 	for {
 		select {
 		case <-ticker.C:
-			for key, updateFunc := range dc.updateFuncs {
-				updatedContent, err := updateFunc()
-				if err != nil {
-					log.Event(ctx, fmt.Sprintf("HOMEPAGE_CACHE_UPDATE_FAILED. failed to update homepage cache for %s", key), log.Error(err), log.ERROR)
-					continue
-				}
-				dc.Set(key, updatedContent)
+			err := dc.UpdateContent(ctx)
+			if err != nil {
+				log.Event(ctx, err.Error(), log.Error(err), log.ERROR)
 			}
 
 		case <-dc.close:
@@ -71,6 +84,5 @@ func (dc *DpCache) StartUpdates(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		}
-
 	}
 }

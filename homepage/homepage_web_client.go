@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/dpcache"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
 	"time"
 )
 
@@ -14,12 +13,13 @@ type HomepageWebClient struct {
 	languages []string
 }
 
-func NewHomePageWebClient(clients *routes.Clients, updateInterval time.Duration, languages []string) HomepageClienter {
+func NewHomePageWebClient(clients *Clients, updateInterval time.Duration, languages []string) HomepageClienter {
 	return &HomepageWebClient{
 		HomepageUpdater: HomepageUpdater{
 			clients: clients,
 		},
-		cache: dpcache.NewDpCache(updateInterval),
+		cache:     dpcache.NewDpCache(updateInterval),
+		languages: languages,
 	}
 }
 
@@ -40,13 +40,13 @@ func getCachingKeyForLanguage(lang string) string {
 	return fmt.Sprintf("%-%s", dpcache.HomepageCacheKey, lang)
 }
 
-func (hwc *HomepageWebClient) StartBackgroundUpdate(ctx context.Context) {
+func (hwc *HomepageWebClient) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
 	for _, lang := range hwc.languages {
 		langKey := getCachingKeyForLanguage(lang)
 		hwc.cache.AddUpdateFunc(langKey, hwc.GetHomePageUpdateFor(ctx, "", "", lang))
 	}
 
-	go hwc.cache.StartUpdates(ctx)
+	hwc.cache.StartUpdates(ctx, errorChannel)
 }
 func (hwc *HomepageWebClient) Close() {
 	hwc.cache.Close()
