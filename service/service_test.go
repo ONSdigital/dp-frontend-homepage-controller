@@ -43,6 +43,7 @@ func TestRun(t *testing.T) {
 	Convey("Having a set of mocked dependencies", t, func() {
 
 		cfg, err := config.Get()
+		cfg.IsPublishingMode = true
 		So(err, ShouldBeNil)
 
 		hcMock := &mock.HealthCheckerMock{
