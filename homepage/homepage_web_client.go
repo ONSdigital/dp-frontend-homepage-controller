@@ -37,7 +37,7 @@ func (hwc *HomepageWebClient) GetHomePage(ctx context.Context, userAccessToken, 
 }
 
 func getCachingKeyForLanguage(lang string) string {
-	return fmt.Sprintf("%-%s", dpcache.HomepageCacheKey, lang)
+	return fmt.Sprintf("%s___%s", dpcache.HomepageCacheKey, lang)
 }
 
 func (hwc *HomepageWebClient) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {

@@ -34,6 +34,7 @@ func (dc *DpCache) Set(key string, data interface{}) {
 func (dc *DpCache) Close() {
 	dc.close <- struct{}{}
 	dc.cache = sync.Map{}
+	dc.updateFuncs = make(map[string]func() (string, error))
 }
 
 func NewDpCache(updateInterval time.Duration) DpCacher {
@@ -41,6 +42,7 @@ func NewDpCache(updateInterval time.Duration) DpCacher {
 		cache:          sync.Map{},
 		updateInterval: updateInterval,
 		close:          make(chan struct{}),
+		updateFuncs:    make(map[string]func() (string, error)),
 	}
 }
 
