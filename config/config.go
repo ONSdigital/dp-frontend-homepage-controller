@@ -39,7 +39,7 @@ func Get() (*Config, error) {
 		BabbageURL:                 "http://localhost:8080",
 		CacheUpdateInterval:        10 * time.Second,
 		IsPublishingMode:           false,
-		Languages:                  "",
+		Languages:                  "en,cy",
 	}
 
 	return cfg, envconfig.Process("", cfg)
