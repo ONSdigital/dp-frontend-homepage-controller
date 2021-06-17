@@ -2,6 +2,8 @@ package homepage
 
 import (
 	"context"
+	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
+	"github.com/ReneKroon/ttlcache"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -189,11 +191,17 @@ func TestUnitMapper(t *testing.T) {
 			GetHomepageContentFunc: func(ctx context.Context, userAuthToken, collectionID, lang, uri string) (m zebedee.HomepageContent, err error) {
 				return mockedHomepageData, nil
 			},
+			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
+				return nil
+			},
 		}
 
 		mockBabbageClient := &BabbageClientMock{
 			GetReleaseCalendarFunc: func(ctx context.Context, userAuthToken, fromDay, fromMonth, fromYear string) (m release_calendar.ReleaseCalendar, err error) {
 				return mockedBabbageRelease, nil
+			},
+			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
+				return nil
 			},
 		}
 
@@ -201,29 +209,44 @@ func TestUnitMapper(t *testing.T) {
 			GetDownloadVariantFunc: func(ctx context.Context, userAuthToken, serviceAuthToken, collectionID, imageID, variant string) (image.ImageDownload, error) {
 				return mockedImageDownloadData[imageID], nil
 			},
+			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
+				return nil
+			},
 		}
 
 		mockRenderClient := &RenderClientMock{
 			DoFunc: func(string, []byte) ([]byte, error) {
 				return []byte(expectedSuccessResponse), nil
 			},
+			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
+				return nil
+			},
 		}
 
-		req := httptest.NewRequest("GET", "/", nil)
-		req.Header.Set("X-Florence-Token", "testuser")
-		rec := httptest.NewRecorder()
-		router := mux.NewRouter()
-		router.Path("/").HandlerFunc(Handler(mockRenderClient, mockZebedeeClient, mockBabbageClient, mockImageClient))
+	req := httptest.NewRequest("GET", "/", nil)
+	req.Header.Set("X-Florence-Token", "testuser")
+	rec := httptest.NewRecorder()
+	router := mux.NewRouter()
+	cache := ttlcache.NewCache()
+	cache.SetTTL(10 * time.Millisecond)
+	clients := &Clients{
+		Renderer: mockRenderClient,
+		Zebedee:  mockZebedeeClient,
+		Babbage:  mockBabbageClient,
+		ImageAPI: mockImageClient,
+	}
+	homepageClient := NewHomePagePublishingClient(clients)
+	router.Path("/").HandlerFunc(Handler(homepageClient))
 
-		Convey("returns 200 response", func() {
-			router.ServeHTTP(rec, req)
-			So(rec.Code, ShouldEqual, http.StatusOK)
-		})
-
-		Convey("renderer returns HTML body", func() {
-			router.ServeHTTP(rec, req)
-			response := rec.Body.String()
-			So(response, ShouldEqual, expectedSuccessResponse)
-		})
+	Convey("returns 200 response", func() {
+		router.ServeHTTP(rec, req)
+		So(rec.Code, ShouldEqual, http.StatusOK)
 	})
+
+	Convey("renderer returns HTML body", func() {
+		router.ServeHTTP(rec, req)
+		response := rec.Body.String()
+		So(response, ShouldEqual, expectedSuccessResponse)
+	})
+})
 }
