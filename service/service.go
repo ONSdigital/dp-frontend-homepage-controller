@@ -64,7 +64,6 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 		languages := strings.Split(cfg.Languages, ",")
 		homepageClient = homepage.NewHomePageWebClient(svc.clients, cfg.CacheUpdateInterval, languages)
 		go homepageClient.StartBackgroundUpdate(ctx, svcErrors)
-		defer homepageClient.Close()
 	}
 
 	// Initialise router
