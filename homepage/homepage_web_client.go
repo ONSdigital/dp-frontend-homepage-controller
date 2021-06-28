@@ -26,13 +26,10 @@ func NewHomePageWebClient(clients *Clients, updateInterval time.Duration, langua
 func (hwc *HomepageWebClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (string, error) {
 	homePageCachedHTML, ok := hwc.cache.Get(getCachingKeyForLanguage(lang))
 	if ok {
-		homePageString, convertible := homePageCachedHTML.([]byte)
-		if convertible {
-			return string(homePageString), nil
-		}
+		return fmt.Sprintf("%s", homePageCachedHTML), nil
 	}
 
-	return "", fmt.Errorf("failed to read homepage from cache")
+	return "", fmt.Errorf("failed to read homepage from cache for: %s", getCachingKeyForLanguage(lang))
 
 }
 
