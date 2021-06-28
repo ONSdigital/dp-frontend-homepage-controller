@@ -72,6 +72,7 @@ func (dc *DpCache) StartUpdates(ctx context.Context, errorChannel chan error) {
 	err := dc.UpdateContent(ctx)
 	if err != nil {
 		errorChannel <- err
+		dc.Close()
 		return
 	}
 
@@ -84,6 +85,8 @@ func (dc *DpCache) StartUpdates(ctx context.Context, errorChannel chan error) {
 			}
 
 		case <-dc.close:
+			return
+		case <-errorChannel:
 			return
 		case <-ctx.Done():
 			return
