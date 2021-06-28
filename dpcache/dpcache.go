@@ -33,7 +33,9 @@ func (dc *DpCache) Set(key string, data interface{}) {
 
 func (dc *DpCache) Close() {
 	dc.close <- struct{}{}
-	dc.cache = sync.Map{}
+	for key, _ := range dc.updateFuncs {
+		dc.cache.Store(key, "")
+	}
 	dc.updateFuncs = make(map[string]func() (string, error))
 }
 
