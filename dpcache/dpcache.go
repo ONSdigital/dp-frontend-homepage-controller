@@ -86,8 +86,6 @@ func (dc *DpCache) StartUpdates(ctx context.Context, errorChannel chan error) {
 
 		case <-dc.close:
 			return
-		case <-errorChannel:
-			return
 		case <-ctx.Done():
 			return
 		}
