@@ -22,7 +22,7 @@ If on go 1.12 then ensure the project either resides outside of your `GOPATH` or
 | HealthCheckInterval           | Interval between health checks                                                            |    30 seconds |
 | HealthCheckCriticalTimeout    | Amount of time to pass since last healthy health check to be deemed a critical failure    |    90 seconds |
 | RendererURL                   | URl for `dp-frontend-renderer`
-| CacheUpdateIntervalInSeconds  | Duration for homepage cache updation
+| CacheUpdateInterval           | Duration for homepage cache updation
 | IsPublishingMode              | Mode in which service is running
 | Languages                     | Languages which are supported separated by comma
 
