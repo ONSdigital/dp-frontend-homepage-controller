@@ -24,6 +24,7 @@ type Service struct {
 	Server             HTTPServer
 	clients            *homepage.Clients
 	ServiceList        *ExternalServiceList
+	HomePageClient     homepage.HomepageClienter
 }
 
 // Run the service
@@ -57,18 +58,17 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 		return nil, errors.Wrap(err, "unable to register checkers")
 	}
 
-	var homepageClient homepage.HomepageClienter
 	if cfg.IsPublishingMode {
-		homepageClient = homepage.NewHomePagePublishingClient(svc.clients)
+		svc.HomePageClient = homepage.NewHomePagePublishingClient(svc.clients)
 	} else {
 		languages := strings.Split(cfg.Languages, ",")
-		homepageClient = homepage.NewHomePageWebClient(svc.clients, cfg.CacheUpdateInterval, languages)
-		go homepageClient.StartBackgroundUpdate(ctx, svcErrors)
+		svc.HomePageClient = homepage.NewHomePageWebClient(svc.clients, cfg.CacheUpdateInterval, languages)
+		go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
 	}
 
 	// Initialise router
 	r := mux.NewRouter()
-	routes.Init(ctx, r, svc.HealthCheck.Handler, homepageClient)
+	routes.Init(ctx, r, svc.HealthCheck.Handler, svc.HomePageClient)
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
 
 	// Start Healthcheck and HTTP Server
@@ -96,6 +96,10 @@ func (svc *Service) Close(ctx context.Context) error {
 		// stop healthcheck, as it depends on everything else
 		if svc.ServiceList.HealthCheck {
 			svc.HealthCheck.Stop()
+		}
+
+		if svc.HomePageClient != nil {
+			svc.HomePageClient.Close()
 		}
 
 		// stop any incoming requests
