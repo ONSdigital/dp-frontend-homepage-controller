@@ -88,14 +88,12 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 		b, err := json.Marshal(m)
 		if err != nil {
 			errMessage := "error marshalling body data to json"
-			log.Event(ctx, errMessage, log.ERROR, log.Error(err))
 			return "", fmt.Errorf("%s. error: %#v", errMessage, err)
 		}
 
 		templateHTML, err := hu.clients.Renderer.Do("homepage", b)
 		if err != nil {
 			errMessage := "error rendering page"
-			log.Event(ctx, "error rendering page", log.ERROR, log.Error(err))
 			return "", fmt.Errorf("%s. error: %#v", errMessage, err)
 		}
 
