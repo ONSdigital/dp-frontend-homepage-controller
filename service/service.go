@@ -2,17 +2,18 @@ package service
 
 import (
 	"context"
-
 	"github.com/ONSdigital/dp-api-clients-go/health"
 	"github.com/ONSdigital/dp-api-clients-go/image"
 	"github.com/ONSdigital/dp-api-clients-go/renderer"
 	"github.com/ONSdigital/dp-api-clients-go/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
 	"github.com/ONSdigital/log.go/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
+	"strings"
 )
 
 // Service contains all the configs, server and clients to run the frontend homepage controller
@@ -21,8 +22,9 @@ type Service struct {
 	routerHealthClient *health.Client
 	HealthCheck        HealthChecker
 	Server             HTTPServer
-	clients            *routes.Clients
+	clients            *homepage.Clients
 	ServiceList        *ExternalServiceList
+	HomePageClient     homepage.HomepageClienter
 }
 
 // Run the service
@@ -39,7 +41,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	svc.routerHealthClient = serviceList.GetHealthClient("api-router", cfg.APIRouterURL)
 
 	// Initialise clients
-	svc.clients = &routes.Clients{
+	svc.clients = &homepage.Clients{
 		Renderer: renderer.New(cfg.RendererURL),
 		Zebedee:  zebedee.NewWithHealthClient(svc.routerHealthClient),
 		Babbage:  release_calendar.New(cfg.BabbageURL),
@@ -56,9 +58,17 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 		return nil, errors.Wrap(err, "unable to register checkers")
 	}
 
+	if cfg.IsPublishingMode {
+		svc.HomePageClient = homepage.NewHomePagePublishingClient(svc.clients)
+	} else {
+		languages := strings.Split(cfg.Languages, ",")
+		svc.HomePageClient = homepage.NewHomePageWebClient(svc.clients, cfg.CacheUpdateInterval, languages)
+		go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
+	}
+
 	// Initialise router
 	r := mux.NewRouter()
-	routes.Init(ctx, r, svc.HealthCheck.Handler, svc.clients)
+	routes.Init(ctx, r, svc.HealthCheck.Handler, svc.HomePageClient)
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
 
 	// Start Healthcheck and HTTP Server
@@ -86,6 +96,10 @@ func (svc *Service) Close(ctx context.Context) error {
 		// stop healthcheck, as it depends on everything else
 		if svc.ServiceList.HealthCheck {
 			svc.HealthCheck.Stop()
+		}
+
+		if svc.HomePageClient != nil {
+			svc.HomePageClient.Close()
 		}
 
 		// stop any incoming requests
