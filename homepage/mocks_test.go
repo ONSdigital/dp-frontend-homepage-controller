@@ -5,8 +5,8 @@ package homepage
 
 import (
 	"context"
-	"github.com/ONSdigital/dp-api-clients-go/image"
-	"github.com/ONSdigital/dp-api-clients-go/zebedee"
+	"github.com/ONSdigital/dp-api-clients-go/v2/image"
+	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
 	"sync"

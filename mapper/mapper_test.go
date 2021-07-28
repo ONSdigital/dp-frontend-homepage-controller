@@ -8,8 +8,8 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/shopspring/decimal"
 
-	"github.com/ONSdigital/dp-api-clients-go/image"
-	"github.com/ONSdigital/dp-api-clients-go/zebedee"
+	"github.com/ONSdigital/dp-api-clients-go/v2/image"
+	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	. "github.com/smartystreets/goconvey/convey"
 )

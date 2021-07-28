@@ -7,8 +7,8 @@ import (
 	"regexp"
 	"sort"
 
-	"github.com/ONSdigital/dp-api-clients-go/image"
-	"github.com/ONSdigital/dp-api-clients-go/zebedee"
+	"github.com/ONSdigital/dp-api-clients-go/v2/image"
+	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/log"
