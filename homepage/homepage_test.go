@@ -11,8 +11,8 @@ import (
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 
-	"github.com/ONSdigital/dp-api-clients-go/image"
-	"github.com/ONSdigital/dp-api-clients-go/zebedee"
+	"github.com/ONSdigital/dp-api-clients-go/v2/image"
+	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/gorilla/mux"
 	. "github.com/smartystreets/goconvey/convey"
 )
