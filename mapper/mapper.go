@@ -36,7 +36,7 @@ type TrendInfo struct {
 var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
-func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature, serviceMessage string) model.Page {
+func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature, aroundONS *[]model.Feature,  serviceMessage string) model.Page {
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
@@ -48,6 +48,7 @@ func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, relea
 	page.Data.MainFigures = mainFigures
 	page.Data.ReleaseCalendar = *releaseCal
 	page.Data.Featured = *featuredContent
+	page.Data.AroundONS = *aroundONS
 	return page
 }
 
@@ -140,6 +141,20 @@ func FeaturedContent(homepageData zebedee.HomepageContent, images map[string]ima
 		})
 	}
 	return mappedFeaturesContent
+}
+
+// AroundONS takes the homepageContent as returned from the client and returns an array of featured content
+func AroundONS(homepageData zebedee.HomepageContent, images map[string]image.ImageDownload) []model.Feature {
+	var mappedAroundONS []model.Feature
+	for _, fc := range homepageData.AroundONS {
+		mappedAroundONS = append(mappedAroundONS, model.Feature{
+			Title:       fc.Title,
+			Description: fc.Description,
+			URI:         fc.URI,
+			ImageURL:    images[fc.ImageID].Href,
+		})
+	}
+	return mappedAroundONS
 }
 
 func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
