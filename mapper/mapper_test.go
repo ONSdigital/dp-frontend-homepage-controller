@@ -369,6 +369,25 @@ func TestUnitMapper(t *testing.T) {
 			So(aroundONS, ShouldBeNil)
 		})
 
+		Convey("AroundONS handles when AroundONS data with missing fields is passed in", func() {
+			mockedTestData := mockedHomepageData
+			mockedTestData.AroundONS[1].URI = ""
+			mockedTestData.AroundONS[1].Title = ""
+			mockedTestData.AroundONS[1].Description = ""
+			mockedImageTestData := map[string]image.ImageDownload{}
+			aroundONS := AroundONS(mockedTestData, mockedImageTestData)
+			So(len(aroundONS), ShouldEqual, 2)
+			for i := 0; i < len(aroundONS); i++ {
+				So(aroundONS[i].Title, ShouldEqual, mockedTestData.AroundONS[i].Title)
+				So(aroundONS[i].Description, ShouldEqual, mockedTestData.AroundONS[i].Description)
+				So(aroundONS[i].URI, ShouldEqual, mockedTestData.AroundONS[i].URI)
+				if aroundONS[i].ImageURL != "" {
+					So(aroundONS[i].ImageURL, ShouldEqual, mockedImageDownloadsData[mockedTestData.AroundONS[i].ImageID].Href)
+				}
+			}
+			So(aroundONS[1].ImageURL, ShouldEqual, "")
+		})
+
 		Convey("FeaturedContent maps mock data to page model correctly", func() {
 			mockedTestData := mockedHomepageData
 			mockedImageTestData := mockedImageDownloadsData
