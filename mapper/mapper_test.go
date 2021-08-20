@@ -361,6 +361,14 @@ func TestUnitMapper(t *testing.T) {
 			So(aroundONS, ShouldBeNil)
 		})
 
+		Convey("AroundONS handles when no AroundONS data is passed in", func() {
+			mockedTestData := mockedHomepageData
+			mockedTestData.AroundONS = nil
+			mockedImageTestData := map[string]image.ImageDownload{}
+			aroundONS := AroundONS(mockedTestData, mockedImageTestData)
+			So(aroundONS, ShouldBeNil)
+		})
+
 		Convey("FeaturedContent maps mock data to page model correctly", func() {
 			mockedTestData := mockedHomepageData
 			mockedImageTestData := mockedImageDownloadsData

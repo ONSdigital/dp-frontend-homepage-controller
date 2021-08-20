@@ -146,13 +146,15 @@ func FeaturedContent(homepageData zebedee.HomepageContent, images map[string]ima
 // AroundONS takes the homepageContent as returned from the client and returns an array of featured content
 func AroundONS(homepageData zebedee.HomepageContent, images map[string]image.ImageDownload) []model.Feature {
 	var mappedAroundONS []model.Feature
-	for _, fc := range homepageData.AroundONS {
-		mappedAroundONS = append(mappedAroundONS, model.Feature{
-			Title:       fc.Title,
-			Description: fc.Description,
-			URI:         fc.URI,
-			ImageURL:    images[fc.ImageID].Href,
-		})
+	if len(homepageData.AroundONS) > 0 {
+		for _, fc := range homepageData.AroundONS {
+			mappedAroundONS = append(mappedAroundONS, model.Feature{
+				Title:       fc.Title,
+				Description: fc.Description,
+				URI:         fc.URI,
+				ImageURL:    images[fc.ImageID].Href,
+			})
+		}
 	}
 	return mappedAroundONS
 }
