@@ -217,6 +217,20 @@ func TestUnitMapper(t *testing.T) {
 				ImageID:     "",
 			},
 		},
+		AroundONS: []zebedee.Featured{
+			{
+				Title:       "Around ONS one",
+				Description: "Around ONS one description",
+				URI:         "Around ONS one URI",
+				ImageID:     "123",
+			},
+			{
+				Title:       "Around ONS two",
+				Description: "Around ONS two description",
+				URI:         "Around ONS two URI",
+				ImageID:     "",
+			},
+		},
 		ServiceMessage: "",
 		URI:            "/",
 		Type:           "",
@@ -250,6 +264,21 @@ func TestUnitMapper(t *testing.T) {
 			ImageURL:    "",
 		},
 	}
+
+	var mockedAroundONS = []model.Feature{
+		{
+			Title:       "Around ONS one",
+			Description: "Around ONS one description",
+			URI:         "Around ONS one URI",
+			ImageURL:    "path/to/123.png",
+		},
+		{
+			Title:       "Around ONS two",
+			Description: "Around ONS two description",
+			URI:         "Around ONS two URI",
+			ImageURL:    "",
+		},
+	}
 	var mockedImageDownloadsData = map[string]image.ImageDownload{
 		"123": {
 			Size:  111111,
@@ -274,7 +303,7 @@ func TestUnitMapper(t *testing.T) {
 	serviceMessage := "Test service message"
 
 	Convey("test homepage mapping works", t, func() {
-		page := Homepage("en", mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent, serviceMessage)
+		page := Homepage("en", mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent, &mockedAroundONS, serviceMessage)
 
 		So(page.Type, ShouldEqual, "homepage")
 		So(page.Data.MainFigures["test_id"].Figure, ShouldEqual, mockedMainFigure.Figure)
@@ -283,6 +312,7 @@ func TestUnitMapper(t *testing.T) {
 		So(page.Data.HasFeaturedContent, ShouldEqual, true)
 		So(page.Data.HasMainFigures, ShouldEqual, true)
 		So(len(page.Data.Featured), ShouldEqual, 3)
+		So(len(page.Data.AroundONS), ShouldEqual, 2)
 	})
 
 	Convey("test main figures mapping works", t, func() {
@@ -320,6 +350,58 @@ func TestUnitMapper(t *testing.T) {
 				}
 			}
 			So(featuredContent[2].ImageURL, ShouldEqual, "")
+		})
+	})
+
+	Convey("test AroundONS", t, func() {
+		Convey("AroundONS handles when no homepage data is passed in", func() {
+			mockedTestData := zebedee.HomepageContent{}
+			mockedImageTestData := map[string]image.ImageDownload{}
+			aroundONS := AroundONS(mockedTestData, mockedImageTestData)
+			So(aroundONS, ShouldBeNil)
+		})
+
+		Convey("AroundONS handles when no AroundONS data is passed in", func() {
+			mockedTestData := mockedHomepageData
+			mockedTestData.AroundONS = nil
+			mockedImageTestData := map[string]image.ImageDownload{}
+			aroundONS := AroundONS(mockedTestData, mockedImageTestData)
+			So(aroundONS, ShouldBeNil)
+		})
+
+		Convey("AroundONS handles when AroundONS data with missing fields is passed in", func() {
+			mockedTestData := mockedHomepageData
+			mockedTestData.AroundONS[1].URI = ""
+			mockedTestData.AroundONS[1].Title = ""
+			mockedTestData.AroundONS[1].Description = ""
+			mockedImageTestData := map[string]image.ImageDownload{}
+			aroundONS := AroundONS(mockedTestData, mockedImageTestData)
+			So(len(aroundONS), ShouldEqual, 2)
+			for i := 0; i < len(aroundONS); i++ {
+				So(aroundONS[i].Title, ShouldEqual, mockedTestData.AroundONS[i].Title)
+				So(aroundONS[i].Description, ShouldEqual, mockedTestData.AroundONS[i].Description)
+				So(aroundONS[i].URI, ShouldEqual, mockedTestData.AroundONS[i].URI)
+				if aroundONS[i].ImageURL != "" {
+					So(aroundONS[i].ImageURL, ShouldEqual, mockedImageDownloadsData[mockedTestData.AroundONS[i].ImageID].Href)
+				}
+			}
+			So(aroundONS[1].ImageURL, ShouldEqual, "")
+		})
+
+		Convey("FeaturedContent maps mock data to page model correctly", func() {
+			mockedTestData := mockedHomepageData
+			mockedImageTestData := mockedImageDownloadsData
+			aroundONS := AroundONS(mockedTestData, mockedImageTestData)
+			So(len(aroundONS), ShouldEqual, 2)
+			for i := 0; i < len(aroundONS); i++ {
+				So(aroundONS[i].Title, ShouldEqual, mockedTestData.AroundONS[i].Title)
+				So(aroundONS[i].Description, ShouldEqual, mockedTestData.AroundONS[i].Description)
+				So(aroundONS[i].URI, ShouldEqual, mockedTestData.AroundONS[i].URI)
+				if aroundONS[i].ImageURL != "" {
+					So(aroundONS[i].ImageURL, ShouldEqual, mockedImageDownloadsData[mockedTestData.AroundONS[i].ImageID].Href)
+				}
+			}
+			So(aroundONS[1].ImageURL, ShouldEqual, "")
 		})
 	})
 
@@ -373,7 +455,7 @@ func TestUnitMapper(t *testing.T) {
 		var mockedNoFeaturedContent []model.Feature
 		var mockedNoMainFigures = make(map[string]*model.MainFigure)
 
-		gracefulDegradationPage := Homepage("en", mockedNoMainFigures, &mockedReleaseData, &mockedNoFeaturedContent, serviceMessage)
+		gracefulDegradationPage := Homepage("en", mockedNoMainFigures, &mockedReleaseData, &mockedNoFeaturedContent, &mockedAroundONS, serviceMessage)
 		So(gracefulDegradationPage.Data.HasFeaturedContent, ShouldEqual, false)
 		So(gracefulDegradationPage.Data.HasMainFigures, ShouldEqual, false)
 	})

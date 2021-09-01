@@ -83,7 +83,22 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 			mappedFeaturedContent = mapper.FeaturedContent(homepageContent, imageObjects)
 		}
 
-		m := mapper.Homepage(lang, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, homepageContent.ServiceMessage)
+		var mappedAroundONS []model.Feature
+		if len(homepageContent.AroundONS) > 0 {
+			imageObjects := map[string]image.ImageDownload{}
+			for _, fc := range homepageContent.AroundONS {
+				if fc.ImageID != "" {
+					image, err := hu.clients.ImageAPI.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
+					if err != nil {
+						log.Event(ctx, "error getting image download variant", log.ERROR, log.Error(err), log.Data{"around-ons-entry": fc.Title})
+					}
+					imageObjects[fc.ImageID] = image
+				}
+			}
+			mappedAroundONS = mapper.AroundONS(homepageContent, imageObjects)
+		}
+
+		m := mapper.Homepage(lang, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, &mappedAroundONS, homepageContent.ServiceMessage)
 
 		b, err := json.Marshal(m)
 		if err != nil {
