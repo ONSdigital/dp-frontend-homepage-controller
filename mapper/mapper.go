@@ -11,7 +11,7 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
-	"github.com/ONSdigital/log.go/log"
+	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/shopspring/decimal"
 )
 
@@ -61,7 +61,7 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 	mfData := getDataByPeriod(datePeriod, figure)
 	previousDataOffset := getDifferenceOffset(datePeriod, differenceInterval) + 1
 	if len(mfData) < previousDataOffset {
-		log.Event(ctx, "error: too few observations in timeseries array", log.ERROR, log.Error(errors.New("too few observations in timeseries array")))
+		log.Error(ctx, "error: too few observations in timeseries array", errors.New("too few observations in timeseries array"))
 		return &mf
 	}
 
@@ -71,12 +71,12 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 	previousData := mfData[previousDataIndex]
 	latestFigure, err := decimal.NewFromString(latestData.Value)
 	if err != nil {
-		log.Event(ctx, "error getting trend description: error converting string to decimal type", log.ERROR, log.Error(err))
+		log.Error(ctx, "error getting trend description: error converting string to decimal type", err)
 		return &mf
 	}
 	previousFigure, err := decimal.NewFromString(previousData.Value)
 	if err != nil {
-		log.Event(ctx, "error getting trend description: error converting string to decimal type", log.ERROR, log.Error(err))
+		log.Error(ctx, "error getting trend description: error converting string to decimal type", err)
 		return &mf
 	}
 
@@ -214,7 +214,7 @@ func resolveTrend(ctx context.Context, latestMF, previousMF decimal.Decimal, uni
 		latestData := trendData[latestDataIndex]
 		latestTrendFigure, err := decimal.NewFromString(latestData.Value)
 		if err != nil {
-			log.Event(ctx, "error converting string to decimal type", log.ERROR, log.Error(err))
+			log.Error(ctx, "error converting string to decimal type", err)
 			return trend
 		}
 		trend = getTrend(latestTrendFigure, decimal.NewFromInt(0))

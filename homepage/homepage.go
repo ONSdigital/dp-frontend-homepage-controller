@@ -8,7 +8,7 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	dphandlers "github.com/ONSdigital/dp-net/handlers"
-	"github.com/ONSdigital/log.go/log"
+	"github.com/ONSdigital/log.go/v2/log"
 )
 
 const (
@@ -40,13 +40,13 @@ func handle(w http.ResponseWriter, req *http.Request, userAccessToken, collectio
 	ctx := req.Context()
 	homepageHTML, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
 	if err != nil {
-		log.Event(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", log.ERROR, log.Error(err))
+		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
 	if _, err := w.Write([]byte(homepageHTML)); err != nil {
-		log.Event(ctx, "failed to write response for homepage", log.ERROR, log.Error(err))
+		log.Error(ctx, "failed to write response for homepage", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -65,7 +65,7 @@ func getTrendInfo(ctx context.Context, userAccessToken, collectionID, lang strin
 		if err != nil {
 			// Error getting timeseries, log it but continue to construct rest of main figure tile
 			retrieveTrendFailed = true
-			log.Event(ctx, "error getting timeseries data for trend indication", log.ERROR, log.Error(err), log.Data{
+			log.Error(ctx, "error getting timeseries data for trend indication", err, log.Data{
 				"timeseries-data": figure.trendURI,
 				"trendResponse":   trendResponse,
 			})
@@ -134,12 +134,12 @@ func getLatestTimeSeriesData(ctx context.Context, zts []zebedee.TimeseriesMainFi
 		}
 		releaseDate, err := time.Parse(time.RFC3339, ts.Description.ReleaseDate)
 		if err != nil {
-			log.Event(ctx, "failed to parse release date", log.ERROR, log.Error(err), log.Data{"release_date": ts.Description.ReleaseDate})
+			log.Error(ctx, "failed to parse release date", err, log.Data{"release_date": ts.Description.ReleaseDate})
 			return ts
 		}
 		latestReleaseDate, err := time.Parse(time.RFC3339, latest.Description.ReleaseDate)
 		if err != nil {
-			log.Event(ctx, "failed to parse release date", log.ERROR, log.Error(err), log.Data{"release_date": latest.Description.ReleaseDate})
+			log.Error(ctx, "failed to parse release date", err, log.Data{"release_date": latest.Description.ReleaseDate})
 			return ts
 		}
 		if releaseDate.After(latestReleaseDate) {

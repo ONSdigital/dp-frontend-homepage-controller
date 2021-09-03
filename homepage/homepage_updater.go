@@ -4,13 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"sync"
+	"time"
+
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
-	"github.com/ONSdigital/log.go/log"
-	"sync"
-	"time"
+	"github.com/ONSdigital/log.go/v2/log"
 )
 
 type HomepageUpdater struct {
@@ -30,7 +31,7 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 				for _, uri := range figure.uris {
 					zebResponse, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, collectionID, lang, uri)
 					if err != nil {
-						log.Event(ctx, "error getting timeseries data", log.ERROR, log.Error(err), log.Data{"timeseries-data": uri})
+						log.Error(ctx, "error getting timeseries data", err, log.Data{"timeseries-data": uri})
 						mappedErrorFigure := &model.MainFigure{ID: id}
 						responses <- mappedErrorFigure
 						return
@@ -48,7 +49,7 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 		close(responses)
 
 		for response := range responses {
-			log.Event(ctx, "the response of this request was", log.ERROR, log.Data{"response": response})
+			log.Info(ctx, "the response of this request was", log.Data{"response": response})
 			mappedMainFigures[response.ID] = response
 		}
 
@@ -58,14 +59,14 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 		dateFromYear := weekAgoTime.Format("2006")
 		releaseCalResp, err := hu.clients.Babbage.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
 		if err != nil {
-			log.Event(ctx, "error failed to get release calendar data from babbage ", log.ERROR, log.Error(err))
+			log.Error(ctx, "error failed to get release calendar data from babbage ", err)
 		}
 		releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
 
 		// Get homepage data from Zebedee
 		homepageContent, err := hu.clients.Zebedee.GetHomepageContent(ctx, userAccessToken, collectionID, lang, HomepagePath)
 		if err != nil {
-			log.Event(ctx, "error getting homepage data from client", log.ERROR, log.Error(err), log.Data{"content-path": HomepagePath})
+			log.Error(ctx, "error getting homepage data from client", err, log.Data{"content-path": HomepagePath})
 		}
 
 		var mappedFeaturedContent []model.Feature
@@ -75,7 +76,7 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 				if fc.ImageID != "" {
 					image, err := hu.clients.ImageAPI.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
 					if err != nil {
-						log.Event(ctx, "error getting image download variant", log.ERROR, log.Error(err), log.Data{"featured-content-entry": fc.Title})
+						log.Error(ctx, "error getting image download variant", err, log.Data{"featured-content-entry": fc.Title})
 					}
 					imageObjects[fc.ImageID] = image
 				}
@@ -90,7 +91,7 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 				if fc.ImageID != "" {
 					image, err := hu.clients.ImageAPI.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
 					if err != nil {
-						log.Event(ctx, "error getting image download variant", log.ERROR, log.Error(err), log.Data{"around-ons-entry": fc.Title})
+						log.Error(ctx, "error getting image download variant", err, log.Data{"around-ons-entry": fc.Title})
 					}
 					imageObjects[fc.ImageID] = image
 				}
@@ -115,4 +116,3 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 		return string(templateHTML), nil
 	}
 }
-
