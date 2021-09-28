@@ -2,10 +2,12 @@ package service
 
 import (
 	"context"
-	"github.com/ONSdigital/dp-api-clients-go/health"
-	"github.com/ONSdigital/dp-api-clients-go/image"
-	"github.com/ONSdigital/dp-api-clients-go/renderer"
-	"github.com/ONSdigital/dp-api-clients-go/zebedee"
+	"strings"
+
+	"github.com/ONSdigital/dp-api-clients-go/v2/health"
+	"github.com/ONSdigital/dp-api-clients-go/v2/image"
+	"github.com/ONSdigital/dp-api-clients-go/v2/renderer"
+	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
@@ -13,7 +15,6 @@ import (
 	"github.com/ONSdigital/log.go/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 // Service contains all the configs, server and clients to run the frontend homepage controller

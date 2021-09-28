@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ONSdigital/dp-api-clients-go/health"
+	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service/mock"
@@ -86,7 +86,7 @@ func TestRun(t *testing.T) {
 			}
 		}
 
-		Convey("Given that initialising Helthcheck returns an error", func() {
+		Convey("Given that initialising Healthcheck returns an error", func() {
 			initMock := &mock.InitialiserMock{
 				DoGetHealthClientFunc: funcDoGetHealthClientOk,
 				DoGetHealthCheckFunc:  funcDoGetHealthcheckErr,
