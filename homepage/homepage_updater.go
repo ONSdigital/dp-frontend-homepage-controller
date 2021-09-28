@@ -115,4 +115,3 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 		return string(templateHTML), nil
 	}
 }
-
