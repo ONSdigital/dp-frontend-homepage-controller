@@ -99,7 +99,7 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 			mappedAroundONS = mapper.AroundONS(homepageContent, imageObjects)
 		}
 
-		m := mapper.Homepage(lang, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, &mappedAroundONS, homepageContent.ServiceMessage)
+		m := mapper.Homepage(lang, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, &mappedAroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
 
 		b, err := json.Marshal(m)
 		if err != nil {
