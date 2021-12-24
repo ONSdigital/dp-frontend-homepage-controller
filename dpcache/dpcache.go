@@ -3,7 +3,7 @@ package dpcache
 import (
 	"context"
 	"fmt"
-	"github.com/ONSdigital/log.go/log"
+	"github.com/ONSdigital/log.go/v2/log"
 	"sync"
 	"time"
 )
@@ -81,7 +81,7 @@ func (dc *DpCache) StartUpdates(ctx context.Context, errorChannel chan error) {
 		case <-ticker.C:
 			err := dc.UpdateContent(ctx)
 			if err != nil {
-				log.Event(ctx, err.Error(), log.Error(err), log.ERROR)
+				log.Error(ctx, err.Error(), err)
 			}
 
 		case <-dc.close:

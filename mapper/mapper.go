@@ -6,12 +6,14 @@ import (
 	"fmt"
 	"regexp"
 	"sort"
+	"strings"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
+	coreModel "github.com/ONSdigital/dp-frontend-models/model"
 	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
-	"github.com/ONSdigital/log.go/log"
+	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/shopspring/decimal"
 )
 
@@ -36,7 +38,7 @@ type TrendInfo struct {
 var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
-func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature, aroundONS *[]model.Feature,  serviceMessage string) model.Page {
+func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner) model.Page {
 	var page model.Page
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
@@ -49,6 +51,7 @@ func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, relea
 	page.Data.ReleaseCalendar = *releaseCal
 	page.Data.Featured = *featuredContent
 	page.Data.AroundONS = *aroundONS
+	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	return page
 }
 
@@ -61,7 +64,7 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 	mfData := getDataByPeriod(datePeriod, figure)
 	previousDataOffset := getDifferenceOffset(datePeriod, differenceInterval) + 1
 	if len(mfData) < previousDataOffset {
-		log.Event(ctx, "error: too few observations in timeseries array", log.ERROR, log.Error(errors.New("too few observations in timeseries array")))
+		log.Error(ctx, "error: too few observations in timeseries array", errors.New("too few observations in timeseries array"))
 		return &mf
 	}
 
@@ -71,12 +74,12 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 	previousData := mfData[previousDataIndex]
 	latestFigure, err := decimal.NewFromString(latestData.Value)
 	if err != nil {
-		log.Event(ctx, "error getting trend description: error converting string to decimal type", log.ERROR, log.Error(err))
+		log.Error(ctx, "error getting trend description: error converting string to decimal type", err)
 		return &mf
 	}
 	previousFigure, err := decimal.NewFromString(previousData.Value)
 	if err != nil {
-		log.Event(ctx, "error getting trend description: error converting string to decimal type", log.ERROR, log.Error(err))
+		log.Error(ctx, "error getting trend description: error converting string to decimal type", err)
 		return &mf
 	}
 
@@ -159,6 +162,19 @@ func AroundONS(homepageData zebedee.HomepageContent, images map[string]image.Ima
 	return mappedAroundONS
 }
 
+func mapEmergencyBanner(bannerData zebedee.EmergencyBanner) coreModel.EmergencyBanner {
+	var mappedEmergencyBanner coreModel.EmergencyBanner
+	emptyBannerObj := zebedee.EmergencyBanner{}
+	if bannerData != emptyBannerObj {
+		mappedEmergencyBanner.Title = bannerData.Title
+		mappedEmergencyBanner.Type = strings.Replace(bannerData.Type, "_", "-", -1)
+		mappedEmergencyBanner.Description = bannerData.Description
+		mappedEmergencyBanner.URI = bannerData.URI
+		mappedEmergencyBanner.LinkText = bannerData.LinkText
+	}
+	return mappedEmergencyBanner
+}
+
 func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
 	var latestReleases []model.Release
 
@@ -214,7 +230,7 @@ func resolveTrend(ctx context.Context, latestMF, previousMF decimal.Decimal, uni
 		latestData := trendData[latestDataIndex]
 		latestTrendFigure, err := decimal.NewFromString(latestData.Value)
 		if err != nil {
-			log.Event(ctx, "error converting string to decimal type", log.ERROR, log.Error(err))
+			log.Error(ctx, "error converting string to decimal type", err)
 			return trend
 		}
 		trend = getTrend(latestTrendFigure, decimal.NewFromInt(0))
