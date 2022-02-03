@@ -1,0 +1,625 @@
+# active.en.toml
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Notes
+# - Documentation: https://github.com/nicksnyder/go-i18n/blob/master/README.md
+# - Description should be the English version of the text, unless English version is a shorthand e.g. Home button is shorthand in English for Homepage
+# - Arguments can be added via {{.argN}} where N is integer index starting at 0 e.g. {{.arg0}} {{.arg1}}
+# - To inject HTML (Avoid where possible as it is messy) use "| safeHTML" e.g. {{ localise Foo .Language 1 | safeHTML }} where Foo might be "<strong>test</strong>"
+# count - 1 = one
+# count - any other number = other; typically use this for general plurals
+# Plural rules can be found here: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Used for tests
+[Foo]
+description = "Used for localisation tests"
+one = "One Foo (English)"
+other = "Two or more Foos (English)"
+
+# Primarily used in header template
+[OfficeForNationalStatistics]
+description = "Office for National Statistics"
+one = "Office for National Statistics"
+
+[Home]
+description = "Homepage"
+one = "Home"
+
+[HomepageDescription]
+description = "The UK's largest independent producer of official statistics and the recognised national statistical institute of the UK."
+one = "The UK's largest independent producer of official statistics and the recognised national statistical institute of the UK."
+
+[ONSLogoAlt]
+description = "Office for National Statistics Logo - Homepage"
+one = "Office for National Statistics logo - Homepage"
+
+[SkipToContent]
+description = "Skip to main content"
+one = "Skip to main content"
+
+[ChangeLanguage]
+description = "Change language"
+one = "Change language"
+
+[WelshToggle]
+description = "Cymraeg (CY)"
+one = "Cymraeg (CY)"
+
+[EnglishToggle]
+description = "English (EN)"
+one = "English (EN)"
+
+[ReleaseCalendar]
+description = "Release calendar"
+one = "Release calendar"
+
+[Media]
+description = "Media"
+one = "Media"
+
+[About]
+description = "About"
+one = "About"
+
+[Blog]
+description = "Blog"
+one = "Blog"
+
+[Menu]
+description = "Menu"
+one = "Menu"
+
+[SubMenu]
+description = "sub menu"
+one = "sub menu"
+
+[Search]
+description = "Search"
+one = "Search"
+
+[BusinessIndustryTrade]
+description = "Business, industry and trade"
+one = "Business, industry and trade"
+
+[Business]
+description = "Business"
+one = "Business"
+
+[ChangesToBusiness]
+description = "Changes to business"
+one = "Changes to business"
+
+[ConstructionIndustry]
+description = "Construction industry"
+one = "Construction industry"
+
+[ITInternetIndustry]
+description = "IT and internet industry"
+one = "IT and internet industry"
+
+[InternationalTrade]
+description = "International trade"
+one = "International trade"
+
+[ManufacturingProductionIndustry]
+description = "Manufacturing and production industry"
+one = "Manufacturing and production industry"
+
+[RetailIndustry]
+description = "Retail industry"
+one = "Retail industry"
+
+[TourismIndustry]
+description = "Tourism industry"
+one = "Tourism industry"
+
+[Economy]
+description = "Economy"
+one = "Economy"
+
+[EconomicOutputProductivity]
+description = "Economic output and productivity"
+one = "Economic output and productivity"
+
+[EnvironmentalAccounts]
+description = "Environmental accounts"
+one = "Environmental accounts"
+
+[GovernmentPublicSectorTaxes]
+description = "Government, public sector and taxes"
+one = "Government, public sector and taxes"
+
+[GrossDomesticProduct]
+description = "Gross Domestic Product (GDP)"
+one = "Gross Domestic Product (GDP)"
+
+[GrossDomesticValue]
+description = "Gross Value Added (GVA)"
+one = "Gross Value Added (GVA)"
+
+[InflationPriceIndices]
+description = "Inflation and price indices"
+one = "Inflation and price indices"
+
+[InvestmentsPensionsTrusts]
+description = "Investments, pensions and trusts"
+one = "Investments, pensions and trusts"
+
+[NationalAccounts]
+description = "National accounts"
+one = "National accounts"
+
+[RegionalAccounts]
+description = "Regional accounts"
+one = "Regional accounts"
+
+[EmploymentLabourMarket]
+description = "Employment and labour market"
+one = "Employment and labour market"
+
+[PeopleInWork]
+description = "People in work"
+one = "People in work"
+
+[PeopleNotInWork]
+description = "People not in work"
+one = "People not in work"
+
+[PeoplePopulationCommunity]
+description = "People, population and community"
+one = "People, population and community"
+
+[BirthsDeathsMarriages]
+description = "Births, deaths and marriages"
+one = "Births, deaths and marriages"
+
+[CrimeJustice]
+description = "Crime and justice"
+one = "Crime and justice"
+
+[CulturalIdentity]
+description = "Cultural identity"
+one = "Cultural identity"
+
+[EducationChildcare]
+description = "Education and childcare"
+one = "Education and childcare"
+
+[Elections]
+description = "Elections"
+one = "Elections"
+
+[HealthSocialCare]
+description = "Health and social care"
+one = "Health and social care"
+
+[HouseholdCharacteristics]
+description = "Household characteristics"
+one = "Household characteristics"
+
+[Housing]
+description = "Housing"
+one = "Housing"
+
+[LeisureTourism]
+description = "Leisure and tourism"
+one = "Leisure and tourism"
+
+[PersonalHouseholdFinances]
+description = "Personal and household finances"
+one = "Personal and household finances"
+
+[PopulationMigration]
+description = "Population and migration"
+one = "Population and migration"
+
+[Wellbeing]
+description = "Well-being"
+one = "Well-being"
+
+[Census2021]
+description = "Census 2021"
+one = "Census 2021"
+
+[Census2021TakingPart]
+description = "Taking part is vital to make sure you and your community get the services you need."
+one = "Taking part is vital to make sure you and your community get the services you need."
+
+[Census2021CompleteLink]
+description = "Complete Census 2021."
+one = "Complete Census 2021."
+
+[Census2021Preparation]
+description = "Our preparation for Census 2021 and beyond."
+one = "Our preparation for Census 2021 and beyond."
+
+[Census2021ResearchLink]
+description = "Census research and planning."
+one = "Census research and planning."
+
+[Census2021Processing]
+description = "The last census took place on 21 March 2021.  We are currently processing the data."
+one = "The last census took place on 21 March 2021.  We are currently processing the data."
+
+[SurveyTakingPart]
+description = "Taking part in a survey?"
+one = "Taking part in a survey?"
+
+[SurveyFindOut]
+description = "It's never been more important"
+one = "It's never been more important."
+
+[SearchKeywordTimeSeriesID]
+description = "Search for a keyword(s) or time series ID"
+one = "Search for a keyword(s) or time series ID"
+
+[Beta]
+description = "Beta"
+one = "Beta"
+
+[BetaFeedback]
+description = "This is a new way of getting data - your <a href=\"/feedback?service=cmd\">feedback</a> will help us to improve it."
+one = "This is a new way of getting data - your <a href=\"/feedback?service=cmd\">feedback</a> will help us to improve it."
+
+# Primarily used in footer template]
+[FooterLinks]
+description = "Footer links"
+one = "Footer links"
+
+[Help]
+description = "Help"
+one = "Help"
+
+[Accessibility]
+description = "Accessibility"
+one = "Accessibility"
+
+[CookiesPrivacy]
+description = "Cookies and privacy"
+one = "Cookies and privacy"
+
+[Cookies]
+description = "Cookies"
+one = "Cookie"
+other = "Cookies"
+
+[Privacy]
+description = "Privacy"
+one = "Privacy"
+
+[TermsConditions]
+description = "Terms and conditions"
+one = "Terms and conditions"
+
+[AboutONS]
+description = "About ONS"
+one = "About ONS"
+
+[WhatWeDo]
+description = "What we do"
+one = "What we do"
+
+[Careers]
+description = "Careers"
+one = "Careers"
+
+[ContactUs]
+description = "Contact us"
+one = "Contact us"
+
+[News]
+description = "News"
+one = "News"
+
+[FreedomInformation]
+description = "Freedom of Information"
+one = "Freedom of Information"
+
+[ConnectWithUs]
+description = "Connect with us"
+one = "Connect with us"
+
+[Twitter]
+description = "Twitter"
+one = "Twitter"
+
+[Facebook]
+description = "Facebook"
+one = "Facebook"
+
+[LinkedIn]
+description = "LinkedIn"
+one = "LinkedIn"
+
+[EmailAlerts]
+description = "Email alerts"
+one = "Email alerts"
+
+[OGLFull]
+description = "Open Government Licence v3.0"
+one = "All content is available under the <a class=\"icon--hide\" href=\"http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/\" target=\"_blank\">Open Government Licence v3.0</a> <span class=\"icon icon-external--light-small\"></span>, except where otherwise stated"
+
+[Covid19BannerTitle]
+description = "Coronavirus (COVID-19)"
+one = "Coronavirus (COVID-19)"
+
+[Covid19BannerBody]
+description = "Get the latest data and analysis on coronavirus (COVID-19) in the UK."
+one = "Get the latest data and analysis on coronavirus (COVID-19) in the UK."
+
+[CensusBannerBody]
+description = "Discover how our census statistics help paint a picture of the nation and how we live."
+one = "Discover how our census statistics help paint a picture of the nation and how we live."
+
+[InFocus]
+description = "In focus"
+one = "In focus"
+
+[ExperiencingIssues]
+description = "We are currently experiencing issues displaying this data."
+one = "We are currently experiencing issues displaying this data."
+
+[RefreshOrVisitTimeseriesTool]
+description = "Refresh the page or visit our <a href=\"/timeseriestool\" class=\"tile__link\">time series explorer</a> for the latest figures."
+one = "Refresh the page or visit our <a href=\"/timeseriestool\" class=\"tile__link\">time series explorer</a> for the latest figures."
+
+# Around The ONS - Homepage Section
+[AroundTheONS]
+description = "Around the ONS"
+one = "Around the ONS"
+
+[LocalStatisticsTitle]
+description = "Local statistics"
+other = "Local statistics"
+
+[LocalStatisticsSummary]
+description = "Where to find statistics covering specific areas."
+other = "Where to find statistics covering specific areas."
+
+[OurDataStrategyTitle]
+description = "Our data strategy"
+other = "Our data strategy"
+
+[OurDataStrategySummary]
+description = "How we use and manage data to provide statistics for the public."
+other = "How we use and manage data to provide statistics for the public."
+
+[SecureResearchServiceTitle]
+description = "Secure Research Service"
+other = "Secure Research Service"
+
+[SecureResearchServiceSummary]
+description = "Find out how ONS secure data could help your research project."
+other = "Find out how ONS secure data could help your research project."
+
+[OtherGovtStatisticsTitle]
+description = "Other government statistics"
+other = "Other government statistics"
+
+[OtherGovtStatisticsSummary]
+description = "Official Statistics available from across government."
+other = "Official Statistics available from across government."
+
+[ONSCentresTitle]
+description = "ONS Centres"
+other = "ONS Centres"
+
+[ONSCentresSummary]
+description = "Producing new analysis and insights to support key policy areas."
+other = "Producing new analysis and insights to support key policy areas."
+
+[OnPrevious]
+description = "on previous"
+one = "on previous"
+
+[LatestReleases]
+description ="Latest releases"
+one ="Latest releases"
+
+[ReleaseCalendarTileInfo]
+description = "All of our publications are listed in our release calendar."
+one = "All of our publications are listed in our release calendar."
+
+[ReleaseCalendarTilePublicationCount]
+description = "We have published"
+one = "We have published"
+
+[ReleaseCalendarTilePublicationPeriod]
+description = " statistical releases in the last 7 days."
+one = " statistical releases in the last 7 days."
+
+[OtherReleasesThisWeek]
+description = "other releases this week"
+one = "other releases this week"
+
+[AllReleases]
+description = "View all of our releases by date"
+one = "View all of our releases by date"
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Feedback Form/Form Page
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+[FeedbackTitle]
+description = "{{.Metadata.Title}}"
+one = "{{.arg0}}"
+
+[FeedbackDesc]
+descriptions = "You can use the form below to ask a question, report a problem or suggest an improvement we can make to ONS.GOV.UK"
+one = "You can use the form below to ask a question, report a problem or suggest an improvement to the ONS.GOV.UK team."
+
+[FeedbackTitleWhat]
+description = "What's it to do with?"
+one = "What's it to do with?"
+
+[FeedbackWhatOptSpecificPage]
+description = "This specific page"
+one = "This specific page"
+
+[FeedbackWhatEnterURL]
+description = "Enter URL of the page"
+one = "Enter URL of the page"
+
+[FeedbackWhatOptHintSpecificPage]
+description = "{{.ServiceDescription}}"
+one = "({{.arg0}})"
+
+[FeedbackWhatOptNewService]
+description = "This new service"
+one = "This new service"
+
+[FeedbackWhatOptGeneral]
+description = "The whole <abbr title=\"Office for National Statistics\">ONS</abbr> website or general feedback"
+one = "The whole ONS website or general feedback"
+
+[FeedbackTitleEntry]
+description = "What are the details?"
+one = "What are the details?"
+
+[FeedbackHintEntry]
+description = "For example, if you were searching for something, what did you type into the search box?"
+one = "For example, if you were searching for something, what did you type into the search box?"
+
+[FeedbackAlertEntry]
+description = "Write some feedback"
+one = "Write some feedback"
+
+[FeedbackTitleReply]
+description = "Do you want a reply?"
+one = "Do you want a reply?"
+
+[FeedbackDescReply]
+description = "If you'd like us to get back to you, please add your name and email address below."
+one = "If you'd like us to get back to you, please add your name and email address below."
+
+[FeedbackTitleName]
+description = "Name (optional)"
+one = "Name (optional)"
+
+[FeedbackTitleEmail]
+description = "Email (optional)"
+one = "Email (optional)"
+
+[FeedbackReplyDisclaimer]
+description = "We'll only use this to reply to your message"
+one = "We'll only use this to reply to your message."
+
+[FeedbackAlertEmail]
+description = "This is not a valid email address, correct it or delete it"
+one = "This is not a valid email address, correct it or delete it"
+
+[FeedbackSubmit]
+description = "Send feedback"
+one = "Send feedback"
+
+[FeedbackFinished]
+description = "Your feedback will help us to improve the website. We are unable to respond to all enquiries. If your matter is urgent, please <a href=\"/aboutus/contactus\">contact us</a>.<br><br>Return to <a href=\"{{.Metadata.Description}}\">{{.Metadata.Description}}"
+one = "<p class=\"font-size--18\">Your feedback will help us to improve the website. We are unable to respond to all enquiries. If your matter is urgent, please <a href=\"/aboutus/contactus\">contact us</a>.</p><p class=\"font-size--18\">Return to <a href=\"{{.arg0}}\">{{.arg0}}</a></p>"
+
+[FeedbackWholeWebsite]
+description = "The whole ONS website or general feedback"
+one = "The whole ONS website or general feedback"
+
+[FeedbackASpecificPage]
+description = "A specific page"
+one = "A specific page"
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Search page
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+[RefineResults]
+description = "Refine results"
+other = "Refine results"
+
+[ContentTypesToShow]
+description = "Content types to show"
+other = "Content types to show"
+
+[ClearAll]
+description = "Clear all"
+one = "Clear all"
+
+[Publication]
+description = "Publications"
+other = "Publications"
+
+[Data]
+description = "Data"
+other = "Data"
+
+[Other]
+description = "Other"
+other = "Other"
+
+[StatisticalBulletin]
+description = "Statistical bulletins"
+one = "Statistical bulletin"
+other = "Statistical bulletins"
+
+[Article]
+description = "Articles"
+one = "Article"
+other = "Articles"
+
+[Compendium]
+description = "Compendiums"
+one = "Compendium"
+other = "Compendiums"
+
+[TimeSeries]
+description = "Time series"
+other = "Time series"
+
+[Datasets]
+description = "Datasets"
+other = "Datasets"
+
+[Methodology]
+description = "Methodology"
+one = "Methodology"
+other = "Methodology"
+
+[ReleaseDate]
+description = "Release date"
+one = "Release date"
+
+[UserRequestedData]
+description = "User requested data"
+other = "User requested data"
+
+[CorporateInformation]
+description = "Corporate Information"
+other = "Corporate Information"
+
+[And]
+description = "and"
+one = "and"
+
+[Relevance]
+description = "Relevance"
+one = "Relevance"
+
+[Title]
+description = "Title"
+one = "Title"
+
+[ReleasedOn]
+description = "Released on"
+one = "Released on"
+
+[Keywords]
+description = "Keywords"
+other = "Keywords"
+
+[Next]
+description = "Next"
+one = "Next" 
+
+[DidYouKnow]
+description = "Did you know?"
+one = "Did you know?" 
+
+[ProduceStatisticsRelatingTo]
+description = "also produce statistics relating to"
+one = "also produce statistics relating to" 
