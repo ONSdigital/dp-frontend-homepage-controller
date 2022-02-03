@@ -230,7 +230,6 @@ func TestUnitMapper(t *testing.T) {
 	cache := ttlcache.NewCache()
 	cache.SetTTL(10 * time.Millisecond)
 	clients := &Clients{
-		Renderer: mockRenderClient,
 		Zebedee:  mockZebedeeClient,
 		Babbage:  mockBabbageClient,
 		ImageAPI: mockImageClient,
@@ -241,12 +240,6 @@ func TestUnitMapper(t *testing.T) {
 	Convey("returns 200 response", func() {
 		router.ServeHTTP(rec, req)
 		So(rec.Code, ShouldEqual, http.StatusOK)
-	})
-
-	Convey("renderer returns HTML body", func() {
-		router.ServeHTTP(rec, req)
-		response := rec.Body.String()
-		So(response, ShouldEqual, expectedSuccessResponse)
 	})
 })
 }

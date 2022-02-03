@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
-	"github.com/ONSdigital/dp-api-clients-go/v2/renderer"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
@@ -42,7 +41,6 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 
 	// Initialise clients
 	svc.clients = &homepage.Clients{
-		Renderer: renderer.New(cfg.RendererURL),
 		Zebedee:  zebedee.NewWithHealthClient(svc.routerHealthClient),
 		Babbage:  release_calendar.New(cfg.BabbageURL),
 		ImageAPI: image.NewWithHealthClient(svc.routerHealthClient),
@@ -132,11 +130,6 @@ func (svc *Service) Close(ctx context.Context) error {
 func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (err error) {
 
 	hasErrors := false
-
-	if err = svc.HealthCheck.AddCheck("frontend renderer", svc.clients.Renderer.Checker); err != nil {
-		hasErrors = true
-		log.Error(ctx, "failed to add frontend renderer checker", err)
-	}
 
 	if err = svc.HealthCheck.AddCheck("Babbage", svc.clients.Babbage.Checker); err != nil {
 		hasErrors = true
