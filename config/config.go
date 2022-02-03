@@ -13,7 +13,9 @@ type Config struct {
 	GracefulShutdownTimeout    time.Duration `envconfig:"GRACEFUL_SHUTDOWN_TIMEOUT"`
 	HealthCheckInterval        time.Duration `envconfig:"HEALTHCHECK_INTERVAL"`
 	HealthCheckCriticalTimeout time.Duration `envconfig:"HEALTHCHECK_CRITICAL_TIMEOUT"`
-	RendererURL                string        `envconfig:"RENDERER_URL"`
+	Debug                      bool          `envconfig:"DEBUG"`
+	PatternLibraryAssetsPath   string        `envconfig:"PATTERN_LIBRARY_ASSETS_PATH"`
+	SupportedLanguages         [2]string     `envconfig:"SUPPORTED_LANGUAGES"`
 	BabbageURL                 string        `envconfig:"BABBAGE_URL"`
 	CacheUpdateInterval        time.Duration `envconfig:"CACHE_UPDATE_INTERVAL"`
 	IsPublishingMode           bool          `envconfig:"IS_PUBLISHING_MODE"`
@@ -25,6 +27,20 @@ var cfg *Config
 // Get returns the default config with any modifications through environment
 // variables
 func Get() (*Config, error) {
+	cfg, err := get()
+	if err != nil {
+		return nil, err
+	}
+
+	if cfg.Debug {
+		cfg.PatternLibraryAssetsPath = "http://localhost:9000/dist"
+	} else {
+		cfg.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/sixteens/f80be2c"
+	}
+	return cfg, nil
+}
+
+func get() (*Config, error) {
 	if cfg != nil {
 		return cfg, nil
 	}
@@ -35,7 +51,8 @@ func Get() (*Config, error) {
 		GracefulShutdownTimeout:    5 * time.Second,
 		HealthCheckInterval:        30 * time.Second,
 		HealthCheckCriticalTimeout: 90 * time.Second,
-		RendererURL:                "http://localhost:20010",
+		Debug: 						false,
+		SupportedLanguages: 		[2]string{"en", "cy"},
 		BabbageURL:                 "http://localhost:8080",
 		CacheUpdateInterval:        10 * time.Second,
 		IsPublishingMode:           false,
