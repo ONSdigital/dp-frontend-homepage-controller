@@ -10,7 +10,8 @@ import (
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
-	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
+	coreModel "github.com/ONSdigital/dp-renderer/model"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -310,9 +311,18 @@ func TestUnitMapper(t *testing.T) {
 		LinkText:    "More info",
 	}
 
-	Convey("test homepage mapping works", t, func() {
-		page := Homepage("en", mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
+	//expectedModel := model.Page{}
+	//expectedModel.PatternLibraryAssetsPath = "path/to/assets"
+	//expectedModel.SiteDomain = "site-domain"
 
+	basePage := coreModel.NewPage("path/to/assets", "site-domain")
+
+	Convey("test homepage mapping works", t, func() {
+
+		page := Homepage("en", basePage, mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
+
+		So(page.PatternLibraryAssetsPath, ShouldResemble, basePage.SiteDomain)
+		So(page.PatternLibraryAssetsPath, ShouldResemble, basePage.PatternLibraryAssetsPath)
 		So(page.Type, ShouldEqual, "homepage")
 		So(page.Data.MainFigures["test_id"].Figure, ShouldEqual, mockedMainFigure.Figure)
 		So(page.Data.MainFigures["test_id"].TrendDescription, ShouldEqual, mockedMainFigure.TrendDescription)
@@ -329,7 +339,7 @@ func TestUnitMapper(t *testing.T) {
 	})
 
 	Convey("empty emergency banner content, banner does not map", t, func() {
-		page := Homepage("en", mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, zebedee.EmergencyBanner{})
+		page := Homepage("en", basePage, mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, zebedee.EmergencyBanner{})
 		So(page.EmergencyBanner.Title, ShouldBeBlank)
 		So(page.EmergencyBanner.Type, ShouldBeBlank)
 		So(page.EmergencyBanner.Description, ShouldBeBlank)
@@ -477,7 +487,7 @@ func TestUnitMapper(t *testing.T) {
 		var mockedNoFeaturedContent []model.Feature
 		var mockedNoMainFigures = make(map[string]*model.MainFigure)
 
-		gracefulDegradationPage := Homepage("en", mockedNoMainFigures, &mockedReleaseData, &mockedNoFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
+		gracefulDegradationPage := Homepage("en", basePage, mockedNoMainFigures, &mockedReleaseData, &mockedNoFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
 		So(gracefulDegradationPage.Data.HasFeaturedContent, ShouldEqual, false)
 		So(gracefulDegradationPage.Data.HasMainFigures, ShouldEqual, false)
 	})

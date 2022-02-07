@@ -2,15 +2,14 @@ package homepage
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
+	"net/http"
 	"sync"
 	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
-	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
+	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
@@ -18,8 +17,8 @@ type HomepageUpdater struct {
 	clients *Clients
 }
 
-func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessToken, collectionID, lang string) func() (string, error) {
-	return func() (string, error) {
+func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, w http.ResponseWriter, rend RenderClient, userAccessToken, collectionID, lang string) func() (string, error) {
+	 {
 		mappedMainFigures := make(map[string]*model.MainFigure)
 		var wg sync.WaitGroup
 		responses := make(chan *model.MainFigure, len(mainFigureMap))
@@ -99,20 +98,11 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 			mappedAroundONS = mapper.AroundONS(homepageContent, imageObjects)
 		}
 
-		m := mapper.Homepage(lang, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, &mappedAroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
+		basePage := rend.NewBasePageModel()
+		m := mapper.Homepage(lang, basePage, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, &mappedAroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
 
-		b, err := json.Marshal(m)
-		if err != nil {
-			errMessage := "error marshalling body data to json"
-			return "", fmt.Errorf("%s. error: %#v", errMessage, err)
-		}
+		rend.BuildPage(w, m, "homepage")
 
-		templateHTML, err := hu.clients.Renderer.Do("homepage", b)
-		if err != nil {
-			errMessage := "error rendering page"
-			return "", fmt.Errorf("%s. error: %#v", errMessage, err)
-		}
-
-		return string(templateHTML), nil
+		return nil
 	}
 }

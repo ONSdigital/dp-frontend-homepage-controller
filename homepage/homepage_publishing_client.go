@@ -2,12 +2,13 @@ package homepage
 
 import (
 	"context"
+	"net/http"
 )
 
 type HomepageClienter interface {
-	GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (string, error)
+	GetHomePage(ctx context.Context, w http.ResponseWriter, rend RenderClient, userAccessToken, collectionID, lang string) (string, error)
 	Close()
-	StartBackgroundUpdate(ctx context.Context, errorChannel chan error)
+	StartBackgroundUpdate(ctx context.Context, w http.ResponseWriter, rend RenderClient, errorChannel chan error)
 }
 
 type HomepagePublishingClient struct {
@@ -22,10 +23,10 @@ func NewHomePagePublishingClient(clients *Clients) HomepageClienter {
 	}
 }
 
-func (hpc *HomepagePublishingClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (string, error) {
-	return hpc.GetHomePageUpdateFor(ctx, userAccessToken, collectionID, lang)()
+func (hpc *HomepagePublishingClient) GetHomePage(ctx context.Context, w http.ResponseWriter, rend RenderClient, userAccessToken, collectionID, lang string) (string, error) {
+	return hpc.GetHomePageUpdateFor(ctx, w, rend, userAccessToken, collectionID, lang)()
 }
 
 func (hpc *HomepagePublishingClient) Close() {}
-func (hpc *HomepagePublishingClient) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
+func (hpc *HomepagePublishingClient) StartBackgroundUpdate(ctx context.Context, w http.ResponseWriter, rend RenderClient, errorChannel chan error) {
 }

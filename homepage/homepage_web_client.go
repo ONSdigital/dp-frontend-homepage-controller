@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/dpcache"
+	"net/http"
 	"time"
 )
 
@@ -23,7 +24,7 @@ func NewHomePageWebClient(clients *Clients, updateInterval time.Duration, langua
 	}
 }
 
-func (hwc *HomepageWebClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (string, error) {
+func (hwc *HomepageWebClient) GetHomePage(ctx context.Context, w http.ResponseWriter, rend RenderClient, userAccessToken, collectionID, lang string) (string, error) {
 	homePageCachedHTML, ok := hwc.cache.Get(getCachingKeyForLanguage(lang))
 	if ok {
 		return fmt.Sprintf("%s", homePageCachedHTML), nil
@@ -37,10 +38,10 @@ func getCachingKeyForLanguage(lang string) string {
 	return fmt.Sprintf("%s___%s", dpcache.HomepageCacheKey, lang)
 }
 
-func (hwc *HomepageWebClient) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
+func (hwc *HomepageWebClient) StartBackgroundUpdate(ctx context.Context, w http.ResponseWriter, rend RenderClient, errorChannel chan error) {
 	for _, lang := range hwc.languages {
 		langKey := getCachingKeyForLanguage(lang)
-		hwc.cache.AddUpdateFunc(langKey, hwc.GetHomePageUpdateFor(ctx, "", "", lang))
+		hwc.cache.AddUpdateFunc(langKey, hwc.GetHomePageUpdateFor(ctx, w, rend, "", "", lang))
 	}
 
 	hwc.cache.StartUpdates(ctx, errorChannel)

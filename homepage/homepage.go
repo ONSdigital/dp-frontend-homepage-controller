@@ -30,15 +30,15 @@ type MainFigure struct {
 var mainFigureMap map[string]MainFigure
 
 // Handler handles requests to homepage endpoint
-func Handler(homepageClient HomepageClienter) http.HandlerFunc {
+func Handler(homepageClient HomepageClienter, rend RenderClient) http.HandlerFunc {
 	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
-		handle(w, r, accessToken, collectionID, lang, homepageClient)
+		handle(w, rend, r, accessToken, collectionID, lang, homepageClient)
 	})
 }
 
-func handle(w http.ResponseWriter, req *http.Request, userAccessToken, collectionID, lang string, homepageClient HomepageClienter) {
+func handle(w http.ResponseWriter, rend RenderClient, req *http.Request, userAccessToken, collectionID, lang string, homepageClient HomepageClienter) {
 	ctx := req.Context()
-	homepageHTML, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
+	homepageHTML, err := homepageClient.GetHomePage(ctx, w, rend, userAccessToken, collectionID, lang)
 	if err != nil {
 		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
 		w.WriteHeader(http.StatusInternalServerError)

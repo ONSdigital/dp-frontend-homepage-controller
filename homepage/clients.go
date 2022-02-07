@@ -6,6 +6,8 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
+	"github.com/ONSdigital/dp-renderer/model"
+	"io"
 )
 
 // ZebedeeClient is an interface with methods required for a zebedee client
@@ -27,14 +29,15 @@ type ImageClient interface {
 	Checker(ctx context.Context, check *health.CheckState) error
 }
 
-// RenderClient is an interface with methods required for rendering a template
+// RenderClient is an interface with methods required for rendering a template from a page model
 type RenderClient interface {
-	Do(string, []byte) ([]byte, error)
-	Checker(ctx context.Context, check *health.CheckState) error
+	BuildPage(w io.Writer, pageModel interface{}, templateName string)
+	NewBasePageModel() model.Page
 }
 
 // Clients contains all the required Clients for frontend homepage controller
 type Clients struct {
+	Render RenderClient
 	Zebedee  ZebedeeClient
 	Babbage  BabbageClient
 	ImageAPI ImageClient

@@ -8,6 +8,7 @@ require (
 	github.com/ONSdigital/dp-frontend-models v1.12.2
 	github.com/ONSdigital/dp-healthcheck v1.1.0
 	github.com/ONSdigital/dp-net v1.2.0
+	github.com/ONSdigital/dp-renderer v1.11.8
 	github.com/ONSdigital/log.go/v2 v2.0.9
 	github.com/ReneKroon/ttlcache v1.7.0
 	github.com/gorilla/mux v1.8.0
