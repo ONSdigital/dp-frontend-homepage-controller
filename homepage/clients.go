@@ -37,7 +37,6 @@ type RenderClient interface {
 
 // Clients contains all the required Clients for frontend homepage controller
 type Clients struct {
-	Render RenderClient
 	Zebedee  ZebedeeClient
 	Babbage  BabbageClient
 	ImageAPI ImageClient
