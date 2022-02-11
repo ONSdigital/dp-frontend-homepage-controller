@@ -20,6 +20,7 @@ type Config struct {
 	CacheUpdateInterval        time.Duration `envconfig:"CACHE_UPDATE_INTERVAL"`
 	IsPublishingMode           bool          `envconfig:"IS_PUBLISHING_MODE"`
 	Languages                  string        `envconfig:"LANGUAGES"`
+	SiteDomain                 string        `envconfig:"SITE_DOMAIN"`
 }
 
 var cfg *Config
@@ -57,6 +58,7 @@ func get() (*Config, error) {
 		CacheUpdateInterval:        10 * time.Second,
 		IsPublishingMode:           false,
 		Languages:                  "en,cy",
+		SiteDomain:                 "localhoost",
 	}
 
 	return cfg, envconfig.Process("", cfg)

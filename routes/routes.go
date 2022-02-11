@@ -11,8 +11,8 @@ import (
 )
 
 // Init initialises routes for the service
-func Init(ctx context.Context, r *mux.Router, hcHandler func(http.ResponseWriter, *http.Request), homepageClient homepage.HomepageClienter) {
+func Init(ctx context.Context, r *mux.Router, hcHandler func(http.ResponseWriter, *http.Request), homepageClient homepage.HomepageClienter, renderClient homepage.RenderClient) {
 	log.Info(ctx, "adding routes")
 	r.StrictSlash(true).Path("/health").HandlerFunc(hcHandler)
-	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(homepageClient))
+	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(homepageClient, renderClient))
 }

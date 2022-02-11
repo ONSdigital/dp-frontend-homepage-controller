@@ -27,6 +27,7 @@ func TestSpec(t *testing.T) {
 				So(cfg.IsPublishingMode, ShouldEqual, false)
 				So(cfg.CacheUpdateInterval, ShouldEqual, 10*time.Second)
 				So(cfg.Languages, ShouldEqual, "en,cy")
+				So(cfg.SiteDomain, ShouldEqual, "localhost")
 			})
 		})
 	})
