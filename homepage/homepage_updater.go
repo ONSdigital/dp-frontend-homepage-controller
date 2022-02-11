@@ -97,11 +97,11 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, w http.Resp
 			}
 			mappedAroundONS = mapper.AroundONS(homepageContent, imageObjects)
 		}
-
-		basePage := rend.NewBasePageModel()
-		m := mapper.Homepage(lang, basePage, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, &mappedAroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
-
-		rend.BuildPage(w, m, "homepage")
+		//Move this to the handler in homepage.go???
+		//basePage := rend.NewBasePageModel()
+		//m := mapper.Homepage(lang, basePage, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, &mappedAroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
+		//
+		//rend.BuildPage(w, m, "homepage")
 
 		return nil
 	}
