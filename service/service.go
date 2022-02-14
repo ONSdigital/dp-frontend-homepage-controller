@@ -2,20 +2,20 @@ package service
 
 import (
 	"context"
+	"strings"
+
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
 	render "github.com/ONSdigital/dp-renderer"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"net/http"
-	"strings"
 )
 
 // Service contains all the configs, server and clients to run the frontend homepage controller
@@ -30,7 +30,7 @@ type Service struct {
 }
 
 // Run the service
-func Run(ctx context.Context, w http.ResponseWriter, cfg *config.Config, serviceList *ExternalServiceList, buildTime, gitCommit, version string, svcErrors chan error) (svc *Service, err error) {
+func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceList, buildTime, gitCommit, version string, svcErrors chan error) (svc *Service, err error) {
 	log.Info(ctx, "running service")
 
 	// Initialise Service struct
@@ -67,7 +67,7 @@ func Run(ctx context.Context, w http.ResponseWriter, cfg *config.Config, service
 	} else {
 		languages := strings.Split(cfg.Languages, ",")
 		svc.HomePageClient = homepage.NewHomePageWebClient(svc.clients, cfg.CacheUpdateInterval, languages)
-		go svc.HomePageClient.StartBackgroundUpdate(ctx, w, rend, svcErrors)
+		go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
 	}
 
 	// Initialise router

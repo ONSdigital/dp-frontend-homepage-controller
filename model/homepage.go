@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-renderer/model"
 )
 
@@ -8,6 +9,15 @@ import (
 type Page struct {
 	model.Page
 	Data Homepage `json:"data"`
+}
+
+type HomepageData struct {
+	AroundONS       *[]Feature
+	EmergencyBanner zebedee.EmergencyBanner
+	FeaturedContent *[]Feature
+	MainFigures     map[string]*MainFigure
+	ReleaseCalendar *ReleaseCalendar
+	ServiceMessage  string
 }
 
 //Homepage contains data specific to this page type
