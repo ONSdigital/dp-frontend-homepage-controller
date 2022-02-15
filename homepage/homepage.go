@@ -38,18 +38,18 @@ func Handler(homepageClient HomepageClienter, rend RenderClient) http.HandlerFun
 
 func handle(w http.ResponseWriter, rend RenderClient, req *http.Request, userAccessToken, collectionID, lang string, homepageClient HomepageClienter) {
 	ctx := req.Context()
-	homepageHTML, err := homepageClient.GetHomePage(ctx, w, rend, userAccessToken, collectionID, lang)
+
+	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
 	if err != nil {
 		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	if _, err := w.Write([]byte(homepageHTML)); err != nil {
-		log.Error(ctx, "failed to write response for homepage", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	basePage := rend.NewBasePageModel()
+	m := mapper.Homepage(lang, basePage, homepageContent.MainFigures, homepageContent.ReleaseCalendar, homepageContent.FeaturedContent, homepageContent.AroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
+
+	rend.BuildPage(w, m, "homepage")
 
 	return
 }

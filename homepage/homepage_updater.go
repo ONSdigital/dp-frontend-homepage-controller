@@ -2,7 +2,6 @@ package homepage
 
 import (
 	"context"
-	"net/http"
 	"sync"
 	"time"
 
@@ -17,8 +16,8 @@ type HomepageUpdater struct {
 	clients *Clients
 }
 
-func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, w http.ResponseWriter, rend RenderClient, userAccessToken, collectionID, lang string) func() (string, error) {
-	 {
+func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessToken, collectionID, lang string) func() (*model.HomepageData, error) {
+	return func() (*model.HomepageData, error) {
 		mappedMainFigures := make(map[string]*model.MainFigure)
 		var wg sync.WaitGroup
 		responses := make(chan *model.MainFigure, len(mainFigureMap))
@@ -97,12 +96,16 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, w http.Resp
 			}
 			mappedAroundONS = mapper.AroundONS(homepageContent, imageObjects)
 		}
-		//Move this to the handler in homepage.go???
-		//basePage := rend.NewBasePageModel()
-		//m := mapper.Homepage(lang, basePage, mappedMainFigures, releaseCalModelData, &mappedFeaturedContent, &mappedAroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
-		//
-		//rend.BuildPage(w, m, "homepage")
 
-		return nil
+		homepageData := &model.HomepageData{
+			AroundONS:       &mappedAroundONS,
+			EmergencyBanner: homepageContent.EmergencyBanner,
+			FeaturedContent: &mappedFeaturedContent,
+			MainFigures:     mappedMainFigures,
+			ReleaseCalendar: releaseCalModelData,
+			ServiceMessage:  homepageContent.ServiceMessage,
+		}
+
+		return homepageData, nil
 	}
 }

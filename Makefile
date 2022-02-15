@@ -19,8 +19,8 @@ debug: generate-debug
 	HUMAN_LOG=1 DEBUG=1 $(BINPATH)/dp-frontend-homepage-controller
 
 .PHONY: test
-test:
-	go test -race -cover ./...
+test: generate-prod
+	go test -race -cover -tags 'production' ./...
 
 .PHONY: convey
 convey:
