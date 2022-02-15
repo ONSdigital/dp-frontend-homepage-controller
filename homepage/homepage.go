@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	dphandlers "github.com/ONSdigital/dp-net/handlers"
 	"github.com/ONSdigital/log.go/v2/log"
@@ -30,13 +31,13 @@ type MainFigure struct {
 var mainFigureMap map[string]MainFigure
 
 // Handler handles requests to homepage endpoint
-func Handler(homepageClient HomepageClienter, rend RenderClient) http.HandlerFunc {
+func Handler(cfg *config.Config, homepageClient HomepageClienter, rend RenderClient) http.HandlerFunc {
 	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
-		handle(w, rend, r, accessToken, collectionID, lang, homepageClient)
+		handle(w, r, cfg, accessToken, collectionID, lang, homepageClient, rend)
 	})
 }
 
-func handle(w http.ResponseWriter, rend RenderClient, req *http.Request, userAccessToken, collectionID, lang string, homepageClient HomepageClienter) {
+func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAccessToken, collectionID, lang string, homepageClient HomepageClienter, rend RenderClient) {
 	ctx := req.Context()
 
 	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)

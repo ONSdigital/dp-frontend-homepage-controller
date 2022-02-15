@@ -72,7 +72,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 
 	// Initialise router
 	r := mux.NewRouter()
-	routes.Init(ctx, r, svc.HealthCheck.Handler, svc.HomePageClient, rend)
+	routes.Init(ctx, r, cfg, svc.HealthCheck.Handler, svc.HomePageClient, rend)
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
 
 	// Start Healthcheck and HTTP Server
