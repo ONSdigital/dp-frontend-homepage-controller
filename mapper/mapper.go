@@ -11,6 +11,7 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	coreModel "github.com/ONSdigital/dp-renderer/model"
 	"github.com/ONSdigital/log.go/v2/log"
@@ -39,7 +40,7 @@ var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
 func Homepage(localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner) model.Page {
-	page := model.Page {
+	page := model.Page{
 		Page: basePage,
 	}
 	page.Type = "homepage"
@@ -321,4 +322,17 @@ func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
 		}
 	}
 	return false
+}
+
+// Census maps data to our census frontend model
+func Census(cfg *config.Config, localeCode string, basePage coreModel.Page) model.Page {
+	page := model.Page{
+		Page: basePage,
+	}
+	page.Type = "census"
+	page.Metadata.Title = "Census"
+	page.Language = localeCode
+	page.PatternLibraryAssetsPath = cfg.PatternLibraryAssetsPath
+
+	return page
 }
