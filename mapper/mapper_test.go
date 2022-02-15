@@ -321,7 +321,7 @@ func TestUnitMapper(t *testing.T) {
 
 		page := Homepage("en", basePage, mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
 
-		So(page.PatternLibraryAssetsPath, ShouldResemble, basePage.SiteDomain)
+		So(page.SiteDomain, ShouldResemble, basePage.SiteDomain)
 		So(page.PatternLibraryAssetsPath, ShouldResemble, basePage.PatternLibraryAssetsPath)
 		So(page.Type, ShouldEqual, "homepage")
 		So(page.Data.MainFigures["test_id"].Figure, ShouldEqual, mockedMainFigure.Figure)
