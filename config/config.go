@@ -52,13 +52,13 @@ func get() (*Config, error) {
 		GracefulShutdownTimeout:    5 * time.Second,
 		HealthCheckInterval:        30 * time.Second,
 		HealthCheckCriticalTimeout: 90 * time.Second,
-		Debug: 						false,
-		SupportedLanguages: 		[2]string{"en", "cy"},
+		Debug:                      false,
+		SupportedLanguages:         [2]string{"en", "cy"},
 		BabbageURL:                 "http://localhost:8080",
 		CacheUpdateInterval:        10 * time.Second,
 		IsPublishingMode:           false,
 		Languages:                  "en,cy",
-		SiteDomain:                 "localhoost",
+		SiteDomain:                 "localhost",
 	}
 
 	return cfg, envconfig.Process("", cfg)
