@@ -54,6 +54,7 @@ func Homepage(localeCode string, basePage coreModel.Page, mainFigures map[string
 	page.Data.Featured = *featuredContent
 	page.Data.AroundONS = *aroundONS
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
+	page.FeatureFlags.SixteensVersion = "ba32e79"
 	return page
 }
 
