@@ -146,92 +146,92 @@ one = "View all of our releases by date"
 
 [Census]
 description = "Census"
-one = "Census"
+one = "Cyfrifiad"
 
 [CensusSubhead]
 description = "The census takes place every 10 years. It gives us a picture of all the people and households in England and Wales."
-one = "The census takes place every 10 years. It gives us a picture of all the people and households in England and Wales."
+one = "Caiff y cyfrifiad ei gynnal bob deng mlynedd. Mae'n rhoi darlun i ni o'r holl bobl a chartrefi yng Nghymru a Lloegr.."
 
 [AboutCensus]
 description = "About census"
-one = "About census"
+one = "Y Cyfrifiad"
 
 [HistoricalData]
 description = "Historical data"
-one = "Historical data"
+one = "Data Hanesyddol"
 
 [HistoricalDataSubhead]
 description = "Find census data for 2011 and earlier on Nomis."
-one = "Find census data for 2011 and earlier on Nomis."
+one = "Dewch o hyd i ddata'r cyfrifiad ar gyfer 2011 a chyn hynny ar Nomis."
 
 [HistoricalDataLink1]
 description = "Census 2011"
-one = "Census 2011"
+one = "Cyfrifiad 2011"
 
 [HistoricalDataLink2]
 description = "2001 and earlier"
-one = "2001 and earlier"
+one = "2001 a chyn hynny"
 
 [CensusReleases]
 description = "Census releases"
-one = "Census releases"
+one = "Datganiadau'r cyfrifiad"
 
 [CensusReleasesSubhead]
 description = "When we will publish our results."
-one = "When we will publish our results."
+one = "Pryd y byddwn yn cyhoeddi ein canlyniadau."
 
 [CensusReleasesLink1]
 description = "Release calendar"
-one = "Release calendar"
+one = "Calendr datganiadau"
 
 [CensusReleasesLink2]
 description = "Timeline"
-one = "Timeline"
+one = "Amserlen"
 
 [CensusPlanning]
 description = "Census planning and preparation"
-one = "Census planning and preparation"
+one = "Cynllunio a pharatoi'r cyfrifiad"
 
 [CensusPlanningSubhead]
 description = "Our research, preparations and plans for the 2021 census and beyond."
-one = "Our research, preparations and plans for the 2021 census and beyond."
+one = "Ein hymchwil, paratoadau a chynlluniau ar gyfer Cyfrifiad 2021 a thu hwnt."
 
 [CensusPlanningLink1]
 description = "CCensus transformation"
-one = "Census transformation"
+one = "Trawsnewid y cyfrifiad"
 
 [CensusPlanningLink2]
 description = "Quality and methods"
-one = "Quality and methods"
+one = "Ansawdd a dulliau"
 
 [OtherCensus]
 description = "Scotland and Northern Ireland censuses"
-one = "Scotland and Northern Ireland censuses"
+one = "Cyfrifiadau'r Alban a Gogledd Iwerddon"
 
 [OtherCensusSubhead]
 description = "We are responsible for the census in England and Wales."
-one = "We are responsible for the census in England and Wales."
+one = "Rydym yn gyfrifol am y cyfrifiad yng Nghymru a Lloegr."
 
 [OtherCensusLink1]
 description = "Scotland census"
-one = "Scotland census"
+one = "Cyfrifiad yr Alban"
 
 [OtherCensusLink2]
 description = "Northern Ireland census"
-one = "Northern Ireland census"
+one = "Cyfrifiad Gogledd Iwerddon"
 
 [CensusContactUs]
 description = "Contact us"
-one = "Contact us"
+one = "Cysylltu â ni"
 
 [CensusContactUsSubhead]
 description = "If you need help, contact census customer services."
-one = "If you need help, contact census customer services."
+one = "Os bydd angen help arnoch, cysylltwch â gwasanaethau cwsmeriaid y cyfrifiad."
 
 [CensusContactUsLink1]
 description = "Census customer services"
-one = "Census customer services"
+one = "Gwasanaethau cwsmeriaid y cyfrifiad"
 
 [CensusContactUsLink2]
 description = "Request a 2011 census dataset"
-one = "Request a 2011 census dataset"
+one = "Gofyn am set ddata o Gyfrifiad 2011"
