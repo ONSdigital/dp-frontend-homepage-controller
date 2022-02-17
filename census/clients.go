@@ -1,6 +1,6 @@
 package census
 
-//go:generate moq -out mocks/mocks_test.go -pkg mock . ZebedeeClient BabbageClient ImageClient RenderClient
+//go:generate moq -out mocks_test.go -pkg census . RenderClient
 
 import (
 	"io"
