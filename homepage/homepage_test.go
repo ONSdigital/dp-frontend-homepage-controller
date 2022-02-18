@@ -2,14 +2,13 @@ package homepage
 
 import (
 	"context"
-	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
-	"github.com/ReneKroon/ttlcache"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
 
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
+	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
+	"github.com/ReneKroon/ttlcache"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
@@ -64,79 +63,6 @@ func TestUnitMapper(t *testing.T) {
 		URI: "test/uri/timeseries/456",
 	})
 
-	mockedDescriptions := [5]*release_calendar.Description{
-		{
-			ReleaseDate: time.Now().AddDate(0, 0, -1),
-			Cancelled:   false,
-			Published:   true,
-			Title:       "Foo",
-		}, {
-			ReleaseDate: time.Now().AddDate(0, 0, -2),
-			Cancelled:   false,
-			Published:   true,
-			Title:       "bAr",
-		}, {
-			ReleaseDate: time.Now().AddDate(0, 0, -3),
-			Cancelled:   false,
-			Published:   true,
-			Title:       "BAZ",
-		}, {
-			ReleaseDate: time.Now().AddDate(0, 0, -4),
-			Cancelled:   false,
-			Published:   true,
-			Title:       "qux",
-		}, {
-			ReleaseDate: time.Now().AddDate(0, 0, -5),
-			Cancelled:   true,
-			Published:   false,
-			Title:       "Qu ux",
-		},
-	}
-	mockedResults := []release_calendar.Results{
-		{
-			Type:        "release",
-			Description: mockedDescriptions[0],
-			SearchBoost: nil,
-			URI:         "/releases/foo",
-		},
-		{
-			Type:        "release",
-			Description: mockedDescriptions[1],
-			SearchBoost: nil,
-			URI:         "/releases/bar",
-		},
-		{
-			Type:        "release",
-			Description: mockedDescriptions[2],
-			SearchBoost: nil,
-			URI:         "/releases/baz",
-		},
-		{
-			Type:        "release",
-			Description: mockedDescriptions[3],
-			SearchBoost: nil,
-			URI:         "/releases/qux",
-		},
-		{
-			Type:        "release",
-			Description: mockedDescriptions[4],
-			SearchBoost: nil,
-			URI:         "/releases/quux",
-		},
-	}
-	mockedBabbageRelease := release_calendar.ReleaseCalendar{
-		Type:     "list",
-		ListType: "releasecalendar",
-		URI:      "/releasecalendar/data",
-		Result: release_calendar.Result{
-			NumberOfResults: 5,
-			Took:            3,
-			Results:         &mockedResults,
-			Suggestions:     nil,
-			DocCounts:       struct{}{},
-			SortBy:          "release_date",
-		},
-	}
 	mockedHomepageData := zebedee.HomepageContent{
 		Intro: zebedee.Intro{
 			Title:    "Welcome to the Office for National Statistics",
@@ -196,15 +122,6 @@ func TestUnitMapper(t *testing.T) {
 			},
 		}
 
-		mockBabbageClient := &BabbageClientMock{
-			GetReleaseCalendarFunc: func(ctx context.Context, userAuthToken, fromDay, fromMonth, fromYear string) (m release_calendar.ReleaseCalendar, err error) {
-				return mockedBabbageRelease, nil
-			},
-			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
-				return nil
-			},
-		}
-
 		mockImageClient := &ImageClientMock{
 			GetDownloadVariantFunc: func(ctx context.Context, userAuthToken, serviceAuthToken, collectionID, imageID, variant string) (image.ImageDownload, error) {
 				return mockedImageDownloadData[imageID], nil
@@ -223,30 +140,29 @@ func TestUnitMapper(t *testing.T) {
 			},
 		}
 
-	req := httptest.NewRequest("GET", "/", nil)
-	req.Header.Set("X-Florence-Token", "testuser")
-	rec := httptest.NewRecorder()
-	router := mux.NewRouter()
-	cache := ttlcache.NewCache()
-	cache.SetTTL(10 * time.Millisecond)
-	clients := &Clients{
-		Renderer: mockRenderClient,
-		Zebedee:  mockZebedeeClient,
-		Babbage:  mockBabbageClient,
-		ImageAPI: mockImageClient,
-	}
-	homepageClient := NewHomePagePublishingClient(clients)
-	router.Path("/").HandlerFunc(Handler(homepageClient))
+		req := httptest.NewRequest("GET", "/", nil)
+		req.Header.Set("X-Florence-Token", "testuser")
+		rec := httptest.NewRecorder()
+		router := mux.NewRouter()
+		cache := ttlcache.NewCache()
+		cache.SetTTL(10 * time.Millisecond)
+		clients := &Clients{
+			Renderer: mockRenderClient,
+			Zebedee:  mockZebedeeClient,
+			ImageAPI: mockImageClient,
+		}
+		homepageClient := NewHomePagePublishingClient(clients)
+		router.Path("/").HandlerFunc(Handler(homepageClient))
 
-	Convey("returns 200 response", func() {
-		router.ServeHTTP(rec, req)
-		So(rec.Code, ShouldEqual, http.StatusOK)
-	})
+		Convey("returns 200 response", func() {
+			router.ServeHTTP(rec, req)
+			So(rec.Code, ShouldEqual, http.StatusOK)
+		})
 
-	Convey("renderer returns HTML body", func() {
-		router.ServeHTTP(rec, req)
-		response := rec.Body.String()
-		So(response, ShouldEqual, expectedSuccessResponse)
+		Convey("renderer returns HTML body", func() {
+			router.ServeHTTP(rec, req)
+			response := rec.Body.String()
+			So(response, ShouldEqual, expectedSuccessResponse)
+		})
 	})
-})
 }
