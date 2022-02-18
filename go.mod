@@ -5,6 +5,7 @@ go 1.13
 require (
 	github.com/ONSdigital/dp-api-clients-go v1.43.0 // indirect
 	github.com/ONSdigital/dp-api-clients-go/v2 v2.4.9
+	github.com/ONSdigital/dp-cookies v0.3.3 // indirect
 	github.com/ONSdigital/dp-frontend-models v1.12.2
 	github.com/ONSdigital/dp-healthcheck v1.1.0
 	github.com/ONSdigital/dp-net v1.2.0
