@@ -2,6 +2,8 @@ package mapper
 
 import (
 	"context"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -490,5 +492,31 @@ func TestUnitMapper(t *testing.T) {
 		gracefulDegradationPage := Homepage("en", basePage, mockedNoMainFigures, &mockedReleaseData, &mockedNoFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
 		So(gracefulDegradationPage.Data.HasFeaturedContent, ShouldEqual, false)
 		So(gracefulDegradationPage.Data.HasMainFigures, ShouldEqual, false)
+	})
+}
+
+func TestUnitMapCookiesPreferences(t *testing.T) {
+	req := httptest.NewRequest("", "/", nil)
+	pageModel := coreModel.Page{
+		CookiesPreferencesSet: false,
+		CookiesPolicy: coreModel.CookiesPolicy{
+			Essential: false,
+			Usage:     false,
+		},
+	}
+
+	Convey("cookies preferences initialise as false", t, func() {
+		So(pageModel.CookiesPreferencesSet, ShouldBeFalse)
+		So(pageModel.CookiesPolicy.Essential, ShouldBeFalse)
+		So(pageModel.CookiesPolicy.Usage, ShouldBeFalse)
+	})
+
+	Convey("cookie preferences map to page model", t, func() {
+		req.AddCookie(&http.Cookie{Name: "cookies_preferences_set", Value: "true"})
+		req.AddCookie(&http.Cookie{Name: "cookies_policy", Value: "%7B%22essential%22%3Atrue%2C%22usage%22%3Atrue%7D"})
+		mapCookiePreferences(req, &pageModel.CookiesPreferencesSet, &pageModel.CookiesPolicy)
+		So(pageModel.CookiesPreferencesSet, ShouldBeTrue)
+		So(pageModel.CookiesPolicy.Essential, ShouldBeTrue)
+		So(pageModel.CookiesPolicy.Usage, ShouldBeTrue)
 	})
 }
