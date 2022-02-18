@@ -27,6 +27,7 @@ type Service struct {
 	clients            *homepage.Clients
 	ServiceList        *ExternalServiceList
 	HomePageClient     homepage.HomepageClienter
+	RendererClient     homepage.RenderClient
 }
 
 // Run the service

@@ -311,10 +311,6 @@ func TestUnitMapper(t *testing.T) {
 		LinkText:    "More info",
 	}
 
-	//expectedModel := model.Page{}
-	//expectedModel.PatternLibraryAssetsPath = "path/to/assets"
-	//expectedModel.SiteDomain = "site-domain"
-
 	basePage := coreModel.NewPage("path/to/assets", "site-domain")
 
 	Convey("test homepage mapping works", t, func() {
