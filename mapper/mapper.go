@@ -4,12 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"regexp"
 	"sort"
 	"strings"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
+	"github.com/ONSdigital/dp-cookies/cookies"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
@@ -325,14 +327,26 @@ func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
 }
 
 // Census maps data to our census frontend model
-func Census(cfg *config.Config, localeCode string, basePage coreModel.Page) model.Page {
+func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page) model.Page {
 	page := model.Page{
 		Page: basePage,
 	}
+
+	mapCookiePreferences(req, &page.Page.CookiesPreferencesSet, &page.Page.CookiesPolicy)
 	page.Type = "census"
 	page.Metadata.Title = "Census"
 	page.Language = localeCode
 	page.PatternLibraryAssetsPath = cfg.PatternLibraryAssetsPath
 
 	return page
+}
+
+// mapCookiePreferences reads cookie policy and preferences cookies and then maps the values to the page model
+func mapCookiePreferences(req *http.Request, preferencesIsSet *bool, policy *coreModel.CookiesPolicy) {
+	preferencesCookie := cookies.GetCookiePreferences(req)
+	*preferencesIsSet = preferencesCookie.IsPreferenceSet
+	*policy = coreModel.CookiesPolicy{
+		Essential: preferencesCookie.Policy.Essential,
+		Usage:     preferencesCookie.Policy.Usage,
+	}
 }

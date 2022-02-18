@@ -17,7 +17,7 @@ func Handler(cfg *config.Config, rend RenderClient) http.HandlerFunc {
 
 func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, rend RenderClient, userAccessToken, collectionID, lang string) {
 	basePage := rend.NewBasePageModel()
-	m := mapper.Census(cfg, lang, basePage)
+	m := mapper.Census(req, cfg, lang, basePage)
 
 	rend.BuildPage(w, m, "census")
 
