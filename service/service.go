@@ -2,18 +2,18 @@ package service
 
 import (
 	"context"
+	"strings"
+
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/renderer"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
-	"strings"
 )
 
 // Service contains all the configs, server and clients to run the frontend homepage controller
@@ -44,7 +44,6 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	svc.clients = &homepage.Clients{
 		Renderer: renderer.New(cfg.RendererURL),
 		Zebedee:  zebedee.NewWithHealthClient(svc.routerHealthClient),
-		Babbage:  release_calendar.New(cfg.BabbageURL),
 		ImageAPI: image.NewWithHealthClient(svc.routerHealthClient),
 	}
 
@@ -136,11 +135,6 @@ func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (e
 	if err = svc.HealthCheck.AddCheck("frontend renderer", svc.clients.Renderer.Checker); err != nil {
 		hasErrors = true
 		log.Error(ctx, "failed to add frontend renderer checker", err)
-	}
-
-	if err = svc.HealthCheck.AddCheck("Babbage", svc.clients.Babbage.Checker); err != nil {
-		hasErrors = true
-		log.Error(ctx, "failed to add babbage checker", err)
 	}
 
 	if err = svc.HealthCheck.AddCheck("API router", svc.routerHealthClient.Checker); err != nil {
