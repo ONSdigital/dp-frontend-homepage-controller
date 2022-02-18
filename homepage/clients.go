@@ -2,22 +2,18 @@ package homepage
 
 import (
 	"context"
+
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
 )
+
+//go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient ImageClient RenderClient
 
 // ZebedeeClient is an interface with methods required for a zebedee client
 type ZebedeeClient interface {
 	GetTimeseriesMainFigure(ctx context.Context, userAuthToken, collectionID, lang, uri string) (m zebedee.TimeseriesMainFigure, err error)
 	GetHomepageContent(ctx context.Context, userAccessToken, collectionID, lang, path string) (m zebedee.HomepageContent, err error)
-	Checker(ctx context.Context, check *health.CheckState) error
-}
-
-// BabbageClient is an interface with methods required for a babbage client
-type BabbageClient interface {
-	GetReleaseCalendar(ctx context.Context, userAccessToken, fromDay, fromMonth, fromYear string) (m release_calendar.ReleaseCalendar, err error)
 	Checker(ctx context.Context, check *health.CheckState) error
 }
 
@@ -37,6 +33,5 @@ type RenderClient interface {
 type Clients struct {
 	Renderer RenderClient
 	Zebedee  ZebedeeClient
-	Babbage  BabbageClient
 	ImageAPI ImageClient
 }
