@@ -1,6 +1,6 @@
 package homepage
 
-//go:generate moq -out homepage/mocks_test.go -pkg mock . ZebedeeClient BabbageClient ImageClient RenderClient
+//go:generate moq -out homepage_mock.go -pkg homepage . ZebedeeClient BabbageClient ImageClient RenderClient
 
 import (
 	"context"
