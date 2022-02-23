@@ -30,16 +30,17 @@ func doTestRequest(target string, req *http.Request, handlerFunc http.HandlerFun
 	return w
 }
 
-
-var accessToken string
-var collectionID string
-var lang string
+var (
+	userAccessToken string
+	collectionID string
+	lang string
+)
 
 func TestUnitHomepageHandlerSuccess(t *testing.T) {
 	t.Parallel()
 
 	Convey("Given a valid request", t, func() {
-		req := httptest.NewRequest("GET", "http://localhost:20000/", nil)
+		req := httptest.NewRequest("GET", "/", nil)
 
 		cfg, err := config.Get()
 		So(err, ShouldBeNil)
@@ -54,14 +55,15 @@ func TestUnitHomepageHandlerSuccess(t *testing.T) {
 		mockedHomepageClienter := &HomepageClienterMock{
 			CloseFunc: func()  {},
 			GetHomePageFunc: func(ctx context.Context, userAccessToken string, collectionID string, lang string) (*model.HomepageData, error) {
-				return nil, error
+				return &model.HomepageData{}, nil
 			},
 			StartBackgroundUpdateFunc: func(ctx context.Context, errorChannel chan error)  {},
 		}
 
 
 		Convey("When Read is called", func() {
-			w := doTestRequest("http://localhost:20000/", req, Handler(cfg, mockedHomepageClienter, mockedRendererClient), nil)
+			w := doTestRequest("/", req, Handler(cfg, mockedHomepageClienter, mockedRendererClient), nil)
+
 
 			Convey("Then a 200 OK status should be returned", func() {
 				So(w.Code, ShouldEqual, http.StatusOK)
