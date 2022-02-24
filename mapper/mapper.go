@@ -5,14 +5,12 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
-	"sort"
 	"strings"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
-	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
-	coreModel "github.com/ONSdigital/dp-renderer/model"
+	coreModel "github.com/ONSdigital/dp-frontend-models/model"
+	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/shopspring/decimal"
 )
@@ -38,11 +36,12 @@ type TrendInfo struct {
 var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
-func Homepage(localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner) model.Page {
+func Homepage(localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner) model.Page {
 	page := model.Page {
 		Data: model.Homepage{},
 		Page: basePage,
 	}
+
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
 	page.Data.HasFeaturedContent = hasFeaturedContent(featuredContent)
@@ -51,12 +50,10 @@ func Homepage(localeCode string, basePage coreModel.Page, mainFigures map[string
 	page.ServiceMessage = serviceMessage
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
+	page.Data.Featured = *featuredContent
+	page.Data.AroundONS = *aroundONS
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.FeatureFlags.SixteensVersion = "ba32e79"
-
-	if releaseCal != nil {
-		page.Data.ReleaseCalendar = *releaseCal
-	}
 
 	if aroundONS != nil {
 		page.Data.AroundONS = *aroundONS
@@ -120,32 +117,6 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 	return &mf
 }
 
-func ReleaseCalendar(rawReleaseCalendar release_calendar.ReleaseCalendar) *model.ReleaseCalendar {
-	rc := model.ReleaseCalendar{
-		Releases:                         []model.Release{},
-		NumberOfReleases:                 0,
-		NumberOfOtherReleasesInSevenDays: 0,
-	}
-	// No releases found
-	if rawReleaseCalendar.Result.Results == nil {
-		return &rc
-	}
-	releaseResults := *rawReleaseCalendar.Result.Results
-	numReleasesScheduled := rawReleaseCalendar.Result.NumberOfResults
-
-	for i := len(releaseResults) - 1; i >= 0; i-- {
-		if releaseResults[i].Description.Cancelled || !releaseResults[i].Description.Published {
-			numReleasesScheduled--
-		}
-	}
-
-	latestReleases := getLatestReleases(releaseResults)
-	rc.Releases = latestReleases
-	rc.NumberOfReleases = numReleasesScheduled
-	rc.NumberOfOtherReleasesInSevenDays = numReleasesScheduled - len(latestReleases)
-	return &rc
-}
-
 // FeaturedContent takes the homepageContent as returned from the client and returns an array of featured content
 func FeaturedContent(homepageData zebedee.HomepageContent, images map[string]image.ImageDownload) []model.Feature {
 	var mappedFeaturesContent []model.Feature
@@ -187,33 +158,6 @@ func mapEmergencyBanner(bannerData zebedee.EmergencyBanner) coreModel.EmergencyB
 		mappedEmergencyBanner.LinkText = bannerData.LinkText
 	}
 	return mappedEmergencyBanner
-}
-
-func getLatestReleases(rawReleases []release_calendar.Results) []model.Release {
-	var latestReleases []model.Release
-
-	// Removed canceled releases or unpublished releases
-	for i := len(rawReleases) - 1; i >= 0; i-- {
-		if rawReleases[i].Description.Cancelled || !rawReleases[i].Description.Published {
-			rawReleases = append(rawReleases[:i], rawReleases[i+1:]...)
-		}
-	}
-
-	// Reverse order
-	sort.Slice(rawReleases, func(i, j int) bool {
-		return rawReleases[i].Description.ReleaseDate.After(rawReleases[j].Description.ReleaseDate)
-	})
-	displayedReleases := 3
-	for i := 0; i < displayedReleases; i++ {
-		if len(rawReleases)-1 >= i {
-			latestReleases = append(latestReleases, model.Release{
-				Title:       rawReleases[i].Description.Title,
-				URI:         rawReleases[i].URI,
-				ReleaseDate: rawReleases[i].Description.ReleaseDate.Format("2 January 2006"),
-			})
-		}
-	}
-	return latestReleases
 }
 
 // getDataByPeriod returns the data for the time period set

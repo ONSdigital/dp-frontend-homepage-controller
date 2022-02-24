@@ -124,7 +124,11 @@ func TestRun(t *testing.T) {
 				So(err.Error(), ShouldResemble, fmt.Sprintf("unable to register checkers: %s", errAddheckFail.Error()))
 				So(svcList.HealthCheck, ShouldBeTrue)
 				So(len(hcMockAddFail.AddCheckCalls()), ShouldEqual, 2)
+<<<<<<< HEAD
 				So(hcMockAddFail.AddCheckCalls()[0].Name, ShouldResemble, "Babbage")
+=======
+				So(hcMockAddFail.AddCheckCalls()[0].Name, ShouldResemble, "frontend renderer")
+>>>>>>> develop
 				So(hcMockAddFail.AddCheckCalls()[1].Name, ShouldResemble, "API router")
 			})
 		})
@@ -147,7 +151,11 @@ func TestRun(t *testing.T) {
 
 			Convey("The checkers are registered and the healthcheck and http server started", func() {
 				So(len(hcMock.AddCheckCalls()), ShouldEqual, 2)
+<<<<<<< HEAD
 				So(hcMock.AddCheckCalls()[0].Name, ShouldResemble, "Babbage")
+=======
+				So(hcMock.AddCheckCalls()[0].Name, ShouldResemble, "frontend renderer")
+>>>>>>> develop
 				So(hcMock.AddCheckCalls()[1].Name, ShouldResemble, "API router")
 				So(len(initMock.DoGetHTTPServerCalls()), ShouldEqual, 1)
 				So(initMock.DoGetHTTPServerCalls()[0].BindAddr, ShouldEqual, ":24400")
