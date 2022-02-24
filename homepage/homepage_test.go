@@ -60,10 +60,8 @@ func TestUnitHomepageHandlerSuccess(t *testing.T) {
 			StartBackgroundUpdateFunc: func(ctx context.Context, errorChannel chan error)  {},
 		}
 
-
 		Convey("When Read is called", func() {
 			w := doTestRequest("/", req, Handler(cfg, mockedHomepageClienter, mockedRendererClient), nil)
-
 
 			Convey("Then a 200 OK status should be returned", func() {
 				So(w.Code, ShouldEqual, http.StatusOK)

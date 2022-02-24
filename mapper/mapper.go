@@ -40,6 +40,7 @@ var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 // Homepage maps data to our homepage frontend model
 func Homepage(localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, releaseCal *model.ReleaseCalendar, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner) model.Page {
 	page := model.Page {
+		Data: model.Homepage{},
 		Page: basePage,
 	}
 	page.Type = "homepage"
@@ -50,11 +51,21 @@ func Homepage(localeCode string, basePage coreModel.Page, mainFigures map[string
 	page.ServiceMessage = serviceMessage
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
-	page.Data.ReleaseCalendar = *releaseCal
-	page.Data.Featured = *featuredContent
-	page.Data.AroundONS = *aroundONS
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.FeatureFlags.SixteensVersion = "ba32e79"
+
+	if releaseCal != nil {
+		page.Data.ReleaseCalendar = *releaseCal
+	}
+
+	if aroundONS != nil {
+		page.Data.AroundONS = *aroundONS
+	}
+
+	if featuredContent != nil {
+		page.Data.Featured = *featuredContent
+	}
+
 	return page
 }
 
@@ -312,6 +323,10 @@ func getDifferenceOffset(period, interval string) int {
 }
 
 func hasFeaturedContent(featuredContent *[]model.Feature) bool {
+	if featuredContent == nil {
+		return false
+	}
+
 	return len(*featuredContent) > 0
 }
 
