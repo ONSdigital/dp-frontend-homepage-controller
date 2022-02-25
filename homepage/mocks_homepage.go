@@ -13,15 +13,15 @@ import (
 	"sync"
 )
 
-// Ensure, that ZebedeeClientMock does implement homepage.ZebedeeClient.
+// Ensure, that ZebedeeClientMock does implement ZebedeeClient.
 // If this is not the case, regenerate this file with moq.
 var _ ZebedeeClient = &ZebedeeClientMock{}
 
-// ZebedeeClientMock is a mock implementation of homepage.ZebedeeClient.
+// ZebedeeClientMock is a mock implementation of ZebedeeClient.
 //
 // 	func TestSomethingThatUsesZebedeeClient(t *testing.T) {
 //
-// 		// make and configure a mocked homepage.ZebedeeClient
+// 		// make and configure a mocked ZebedeeClient
 // 		mockedZebedeeClient := &ZebedeeClientMock{
 // 			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
 // 				panic("mock out the Checker method")
@@ -34,7 +34,7 @@ var _ ZebedeeClient = &ZebedeeClientMock{}
 // 			},
 // 		}
 //
-// 		// use mockedZebedeeClient in code that requires homepage.ZebedeeClient
+// 		// use mockedZebedeeClient in code that requires ZebedeeClient
 // 		// and then make assertions.
 //
 // 	}
@@ -365,132 +365,12 @@ func (mock *ImageClientMock) GetDownloadVariantCalls() []struct {
 // Ensure, that RenderClientMock does implement RenderClient.
 // If this is not the case, regenerate this file with moq.
 var _ RenderClient = &RenderClientMock{}
+
 // RenderClientMock is a mock implementation of RenderClient.
 //
 // 	func TestSomethingThatUsesRenderClient(t *testing.T) {
 //
 // 		// make and configure a mocked RenderClient
-// 		mockedRenderClient := &RenderClientMock{
-// 			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
-// 				panic("mock out the Checker method")
-// 			},
-// 			DoFunc: func(s string, bytes []byte) ([]byte, error) {
-// 				panic("mock out the Do method")
-// 			},
-// 		}
-//
-// 		// use mockedRenderClient in code that requires RenderClient
-// 		// and then make assertions.
-//
-// 	}
-type RenderClientMock struct {
-	// CheckerFunc mocks the Checker method.
-	CheckerFunc func(ctx context.Context, check *health.CheckState) error
-
-	// DoFunc mocks the Do method.
-	DoFunc func(s string, bytes []byte) ([]byte, error)
-
-	// calls tracks calls to the methods.
-	calls struct {
-		// Checker holds details about calls to the Checker method.
-		Checker []struct {
-			// Ctx is the ctx argument value.
-			Ctx context.Context
-			// Check is the check argument value.
-			Check *health.CheckState
-		}
-		// Do holds details about calls to the Do method.
-		Do []struct {
-			// S is the s argument value.
-			S string
-			// Bytes is the bytes argument value.
-			Bytes []byte
-		}
-	}
-	lockChecker sync.RWMutex
-	lockDo      sync.RWMutex
-}
-
-// Checker calls CheckerFunc.
-func (mock *RenderClientMock) Checker(ctx context.Context, check *health.CheckState) error {
-	if mock.CheckerFunc == nil {
-		panic("RenderClientMock.CheckerFunc: method is nil but RenderClient.Checker was just called")
-	}
-	callInfo := struct {
-		Ctx   context.Context
-		Check *health.CheckState
-	}{
-		Ctx:   ctx,
-		Check: check,
-	}
-	mock.lockChecker.Lock()
-	mock.calls.Checker = append(mock.calls.Checker, callInfo)
-	mock.lockChecker.Unlock()
-	return mock.CheckerFunc(ctx, check)
-}
-
-// CheckerCalls gets all the calls that were made to Checker.
-// Check the length with:
-//     len(mockedRenderClient.CheckerCalls())
-func (mock *RenderClientMock) CheckerCalls() []struct {
-	Ctx   context.Context
-	Check *health.CheckState
-} {
-	var calls []struct {
-		Ctx   context.Context
-		Check *health.CheckState
-	}
-	mock.lockChecker.RLock()
-	calls = mock.calls.Checker
-	mock.lockChecker.RUnlock()
-	return calls
-}
-
-// Do calls DoFunc.
-func (mock *RenderClientMock) Do(s string, bytes []byte) ([]byte, error) {
-	if mock.DoFunc == nil {
-		panic("RenderClientMock.DoFunc: method is nil but RenderClient.Do was just called")
-	}
-	callInfo := struct {
-		S     string
-		Bytes []byte
-	}{
-		S:     s,
-		Bytes: bytes,
-	}
-	mock.lockDo.Lock()
-	mock.calls.Do = append(mock.calls.Do, callInfo)
-	mock.lockDo.Unlock()
-	return mock.DoFunc(s, bytes)
-}
-
-// DoCalls gets all the calls that were made to Do.
-// Check the length with:
-//     len(mockedRenderClient.DoCalls())
-func (mock *RenderClientMock) DoCalls() []struct {
-	S     string
-	Bytes []byte
-} {
-	var calls []struct {
-		S     string
-		Bytes []byte
-	}
-	mock.lockDo.RLock()
-	calls = mock.calls.Do
-	mock.lockDo.RUnlock()
-	return calls
-}
-<<<<<<< HEAD:homepage/mocks_homepage.go
-
-// Ensure, that RenderClientMock does implement homepage.RenderClient.
-// If this is not the case, regenerate this file with moq.
-var _ RenderClient = &RenderClientMock{}
-
-// RenderClientMock is a mock implementation of homepage.RenderClient.
-//
-// 	func TestSomethingThatUsesRenderClient(t *testing.T) {
-//
-// 		// make and configure a mocked homepage.RenderClient
 // 		mockedRenderClient := &RenderClientMock{
 // 			BuildPageFunc: func(w io.Writer, pageModel interface{}, templateName string)  {
 // 				panic("mock out the BuildPage method")
@@ -500,7 +380,7 @@ var _ RenderClient = &RenderClientMock{}
 // 			},
 // 		}
 //
-// 		// use mockedRenderClient in code that requires homepage.RenderClient
+// 		// use mockedRenderClient in code that requires RenderClient
 // 		// and then make assertions.
 //
 // 	}
@@ -594,5 +474,3 @@ func (mock *RenderClientMock) NewBasePageModelCalls() []struct {
 	mock.lockNewBasePageModel.RUnlock()
 	return calls
 }
-=======
->>>>>>> develop:homepage/mocks_test.go

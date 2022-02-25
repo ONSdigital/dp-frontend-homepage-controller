@@ -220,7 +220,7 @@ func TestUnitMapper(t *testing.T) {
 
 	Convey("test homepage mapping works", t, func() {
 
-		page := Homepage("en", basePage, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
+		page := Homepage("en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
 
 		So(page.SiteDomain, ShouldResemble, basePage.SiteDomain)
 		So(page.PatternLibraryAssetsPath, ShouldResemble, basePage.PatternLibraryAssetsPath)

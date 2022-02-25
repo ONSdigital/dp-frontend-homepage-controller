@@ -13,14 +13,9 @@ type Config struct {
 	GracefulShutdownTimeout    time.Duration `envconfig:"GRACEFUL_SHUTDOWN_TIMEOUT"`
 	HealthCheckInterval        time.Duration `envconfig:"HEALTHCHECK_INTERVAL"`
 	HealthCheckCriticalTimeout time.Duration `envconfig:"HEALTHCHECK_CRITICAL_TIMEOUT"`
-<<<<<<< HEAD
 	Debug                      bool          `envconfig:"DEBUG"`
 	PatternLibraryAssetsPath   string        `envconfig:"PATTERN_LIBRARY_ASSETS_PATH"`
 	SupportedLanguages         [2]string     `envconfig:"SUPPORTED_LANGUAGES"`
-	BabbageURL                 string        `envconfig:"BABBAGE_URL"`
-=======
-	RendererURL                string        `envconfig:"RENDERER_URL"`
->>>>>>> develop
 	CacheUpdateInterval        time.Duration `envconfig:"CACHE_UPDATE_INTERVAL"`
 	IsPublishingMode           bool          `envconfig:"IS_PUBLISHING_MODE"`
 	Languages                  string        `envconfig:"LANGUAGES"`
@@ -56,13 +51,8 @@ func get() (*Config, error) {
 		GracefulShutdownTimeout:    5 * time.Second,
 		HealthCheckInterval:        30 * time.Second,
 		HealthCheckCriticalTimeout: 90 * time.Second,
-<<<<<<< HEAD
 		Debug:                      false,
 		SupportedLanguages:         [2]string{"en", "cy"},
-		BabbageURL:                 "http://localhost:8080",
-=======
-		RendererURL:                "http://localhost:20010",
->>>>>>> develop
 		CacheUpdateInterval:        10 * time.Second,
 		IsPublishingMode:           false,
 		Languages:                  "en,cy",

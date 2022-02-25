@@ -86,28 +86,12 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 			mappedAroundONS = mapper.AroundONS(homepageContent, imageObjects)
 		}
 
-<<<<<<< HEAD
 		homepageData := &model.HomepageData{
 			AroundONS:       &mappedAroundONS,
 			EmergencyBanner: homepageContent.EmergencyBanner,
 			FeaturedContent: &mappedFeaturedContent,
 			MainFigures:     mappedMainFigures,
-			ReleaseCalendar: releaseCalModelData,
 			ServiceMessage:  homepageContent.ServiceMessage,
-=======
-		m := mapper.Homepage(lang, mappedMainFigures, &mappedFeaturedContent, &mappedAroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
-
-		b, err := json.Marshal(m)
-		if err != nil {
-			errMessage := "error marshalling body data to json"
-			return "", fmt.Errorf("%s. error: %#v", errMessage, err)
-		}
-
-		templateHTML, err := hu.clients.Renderer.Do("homepage", b)
-		if err != nil {
-			errMessage := "error rendering page"
-			return "", fmt.Errorf("%s. error: %#v", errMessage, err)
->>>>>>> develop
 		}
 
 		return homepageData, nil

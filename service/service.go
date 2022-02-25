@@ -7,11 +7,8 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
-<<<<<<< HEAD
+
 	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
-=======
->>>>>>> develop
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
@@ -139,17 +136,6 @@ func (svc *Service) Close(ctx context.Context) error {
 func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (err error) {
 
 	hasErrors := false
-
-<<<<<<< HEAD
-	if err = svc.HealthCheck.AddCheck("Babbage", svc.clients.Babbage.Checker); err != nil {
-		hasErrors = true
-		log.Error(ctx, "failed to add babbage checker", err)
-=======
-	if err = svc.HealthCheck.AddCheck("frontend renderer", svc.clients.Renderer.Checker); err != nil {
-		hasErrors = true
-		log.Error(ctx, "failed to add frontend renderer checker", err)
->>>>>>> develop
-	}
 
 	if err = svc.HealthCheck.AddCheck("API router", svc.routerHealthClient.Checker); err != nil {
 		hasErrors = true

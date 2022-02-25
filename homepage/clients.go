@@ -1,21 +1,16 @@
 package homepage
 
-//go:generate moq -out client_mock.go -pkg client . ZebedeeClient BabbageClient ImageClient RenderClient
+//go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient ImageClient RenderClient
 
 import (
 	"context"
-<<<<<<< HEAD
 	"io"
-=======
->>>>>>> develop
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
 	"github.com/ONSdigital/dp-renderer/model"
 )
-
-//go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient ImageClient RenderClient
 
 // ZebedeeClient is an interface with methods required for a zebedee client
 type ZebedeeClient interface {
