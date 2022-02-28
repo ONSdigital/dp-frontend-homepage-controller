@@ -47,10 +47,6 @@ one = "Gwaith ymchwil a chynllunio ar gyfer y cyfrifiad."
 description = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
 one = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
 
-[Covid19BannerBody]
-description = "Get the latest data and analysis on coronavirus (COVID-19) in the UK."
-one = "Y data a’r dadansoddiad diweddaraf ar y coronafeirws."
-
 [SurveyFindOut]
 description = "It's never been more important"
 one = "It's never been more important."
@@ -60,13 +56,6 @@ description = "Taking part in a survey?"
 one = "Cymryd rhan mewn arolwg?"
 
 # Primarily used in footer template
-[Covid19BannerTitle]
-description = "Coronafeirws (COVID-19)"
-one = "Coronafeirws (COVID-19)"
-
-[Covid19BannerBody]
-description = "Get the latest data and analysis on coronavirus (COVID-19) in the UK."
-one = "Y data a’r dadansoddiad diweddaraf ar y coronafeirws."
 
 [InFocus]
 description = "In focus"

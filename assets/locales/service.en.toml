@@ -38,10 +38,6 @@ one = "Census research and planning."
 description = "The last census took place on 21 March 2021.  We are currently processing the data."
 one = "The last census took place on 21 March 2021.  We are currently processing the data."
 
-[CensusBannerBody]
-description = "Discover how our census statistics help paint a picture of the nation and how we live."
-one = "Discover how our census statistics help paint a picture of the nation and how we live."
-
 [SurveyFindOut]
 description = "It's never been more important"
 one = "It's never been more important."
@@ -51,15 +47,6 @@ description = "Taking part in a survey?"
 one = "Taking part in a survey?"
 
 # Primarily used in footer template]
-
-[Covid19BannerTitle]
-description = "Coronavirus (COVID-19)"
-one = "Coronavirus (COVID-19)"
-
-[Covid19BannerBody]
-description = "Get the latest data and analysis on coronavirus (COVID-19) in the UK."
-one = "Get the latest data and analysis on coronavirus (COVID-19) in the UK."
-
 [InFocus]
 description = "In focus"
 one = "In focus"
