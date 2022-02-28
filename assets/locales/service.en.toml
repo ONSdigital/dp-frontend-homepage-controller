@@ -38,6 +38,18 @@ one = "Census research and planning."
 description = "The last census took place on 21 March 2021.  We are currently processing the data."
 one = "The last census took place on 21 March 2021.  We are currently processing the data."
 
+[CensusBannerBody]
+description = "Discover how our census statistics help paint a picture of the nation and how we live."
+one = "Discover how our census statistics help paint a picture of the nation and how we live."
+
+[SurveyFindOut]
+description = "It's never been more important"
+one = "It's never been more important."
+
+[SurveyTakingPart]
+description = "Taking part in a survey?"
+one = "Taking part in a survey?"
+
 # Primarily used in footer template]
 
 [Covid19BannerTitle]

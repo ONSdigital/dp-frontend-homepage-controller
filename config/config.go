@@ -16,7 +16,6 @@ type Config struct {
 	Debug                      bool          `envconfig:"DEBUG"`
 	PatternLibraryAssetsPath   string        `envconfig:"PATTERN_LIBRARY_ASSETS_PATH"`
 	SupportedLanguages         [2]string     `envconfig:"SUPPORTED_LANGUAGES"`
-	BabbageURL                 string        `envconfig:"BABBAGE_URL"`
 	CacheUpdateInterval        time.Duration `envconfig:"CACHE_UPDATE_INTERVAL"`
 	IsPublishingMode           bool          `envconfig:"IS_PUBLISHING_MODE"`
 	Languages                  string        `envconfig:"LANGUAGES"`
@@ -54,7 +53,6 @@ func get() (*Config, error) {
 		HealthCheckCriticalTimeout: 90 * time.Second,
 		Debug:                      false,
 		SupportedLanguages:         [2]string{"en", "cy"},
-		BabbageURL:                 "http://localhost:8080",
 		CacheUpdateInterval:        10 * time.Second,
 		IsPublishingMode:           false,
 		Languages:                  "en,cy",

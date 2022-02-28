@@ -8,7 +8,6 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
@@ -27,6 +26,7 @@ type Service struct {
 	clients            *homepage.Clients
 	ServiceList        *ExternalServiceList
 	HomePageClient     homepage.HomepageClienter
+	RendererClient     homepage.RenderClient
 }
 
 // Run the service
@@ -48,7 +48,6 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	// Initialise clients
 	svc.clients = &homepage.Clients{
 		Zebedee:  zebedee.NewWithHealthClient(svc.routerHealthClient),
-		Babbage:  release_calendar.New(cfg.BabbageURL),
 		ImageAPI: image.NewWithHealthClient(svc.routerHealthClient),
 	}
 
@@ -136,11 +135,6 @@ func (svc *Service) Close(ctx context.Context) error {
 func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (err error) {
 
 	hasErrors := false
-
-	if err = svc.HealthCheck.AddCheck("Babbage", svc.clients.Babbage.Checker); err != nil {
-		hasErrors = true
-		log.Error(ctx, "failed to add babbage checker", err)
-	}
 
 	if err = svc.HealthCheck.AddCheck("API router", svc.routerHealthClient.Checker); err != nil {
 		hasErrors = true

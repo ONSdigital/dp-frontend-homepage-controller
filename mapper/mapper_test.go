@@ -5,9 +5,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
-	"github.com/ONSdigital/dp-frontend-homepage-controller/clients/release_calendar"
 	"github.com/shopspring/decimal"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
@@ -101,100 +99,7 @@ func TestUnitMapper(t *testing.T) {
 		FigureURIs:       model.FigureURIs{Analysis: "test/uri/1/2/"},
 	}
 	mockedMainFigures["test_id"] = &mockedMainFigure
-	mockedDescriptions := [5]*release_calendar.Description{
-		{
-			ReleaseDate: time.Now().AddDate(0, 0, -1),
-			Cancelled:   false,
-			Published:   true,
-			Title:       "Foo",
-		}, {
-			ReleaseDate: time.Now().AddDate(0, 0, -2),
-			Cancelled:   false,
-			Published:   true,
-			Title:       "bAr",
-		}, {
-			ReleaseDate: time.Now().AddDate(0, 0, -3),
-			Cancelled:   false,
-			Published:   true,
-			Title:       "BAZ",
-		}, {
-			ReleaseDate: time.Now().AddDate(0, 0, -4),
-			Cancelled:   false,
-			Published:   true,
-			Title:       "qux",
-		}, {
-			ReleaseDate: time.Now().AddDate(0, 0, -5),
-			Cancelled:   true,
-			Published:   false,
-			Title:       "Qu ux",
-		},
-	}
-	mockedResults := []release_calendar.Results{
-		{
-			Type:        "release",
-			Description: mockedDescriptions[0],
-			SearchBoost: nil,
-			URI:         "/releases/foo",
-		},
-		{
-			Type:        "release",
-			Description: mockedDescriptions[1],
-			SearchBoost: nil,
-			URI:         "/releases/bar",
-		},
-		{
-			Type:        "release",
-			Description: mockedDescriptions[2],
-			SearchBoost: nil,
-			URI:         "/releases/baz",
-		},
-		{
-			Type:        "release",
-			Description: mockedDescriptions[3],
-			SearchBoost: nil,
-			URI:         "/releases/qux",
-		},
-		{
-			Type:        "release",
-			Description: mockedDescriptions[4],
-			SearchBoost: nil,
-			URI:         "/releases/quux",
-		},
-	}
-	mockedBabbageRelease := release_calendar.ReleaseCalendar{
-		Type:     "list",
-		ListType: "releasecalendar",
-		URI:      "/releasecalendar/data",
-		Result: release_calendar.Result{
-			NumberOfResults: 5,
-			Took:            3,
-			Results:         &mockedResults,
-			Suggestions:     nil,
-			DocCounts:       struct{}{},
-			SortBy:          "release_date",
-		},
-	}
-	var mockedReleaseData = model.ReleaseCalendar{
-		Releases: []model.Release{
-			{
-				Title:       "Foo",
-				URI:         "/releases/foo",
-				ReleaseDate: time.Now().AddDate(0, 0, -1).Format("2 January 2006"),
-			},
-			{
-				Title:       "bAr",
-				URI:         "/releases/bar",
-				ReleaseDate: time.Now().AddDate(0, 0, -2).Format("2 January 2006"),
-			},
-			{
-				Title:       "BAZ",
-				URI:         "/releases/baz",
-				ReleaseDate: time.Now().AddDate(0, 0, -3).Format("2 January 2006"),
-			},
-		},
-		NumberOfReleases:                 4,
-		NumberOfOtherReleasesInSevenDays: 1,
-	}
+
 	var mockedHomepageData = zebedee.HomepageContent{
 		Intro: zebedee.Intro{
 			Title:    "Welcome to the Office for National Statistics",
@@ -313,15 +218,11 @@ func TestUnitMapper(t *testing.T) {
 		LinkText:    "More info",
 	}
 
-	//expectedModel := model.Page{}
-	//expectedModel.PatternLibraryAssetsPath = "path/to/assets"
-	//expectedModel.SiteDomain = "site-domain"
-
 	basePage := coreModel.NewPage("path/to/assets", "site-domain")
 
 	Convey("test homepage mapping works", t, func() {
 
-		page := Homepage("en", basePage, mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
+		page := Homepage("en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
 
 		So(page.SiteDomain, ShouldResemble, basePage.SiteDomain)
 		So(page.PatternLibraryAssetsPath, ShouldResemble, basePage.PatternLibraryAssetsPath)
@@ -341,7 +242,8 @@ func TestUnitMapper(t *testing.T) {
 	})
 
 	Convey("empty emergency banner content, banner does not map", t, func() {
-		page := Homepage("en", basePage, mockedMainFigures, &mockedReleaseData, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, zebedee.EmergencyBanner{})
+		page := Homepage("en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, zebedee.EmergencyBanner{})
+
 		So(page.EmergencyBanner.Title, ShouldBeBlank)
 		So(page.EmergencyBanner.Type, ShouldBeBlank)
 		So(page.EmergencyBanner.Description, ShouldBeBlank)
@@ -466,10 +368,6 @@ func TestUnitMapper(t *testing.T) {
 		So(trendDescriptionNegative, ShouldEqual, "-1.2pp")
 	})
 
-	Convey("test release calendar maps data correctly", t, func() {
-		So(ReleaseCalendar(mockedBabbageRelease), ShouldResemble, &mockedReleaseData)
-	})
-
 	Convey("test formatCommas returns correctly formatted numbers as string", t, func() {
 		So(formatCommas("12.3"), ShouldEqual, "12.3")
 		So(formatCommas("64890980.7"), ShouldEqual, "64,890,980.7")
@@ -489,7 +387,8 @@ func TestUnitMapper(t *testing.T) {
 		var mockedNoFeaturedContent []model.Feature
 		var mockedNoMainFigures = make(map[string]*model.MainFigure)
 
-		gracefulDegradationPage := Homepage("en", basePage, mockedNoMainFigures, &mockedReleaseData, &mockedNoFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
+		gracefulDegradationPage := Homepage("en", basePage, mockedNoMainFigures, &mockedNoFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
+
 		So(gracefulDegradationPage.Data.HasFeaturedContent, ShouldEqual, false)
 		So(gracefulDegradationPage.Data.HasMainFigures, ShouldEqual, false)
 	})

@@ -3,7 +3,6 @@ package homepage
 import (
 	"context"
 	"sync"
-	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
@@ -51,16 +50,6 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 			mappedMainFigures[response.ID] = response
 		}
 
-		weekAgoTime := time.Now().AddDate(0, 0, -7)
-		dateFromDay := weekAgoTime.Format("02")
-		dateFromMonth := weekAgoTime.Format("01")
-		dateFromYear := weekAgoTime.Format("2006")
-		releaseCalResp, err := hu.clients.Babbage.GetReleaseCalendar(ctx, userAccessToken, dateFromDay, dateFromMonth, dateFromYear)
-		if err != nil {
-			log.Error(ctx, "error failed to get release calendar data from babbage ", err)
-		}
-		releaseCalModelData := mapper.ReleaseCalendar(releaseCalResp)
-
 		// Get homepage data from Zebedee
 		homepageContent, err := hu.clients.Zebedee.GetHomepageContent(ctx, userAccessToken, collectionID, lang, HomepagePath)
 		if err != nil {
@@ -102,7 +91,6 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 			EmergencyBanner: homepageContent.EmergencyBanner,
 			FeaturedContent: &mappedFeaturedContent,
 			MainFigures:     mappedMainFigures,
-			ReleaseCalendar: releaseCalModelData,
 			ServiceMessage:  homepageContent.ServiceMessage,
 		}
 
