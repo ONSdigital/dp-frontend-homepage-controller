@@ -131,3 +131,98 @@ one = "other releases this week"
 [AllReleases]
 description = "View all of our releases by date"
 one = "View all of our releases by date"
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# CENSUS HUB/HOME PAGE #-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+[Census]
+description = "Census"
+one = "Census"
+
+[CensusSubhead]
+description = "The census takes place every 10 years. It gives us a picture of all the people and households in England and Wales."
+one = "The census takes place every 10 years. It gives us a picture of all the people and households in England and Wales."
+
+[AboutCensus]
+description = "About census"
+one = "About census"
+
+[HistoricalData]
+description = "Historical data"
+one = "Historical data"
+
+[HistoricalDataSubhead]
+description = "Find census data for 2011 and earlier on Nomis."
+one = "Find census data for 2011 and earlier on Nomis."
+
+[HistoricalDataLink1]
+description = "Census 2011"
+one = "Census 2011"
+
+[HistoricalDataLink2]
+description = "2001 and earlier"
+one = "2001 and earlier"
+
+[CensusReleases]
+description = "Census releases"
+one = "Census releases"
+
+[CensusReleasesSubhead]
+description = "When we will publish our results."
+one = "When we will publish our results."
+
+[CensusReleasesLink1]
+description = "Release calendar"
+one = "Release calendar"
+
+[CensusReleasesLink2]
+description = "Timeline"
+one = "Timeline"
+
+[CensusPlanning]
+description = "Census planning and preparation"
+one = "Census planning and preparation"
+
+[CensusPlanningSubhead]
+description = "Our research, preparations and plans for the 2021 census and beyond."
+one = "Our research, preparations and plans for the 2021 census and beyond."
+
+[CensusPlanningLink1]
+description = "CCensus transformation"
+one = "Census transformation"
+
+[CensusPlanningLink2]
+description = "Quality and methods"
+one = "Quality and methods"
+
+[OtherCensus]
+description = "Scotland and Northern Ireland censuses"
+one = "Scotland and Northern Ireland censuses"
+
+[OtherCensusSubhead]
+description = "We are responsible for the census in England and Wales."
+one = "We are responsible for the census in England and Wales."
+
+[OtherCensusLink1]
+description = "Scotland census"
+one = "Scotland census"
+
+[OtherCensusLink2]
+description = "Northern Ireland census"
+one = "Northern Ireland census"
+
+[CensusContactUs]
+description = "Contact us"
+one = "Contact us"
+
+[CensusContactUsSubhead]
+description = "If you need help, contact census customer services."
+one = "If you need help, contact census customer services."
+
+[CensusContactUsLink1]
+description = "Census customer services"
+one = "Census customer services"
+
+[CensusContactUsLink2]
+description = "Request a 2011 census dataset"
+one = "Request a 2011 census dataset"
