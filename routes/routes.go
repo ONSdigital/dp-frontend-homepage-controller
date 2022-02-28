@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 
 	"github.com/ONSdigital/log.go/v2/log"
@@ -11,8 +12,8 @@ import (
 )
 
 // Init initialises routes for the service
-func Init(ctx context.Context, r *mux.Router, hcHandler func(http.ResponseWriter, *http.Request), homepageClient homepage.HomepageClienter) {
+func Init(ctx context.Context, r *mux.Router, cfg *config.Config, hcHandler func(http.ResponseWriter, *http.Request), homepageClient homepage.HomepageClienter, renderClient homepage.RenderClient) {
 	log.Info(ctx, "adding routes")
 	r.StrictSlash(true).Path("/health").HandlerFunc(hcHandler)
-	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(homepageClient))
+	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(cfg, homepageClient, renderClient))
 }

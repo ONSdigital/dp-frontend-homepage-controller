@@ -8,6 +8,8 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
+	"github.com/ONSdigital/dp-renderer/model"
+	"io"
 	"sync"
 )
 
@@ -370,11 +372,11 @@ var _ RenderClient = &RenderClientMock{}
 //
 // 		// make and configure a mocked RenderClient
 // 		mockedRenderClient := &RenderClientMock{
-// 			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
-// 				panic("mock out the Checker method")
+// 			BuildPageFunc: func(w io.Writer, pageModel interface{}, templateName string)  {
+// 				panic("mock out the BuildPage method")
 // 			},
-// 			DoFunc: func(s string, bytes []byte) ([]byte, error) {
-// 				panic("mock out the Do method")
+// 			NewBasePageModelFunc: func() model.Page {
+// 				panic("mock out the NewBasePageModel method")
 // 			},
 // 		}
 //
@@ -383,99 +385,92 @@ var _ RenderClient = &RenderClientMock{}
 //
 // 	}
 type RenderClientMock struct {
-	// CheckerFunc mocks the Checker method.
-	CheckerFunc func(ctx context.Context, check *health.CheckState) error
+	// BuildPageFunc mocks the BuildPage method.
+	BuildPageFunc func(w io.Writer, pageModel interface{}, templateName string)
 
-	// DoFunc mocks the Do method.
-	DoFunc func(s string, bytes []byte) ([]byte, error)
+	// NewBasePageModelFunc mocks the NewBasePageModel method.
+	NewBasePageModelFunc func() model.Page
 
 	// calls tracks calls to the methods.
 	calls struct {
-		// Checker holds details about calls to the Checker method.
-		Checker []struct {
-			// Ctx is the ctx argument value.
-			Ctx context.Context
-			// Check is the check argument value.
-			Check *health.CheckState
+		// BuildPage holds details about calls to the BuildPage method.
+		BuildPage []struct {
+			// W is the w argument value.
+			W io.Writer
+			// PageModel is the pageModel argument value.
+			PageModel interface{}
+			// TemplateName is the templateName argument value.
+			TemplateName string
 		}
-		// Do holds details about calls to the Do method.
-		Do []struct {
-			// S is the s argument value.
-			S string
-			// Bytes is the bytes argument value.
-			Bytes []byte
+		// NewBasePageModel holds details about calls to the NewBasePageModel method.
+		NewBasePageModel []struct {
 		}
 	}
-	lockChecker sync.RWMutex
-	lockDo      sync.RWMutex
+	lockBuildPage        sync.RWMutex
+	lockNewBasePageModel sync.RWMutex
 }
 
-// Checker calls CheckerFunc.
-func (mock *RenderClientMock) Checker(ctx context.Context, check *health.CheckState) error {
-	if mock.CheckerFunc == nil {
-		panic("RenderClientMock.CheckerFunc: method is nil but RenderClient.Checker was just called")
+// BuildPage calls BuildPageFunc.
+func (mock *RenderClientMock) BuildPage(w io.Writer, pageModel interface{}, templateName string) {
+	if mock.BuildPageFunc == nil {
+		panic("RenderClientMock.BuildPageFunc: method is nil but RenderClient.BuildPage was just called")
 	}
 	callInfo := struct {
-		Ctx   context.Context
-		Check *health.CheckState
+		W            io.Writer
+		PageModel    interface{}
+		TemplateName string
 	}{
-		Ctx:   ctx,
-		Check: check,
+		W:            w,
+		PageModel:    pageModel,
+		TemplateName: templateName,
 	}
-	mock.lockChecker.Lock()
-	mock.calls.Checker = append(mock.calls.Checker, callInfo)
-	mock.lockChecker.Unlock()
-	return mock.CheckerFunc(ctx, check)
+	mock.lockBuildPage.Lock()
+	mock.calls.BuildPage = append(mock.calls.BuildPage, callInfo)
+	mock.lockBuildPage.Unlock()
+	mock.BuildPageFunc(w, pageModel, templateName)
 }
 
-// CheckerCalls gets all the calls that were made to Checker.
+// BuildPageCalls gets all the calls that were made to BuildPage.
 // Check the length with:
-//     len(mockedRenderClient.CheckerCalls())
-func (mock *RenderClientMock) CheckerCalls() []struct {
-	Ctx   context.Context
-	Check *health.CheckState
+//     len(mockedRenderClient.BuildPageCalls())
+func (mock *RenderClientMock) BuildPageCalls() []struct {
+	W            io.Writer
+	PageModel    interface{}
+	TemplateName string
 } {
 	var calls []struct {
-		Ctx   context.Context
-		Check *health.CheckState
+		W            io.Writer
+		PageModel    interface{}
+		TemplateName string
 	}
-	mock.lockChecker.RLock()
-	calls = mock.calls.Checker
-	mock.lockChecker.RUnlock()
+	mock.lockBuildPage.RLock()
+	calls = mock.calls.BuildPage
+	mock.lockBuildPage.RUnlock()
 	return calls
 }
 
-// Do calls DoFunc.
-func (mock *RenderClientMock) Do(s string, bytes []byte) ([]byte, error) {
-	if mock.DoFunc == nil {
-		panic("RenderClientMock.DoFunc: method is nil but RenderClient.Do was just called")
+// NewBasePageModel calls NewBasePageModelFunc.
+func (mock *RenderClientMock) NewBasePageModel() model.Page {
+	if mock.NewBasePageModelFunc == nil {
+		panic("RenderClientMock.NewBasePageModelFunc: method is nil but RenderClient.NewBasePageModel was just called")
 	}
 	callInfo := struct {
-		S     string
-		Bytes []byte
-	}{
-		S:     s,
-		Bytes: bytes,
-	}
-	mock.lockDo.Lock()
-	mock.calls.Do = append(mock.calls.Do, callInfo)
-	mock.lockDo.Unlock()
-	return mock.DoFunc(s, bytes)
+	}{}
+	mock.lockNewBasePageModel.Lock()
+	mock.calls.NewBasePageModel = append(mock.calls.NewBasePageModel, callInfo)
+	mock.lockNewBasePageModel.Unlock()
+	return mock.NewBasePageModelFunc()
 }
 
-// DoCalls gets all the calls that were made to Do.
+// NewBasePageModelCalls gets all the calls that were made to NewBasePageModel.
 // Check the length with:
-//     len(mockedRenderClient.DoCalls())
-func (mock *RenderClientMock) DoCalls() []struct {
-	S     string
-	Bytes []byte
+//     len(mockedRenderClient.NewBasePageModelCalls())
+func (mock *RenderClientMock) NewBasePageModelCalls() []struct {
 } {
 	var calls []struct {
-		S     string
-		Bytes []byte
 	}
-	mock.lockDo.RLock()
-	calls = mock.calls.Do
-	mock.lockDo.RUnlock()
+	mock.lockNewBasePageModel.RLock()
+	calls = mock.calls.NewBasePageModel
+	mock.lockNewBasePageModel.RUnlock()
 	return calls
 }

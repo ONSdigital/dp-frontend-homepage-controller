@@ -2,167 +2,75 @@ package homepage
 
 import (
 	"context"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
-	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
-	"github.com/ReneKroon/ttlcache"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
+	coreModel "github.com/ONSdigital/dp-renderer/model"
 
-	"github.com/ONSdigital/dp-api-clients-go/v2/image"
-	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/gorilla/mux"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestUnitMapper(t *testing.T) {
+type mockClientError struct{}
 
-	var mockedZebedeeData []zebedee.TimeseriesMainFigure
-	mockedZebedeeData = append(mockedZebedeeData, zebedee.TimeseriesMainFigure{
-		Months: []zebedee.TimeseriesDataPoint{
-			{
-				Value: "677.89",
-				Label: "Jan 2020",
-			},
-			{
-				Value: "679.56",
-				Label: "Feb 2020",
-			},
-		},
-		Years: []zebedee.TimeseriesDataPoint{
-			{
-				Value: "907.89",
-				Label: "2020",
-			},
-			{
-				Value: "1009.56",
-				Label: "2021",
-			},
-		},
-		Quarters: []zebedee.TimeseriesDataPoint{
-			{
-				Value: "13.97",
-				Label: "Q1",
-			},
-			{
-				Value: "14.68",
-				Label: "Q2",
-			},
-		},
-		RelatedDocuments: []zebedee.Related{
-			{
-				Title: "Related thing",
-				URI:   "test/uri/timeseries/123",
-			},
-		},
-		Description: zebedee.TimeseriesDescription{
-			CDID: "LOLZ",
-			Unit: "%",
-		},
-		URI: "test/uri/timeseries/456",
-	})
+func (e *mockClientError) Error() string { return "client error" }
+func (e *mockClientError) Code() int     { return http.StatusNotFound }
 
-	mockedHomepageData := zebedee.HomepageContent{
-		Intro: zebedee.Intro{
-			Title:    "Welcome to the Office for National Statistics",
-			Markdown: "Markdown text here",
-		},
-		FeaturedContent: []zebedee.Featured{
-			{
-				Title:       "Featured content one",
-				Description: "Featured content one description",
-				URI:         "Featured content one URI",
-				ImageID:     "123",
-			},
-			{
-				Title:       "Featured content two",
-				Description: "Featured content two description",
-				URI:         "Featured content two URI",
-				ImageID:     "456",
-			},
-			{
-				Title:       "Featured content three",
-				Description: "Featured content three description",
-				URI:         "Featured content three URI",
-				ImageID:     "",
-			},
-		},
-		ServiceMessage: "",
-		URI:            "/",
-		Type:           "",
-		Description:    zebedee.HomepageDescription{},
+// doTestRequest helper function that creates a router and mocks requests
+func doTestRequest(target string, req *http.Request, handlerFunc http.HandlerFunc, w *httptest.ResponseRecorder) *httptest.ResponseRecorder {
+	if w == nil {
+		w = httptest.NewRecorder()
 	}
-	var mockedImageDownloadData = map[string]image.ImageDownload{
-		"123": {
-			Size:  111111,
-			Type:  "blah",
-			Href:  "http://www.example.com/images/123/original.png",
-			State: "completed",
-		},
-		"456": {
-			Size:  111111,
-			Type:  "blah",
-			Href:  "http://www.example.com/images/456/original.png",
-			State: "completed",
-		},
-	}
-	expectedSuccessResponse := "<html><body><h1>Some HTML from renderer!</h1></body></html>"
+	router := mux.NewRouter()
+	router.Path(target).HandlerFunc(handlerFunc)
+	router.ServeHTTP(w, req)
+	return w
+}
 
-	Convey("test homepage handler", t, func() {
-		mockZebedeeClient := &ZebedeeClientMock{
-			GetTimeseriesMainFigureFunc: func(ctx context.Context, userAuthToken, collectionID, lang, uri string) (m zebedee.TimeseriesMainFigure, err error) {
-				return mockedZebedeeData[0], nil
-			},
-			GetHomepageContentFunc: func(ctx context.Context, userAuthToken, collectionID, lang, uri string) (m zebedee.HomepageContent, err error) {
-				return mockedHomepageData, nil
-			},
-			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
-				return nil
-			},
-		}
+var (
+	userAccessToken string
+	collectionID string
+	lang string
+)
 
-		mockImageClient := &ImageClientMock{
-			GetDownloadVariantFunc: func(ctx context.Context, userAuthToken, serviceAuthToken, collectionID, imageID, variant string) (image.ImageDownload, error) {
-				return mockedImageDownloadData[imageID], nil
-			},
-			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
-				return nil
-			},
-		}
+func TestUnitHomepageHandlerSuccess(t *testing.T) {
+	t.Parallel()
 
-		mockRenderClient := &RenderClientMock{
-			DoFunc: func(string, []byte) ([]byte, error) {
-				return []byte(expectedSuccessResponse), nil
-			},
-			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
-				return nil
-			},
-		}
-
+	Convey("Given a valid request", t, func() {
 		req := httptest.NewRequest("GET", "/", nil)
 		req.Header.Set("X-Florence-Token", "testuser")
-		rec := httptest.NewRecorder()
-		router := mux.NewRouter()
-		cache := ttlcache.NewCache()
-		cache.SetTTL(10 * time.Millisecond)
-		clients := &Clients{
-			Renderer: mockRenderClient,
-			Zebedee:  mockZebedeeClient,
-			ImageAPI: mockImageClient,
+
+		cfg, err := config.Get()
+		So(err, ShouldBeNil)
+
+		mockedRendererClient := &RenderClientMock{
+			BuildPageFunc: func(w io.Writer, pageModel interface{}, templateName string) {},
+			NewBasePageModelFunc: func() coreModel.Page {
+				return coreModel.Page{}
+			},
 		}
-		homepageClient := NewHomePagePublishingClient(clients)
-		router.Path("/").HandlerFunc(Handler(homepageClient))
 
-		Convey("returns 200 response", func() {
-			router.ServeHTTP(rec, req)
-			So(rec.Code, ShouldEqual, http.StatusOK)
-		})
+		mockedHomepageClienter := &HomepageClienterMock{
+			CloseFunc: func()  {},
+			GetHomePageFunc: func(ctx context.Context, userAccessToken string, collectionID string, lang string) (*model.HomepageData, error) {
+				return &model.HomepageData{}, nil
+			},
+			StartBackgroundUpdateFunc: func(ctx context.Context, errorChannel chan error)  {},
+		}
 
-		Convey("renderer returns HTML body", func() {
-			router.ServeHTTP(rec, req)
-			response := rec.Body.String()
-			So(response, ShouldEqual, expectedSuccessResponse)
+		Convey("When Read is called", func() {
+			w := doTestRequest("/", req, Handler(cfg, mockedHomepageClienter, mockedRendererClient), nil)
+
+			Convey("Then a 200 OK status should be returned", func() {
+				So(w.Code, ShouldEqual, http.StatusOK)
+
+				So(len(mockedRendererClient.BuildPageCalls()), ShouldEqual, 1)
+
+			})
 		})
 	})
 }

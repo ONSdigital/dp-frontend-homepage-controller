@@ -9,8 +9,8 @@ import (
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
-	coreModel "github.com/ONSdigital/dp-frontend-models/model"
-	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
+	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
+	coreModel "github.com/ONSdigital/dp-renderer/model"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/shopspring/decimal"
 )
@@ -36,8 +36,12 @@ type TrendInfo struct {
 var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
-func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner) model.Page {
-	var page model.Page
+func Homepage(localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner) model.Page {
+	page := model.Page {
+		Data: model.Homepage{},
+		Page: basePage,
+	}
+
 	page.Type = "homepage"
 	page.Metadata.Title = "Home"
 	page.Data.HasFeaturedContent = hasFeaturedContent(featuredContent)
@@ -46,9 +50,17 @@ func Homepage(localeCode string, mainFigures map[string]*model.MainFigure, featu
 	page.ServiceMessage = serviceMessage
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
-	page.Data.Featured = *featuredContent
-	page.Data.AroundONS = *aroundONS
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
+	page.FeatureFlags.SixteensVersion = "77f1d9b"
+
+	if aroundONS != nil {
+		page.Data.AroundONS = *aroundONS
+	}
+
+	if featuredContent != nil {
+		page.Data.Featured = *featuredContent
+	}
+
 	return page
 }
 
@@ -253,6 +265,10 @@ func getDifferenceOffset(period, interval string) int {
 }
 
 func hasFeaturedContent(featuredContent *[]model.Feature) bool {
+	if featuredContent == nil {
+		return false
+	}
+
 	return len(*featuredContent) > 0
 }
 

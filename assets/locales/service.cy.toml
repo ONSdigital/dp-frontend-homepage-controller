@@ -1,0 +1,154 @@
+# service.cy.toml
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Notes
+# - Documentation: https://github.com/nicksnyder/go-i18n/blob/master/README.md
+# - Description should be the English version of the text, unless English version is a shorthand e.g. Home button is shorthand in English for Homepage
+# - Arguments can be added via {{.argN}} where N is integer index starting at 0 e.g. {{.arg0}} {{.arg1}}
+# - To inject HTML (Avoid where possible as it is messy) use "| safeHTML" e.g. {{ localise Foo .Language 1 | safeHTML }} where Foo might be "<strong>test</strong>"
+# count - 0 = zero
+# count - 1 = one
+# count - 2 = two; useful for languages with mutations like welsh (radical) 'brother'=brawd, two (soft) 'brothers'=frawd, three or more (nasal) 'brothers'=brodyr
+# count - 3 = few
+# count - 6 = many
+# count - 4 = other; 4,5 & >6
+# Plural rules can be found here: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Used for tests
+[Foo]
+description = "Used for localisation tests"
+zero = "No Foos (Welsh)"
+one = "One Foo (Welsh)"
+two = "Two Foos (Welsh)"
+few = "Three Foos (Welsh)"
+many = "Six Foos (Welsh)"
+other = "Four, five or more than six but not six Foos (Welsh)"
+
+# Primarily used in header template
+
+[ReleaseCalendar]
+description = "Release calendar"
+one = "Calendar datganiadau"
+
+[Census2021]
+description = "Cyfrifiad 2021"
+one = "Cyfrifiad 2021"
+
+[Census2021Preparation]
+description = "Ein paratoadau ar gyfer Cyfrifiad 2021 a thu hwnt."
+one = "Ein paratoadau ar gyfer Cyfrifiad 2021 a thu hwnt."
+
+[Census2021ResearchLink]
+description = "Gwaith ymchwil a chynllunio ar gyfer y cyfrifiad."
+one = "Gwaith ymchwil a chynllunio ar gyfer y cyfrifiad."
+
+[Census2021Processing]
+description = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
+one = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
+
+[Covid19BannerBody]
+description = "Get the latest data and analysis on coronavirus (COVID-19) in the UK."
+one = "Y data a’r dadansoddiad diweddaraf ar y coronafeirws."
+
+[SurveyFindOut]
+description = "It's never been more important"
+one = "It's never been more important."
+
+[SurveyTakingPart]
+description = "Taking part in a survey?"
+one = "Cymryd rhan mewn arolwg?"
+
+# Primarily used in footer template
+[Covid19BannerTitle]
+description = "Coronafeirws (COVID-19)"
+one = "Coronafeirws (COVID-19)"
+
+[Covid19BannerBody]
+description = "Get the latest data and analysis on coronavirus (COVID-19) in the UK."
+one = "Y data a’r dadansoddiad diweddaraf ar y coronafeirws."
+
+[InFocus]
+description = "In focus"
+one = "In focus"
+
+[ExperiencingIssues]
+description = "We are currently experiencing issues displaying this data."
+one = "We are currently experiencing issues displaying this data."
+
+[RefreshOrVisitTimeseriesTool]
+description = "Refresh the page or visit our <a href=\"/timeseriestool\">time series explorer</a> for the latest figures."
+one = "Refresh the page or visit our <a href=\"/timeseriestool\">time series explorer</a> for the latest figures."
+
+# Around The ONS - Homepage Section
+[AroundTheONS]
+description = "Around the ONS"
+one = "Around the ONS"
+
+[LocalStatisticsTitle]
+description = "Local statistics"
+other = "Local statistics"
+
+[LocalStatisticsSummary]
+description = "Where to find statistics covering specific areas."
+other = "Where to find statistics covering specific areas."
+
+[OurDataStrategyTitle]
+description = "Our data strategy"
+other = "Our data strategy"
+
+[OurDataStrategySummary]
+description = "How we use and manage data to provide statistics for the public."
+other = "How we use and manage data to provide statistics for the public."
+
+[SecureResearchServiceTitle]
+description = "Secure Research Service"
+other = "Secure Research Service"
+
+[SecureResearchServiceSummary]
+description = "Find out how ONS secure data could help your research project."
+other = "Find out how ONS secure data could help your research project."
+
+[OtherGovtStatisticsTitle]
+description = "Other government statistics"
+other = "Other government statistics"
+
+[OtherGovtStatisticsSummary]
+description = "Official Statistics available from across government."
+other = "Official Statistics available from across government."
+
+[ONSCentresTitle]
+description = "ONS Centres"
+other = "ONS Centres"
+
+[ONSCentresSummary]
+description = "Producing new analysis and insights to support key policy areas."
+other = "Producing new analysis and insights to support key policy areas."
+
+[OnPrevious]
+description = "on previous"
+one = "on previous"
+
+[LatestReleases]
+description ="Latest releases"
+one ="Latest releases"
+
+[ReleaseCalendarTileInfo]
+description = "All of our publications are listed in our release calendar."
+one = "All of our publications are listed in our release calendar."
+
+[ReleaseCalendarTilePublicationCount]
+description = "We have published"
+one = "We have published"
+
+[ReleaseCalendarTilePublicationPeriod]
+description = " statistical releases in the last 7 days."
+one = " statistical releases in the last 7 days."
+
+[OtherReleasesThisWeek]
+description = "other releases this week"
+one = "other releases this week"
+
+[AllReleases]
+description = "View all of our releases by date"
+one = "View all of our releases by date"

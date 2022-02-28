@@ -1,0 +1,25 @@
+<div class="page-content">
+    {{ template "partials/banners/covid" . }}
+    <div class="wrapper">
+        {{ template "homepage/main-figures" . }}
+
+        <div>
+            {{ template "homepage/census-tile" . }}
+        </div>
+    </div>
+    {{ template "homepage/promos" . }}
+    <div class="wrapper background-gallery">
+        <div class="tiles">
+            {{ if .Data.HasFeaturedContent }}
+                <div class="tiles__block tiles__block-no-mar-bottom">
+                    {{ template "homepage/in-focus" . }}
+                </div>
+            {{ end }}
+            {{ if gt (len .Data.AroundONS) 0 }}
+                <div class="tiles__block tiles__block-no-mar-bottom">
+                    {{ template "homepage/around-the-ons" . }}
+                </div>
+            {{ end }}
+        </div>
+    </div>
+</div>

@@ -3,16 +3,18 @@ package dpcache
 import (
 	"context"
 	"fmt"
-	"github.com/ONSdigital/log.go/v2/log"
 	"sync"
 	"time"
+
+	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
+	"github.com/ONSdigital/log.go/v2/log"
 )
 
 type DpCacher interface {
 	Close()
 	Get(key string) (interface{}, bool)
-	Set(key string, data interface{})
-	AddUpdateFunc(key string, updateFunc func() (string, error))
+	Set(key string, data *model.HomepageData)
+	AddUpdateFunc(key string, updateFunc func() (*model.HomepageData, error))
 	StartUpdates(ctx context.Context, channel chan error)
 }
 
@@ -20,14 +22,14 @@ type DpCache struct {
 	cache          sync.Map
 	updateInterval time.Duration
 	close          chan struct{}
-	updateFuncs    map[string]func() (string, error)
+	updateFuncs    map[string]func() (*model.HomepageData, error)
 }
 
 func (dc *DpCache) Get(key string) (interface{}, bool) {
 	return dc.cache.Load(key)
 }
 
-func (dc *DpCache) Set(key string, data interface{}) {
+func (dc *DpCache) Set(key string, data *model.HomepageData) {
 	dc.cache.Store(key, data)
 }
 
@@ -36,7 +38,7 @@ func (dc *DpCache) Close() {
 	for key, _ := range dc.updateFuncs {
 		dc.cache.Store(key, "")
 	}
-	dc.updateFuncs = make(map[string]func() (string, error))
+	dc.updateFuncs = make(map[string]func() (*model.HomepageData, error))
 }
 
 func NewDpCache(updateInterval time.Duration) DpCacher {
@@ -44,11 +46,11 @@ func NewDpCache(updateInterval time.Duration) DpCacher {
 		cache:          sync.Map{},
 		updateInterval: updateInterval,
 		close:          make(chan struct{}),
-		updateFuncs:    make(map[string]func() (string, error)),
+		updateFuncs:    make(map[string]func() (*model.HomepageData, error)),
 	}
 }
 
-func (dc *DpCache) AddUpdateFunc(key string, updateFunc func() (string, error)) {
+func (dc *DpCache) AddUpdateFunc(key string, updateFunc func() (*model.HomepageData, error)) {
 	dc.updateFuncs[key] = updateFunc
 }
 

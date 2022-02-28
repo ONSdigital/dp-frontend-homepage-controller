@@ -2,14 +2,12 @@ package homepage
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 	"sync"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
-	model "github.com/ONSdigital/dp-frontend-models/model/homepage"
+	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
@@ -17,8 +15,8 @@ type HomepageUpdater struct {
 	clients *Clients
 }
 
-func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessToken, collectionID, lang string) func() (string, error) {
-	return func() (string, error) {
+func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessToken, collectionID, lang string) func() (*model.HomepageData, error) {
+	return func() (*model.HomepageData, error) {
 		mappedMainFigures := make(map[string]*model.MainFigure)
 		var wg sync.WaitGroup
 		responses := make(chan *model.MainFigure, len(mainFigureMap))
@@ -88,20 +86,14 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 			mappedAroundONS = mapper.AroundONS(homepageContent, imageObjects)
 		}
 
-		m := mapper.Homepage(lang, mappedMainFigures, &mappedFeaturedContent, &mappedAroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
-
-		b, err := json.Marshal(m)
-		if err != nil {
-			errMessage := "error marshalling body data to json"
-			return "", fmt.Errorf("%s. error: %#v", errMessage, err)
+		homepageData := &model.HomepageData{
+			AroundONS:       &mappedAroundONS,
+			EmergencyBanner: homepageContent.EmergencyBanner,
+			FeaturedContent: &mappedFeaturedContent,
+			MainFigures:     mappedMainFigures,
+			ServiceMessage:  homepageContent.ServiceMessage,
 		}
 
-		templateHTML, err := hu.clients.Renderer.Do("homepage", b)
-		if err != nil {
-			errMessage := "error rendering page"
-			return "", fmt.Errorf("%s. error: %#v", errMessage, err)
-		}
-
-		return string(templateHTML), nil
+		return homepageData, nil
 	}
 }

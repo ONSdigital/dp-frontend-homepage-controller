@@ -1,0 +1,146 @@
+# service.en.toml
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Notes
+# - Documentation: https://github.com/nicksnyder/go-i18n/blob/master/README.md
+# - Description should be the English version of the text, unless English version is a shorthand e.g. Home button is shorthand in English for Homepage
+# - Arguments can be added via {{.argN}} where N is integer index starting at 0 e.g. {{.arg0}} {{.arg1}}
+# - To inject HTML (Avoid where possible as it is messy) use "| safeHTML" e.g. {{ localise Foo .Language 1 | safeHTML }} where Foo might be "<strong>test</strong>"
+# count - 1 = one
+# count - any other number = other; typically use this for general plurals
+# Plural rules can be found here: http://www.unicode.org/cldr/charts/latest/supplemental/language_plural_rules.html
+#-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Used for tests
+[Foo]
+description = "Used for localisation tests"
+one = "One Foo (English)"
+other = "Two or more Foos (English)"
+
+# Primarily used in the header
+[ReleaseCalendar]
+description = "Release calendar"
+one = "Release calendar"
+
+[Census2021]
+description = "Census 2021"
+one = "Census 2021"
+
+[Census2021Preparation]
+description = "Our preparation for Census 2021 and beyond."
+one = "Our preparation for Census 2021 and beyond."
+
+[Census2021ResearchLink]
+description = "Census research and planning."
+one = "Census research and planning."
+
+[Census2021Processing]
+description = "The last census took place on 21 March 2021.  We are currently processing the data."
+one = "The last census took place on 21 March 2021.  We are currently processing the data."
+
+[CensusBannerBody]
+description = "Discover how our census statistics help paint a picture of the nation and how we live."
+one = "Discover how our census statistics help paint a picture of the nation and how we live."
+
+[SurveyFindOut]
+description = "It's never been more important"
+one = "It's never been more important."
+
+[SurveyTakingPart]
+description = "Taking part in a survey?"
+one = "Taking part in a survey?"
+
+# Primarily used in footer template]
+
+[Covid19BannerTitle]
+description = "Coronavirus (COVID-19)"
+one = "Coronavirus (COVID-19)"
+
+[Covid19BannerBody]
+description = "Get the latest data and analysis on coronavirus (COVID-19) in the UK."
+one = "Get the latest data and analysis on coronavirus (COVID-19) in the UK."
+
+[InFocus]
+description = "In focus"
+one = "In focus"
+
+[ExperiencingIssues]
+description = "We are currently experiencing issues displaying this data."
+one = "We are currently experiencing issues displaying this data."
+
+[RefreshOrVisitTimeseriesTool]
+description = "Refresh the page or visit our <a href=\"/timeseriestool\" class=\"tile__link\">time series explorer</a> for the latest figures."
+one = "Refresh the page or visit our <a href=\"/timeseriestool\" class=\"tile__link\">time series explorer</a> for the latest figures."
+
+# Around The ONS - Homepage Section
+[AroundTheONS]
+description = "Around the ONS"
+one = "Around the ONS"
+
+[LocalStatisticsTitle]
+description = "Local statistics"
+other = "Local statistics"
+
+[LocalStatisticsSummary]
+description = "Where to find statistics covering specific areas."
+other = "Where to find statistics covering specific areas."
+
+[OurDataStrategyTitle]
+description = "Our data strategy"
+other = "Our data strategy"
+
+[OurDataStrategySummary]
+description = "How we use and manage data to provide statistics for the public."
+other = "How we use and manage data to provide statistics for the public."
+
+[SecureResearchServiceTitle]
+description = "Secure Research Service"
+other = "Secure Research Service"
+
+[SecureResearchServiceSummary]
+description = "Find out how ONS secure data could help your research project."
+other = "Find out how ONS secure data could help your research project."
+
+[OtherGovtStatisticsTitle]
+description = "Other government statistics"
+other = "Other government statistics"
+
+[OtherGovtStatisticsSummary]
+description = "Official Statistics available from across government."
+other = "Official Statistics available from across government."
+
+[ONSCentresTitle]
+description = "ONS Centres"
+other = "ONS Centres"
+
+[ONSCentresSummary]
+description = "Producing new analysis and insights to support key policy areas."
+other = "Producing new analysis and insights to support key policy areas."
+
+[OnPrevious]
+description = "on previous"
+one = "on previous"
+
+[LatestReleases]
+description ="Latest releases"
+one ="Latest releases"
+
+[ReleaseCalendarTileInfo]
+description = "All of our publications are listed in our release calendar."
+one = "All of our publications are listed in our release calendar."
+
+[ReleaseCalendarTilePublicationCount]
+description = "We have published"
+one = "We have published"
+
+[ReleaseCalendarTilePublicationPeriod]
+description = " statistical releases in the last 7 days."
+one = " statistical releases in the last 7 days."
+
+[OtherReleasesThisWeek]
+description = "other releases this week"
+one = "other releases this week"
+
+[AllReleases]
+description = "View all of our releases by date"
+one = "View all of our releases by date"

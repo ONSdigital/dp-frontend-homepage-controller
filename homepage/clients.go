@@ -1,14 +1,16 @@
 package homepage
 
+//go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient ImageClient RenderClient
+
 import (
 	"context"
+	"io"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
+	"github.com/ONSdigital/dp-renderer/model"
 )
-
-//go:generate moq -out mocks_test.go -pkg homepage . ZebedeeClient ImageClient RenderClient
 
 // ZebedeeClient is an interface with methods required for a zebedee client
 type ZebedeeClient interface {
@@ -23,15 +25,15 @@ type ImageClient interface {
 	Checker(ctx context.Context, check *health.CheckState) error
 }
 
-// RenderClient is an interface with methods required for rendering a template
+// RenderClient is an interface with methods required for rendering a template from a page model
 type RenderClient interface {
-	Do(string, []byte) ([]byte, error)
-	Checker(ctx context.Context, check *health.CheckState) error
+	BuildPage(w io.Writer, pageModel interface{}, templateName string)
+	NewBasePageModel() model.Page
 }
 
 // Clients contains all the required Clients for frontend homepage controller
 type Clients struct {
-	Renderer RenderClient
 	Zebedee  ZebedeeClient
 	ImageAPI ImageClient
+	Renderer RenderClient
 }

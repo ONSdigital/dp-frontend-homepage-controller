@@ -3,8 +3,10 @@ package homepage
 import (
 	"context"
 	"fmt"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/dpcache"
 	"time"
+
+	"github.com/ONSdigital/dp-frontend-homepage-controller/dpcache"
+	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
 )
 
 type HomepageWebClient struct {
@@ -23,13 +25,16 @@ func NewHomePageWebClient(clients *Clients, updateInterval time.Duration, langua
 	}
 }
 
-func (hwc *HomepageWebClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (string, error) {
-	homePageCachedHTML, ok := hwc.cache.Get(getCachingKeyForLanguage(lang))
+func (hwc *HomepageWebClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (*model.HomepageData, error) {
+	homepageData, ok := hwc.cache.Get(getCachingKeyForLanguage(lang))
 	if ok {
-		return fmt.Sprintf("%s", homePageCachedHTML), nil
+		h, ok := homepageData.(*model.HomepageData)
+		if ok {
+			return h, nil
+		}
 	}
 
-	return "", fmt.Errorf("failed to read homepage from cache for: %s", getCachingKeyForLanguage(lang))
+	return nil, fmt.Errorf("failed to read homepage from cache for: %s", getCachingKeyForLanguage(lang))
 
 }
 

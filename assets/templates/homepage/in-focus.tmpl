@@ -1,0 +1,21 @@
+<section>
+    <h1 class="font-size--h2 font-size--30 margin-top--1">{{ localise "InFocus" .Language 1 }}</h2>
+    <div class="margin--0 flex stretch flex-wrap-wrap margin-bottom--3 content-space-between content-lg--flex-start">
+    {{ range $i, $v := .Data.Featured }}
+        <section class="tile col--md-23 col--lg-14 flex-basis-sm--full {{if (and (ne $i 3) (ne $i 7)) -}}margin-right-lg--1{{end}}" tabindex="0">
+            <article class="tile__highlighted-content">
+                <div class="tile__highlighted-content-image-container">
+                    <img class="tile__highlighted-content-image" src="{{if $v.ImageURL }}{{$v.ImageURL}}{{else}}https://static.ons.gov.uk/visual/2020/in-focus/covid-dashboard@2x.png{{end}}" alt="">
+                </div>
+                <h2 class="margin-top--0 margin-bottom--0">
+                    <a class="margin-left--0 tile__link tile__link--highlighted-content-title font-size--24" href="{{ .URI }}" 
+                        data-gtm-group="in-focus" data-gtm-group-position={{ add $i 1 }}>
+                        {{ $v.Title }}
+                    </a>
+                </h2>
+                <p class="tile__text-description margin-top--0 margin-bottom--0">{{ $v.Description }}</p>
+            </article>
+        </section>
+    {{ end }}
+    </div>
+</section>

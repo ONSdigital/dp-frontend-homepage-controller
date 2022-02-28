@@ -6,11 +6,12 @@ import (
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
-	"github.com/ONSdigital/dp-api-clients-go/v2/renderer"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
+	render "github.com/ONSdigital/dp-renderer"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -25,6 +26,7 @@ type Service struct {
 	clients            *homepage.Clients
 	ServiceList        *ExternalServiceList
 	HomePageClient     homepage.HomepageClienter
+	RendererClient     homepage.RenderClient
 }
 
 // Run the service
@@ -37,12 +39,14 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 		ServiceList: serviceList,
 	}
 
+	// Initialise render client
+	rend := render.NewWithDefaultClient(assets.Asset, assets.AssetNames, cfg.PatternLibraryAssetsPath, cfg.SiteDomain)
+
 	// Get health client for api router
 	svc.routerHealthClient = serviceList.GetHealthClient("api-router", cfg.APIRouterURL)
 
 	// Initialise clients
 	svc.clients = &homepage.Clients{
-		Renderer: renderer.New(cfg.RendererURL),
 		Zebedee:  zebedee.NewWithHealthClient(svc.routerHealthClient),
 		ImageAPI: image.NewWithHealthClient(svc.routerHealthClient),
 	}
@@ -67,7 +71,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 
 	// Initialise router
 	r := mux.NewRouter()
-	routes.Init(ctx, r, svc.HealthCheck.Handler, svc.HomePageClient)
+	routes.Init(ctx, r, cfg, svc.HealthCheck.Handler, svc.HomePageClient, rend)
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
 
 	// Start Healthcheck and HTTP Server
@@ -131,11 +135,6 @@ func (svc *Service) Close(ctx context.Context) error {
 func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (err error) {
 
 	hasErrors := false
-
-	if err = svc.HealthCheck.AddCheck("frontend renderer", svc.clients.Renderer.Checker); err != nil {
-		hasErrors = true
-		log.Error(ctx, "failed to add frontend renderer checker", err)
-	}
 
 	if err = svc.HealthCheck.AddCheck("API router", svc.routerHealthClient.Checker); err != nil {
 		hasErrors = true

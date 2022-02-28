@@ -1,11 +1,14 @@
 package homepage
 
+//go:generate moq -out mocks_homepage.go -pkg homepage . ZebedeeClient ImageClient RenderClient
+
 import (
 	"context"
 	"net/http"
 	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	dphandlers "github.com/ONSdigital/dp-net/handlers"
 	"github.com/ONSdigital/log.go/v2/log"
@@ -30,26 +33,26 @@ type MainFigure struct {
 var mainFigureMap map[string]MainFigure
 
 // Handler handles requests to homepage endpoint
-func Handler(homepageClient HomepageClienter) http.HandlerFunc {
+func Handler(cfg *config.Config, homepageClient HomepageClienter, rend RenderClient) http.HandlerFunc {
 	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
-		handle(w, r, accessToken, collectionID, lang, homepageClient)
+		handle(w, r, cfg, accessToken, collectionID, lang, homepageClient, rend)
 	})
 }
 
-func handle(w http.ResponseWriter, req *http.Request, userAccessToken, collectionID, lang string, homepageClient HomepageClienter) {
+func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAccessToken, collectionID, lang string, homepageClient HomepageClienter, rend RenderClient) {
 	ctx := req.Context()
-	homepageHTML, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
+
+	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
 	if err != nil {
 		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	if _, err := w.Write([]byte(homepageHTML)); err != nil {
-		log.Error(ctx, "failed to write response for homepage", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	basePage := rend.NewBasePageModel()
+	m := mapper.Homepage(lang, basePage, homepageContent.MainFigures, homepageContent.FeaturedContent, homepageContent.AroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
+
+	rend.BuildPage(w, m, "homepage")
 
 	return
 }

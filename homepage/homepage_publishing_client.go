@@ -1,11 +1,15 @@
 package homepage
 
+//go:generate moq -out mocks_homepage_publishing.go -pkg homepage . HomepageClienter
+
 import (
 	"context"
+
+	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
 )
 
 type HomepageClienter interface {
-	GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (string, error)
+	GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (*model.HomepageData, error)
 	Close()
 	StartBackgroundUpdate(ctx context.Context, errorChannel chan error)
 }
@@ -22,7 +26,7 @@ func NewHomePagePublishingClient(clients *Clients) HomepageClienter {
 	}
 }
 
-func (hpc *HomepagePublishingClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (string, error) {
+func (hpc *HomepagePublishingClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (*model.HomepageData, error) {
 	return hpc.GetHomePageUpdateFor(ctx, userAccessToken, collectionID, lang)()
 }
 
