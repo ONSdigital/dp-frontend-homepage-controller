@@ -4,11 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"regexp"
 	"strings"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
+	"github.com/ONSdigital/dp-cookies/cookies"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	coreModel "github.com/ONSdigital/dp-renderer/model"
 	"github.com/ONSdigital/log.go/v2/log"
@@ -37,7 +40,7 @@ var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
 func Homepage(localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner) model.Page {
-	page := model.Page {
+	page := model.Page{
 		Data: model.Homepage{},
 		Page: basePage,
 	}
@@ -279,4 +282,29 @@ func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
 		}
 	}
 	return false
+}
+
+// Census maps data to our census frontend model
+func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page) model.Page {
+	page := model.Page{
+		Page: basePage,
+	}
+
+	mapCookiePreferences(req, &page.Page.CookiesPreferencesSet, &page.Page.CookiesPolicy)
+	page.Type = "census"
+	page.Metadata.Title = "Census"
+	page.Language = localeCode
+	page.PatternLibraryAssetsPath = cfg.PatternLibraryAssetsPath
+
+	return page
+}
+
+// mapCookiePreferences reads cookie policy and preferences cookies and then maps the values to the page model
+func mapCookiePreferences(req *http.Request, preferencesIsSet *bool, policy *coreModel.CookiesPolicy) {
+	preferencesCookie := cookies.GetCookiePreferences(req)
+	*preferencesIsSet = preferencesCookie.IsPreferenceSet
+	*policy = coreModel.CookiesPolicy{
+		Essential: preferencesCookie.Policy.Essential,
+		Usage:     preferencesCookie.Policy.Usage,
+	}
 }
