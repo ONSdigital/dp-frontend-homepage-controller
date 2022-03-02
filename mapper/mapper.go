@@ -291,6 +291,7 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	}
 
 	mapCookiePreferences(req, &page.Page.CookiesPreferencesSet, &page.Page.CookiesPolicy)
+	page.URI = "/census"
 	page.Type = "census"
 	page.Metadata.Title = "Census"
 	page.Language = localeCode
