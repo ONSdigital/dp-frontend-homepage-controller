@@ -151,7 +151,7 @@ one = "Cyfrifiad"
 
 [CensusSubhead]
 description = "The census takes place every 10 years. It gives us a picture of all the people and households in England and Wales."
-one = "Caiff y cyfrifiad ei gynnal bob deng mlynedd. Mae'n rhoi darlun i ni o'r holl bobl a chartrefi yng Nghymru a Lloegr.."
+one = "Caiff y cyfrifiad ei gynnal bob deng mlynedd. Mae'n rhoi darlun i ni o'r holl bobl a chartrefi yng Nghymru a Lloegr."
 
 [AboutCensus]
 description = "About census"
