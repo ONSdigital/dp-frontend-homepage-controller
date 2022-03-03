@@ -1,5 +1,7 @@
 module github.com/ONSdigital/dp-frontend-homepage-controller
 
+replace "github.com/ONSdigital/dp-renderer" => "/Users/noellelegrain/MethodsProjects/ONS_Accessibility/dp-renderer"
+
 go 1.13
 
 require (
@@ -12,6 +14,7 @@ require (
 	github.com/ONSdigital/log.go/v2 v2.0.9
 	github.com/gorilla/mux v1.8.0
 	github.com/kelseyhightower/envconfig v1.4.0
+	github.com/kevinburke/go-bindata v3.23.0+incompatible // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/shopspring/decimal v1.2.0
 	github.com/smartystreets/goconvey v1.6.4
