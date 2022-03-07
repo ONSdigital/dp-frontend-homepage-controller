@@ -1,7 +1,5 @@
 module github.com/ONSdigital/dp-frontend-homepage-controller
 
-replace "github.com/ONSdigital/dp-renderer" => "/Users/noellelegrain/MethodsProjects/ONS_Accessibility/dp-renderer"
-
 go 1.13
 
 require (
