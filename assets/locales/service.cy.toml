@@ -35,6 +35,10 @@ one = "Calendar datganiadau"
 description = "Cyfrifiad 2021"
 one = "Cyfrifiad 2021"
 
+[Census2021Processing]
+description = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
+one = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
+
 [Census2021Preparation]
 description = "Ein paratoadau ar gyfer Cyfrifiad 2021 a thu hwnt."
 one = "Ein paratoadau ar gyfer Cyfrifiad 2021 a thu hwnt."
@@ -43,9 +47,13 @@ one = "Ein paratoadau ar gyfer Cyfrifiad 2021 a thu hwnt."
 description = "Gwaith ymchwil a chynllunio ar gyfer y cyfrifiad."
 one = "Gwaith ymchwil a chynllunio ar gyfer y cyfrifiad."
 
-[Census2021Processing]
-description = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
-one = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
+[CensusFindOut]
+description = "Mwy o wybodaeth am y cyfrifiad"
+one = "Mwy o wybodaeth am y cyfrifiad"
+
+[Census2021Update]
+description = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Caiff canlyniadau eu cyhoeddi fesul cam rhwng diwedd mis Mai 2022 a mis Mawrth 2023."
+one = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Caiff canlyniadau eu cyhoeddi fesul cam rhwng diwedd mis Mai 2022 a mis Mawrth 2023."
 
 [SurveyFindOut]
 description = "It's never been more important"
