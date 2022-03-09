@@ -31,30 +31,6 @@ other = "Four, five or more than six but not six Foos (Welsh)"
 description = "Release calendar"
 one = "Calendar datganiadau"
 
-[Census2021]
-description = "Cyfrifiad 2021"
-one = "Cyfrifiad 2021"
-
-[Census2021Processing]
-description = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
-one = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
-
-[Census2021Preparation]
-description = "Ein paratoadau ar gyfer Cyfrifiad 2021 a thu hwnt."
-one = "Ein paratoadau ar gyfer Cyfrifiad 2021 a thu hwnt."
-
-[Census2021ResearchLink]
-description = "Gwaith ymchwil a chynllunio ar gyfer y cyfrifiad."
-one = "Gwaith ymchwil a chynllunio ar gyfer y cyfrifiad."
-
-[CensusFindOut]
-description = "Mwy o wybodaeth am y cyfrifiad"
-one = "Mwy o wybodaeth am y cyfrifiad"
-
-[Census2021Update]
-description = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Caiff canlyniadau eu cyhoeddi fesul cam rhwng diwedd mis Mai 2022 a mis Mawrth 2023."
-one = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Caiff canlyniadau eu cyhoeddi fesul cam rhwng diwedd mis Mai 2022 a mis Mawrth 2023."
-
 [SurveyFindOut]
 description = "It's never been more important"
 one = "It's never been more important."
@@ -244,3 +220,28 @@ one = "Gwasanaethau cwsmeriaid y cyfrifiad"
 [CensusContactUsLink2]
 description = "Request a 2011 census dataset"
 one = "Gofyn am set ddata o Gyfrifiad 2011"
+
+[Census2021]
+description = "Cyfrifiad 2021"
+one = "Cyfrifiad 2021"
+
+[Census2021Processing]
+description = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
+one = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Rydym wrthi'n prosesu'r data ar hyn o bryd."
+
+[Census2021Preparation]
+description = "Ein paratoadau ar gyfer Cyfrifiad 2021 a thu hwnt."
+one = "Ein paratoadau ar gyfer Cyfrifiad 2021 a thu hwnt."
+
+[Census2021ResearchLink]
+description = "Gwaith ymchwil a chynllunio ar gyfer y cyfrifiad."
+one = "Gwaith ymchwil a chynllunio ar gyfer y cyfrifiad."
+
+[CensusFindOut]
+description = "Dysgwch beth yw'r cyfrifiad a pham mae'n bwysig i bob un ohonom"
+one = "Dysgwch beth yw'r cyfrifiad a pham mae'n bwysig i bob un ohonom"
+
+[Census2021Update]
+description = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Caiff y canlyniadau eu rhyddhau fesul cam gan ddechrau yn nes ymlaen eleni. Dysgwch fwy am y cyfrifiad."
+one = "Cafodd y cyfrifiad diwethaf ei gynnal ar 21 Mawrth 2021. Caiff y canlyniadau eu rhyddhau fesul cam gan ddechrau yn nes ymlaen eleni. Dysgwch fwy am y cyfrifiad."
+

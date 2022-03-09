@@ -22,30 +22,6 @@ other = "Two or more Foos (English)"
 description = "Release calendar"
 one = "Release calendar"
 
-[Census2021]
-description = "Census 2021"
-one = "Census 2021"
-
-[Census2021Processing]
-description = "The last census took place on 21 March 2021.  We are currently processing the data."
-one = "The last census took place on 21 March 2021.  We are currently processing the data."
-
-[Census2021Preparation]
-description = "Our preparation for Census 2021 and beyond."
-one = "Our preparation for Census 2021 and beyond."
-
-[Census2021ResearchLink]
-description = "Census research and planning."
-one = "Census research and planning."
-
-[CensusFindOut]
-description = "Find out more about census"
-one = "Find out more about census"
-
-[Census2021Update]
-description = "The last census took place on 21 March 2021. Results will be released in stages starting later this year."
-one = "The last census took place on 21 March 2021.  Results will be released in stages starting later this year."
-
 [SurveyFindOut]
 description = "It's never been more important"
 one = "It's never been more important."
@@ -234,3 +210,27 @@ one = "Census customer services"
 [CensusContactUsLink2]
 description = "Request a 2011 census dataset"
 one = "Request a 2011 census dataset"
+
+[Census2021]
+description = "Census 2021"
+one = "Census 2021"
+
+[Census2021Processing]
+description = "The last census took place on 21 March 2021.  We are currently processing the data."
+one = "The last census took place on 21 March 2021.  We are currently processing the data."
+
+[Census2021Preparation]
+description = "Our preparation for Census 2021 and beyond."
+one = "Our preparation for Census 2021 and beyond."
+
+[Census2021ResearchLink]
+description = "Census research and planning."
+one = "Census research and planning."
+
+[CensusFindOut]
+description = "Find out what the census is and why it’s important for all of us"
+one = "Find out what the census is and why it’s important for all of us"
+
+[Census2021Update]
+description = "TThe last census took place on 21 March 2021. Results will be released in stages starting later this year. Find out more about census."
+one = "The last census took place on 21 March 2021. Results will be released in stages starting later this year. Find out more about census."
