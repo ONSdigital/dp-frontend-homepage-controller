@@ -228,9 +228,9 @@ description = "Census research and planning."
 one = "Census research and planning."
 
 [CensusFindOut]
-description = "Find out what the census is and why it’s important for all of us"
-one = "Find out what the census is and why it’s important for all of us"
+description = "Find out more about census"
+one = "Find out more about census"
 
 [Census2021Update]
-description = "TThe last census took place on 21 March 2021. Results will be released in stages starting later this year. Find out more about census."
-one = "The last census took place on 21 March 2021. Results will be released in stages starting later this year. Find out more about census."
+description = "The last census took place on 21 March 2021. Results will be released in stages starting later this year."
+one = "The last census took place on 21 March 2021. Results will be released in stages starting later this year."
