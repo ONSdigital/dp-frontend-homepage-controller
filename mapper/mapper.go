@@ -55,6 +55,7 @@ func Homepage(localeCode string, basePage coreModel.Page, mainFigures map[string
 	page.Data.MainFigures = mainFigures
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.FeatureFlags.SixteensVersion = "77f1d9b"
+	page.FeatureFlags.EnableCensusBanner = false
 
 	if aroundONS != nil {
 		page.Data.AroundONS = *aroundONS
