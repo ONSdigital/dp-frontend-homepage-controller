@@ -131,6 +131,14 @@ one = "The census takes place every 10 years. It gives us a picture of all the p
 description = "About census"
 one = "About census"
 
+[AboutCensusSubhead]
+description = "Find out what the census is and why it's important for all of us"
+one = "Find out what the census is and why it's important for all of us"
+
+[AboutCensusLink1]
+description = "About the census"
+one = "About the census"
+
 [HistoricalData]
 description = "Historical data"
 one = "Historical data"
