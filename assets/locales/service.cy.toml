@@ -139,7 +139,7 @@ one = "Caiff y cyfrifiad ei gynnal bob deng mlynedd. Mae'n rhoi darlun i ni o'r 
 
 [AboutCensus]
 description = "About census"
-one = "Y Cyfrifiad"
+one = "Ynglŷn â'r cyfrifiad"
 
 [AboutCensusSubhead]
 description = "Find out what the census is and why it's important for all of us"
@@ -151,7 +151,7 @@ one = "Ynglŷn â'r cyfrifiad"
 
 [HistoricalData]
 description = "Historical data"
-one = "Data Hanesyddol"
+one = "Data hanesyddol"
 
 [HistoricalDataSubhead]
 description = "Find census data for 2011 and earlier on Nomis."
@@ -187,10 +187,10 @@ one = "Cynllunio a pharatoi'r cyfrifiad"
 
 [CensusPlanningSubhead]
 description = "Our research, preparations and plans for the 2021 census and beyond."
-one = "Ein hymchwil, paratoadau a chynlluniau ar gyfer Cyfrifiad 2021 a thu hwnt."
+one = "Ein hymchwil, paratoadau a chynlluniau ar gyfer cyfrifiad 2021 a thu hwnt."
 
 [CensusPlanningLink1]
-description = "CCensus transformation"
+description = "Census transformation"
 one = "Trawsnewid y cyfrifiad"
 
 [CensusPlanningLink2]
