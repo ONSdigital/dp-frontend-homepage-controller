@@ -20,8 +20,6 @@ type Config struct {
 	IsPublishingMode           bool          `envconfig:"IS_PUBLISHING_MODE"`
 	Languages                  string        `envconfig:"LANGUAGES"`
 	SiteDomain                 string        `envconfig:"SITE_DOMAIN"`
-	EnableCensusTile           bool          `envconfig:"ENABLE_CENSUS_TILE"`
-	EnableCensusBanner         bool          `envconfig:"ENABLE_CENSUS_BANNER"`
 }
 
 var cfg *Config
@@ -59,8 +57,6 @@ func get() (*Config, error) {
 		IsPublishingMode:           false,
 		Languages:                  "en,cy",
 		SiteDomain:                 "localhost",
-		EnableCensusTile:           false,
-		EnableCensusBanner:         false,
 	}
 
 	return cfg, envconfig.Process("", cfg)
