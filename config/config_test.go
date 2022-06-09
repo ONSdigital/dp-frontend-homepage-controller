@@ -28,6 +28,8 @@ func TestSpec(t *testing.T) {
 				So(cfg.CacheUpdateInterval, ShouldEqual, 10*time.Second)
 				So(cfg.Languages, ShouldEqual, "en,cy")
 				So(cfg.SiteDomain, ShouldEqual, "localhost")
+				So(cfg.CensusFirstResults.Date, ShouldEqual, "Tues, 28 June 2022 11:00:00 GMT")
+				So(cfg.CensusFirstResults.HasCensusResultsHeader, ShouldEqual, true)
 			})
 		})
 	})
