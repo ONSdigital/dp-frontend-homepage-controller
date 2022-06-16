@@ -11,7 +11,12 @@
         </h2>
     </header>
     <div class="margin-top--0">
-        {{ localise "Census2021Update" .Language 1 }}<br>
+         {{ if .FeatureFlags.EnableCensusResults }}
+            {{ localise "Census2021FirstResults" .Language 1 }}
+        {{ else }}
+            {{ localise "Census2021Update" .Language 1 }}
+        {{ end }}
+        <br>
     </div>
     <div class="margin-top--1">
         <a class="text--white font-weight-700 underline-link" href="/census">{{ localise "CensusFindOut" .Language 1 }}</a>

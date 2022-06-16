@@ -1,7 +1,7 @@
 <article class="tile tile__content promo__background--plum-gradient col col--lg-29 margin-top-lg--2 margin-top-md--2 margin-left-lg--1 height-lg--31 hide--sm">
     <header class="margin-top--1">
         <h2 class="margin-top--0 margin-right--0 margin-bottom--0 margin-left--0">
-                {{if eq .Language "en" }}
+                {{ if eq .Language "en" }}
                     <img src="https://cdn.ons.gov.uk/assets/images/census-logo/logo-census-2021-white-landscape.svg" alt="Census 2021" class="header__svg-logo"
                     xmlns="http://www.w3.org/2000/svg" focusable="false" width="209" height="40" viewBox="0 0 228 44">
                 {{ else }}
@@ -11,7 +11,12 @@
         </h2>
     </header>
     <div class="margin-top--0">
-        {{ localise "Census2021Update" .Language 1 }}<br>
+        {{ if .FeatureFlags.EnableCensusResults }}
+            {{ localise "Census2021FirstResults" .Language 1 }}
+        {{ else }}
+            {{ localise "Census2021Update" .Language 1 }}
+        {{ end }}
+        <br>
     </div>
     <div class="margin-top--1">
         <a class="text--white font-weight-700 underline-link" href="/census">{{ localise "CensusFindOut" .Language 1 }}</a>
