@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/helper"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	dphandlers "github.com/ONSdigital/dp-net/handlers"
 )
 
@@ -20,7 +20,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, rend R
 	basePage := rend.NewBasePageModel()
 	m := mapper.Census(req, cfg, lang, basePage)
 
-	enableCensusResults := helper.CheckTime(req, cfg)
+	enableCensusResults := helper.CheckTime(cfg)
 
 	if enableCensusResults {
 		rend.BuildPage(w, m, "census-first-results")
