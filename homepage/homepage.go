@@ -9,6 +9,7 @@ import (
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/helper"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	dphandlers "github.com/ONSdigital/dp-net/handlers"
 	"github.com/ONSdigital/log.go/v2/log"
@@ -49,8 +50,10 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAc
 		return
 	}
 
+	enableCensusResults := helper.CheckTime(cfg.CensusFirstResults)
+
 	basePage := rend.NewBasePageModel()
-	m := mapper.Homepage(*cfg, lang, basePage, homepageContent.MainFigures, homepageContent.FeaturedContent, homepageContent.AroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
+	m := mapper.Homepage(*cfg, enableCensusResults, lang, basePage, homepageContent.MainFigures, homepageContent.FeaturedContent, homepageContent.AroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
 
 	rend.BuildPage(w, m, "homepage")
 
