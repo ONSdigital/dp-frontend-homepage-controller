@@ -4,14 +4,14 @@ import (
 	"context"
 	"time"
 
-	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/log.go/v2/log"
 )
-//checks if current time is equal/after Census First Results time
-func CheckTime(cfg *config.Config) bool {
+// CheckTime checks if the current time is equal/before the value of time variable passed into function
+
+func CheckTime(timeToCompare string) bool {
 	var currentTime, goLiveTime time.Time
 	currentTime = time.Now()
-	goLiveTime, err := time.Parse(time.RFC850, cfg.CensusFirstResults)
+	goLiveTime, err := time.Parse(time.RFC850, timeToCompare)
 	if err != nil {
 		log.Warn(context.Background(), "failing to parse configuration of census first results needed for "+
 			"going live", log.FormatErrors([]error{err}))

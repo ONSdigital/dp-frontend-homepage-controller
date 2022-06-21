@@ -20,7 +20,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, rend R
 	basePage := rend.NewBasePageModel()
 	m := mapper.Census(req, cfg, lang, basePage)
 
-	enableCensusResults := helper.CheckTime(cfg)
+	enableCensusResults := helper.CheckTime(cfg.CensusFirstResults)
 
 	if enableCensusResults {
 		rend.BuildPage(w, m, "census-first-results")
