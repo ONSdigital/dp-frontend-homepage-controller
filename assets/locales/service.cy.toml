@@ -161,8 +161,28 @@ one = "Data Cyfrifiad 2021"
 description = "Find data for Census 2021."
 one = "Dod o hyd i ddata ar gyfer Cyfrifiad 2021."
 
+[GetCensusDataEnglandWales]
+description = "Get census data (England and Wales)"
+one = "Cael gafael ar ddata'r cyfrifiad (Cymru a Lloegr)"
+
+[GetCensusDataWales]
+description = "Get census data (Wales)"
+one = "Cael gafael ar ddata'r cyfrifiad (Cymru)"
+
+[HistoricCensusData]
+description = "Historic census data"
+one = "Data hanesyddol y cyfrifiad"
+
+[HistoricCensusDataSubhead]
+description = "Find census data and analysis for 2011 and earlier."
+one = "Dod o hyd i ddata'r cyfrifiad a gwaith dadansoddi ar gyfer 2011 a chyn hynny."
+
+[HistoricCensusDataLink1]
+description = "Get all historic census data"
+one = "Cael gafael ar holl ddata hanesyddol y cyfrifiad"
+
 [HistoricalData]
-description = "Historical data"
+description = "Histori data"
 one = "Data hanesyddol"
 
 [HistoricalDataSubhead]
@@ -208,6 +228,18 @@ one = "Trawsnewid y cyfrifiad"
 [CensusPlanningLink2]
 description = "Quality and methods"
 one = "Ansawdd a dulliau"
+
+[CensusPlanningAndPreparation]
+description = "Planning for Census 2021"
+one = "Cynllunio ar gyfer Cyfrifiad 2021"
+
+[CensusPlanningAndPreparationSubhead]
+description = "How we researched, prepared and planned for Census 2021."
+one = "Sut aethom ati i ymchwilio, paratoi a chynllunio ar gyfer Cyfrifiad 2021."
+
+[CensusPlanningAndPreparationLink1]
+description = "Planning for Census 2021"
+one = "Cynllunio ar gyfer Cyfrifiad 2021"
 
 [OtherCensus]
 description = "Scotland and Northern Ireland censuses"

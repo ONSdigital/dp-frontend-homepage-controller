@@ -159,6 +159,18 @@ one = "Get census data (England and Wales)"
 description = "Get census data (Wales)"
 one = "Get census data (Wales)"
 
+[HistoricCensusData]
+description = "Historic census data"
+one = "Historic census data"
+
+[HistoricCensusDataSubhead]
+description = "Find census data and analysis for 2011 and earlier."
+one = "Find census data and analysis for 2011 and earlier."
+
+[HistoricCensusDataLink1]
+description = "Get all historic census data"
+one = "Get all historic census data"
+
 [HistoricalData]
 description = "Historical data"
 one = "Historical data"
@@ -206,6 +218,18 @@ one = "Census transformation"
 [CensusPlanningLink2]
 description = "Quality and methods"
 one = "Quality and methods"
+
+[CensusPlanningAndPreparation]
+description = "Planning for Census 2021"
+one = "Planning for Census 2021"
+
+[CensusPlanningAndPreparationSubhead]
+description = "How we researched, prepared and planned for Census 2021."
+one = "How we researched, prepared and planned for Census 2021."
+
+[CensusPlanningAndPreparationLink1]
+description = "Planning for Census 2021"
+one = "Planning for Census 2021"
 
 [OtherCensus]
 description = "Scotland and Northern Ireland censuses"
