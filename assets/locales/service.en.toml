@@ -143,6 +143,22 @@ one = "Find out what the census is and why it's important for all of us"
 description = "About the census"
 one = "About the census"
 
+[Census2021Data]
+description = "Census 2021 data"
+one = "Census 2021 data"
+
+[Census2021DataSubhead]
+description = "Find data for Census 2021."
+one = "Find data for Census 2021."
+
+[GetCensusDataEnglandWales]
+description = "Get census data (England and Wales)"
+one = "Get census data (England and Wales)"
+
+[GetCensusDataWales]
+description = "Get census data (Wales)"
+one = "Get census data (Wales)"
+
 [HistoricalData]
 description = "Historical data"
 one = "Historical data"

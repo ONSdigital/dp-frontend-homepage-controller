@@ -153,6 +153,14 @@ one = "Dysgwch beth yw'r cyfrifiad a pham mae'n bwysig i bob un ohonom"
 description = "About the census"
 one = "Ynglŷn â'r cyfrifiad"
 
+[Census2021Data]
+description = "Census 2021 data"
+one = "Data Cyfrifiad 2021"
+
+[Census2021DataSubhead]
+description = "Find data for Census 2021."
+one = "Dod o hyd i ddata ar gyfer Cyfrifiad 2021."
+
 [HistoricalData]
 description = "Historical data"
 one = "Data hanesyddol"
