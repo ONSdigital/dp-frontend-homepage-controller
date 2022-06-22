@@ -141,6 +141,10 @@ one = "Caiff y cyfrifiad ei gynnal bob deng mlynedd. Mae'n rhoi darlun i ni o'r 
 description = "About census"
 one = "Ynglŷn â'r cyfrifiad"
 
+[AboutTheCensus]
+description = "About the census"
+one = "Ynglŷn â'r cyfrifiad"
+
 [AboutCensusSubhead]
 description = "Find out what the census is and why it's important for all of us"
 one = "Dysgwch beth yw'r cyfrifiad a pham mae'n bwysig i bob un ohonom"

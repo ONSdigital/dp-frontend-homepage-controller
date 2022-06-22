@@ -5,7 +5,6 @@
                 <h1 class="ons-u-fs-xxxl">{{ localise "Census" .Language 1 }}</h1>
             </header>
         <p class="ons-hero__text">{{ localise "CensusSubhead" .Language 1 }}</p>
-        <a href="/census/censustransformationprogramme/aboutthecensus" class="ons-u-fs-m">{{ localise "AboutCensusLink1" .Language 1 }}</a>
     </div>
     <div class="ons-hero__circle-image">
         <img height="558" width="558" srcset="https://cdn.ons.gov.uk/assets/images/census/census-hero-ice-cream-girls-558px-cropped-x1.jpeg 1x, https://cdn.ons.gov.uk/assets/images/census/census-hero-ice-cream-girls-1116px-cropped-x1.jpeg 2x" src="https://cdn.ons.gov.uk/assets/images/census/census-hero-ice-cream-girls-558px-cropped-x1.jpeg" alt="">
@@ -25,7 +24,7 @@
                 <p id="about-census-desc">{{ localise "AboutCensusSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
                     <li class="ons-list__item">
-
+                        <a href="/census/censustransformationprogramme/aboutthecensus" class="ons-list__link">{{ localise "AboutCensusLink1" .Language 1 }}</a>
                     </li>
                 </ul>
             </div>
@@ -61,6 +60,20 @@
             </div>
         </div>
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
+            <div class="ons-card u-mt-l u-mb-l" aria-labelledBy="historical-data" aria-describedBy="historical-data-desc">
+                <h2 class="ons-u-fs-m" id="historical-data">{{ localise "HistoricalData" .Language 1 }}</h2>
+                <p id="historical-data-desc">{{ localise "HistoricalDataSubhead" .Language 1 }}</p>
+                <ul class="ons-list ons-list--dashed">
+                    <li class="ons-list__item">
+                        <a href="/census/2011census" class="ons-list__link">{{ localise "HistoricalDataLink1" .Language 1 }}</a>
+                    </li>
+                    <li class="ons-list__item">
+                        <a href="/census/2001censusandearlier" class="ons-list__link">{{ localise "HistoricalDataLink2" .Language 1 }}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
             <div class="ons-card" aria-labelledBy="census-planning" aria-describedBy="census-planning-desc">
                 <h2 class="ons-u-fs-m" id="census-planning">{{ localise "CensusPlanning" .Language 1 }}</h2>
                 <p id="census-planning-desc">{{ localise "CensusPlanningSubhead" .Language 1 }}</p>
@@ -72,6 +85,20 @@
                         <a href="/census/censustransformationprogramme/approachandprocessesforassuringthequalityofthe2021censusdata" class="ons-list__link">
                             {{ localise "CensusPlanningLink2" .Language 1 }}
                         </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="ons-grid__col ons-col-6@m">
+            <div class="ons-card" aria-labelledBy="contact-us" aria-describedBy="contact-us-desc">
+                <h2 class="ons-u-fs-m" id="contact-us">{{ localise "CensusContactUs" .Language 1 }}</h2>
+                <p id="contact-us-desc">{{ localise "CensusContactUsSubhead" .Language 1 }}</p>
+                <ul class="ons-list ons-list--dashed">
+                    <li class="ons-list__item">
+                        <a href="/census/censuscustomerservices" class="ons-list__link">{{ localise "CensusContactUsLink1" .Language 1 }}</a>
+                    </li>
+                    <li class="ons-list__item">
+                        <a href="/census/2011census/2011censusdata/2011censusadhoctables" class="ons-list__link">{{ localise "CensusContactUsLink2" .Language 1 }}</a>
                     </li>
                 </ul>
             </div>
@@ -92,20 +119,6 @@
                             {{ localise "OtherCensusLink2" .Language 1 }}
                             {{ template "icons/external-link" }}
                         </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="ons-grid__col ons-col-6@m">
-            <div class="ons-card" aria-labelledBy="contact-us" aria-describedBy="contact-us-desc">
-                <h2 class="ons-u-fs-m" id="contact-us">{{ localise "CensusContactUs" .Language 1 }}</h2>
-                <p id="contact-us-desc">{{ localise "CensusContactUsSubhead" .Language 1 }}</p>
-                <ul class="ons-list ons-list--dashed">
-                    <li class="ons-list__item">
-                        <a href="/census/censuscustomerservices" class="ons-list__link">{{ localise "CensusContactUsLink1" .Language 1 }}</a>
-                    </li>
-                    <li class="ons-list__item">
-                        <a href="/census/2011census/2011censusdata/2011censusadhoctables" class="ons-list__link">{{ localise "CensusContactUsLink2" .Language 1 }}</a>
                     </li>
                 </ul>
             </div>
