@@ -28,7 +28,7 @@ func TestSpec(t *testing.T) {
 				So(cfg.CacheUpdateInterval, ShouldEqual, 10*time.Second)
 				So(cfg.Languages, ShouldEqual, "en,cy")
 				So(cfg.SiteDomain, ShouldEqual, "localhost")
-				So(cfg.CensusFirstResults, ShouldEqual, "Wednesday, 27-Jul-22 14:29:00 UTC")
+				So(cfg.CensusFirstResults, ShouldEqual, "Wednesday, 27-Jul-22 11:00:00 BST")
 			})
 		})
 	})
