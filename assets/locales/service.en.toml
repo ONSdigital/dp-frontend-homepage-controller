@@ -136,8 +136,8 @@ description = "About the census"
 one = "About the census"
 
 [AboutCensusSubhead]
-description = "Find out what the census is and why it's important for all of us"
-one = "Find out what the census is and why it's important for all of us"
+description = "Find out what the census is and why it's important for all of us."
+one = "Find out what the census is and why it's important for all of us."
 
 [AboutCensusLink1]
 description = "About the census"
@@ -202,6 +202,14 @@ one = "Release calendar"
 [CensusReleasesLink2]
 description = "Timeline"
 one = "Timeline"
+
+[ReleasedCensusSubhead]
+description = "See what we've published, and our plans for the future."
+one = "See what we've published, and our plans for the future."
+
+[ReleasedCensusLink2]
+description = "First results and timeline"
+one = "First results and timeline"
 
 [CensusPlanning]
 description = "Census planning and preparation"

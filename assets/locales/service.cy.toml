@@ -146,8 +146,8 @@ description = "About the census"
 one = "Ynglŷn â'r cyfrifiad"
 
 [AboutCensusSubhead]
-description = "Find out what the census is and why it's important for all of us"
-one = "Dysgwch beth yw'r cyfrifiad a pham mae'n bwysig i bob un ohonom"
+description = "Find out what the census is and why it's important for all of us."
+one = "Dysgwch beth yw'r cyfrifiad a pham mae'n bwysig i bob un ohonom."
 
 [AboutCensusLink1]
 description = "About the census"
@@ -212,6 +212,14 @@ one = "Calendr datganiadau"
 [CensusReleasesLink2]
 description = "Timeline"
 one = "Amserlen"
+
+[ReleasedCensusSubhead]
+description = "See what we've published, and our plans for the future."
+one = "Gweld yr hyn rydym wedi'i gyhoeddi, a'n cynlluniau ar gyfer y dyfodol."
+
+[ReleasedCensusLink2]
+description = "First results and timeline"
+one = "Canlyniadau cyntaf ac amserlen"
 
 [CensusPlanning]
 description = "Census planning and preparation"
