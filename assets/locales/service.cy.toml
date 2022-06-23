@@ -182,7 +182,7 @@ description = "Get all historic census data"
 one = "Cael gafael ar holl ddata hanesyddol y cyfrifiad"
 
 [HistoricalData]
-description = "Histori data"
+description = "Historical data"
 one = "Data hanesyddol"
 
 [HistoricalDataSubhead]
