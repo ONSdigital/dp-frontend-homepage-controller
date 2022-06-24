@@ -253,3 +253,6 @@ one = "Dysgwch fwy am y cyfrifiad"
 description = "Caiff canlyniadau Cyfrifiad 2021 eu rhyddhau fesul cam, gan ddechrau ar 28 Mehefin 2022."
 one = "Caiff canlyniadau Cyfrifiad 2021 eu rhyddhau fesul cam, gan ddechrau ar 28 Mehefin 2022."
 
+[Census2021FirstResults]
+description = "Mae canlyniadau cyntaf Cyfrifiad 2021 ar gael nawr. Dod o hyd i ddata a gwaith dadansoddi Cyfrifiad 2021."
+one = "Mae canlyniadau cyntaf Cyfrifiad 2021 ar gael nawr. Dod o hyd i ddata a gwaith dadansoddi Cyfrifiad 2021."

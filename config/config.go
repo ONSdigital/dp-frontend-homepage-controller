@@ -20,6 +20,7 @@ type Config struct {
 	IsPublishingMode           bool          `envconfig:"IS_PUBLISHING_MODE"`
 	Languages                  string        `envconfig:"LANGUAGES"`
 	SiteDomain                 string        `envconfig:"SITE_DOMAIN"`
+	CensusFirstResults         string        `envconfig:"CENSUS_FIRST_RESULTS"`
 }
 
 var cfg *Config
@@ -57,6 +58,7 @@ func get() (*Config, error) {
 		IsPublishingMode:           false,
 		Languages:                  "en,cy",
 		SiteDomain:                 "localhost",
+		CensusFirstResults:         "Wednesday, 27-Jul-22 11:00:00 BST", // Use BST as timezone
 	}
 
 	return cfg, envconfig.Process("", cfg)
