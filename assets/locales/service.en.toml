@@ -131,13 +131,45 @@ one = "The census takes place every 10 years. It gives us a picture of all the p
 description = "About census"
 one = "About census"
 
+[AboutTheCensus]
+description = "About the census"
+one = "About the census"
+
 [AboutCensusSubhead]
-description = "Find out what the census is and why it's important for all of us"
-one = "Find out what the census is and why it's important for all of us"
+description = "Find out what the census is and why it's important for all of us."
+one = "Find out what the census is and why it's important for all of us."
 
 [AboutCensusLink1]
 description = "About the census"
 one = "About the census"
+
+[Census2021Data]
+description = "Census 2021 data"
+one = "Census 2021 data"
+
+[Census2021DataSubhead]
+description = "Find data for Census 2021."
+one = "Find data for Census 2021."
+
+[GetCensusDataEnglandWales]
+description = "Get census data (England and Wales)"
+one = "Get census data (England and Wales)"
+
+[GetCensusDataWales]
+description = "Get census data (Wales)"
+one = "Get census data (Wales)"
+
+[HistoricCensusData]
+description = "Historic census data"
+one = "Historic census data"
+
+[HistoricCensusDataSubhead]
+description = "Find census data and analysis for 2011 and earlier."
+one = "Find census data and analysis for 2011 and earlier."
+
+[HistoricCensusDataLink1]
+description = "Get all historic census data"
+one = "Get all historic census data"
 
 [HistoricalData]
 description = "Historical data"
@@ -171,6 +203,14 @@ one = "Release calendar"
 description = "Timeline"
 one = "Timeline"
 
+[ReleasedCensusSubhead]
+description = "See what we've published, and our plans for the future."
+one = "See what we've published, and our plans for the future."
+
+[ReleasedCensusLink2]
+description = "First results and timeline"
+one = "First results and timeline"
+
 [CensusPlanning]
 description = "Census planning and preparation"
 one = "Census planning and preparation"
@@ -186,6 +226,18 @@ one = "Census transformation"
 [CensusPlanningLink2]
 description = "Quality and methods"
 one = "Quality and methods"
+
+[CensusPlanningAndPreparation]
+description = "Planning for Census 2021"
+one = "Planning for Census 2021"
+
+[CensusPlanningAndPreparationSubhead]
+description = "How we researched, prepared and planned for Census 2021."
+one = "How we researched, prepared and planned for Census 2021."
+
+[CensusPlanningAndPreparationLink1]
+description = "Planning for Census 2021"
+one = "Planning for Census 2021"
 
 [OtherCensus]
 description = "Scotland and Northern Ireland censuses"
