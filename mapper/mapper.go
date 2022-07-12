@@ -57,6 +57,7 @@ func Homepage(cfg config.Config, enableCensusResults bool, localeCode string, ba
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.FeatureFlags.SixteensVersion = "77f1d9b"
 	page.FeatureFlags.EnableCensusResults = enableCensusResults
+	page.NavigationContent = navigationContent
 
 	if aroundONS != nil {
 		page.Data.AroundONS = *aroundONS
