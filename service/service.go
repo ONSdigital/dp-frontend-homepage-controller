@@ -65,7 +65,13 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 		svc.HomePageClient = homepage.NewHomePagePublishingClient(svc.clients)
 	} else {
 		languages := strings.Split(cfg.Languages, ",")
-		svc.HomePageClient = homepage.NewHomePageWebClient(svc.clients, cfg.CacheUpdateInterval, languages)
+
+		svc.HomePageClient, err = homepage.NewHomePageWebClient(ctx, svc.clients, cfg.CacheUpdateInterval, languages)
+		if err != nil {
+			log.Fatal(ctx, "failed to create homepage web client", err)
+			return nil, err
+		}
+
 		go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
 	}
 

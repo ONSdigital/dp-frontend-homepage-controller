@@ -5,24 +5,31 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ONSdigital/dp-frontend-homepage-controller/dpcache"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
+	"github.com/ONSdigital/log.go/v2/log"
 )
 
 type HomepageWebClient struct {
 	HomepageUpdater
-	cache     dpcache.DpCacher
+	cache     *cache.HomepageCache
 	languages []string
 }
 
-func NewHomePageWebClient(clients *Clients, updateInterval time.Duration, languages []string) HomepageClienter {
+func NewHomePageWebClient(ctx context.Context, clients *Clients, updateInterval time.Duration, languages []string) (HomepageClienter, error) {
+	homepageCache, err := cache.NewHomepageCache(ctx, &updateInterval)
+	if err != nil {
+		log.Error(ctx, "failed to create new homepage cache", err, log.Data{"update_interval": updateInterval})
+		return nil, err
+	}
+
 	return &HomepageWebClient{
 		HomepageUpdater: HomepageUpdater{
 			clients: clients,
 		},
-		cache:     dpcache.NewDpCache(updateInterval),
+		cache:     homepageCache,
 		languages: languages,
-	}
+	}, nil
 }
 
 func (hwc *HomepageWebClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (*model.HomepageData, error) {
@@ -39,7 +46,7 @@ func (hwc *HomepageWebClient) GetHomePage(ctx context.Context, userAccessToken, 
 }
 
 func getCachingKeyForLanguage(lang string) string {
-	return fmt.Sprintf("%s___%s", dpcache.HomepageCacheKey, lang)
+	return fmt.Sprintf("%s___%s", cache.HomepageCacheKey, lang)
 }
 
 func (hwc *HomepageWebClient) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
@@ -50,6 +57,7 @@ func (hwc *HomepageWebClient) StartBackgroundUpdate(ctx context.Context, errorCh
 
 	hwc.cache.StartUpdates(ctx, errorChannel)
 }
+
 func (hwc *HomepageWebClient) Close() {
 	hwc.cache.Close()
 }
