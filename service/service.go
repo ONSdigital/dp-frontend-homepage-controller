@@ -12,6 +12,7 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
 	render "github.com/ONSdigital/dp-renderer"
+	topicCli "github.com/ONSdigital/dp-topic-api/sdk"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -49,6 +50,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	svc.clients = &homepage.Clients{
 		Zebedee:  zebedee.NewWithHealthClient(svc.routerHealthClient),
 		ImageAPI: image.NewWithHealthClient(svc.routerHealthClient),
+		Topic:    topicCli.NewWithHealthClient(svc.routerHealthClient),
 	}
 
 	// Get healthcheck with checkers
@@ -69,6 +71,12 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 		svc.HomePageClient, err = homepage.NewHomePageWebClient(ctx, svc.clients, cfg.CacheUpdateInterval, languages)
 		if err != nil {
 			log.Fatal(ctx, "failed to create homepage web client", err)
+			return nil, err
+		}
+
+		err := svc.HomePageClient.AddNavigationCache(ctx, cfg.CacheNavigationUpdateInterval)
+		if err != nil {
+			log.Fatal(ctx, "failed to add navigation cache to homepage web client", err)
 			return nil, err
 		}
 

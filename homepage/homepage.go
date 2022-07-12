@@ -50,10 +50,17 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAc
 		return
 	}
 
+	navigationContent, err := homepageClient.GetNavigationData(ctx, lang)
+	if err != nil {
+		log.Error(ctx, "failed to get navigation data", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	enableCensusResults := helper.CheckTime(cfg.CensusFirstResults)
 
 	basePage := rend.NewBasePageModel()
-	m := mapper.Homepage(*cfg, enableCensusResults, lang, basePage, homepageContent.MainFigures, homepageContent.FeaturedContent, homepageContent.AroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner)
+	m := mapper.Homepage(*cfg, enableCensusResults, lang, basePage, homepageContent.MainFigures, homepageContent.FeaturedContent, homepageContent.AroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner, navigationContent)
 
 	rend.BuildPage(w, m, "homepage")
 
