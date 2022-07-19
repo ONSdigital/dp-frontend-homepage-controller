@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
@@ -65,7 +66,9 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 
 	if cfg.IsPublishingMode {
 		svc.HomePageClient = homepage.NewHomePagePublishingClient(svc.clients)
+		fmt.Println("IN PUBLISHING", cfg.IsPublishingMode)
 	} else {
+		fmt.Println("IN web", cfg.IsPublishingMode)
 		languages := strings.Split(cfg.Languages, ",")
 
 		svc.HomePageClient, err = homepage.NewHomePageWebClient(ctx, svc.clients, cfg.CacheUpdateInterval, languages)

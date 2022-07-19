@@ -4,6 +4,7 @@ package homepage
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -56,6 +57,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAc
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	fmt.Println("• • • • • • • • • • navigationContent", navigationContent)
 
 	enableCensusResults := helper.CheckTime(cfg.CensusFirstResults)
 

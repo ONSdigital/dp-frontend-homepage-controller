@@ -6,7 +6,6 @@ replace github.com/spf13/cobra => github.com/spf13/cobra v1.4.0
 
 replace "github.com/ONSdigital/dp-renderer" => "/users/work/documents/dp-renderer"
 
-
 require (
 	github.com/ONSdigital/dp-api-clients-go/v2 v2.153.0
 	github.com/ONSdigital/dp-cookies v0.3.3
