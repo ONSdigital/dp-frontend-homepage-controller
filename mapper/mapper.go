@@ -57,7 +57,7 @@ func Homepage(cfg config.Config, enableCensusResults bool, localeCode string, ba
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.FeatureFlags.SixteensVersion = "77f1d9b"
 	page.FeatureFlags.EnableCensusResults = enableCensusResults
-	page.NavigationContent = navigationContent
+	page.NavigationContent = mapNavigationContent(navigationContent)
 
 	if aroundONS != nil {
 		page.Data.AroundONS = *aroundONS
@@ -149,6 +149,30 @@ func AroundONS(homepageData zebedee.HomepageContent, images map[string]image.Ima
 		}
 	}
 	return mappedAroundONS
+}
+
+// mapNvigationContent
+func mapNavigationContent(navigationContent *topicModel.Navigation) []coreModel.Navigation {
+	var mappedNavigationContent []coreModel.Navigation
+	//if len(navigationContent.Items) > 0 {
+	for _, nc := range *navigationContent.Items {
+		var subItems []coreModel.NaigationItem
+		for _, ncs := range *navigationContent.Items {
+			subItems = append(subItems, coreModel.NaigationItem{
+				Uri:   ncs.Uri,
+				Label: ncs.Label,
+			})
+		}
+		mappedNavigationContent = append(mappedNavigationContent, coreModel.Navigation{
+			Item: coreModel.NaigationItem{
+				Uri:   nc.Uri,
+				Label: nc.Label,
+			},
+			SubItems: subItems,
+		})
+	}
+	//}
+	return mappedNavigationContent
 }
 
 func mapEmergencyBanner(bannerData zebedee.EmergencyBanner) coreModel.EmergencyBanner {
