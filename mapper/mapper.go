@@ -57,7 +57,9 @@ func Homepage(cfg config.Config, enableCensusResults bool, localeCode string, ba
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.FeatureFlags.SixteensVersion = "77f1d9b"
 	page.FeatureFlags.EnableCensusResults = enableCensusResults
-	page.NavigationContent = mapNavigationContent(navigationContent)
+	if navigationContent != nil {
+		page.NavigationContent = mapNavigationContent(*navigationContent)
+	}
 
 	if aroundONS != nil {
 		page.Data.AroundONS = *aroundONS
@@ -152,26 +154,26 @@ func AroundONS(homepageData zebedee.HomepageContent, images map[string]image.Ima
 }
 
 // mapNvigationContent
-func mapNavigationContent(navigationContent *topicModel.Navigation) []coreModel.Navigation {
-	var mappedNavigationContent []coreModel.Navigation
-	//if len(navigationContent.Items) > 0 {
-	for _, nc := range *navigationContent.Items {
-		var subItems []coreModel.NaigationItem
-		for _, ncs := range *navigationContent.Items {
-			subItems = append(subItems, coreModel.NaigationItem{
-				Uri:   ncs.Uri,
-				Label: ncs.Label,
+func mapNavigationContent(navigationContent topicModel.Navigation) []coreModel.NavigationItem {
+	var mappedNavigationContent []coreModel.NavigationItem
+	if len(*navigationContent.Items) > 0 {
+		for _, rootContent := range *navigationContent.Items {
+			var subItems []coreModel.NavigationItem
+			if rootContent.SubtopicItems != nil {
+				for _, subtopicContent := range *rootContent.SubtopicItems {
+					subItems = append(subItems, coreModel.NavigationItem{
+						Uri:   subtopicContent.Uri,
+						Label: subtopicContent.Label,
+					})
+				}
+			}
+			mappedNavigationContent = append(mappedNavigationContent, coreModel.NavigationItem{
+				Uri:      rootContent.Uri,
+				Label:    rootContent.Label,
+				SubItems: subItems,
 			})
 		}
-		mappedNavigationContent = append(mappedNavigationContent, coreModel.Navigation{
-			Item: coreModel.NaigationItem{
-				Uri:   nc.Uri,
-				Label: nc.Label,
-			},
-			SubItems: subItems,
-		})
 	}
-	//}
 	return mappedNavigationContent
 }
 
