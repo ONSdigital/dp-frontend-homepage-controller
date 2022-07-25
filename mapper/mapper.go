@@ -153,10 +153,10 @@ func AroundONS(homepageData zebedee.HomepageContent, images map[string]image.Ima
 	return mappedAroundONS
 }
 
-// mapNvigationContent
+// mapNavigationContent takes navigationContent as returned from the client and returns information needed for the navigation bar
 func mapNavigationContent(navigationContent topicModel.Navigation) []coreModel.NavigationItem {
 	var mappedNavigationContent []coreModel.NavigationItem
-	if len(*navigationContent.Items) > 0 {
+	if navigationContent.Items != nil {
 		for _, rootContent := range *navigationContent.Items {
 			var subItems []coreModel.NavigationItem
 			if rootContent.SubtopicItems != nil {

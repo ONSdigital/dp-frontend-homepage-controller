@@ -4,15 +4,13 @@ go 1.18
 
 replace github.com/spf13/cobra => github.com/spf13/cobra v1.4.0
 
-replace "github.com/ONSdigital/dp-renderer" => "/users/work/documents/dp-renderer"
-
 
 require (
 	github.com/ONSdigital/dp-api-clients-go/v2 v2.153.0
 	github.com/ONSdigital/dp-cookies v0.3.3
 	github.com/ONSdigital/dp-healthcheck v1.4.0-beta
 	github.com/ONSdigital/dp-net v1.4.1
-	github.com/ONSdigital/dp-renderer v1.37.0
+	github.com/ONSdigital/dp-renderer v1.39.0
 	github.com/ONSdigital/dp-topic-api v0.13.1
 	github.com/ONSdigital/log.go/v2 v2.3.0-beta
 	github.com/gorilla/mux v1.8.0
