@@ -5,20 +5,30 @@ import (
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/helper"
+	homepage "github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	dphandlers "github.com/ONSdigital/dp-net/handlers"
+	"github.com/ONSdigital/log.go/v2/log"
 )
 
 // Handler handles requests to census endpoint
-func Handler(cfg *config.Config, rend RenderClient) http.HandlerFunc {
+func Handler(cfg *config.Config, homepageClient homepage.HomepageClienter, rend RenderClient) http.HandlerFunc {
 	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
-		handle(w, r, cfg, rend, accessToken, collectionID, lang)
+		handle(w, r, cfg, homepageClient, rend, accessToken, collectionID, lang)
 	})
 }
 
-func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, rend RenderClient, userAccessToken, collectionID, lang string) {
+func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, homepageClient homepage.HomepageClienter, rend RenderClient, userAccessToken, collectionID, lang string) {
+	ctx := req.Context()
+	navigationContent, err := homepageClient.GetNavigationData(ctx, lang)
+	if err != nil {
+		log.Error(ctx, "failed to get navigation data", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	basePage := rend.NewBasePageModel()
-	m := mapper.Census(req, cfg, lang, basePage)
+	m := mapper.Census(req, cfg, lang, basePage, navigationContent)
 
 	enableCensusResults := helper.CheckTime(cfg.CensusFirstResults)
 
