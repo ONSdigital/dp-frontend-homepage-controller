@@ -64,6 +64,11 @@ func (hwc *HomepageWebClient) AddNavigationCache(ctx context.Context, updateInte
 }
 
 func (hwc *HomepageWebClient) GetNavigationData(ctx context.Context, lang string) (*topicModel.Navigation, error) {
+	if hwc.navigationCache == nil {
+		log.Warn(ctx, "no-op navigation cache")
+		return nil, nil
+	}
+
 	navigationData, ok := hwc.navigationCache.Get(getCachingKeyForNavigationLanguage(lang))
 	if ok {
 		n, ok := navigationData.(*topicModel.Navigation)
@@ -85,14 +90,23 @@ func (hwc *HomepageWebClient) StartBackgroundUpdate(ctx context.Context, errorCh
 		hwc.cache.AddUpdateFunc(langKey, hwc.GetHomePageUpdateFor(ctx, "", "", lang))
 
 		navigationlangKey := getCachingKeyForNavigationLanguage(lang)
-		hwc.navigationCache.AddUpdateFunc(navigationlangKey, hwc.UpdateNavigationData(ctx, lang))
+
+		if hwc.navigationCache != nil {
+			hwc.navigationCache.AddUpdateFunc(navigationlangKey, hwc.UpdateNavigationData(ctx, lang))
+		}
 	}
 
 	go hwc.cache.StartUpdates(ctx, errorChannel)
-	go hwc.navigationCache.StartUpdates(ctx, errorChannel)
+
+	if hwc.navigationCache != nil {
+		go hwc.navigationCache.StartUpdates(ctx, errorChannel)
+	}
 }
 
 func (hwc *HomepageWebClient) Close() {
 	hwc.cache.Close()
-	hwc.navigationCache.Close()
+
+	if hwc.navigationCache != nil {
+		hwc.navigationCache.Close()
+	}
 }
