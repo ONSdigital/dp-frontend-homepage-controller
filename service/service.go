@@ -32,7 +32,7 @@ type Service struct {
 
 // Run the service
 func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceList, buildTime, gitCommit, version string, svcErrors chan error) (svc *Service, err error) {
-	log.Info(ctx, "running service")
+	log.Info(ctx, "Initialising service")
 
 	// Initialise Service struct
 	svc = &Service{
@@ -63,25 +63,27 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 		return nil, errors.Wrap(err, "unable to register checkers")
 	}
 
+	languages := strings.Split(cfg.Languages, ",")
 	if cfg.IsPublishingMode {
-		svc.HomePageClient = homepage.NewHomePagePublishingClient(svc.clients)
+		svc.HomePageClient = homepage.NewHomePagePublishingClient(ctx, svc.clients, languages)
 	} else {
-		languages := strings.Split(cfg.Languages, ",")
 
 		svc.HomePageClient, err = homepage.NewHomePageWebClient(ctx, svc.clients, cfg.CacheUpdateInterval, languages)
 		if err != nil {
 			log.Fatal(ctx, "failed to create homepage web client", err)
 			return nil, err
 		}
+	}
 
-		err := svc.HomePageClient.AddNavigationCache(ctx, cfg.CacheNavigationUpdateInterval)
-		if err != nil {
-			log.Fatal(ctx, "failed to add navigation cache to homepage web client", err)
+	if cfg.EnableNewNavBar {
+		if err := svc.HomePageClient.AddNavigationCache(ctx, cfg.CacheNavigationUpdateInterval); err != nil {
+			log.Fatal(ctx, "failed to add navigation cache to homepage client", err)
 			return nil, err
 		}
-
-		go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
 	}
+
+	// Start background polling of topics API for navbar data (changes)
+	go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
 
 	// Initialise router
 	r := mux.NewRouter()
@@ -89,7 +91,6 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
 
 	// Start Healthcheck and HTTP Server
-	log.Info(ctx, "Starting server", log.Data{"config": cfg})
 	svc.HealthCheck.Start(ctx)
 	go func() {
 		if err := svc.Server.ListenAndServe(); err != nil {

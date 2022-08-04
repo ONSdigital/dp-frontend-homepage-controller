@@ -14,7 +14,7 @@ type RenderClient interface {
 	NewBasePageModel() model.Page
 }
 
-// Clients contains all the required Clients for frontend homepage controller
+// Clients contains all the required Clients for Census hub page
 type Clients struct {
 	Renderer RenderClient
 }

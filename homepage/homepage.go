@@ -57,7 +57,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAc
 		return
 	}
 
-	enableCensusResults := helper.CheckTime(cfg.CensusFirstResults)
+	enableCensusResults := helper.CheckTime(ctx, cfg.CensusFirstResults)
 
 	basePage := rend.NewBasePageModel()
 	m := mapper.Homepage(*cfg, enableCensusResults, lang, basePage, homepageContent.MainFigures, homepageContent.FeaturedContent, homepageContent.AroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner, navigationContent)
