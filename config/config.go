@@ -58,7 +58,7 @@ func get() (*Config, error) {
 		IsPublishingMode:           false,
 		Languages:                  "en,cy",
 		SiteDomain:                 "localhost",
-		CensusFirstResults:         "Wednesday, 27-Jul-22 11:00:00 BST", // Use BST as timezone
+		CensusFirstResults:         "Wednesday, 27-Jul-23 11:00:00 BST", // Use BST as timezone
 	}
 
 	return cfg, envconfig.Process("", cfg)
