@@ -16,6 +16,6 @@ import (
 func Init(ctx context.Context, r *mux.Router, cfg *config.Config, hcHandler func(http.ResponseWriter, *http.Request), homepageClient homepage.HomepageClienter, renderClient homepage.RenderClient) {
 	log.Info(ctx, "adding routes")
 	r.StrictSlash(true).Path("/health").HandlerFunc(hcHandler)
-	r.StrictSlash(true).Path("/census").Methods("GET").HandlerFunc(census.Handler(cfg, renderClient))
+	r.StrictSlash(true).Path("/census").Methods("GET").HandlerFunc(census.Handler(cfg, homepageClient, renderClient))
 	r.StrictSlash(true).Path("/").Methods("GET").HandlerFunc(homepage.Handler(cfg, homepageClient, renderClient))
 }
