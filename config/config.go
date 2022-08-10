@@ -49,20 +49,6 @@ func get() (*Config, error) {
 	}
 
 	cfg := &Config{
-<<<<<<< HEAD
-		BindAddr:                   ":24400",
-		APIRouterURL:               "http://localhost:23200/v1",
-		GracefulShutdownTimeout:    5 * time.Second,
-		HealthCheckInterval:        30 * time.Second,
-		HealthCheckCriticalTimeout: 90 * time.Second,
-		Debug:                      false,
-		SupportedLanguages:         [2]string{"en", "cy"},
-		CacheUpdateInterval:        10 * time.Second,
-		IsPublishingMode:           false,
-		Languages:                  "en,cy",
-		SiteDomain:                 "localhost",
-		CensusFirstResults:         "Wednesday, 27-Jul-23 11:00:00 BST", // Use BST as timezone
-=======
 		BindAddr:                      ":24400",
 		APIRouterURL:                  "http://localhost:23200/v1",
 		CacheNavigationUpdateInterval: 10 * time.Second,
@@ -77,7 +63,6 @@ func get() (*Config, error) {
 		Languages:                     "en,cy",
 		SiteDomain:                    "localhost",
 		SupportedLanguages:            [2]string{"en", "cy"},
->>>>>>> develop
 	}
 
 	return cfg, envconfig.Process("", cfg)
