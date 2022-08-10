@@ -14,6 +14,7 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	coreModel "github.com/ONSdigital/dp-renderer/model"
+	topicModel "github.com/ONSdigital/dp-topic-api/models"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/shopspring/decimal"
 )
@@ -39,7 +40,7 @@ type TrendInfo struct {
 var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
-func Homepage(cfg config.Config, enableCensusResults bool, localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner) model.Page {
+func Homepage(cfg config.Config, enableCensusResults bool, localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner, navigationContent *topicModel.Navigation) model.Page {
 	page := model.Page{
 		Data: model.Homepage{},
 		Page: basePage,
@@ -56,6 +57,9 @@ func Homepage(cfg config.Config, enableCensusResults bool, localeCode string, ba
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.FeatureFlags.SixteensVersion = "30948d6"
 	page.FeatureFlags.EnableCensusResults = enableCensusResults
+	if navigationContent != nil {
+		page.NavigationContent = mapNavigationContent(*navigationContent)
+	}
 
 	if aroundONS != nil {
 		page.Data.AroundONS = *aroundONS
@@ -147,6 +151,30 @@ func AroundONS(homepageData zebedee.HomepageContent, images map[string]image.Ima
 		}
 	}
 	return mappedAroundONS
+}
+
+// mapNavigationContent takes navigationContent as returned from the client and returns information needed for the navigation bar
+func mapNavigationContent(navigationContent topicModel.Navigation) []coreModel.NavigationItem {
+	var mappedNavigationContent []coreModel.NavigationItem
+	if navigationContent.Items != nil {
+		for _, rootContent := range *navigationContent.Items {
+			var subItems []coreModel.NavigationItem
+			if rootContent.SubtopicItems != nil {
+				for _, subtopicContent := range *rootContent.SubtopicItems {
+					subItems = append(subItems, coreModel.NavigationItem{
+						Uri:   subtopicContent.Uri,
+						Label: subtopicContent.Label,
+					})
+				}
+			}
+			mappedNavigationContent = append(mappedNavigationContent, coreModel.NavigationItem{
+				Uri:      rootContent.Uri,
+				Label:    rootContent.Label,
+				SubItems: subItems,
+			})
+		}
+	}
+	return mappedNavigationContent
 }
 
 func mapEmergencyBanner(bannerData zebedee.EmergencyBanner) coreModel.EmergencyBanner {
@@ -286,7 +314,7 @@ func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
 }
 
 // Census maps data to our census frontend model
-func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page) model.Page {
+func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation) model.Page {
 	page := model.Page{
 		Page: basePage,
 	}
@@ -297,6 +325,10 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	page.Metadata.Title = "Census"
 	page.Language = localeCode
 	page.PatternLibraryAssetsPath = cfg.PatternLibraryAssetsPath
+
+	if navigationContent != nil {
+		page.NavigationContent = mapNavigationContent(*navigationContent)
+	}
 
 	return page
 }

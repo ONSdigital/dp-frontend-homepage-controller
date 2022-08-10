@@ -2,10 +2,12 @@ package mapper
 
 import (
 	"context"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
+	topicModel "github.com/ONSdigital/dp-topic-api/models"
 
 	"github.com/shopspring/decimal"
 
@@ -219,11 +221,50 @@ func TestUnitMapper(t *testing.T) {
 		LinkText:    "More info",
 	}
 
+	mockedNavigationData := &topicModel.Navigation{
+		Description: "A list of topical areas and their subtopics in english to generate the website navbar.",
+		Links: &topicModel.TopicLinks{
+			Self: &topicModel.LinkObject{
+				HRef: "/navigation",
+			},
+		},
+		Items: &[]topicModel.TopicNonReferential{
+			{
+				Title:       "Business, industry and trade",
+				Description: "Activities of businesses and industry in the UK, including data on the production and trade of goods and services, sales by retailers, characteristics of businesses, the construction and manufacturing sectors, and international trade.",
+				Name:        "business-industry-and-trade",
+				Label:       "Business, industry and trade",
+				Links: &topicModel.TopicLinks{
+					Self: &topicModel.LinkObject{
+						ID:   "businessindustryandtrade",
+						HRef: "/topics/businessindustryandtrade",
+					},
+				},
+				Uri: "/businessindustryandtrade",
+				SubtopicItems: &[]topicModel.TopicNonReferential{
+					{
+						Title:       "Business",
+						Description: "UK businesses registered for VAT and PAYE with regional breakdowns, including data on size (employment and turnover) and activity (type of industry), research and development, and business services.",
+						Name:        "business",
+						Label:       "Business",
+						Links: &topicModel.TopicLinks{
+							Self: &topicModel.LinkObject{
+								ID:   "business",
+								HRef: "/topics/business",
+							},
+						},
+						Uri: "/businessindustryandtrade/business",
+					},
+				},
+			},
+		},
+	}
+
 	basePage := coreModel.NewPage("path/to/assets", "site-domain")
 
 	Convey("test homepage mapping works", t, func() {
 
-		page := Homepage(config.Config{}, false,"en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
+		page := Homepage(config.Config{}, false, "en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner, mockedNavigationData)
 
 		So(page.SiteDomain, ShouldResemble, basePage.SiteDomain)
 		So(page.PatternLibraryAssetsPath, ShouldResemble, basePage.PatternLibraryAssetsPath)
@@ -243,7 +284,7 @@ func TestUnitMapper(t *testing.T) {
 	})
 
 	Convey("empty emergency banner content, banner does not map", t, func() {
-		page := Homepage(config.Config{}, false, "en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, zebedee.EmergencyBanner{})
+		page := Homepage(config.Config{}, false, "en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, zebedee.EmergencyBanner{}, mockedNavigationData)
 
 		So(page.EmergencyBanner.Title, ShouldBeBlank)
 		So(page.EmergencyBanner.Type, ShouldBeBlank)
@@ -388,7 +429,7 @@ func TestUnitMapper(t *testing.T) {
 		var mockedNoFeaturedContent []model.Feature
 		var mockedNoMainFigures = make(map[string]*model.MainFigure)
 
-		gracefulDegradationPage := Homepage(config.Config{}, false, "en", basePage, mockedNoMainFigures, &mockedNoFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner)
+		gracefulDegradationPage := Homepage(config.Config{}, false, "en", basePage, mockedNoMainFigures, &mockedNoFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner, mockedNavigationData)
 
 		So(gracefulDegradationPage.Data.HasFeaturedContent, ShouldEqual, false)
 		So(gracefulDegradationPage.Data.HasMainFigures, ShouldEqual, false)

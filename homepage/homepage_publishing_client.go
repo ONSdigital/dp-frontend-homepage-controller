@@ -4,25 +4,35 @@ package homepage
 
 import (
 	"context"
+	"fmt"
+	"time"
 
+	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
+	topicModel "github.com/ONSdigital/dp-topic-api/models"
+	"github.com/ONSdigital/log.go/v2/log"
 )
 
 type HomepageClienter interface {
+	AddNavigationCache(ctx context.Context, updateInterval time.Duration) error
 	GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (*model.HomepageData, error)
+	GetNavigationData(ctx context.Context, lang string) (*topicModel.Navigation, error)
 	Close()
 	StartBackgroundUpdate(ctx context.Context, errorChannel chan error)
 }
 
 type HomepagePublishingClient struct {
 	HomepageUpdater
+	navigationCache *cache.NavigationCache
+	languages       []string
 }
 
-func NewHomePagePublishingClient(clients *Clients) HomepageClienter {
+func NewHomePagePublishingClient(ctx context.Context, clients *Clients, languages []string) HomepageClienter {
 	return &HomepagePublishingClient{
 		HomepageUpdater: HomepageUpdater{
 			clients: clients,
 		},
+		languages: languages,
 	}
 }
 
@@ -30,6 +40,51 @@ func (hpc *HomepagePublishingClient) GetHomePage(ctx context.Context, userAccess
 	return hpc.GetHomePageUpdateFor(ctx, userAccessToken, collectionID, lang)()
 }
 
-func (hpc *HomepagePublishingClient) Close() {}
+func (hpc *HomepagePublishingClient) AddNavigationCache(ctx context.Context, updateInterval time.Duration) error {
+	navigationCache, err := cache.NewNavigationCache(ctx, &updateInterval)
+	if err != nil {
+		log.Error(ctx, "failed to create navigation cache", err, log.Data{"update_interval": updateInterval})
+		return err
+	}
+
+	hpc.navigationCache = navigationCache
+
+	return nil
+}
+
+func (hpc *HomepagePublishingClient) GetNavigationData(ctx context.Context, lang string) (*topicModel.Navigation, error) {
+	if hpc.navigationCache == nil {
+		log.Warn(ctx, "no-op navigation cache")
+		return nil, nil
+	}
+
+	navigationData, ok := hpc.navigationCache.Get(getCachingKeyForNavigationLanguage(lang))
+	if ok {
+		n, ok := navigationData.(*topicModel.Navigation)
+		if ok {
+			return n, nil
+		}
+	}
+
+	return nil, fmt.Errorf("failed to read navigation data from cache for: %s", getCachingKeyForNavigationLanguage(lang))
+}
+
 func (hpc *HomepagePublishingClient) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
+	if hpc.navigationCache == nil {
+		return
+	}
+
+	for _, lang := range hpc.languages {
+		navigationlangKey := getCachingKeyForNavigationLanguage(lang)
+
+		hpc.navigationCache.AddUpdateFunc(navigationlangKey, hpc.UpdateNavigationData(ctx, lang))
+	}
+
+	go hpc.navigationCache.StartUpdates(ctx, errorChannel)
+}
+
+func (hpc *HomepagePublishingClient) Close() {
+	if hpc.navigationCache != nil {
+		hpc.navigationCache.Close()
+	}
 }

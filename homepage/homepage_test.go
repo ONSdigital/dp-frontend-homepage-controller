@@ -2,11 +2,13 @@ package homepage
 
 import (
 	"context"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
+	topicModel "github.com/ONSdigital/dp-topic-api/models"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	coreModel "github.com/ONSdigital/dp-renderer/model"
@@ -33,8 +35,8 @@ func doTestRequest(target string, req *http.Request, handlerFunc http.HandlerFun
 
 var (
 	userAccessToken string
-	collectionID string
-	lang string
+	collectionID    string
+	lang            string
 )
 
 func TestUnitHomepageHandlerSuccess(t *testing.T) {
@@ -55,11 +57,14 @@ func TestUnitHomepageHandlerSuccess(t *testing.T) {
 		}
 
 		mockedHomepageClienter := &HomepageClienterMock{
-			CloseFunc: func()  {},
+			CloseFunc: func() {},
 			GetHomePageFunc: func(ctx context.Context, userAccessToken string, collectionID string, lang string) (*model.HomepageData, error) {
 				return &model.HomepageData{}, nil
 			},
-			StartBackgroundUpdateFunc: func(ctx context.Context, errorChannel chan error)  {},
+			GetNavigationDataFunc: func(ctx context.Context, lang string) (*topicModel.Navigation, error) {
+				return &topicModel.Navigation{}, nil
+			},
+			StartBackgroundUpdateFunc: func(ctx context.Context, errorChannel chan error) {},
 		}
 
 		Convey("When Read is called", func() {
