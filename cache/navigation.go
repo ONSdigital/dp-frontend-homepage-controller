@@ -22,7 +22,7 @@ func NewNavigationCache(ctx context.Context, updateInterval *time.Duration) (*Na
 	}
 
 	cache, err := dpcache.NewCache(ctx, config)
-	if err != nil {
+	if err != nil || cache == nil {
 		logData := log.Data{
 			"config": config,
 		}
@@ -30,9 +30,7 @@ func NewNavigationCache(ctx context.Context, updateInterval *time.Duration) (*Na
 		return nil, err
 	}
 
-	navigationCache := &NavigationCache{cache}
-
-	return navigationCache, nil
+	return &NavigationCache{cache}, nil
 }
 
 // AddUpdateFunc adds an update function to the homepage cache
