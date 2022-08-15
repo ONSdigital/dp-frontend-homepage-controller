@@ -13,15 +13,16 @@ import (
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
-type HomepageUpdater struct {
+type Updater struct {
 	clients *Clients
 }
 
-func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessToken, collectionID, lang string) func() (*model.HomepageData, error) {
+func (hu *Updater) GetHomePageUpdateFor(ctx context.Context, userAccessToken, collectionID, lang string) func() (*model.HomepageData, error) {
 	return func() (*model.HomepageData, error) {
 		mappedMainFigures := make(map[string]*model.MainFigure)
 		var wg sync.WaitGroup
 		responses := make(chan *model.MainFigure, len(mainFigureMap))
+		// nolint: gocritic
 		for id, figure := range mainFigureMap {
 			wg.Add(1)
 			go func(ctx context.Context, zcli ZebedeeClient, id string, figure MainFigure) {
@@ -63,11 +64,11 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 			imageObjects := map[string]image.ImageDownload{}
 			for _, fc := range homepageContent.FeaturedContent {
 				if fc.ImageID != "" {
-					image, err := hu.clients.ImageAPI.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
+					imageDetails, err := hu.clients.ImageAPI.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
 					if err != nil {
 						log.Error(ctx, "error getting image download variant", err, log.Data{"featured-content-entry": fc.Title})
 					}
-					imageObjects[fc.ImageID] = image
+					imageObjects[fc.ImageID] = imageDetails
 				}
 			}
 			mappedFeaturedContent = mapper.FeaturedContent(homepageContent, imageObjects)
@@ -78,11 +79,11 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 			imageObjects := map[string]image.ImageDownload{}
 			for _, fc := range homepageContent.AroundONS {
 				if fc.ImageID != "" {
-					image, err := hu.clients.ImageAPI.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
+					imageDetails, err := hu.clients.ImageAPI.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
 					if err != nil {
 						log.Error(ctx, "error getting image download variant", err, log.Data{"around-ons-entry": fc.Title})
 					}
-					imageObjects[fc.ImageID] = image
+					imageObjects[fc.ImageID] = imageDetails
 				}
 			}
 			mappedAroundONS = mapper.AroundONS(homepageContent, imageObjects)
@@ -100,7 +101,7 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 	}
 }
 
-func (hu *HomepageUpdater) UpdateNavigationData(ctx context.Context, lang string) func() *topicModel.Navigation {
+func (hu *Updater) UpdateNavigationData(ctx context.Context, lang string) func() *topicModel.Navigation {
 	return func() *topicModel.Navigation {
 		headers := topicCli.Headers{}
 		options := topicCli.Options{}

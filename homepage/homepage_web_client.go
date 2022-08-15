@@ -11,22 +11,22 @@ import (
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
-type HomepageWebClient struct {
-	HomepageUpdater
+type WebClient struct {
+	Updater
 	cache           *cache.HomepageCache
 	navigationCache *cache.NavigationCache
 	languages       []string
 }
 
-func NewHomePageWebClient(ctx context.Context, clients *Clients, updateInterval time.Duration, languages []string) (HomepageClienter, error) {
+func NewHomePageWebClient(ctx context.Context, clients *Clients, updateInterval time.Duration, languages []string) (Clienter, error) {
 	homepageCache, err := cache.NewHomepageCache(ctx, &updateInterval)
 	if err != nil {
 		log.Error(ctx, "failed to create new homepage cache", err, log.Data{"update_interval": updateInterval})
 		return nil, err
 	}
 
-	return &HomepageWebClient{
-		HomepageUpdater: HomepageUpdater{
+	return &WebClient{
+		Updater: Updater{
 			clients: clients,
 		},
 		cache:     homepageCache,
@@ -34,7 +34,7 @@ func NewHomePageWebClient(ctx context.Context, clients *Clients, updateInterval 
 	}, nil
 }
 
-func (hwc *HomepageWebClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (*model.HomepageData, error) {
+func (hwc *WebClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (*model.HomepageData, error) {
 	homepageData, ok := hwc.cache.Get(getCachingKeyForLanguage(lang))
 	if ok {
 		h, ok := homepageData.(*model.HomepageData)
@@ -42,16 +42,14 @@ func (hwc *HomepageWebClient) GetHomePage(ctx context.Context, userAccessToken, 
 			return h, nil
 		}
 	}
-
 	return nil, fmt.Errorf("failed to read homepage from cache for: %s", getCachingKeyForLanguage(lang))
-
 }
 
 func getCachingKeyForLanguage(lang string) string {
 	return fmt.Sprintf("%s___%s", cache.HomepageCacheKey, lang)
 }
 
-func (hwc *HomepageWebClient) AddNavigationCache(ctx context.Context, updateInterval time.Duration) error {
+func (hwc *WebClient) AddNavigationCache(ctx context.Context, updateInterval time.Duration) error {
 	navigationCache, err := cache.NewNavigationCache(ctx, &updateInterval)
 	if err != nil {
 		log.Error(ctx, "failed to create navigation cache", err, log.Data{"update_interval": updateInterval})
@@ -63,7 +61,7 @@ func (hwc *HomepageWebClient) AddNavigationCache(ctx context.Context, updateInte
 	return nil
 }
 
-func (hwc *HomepageWebClient) GetNavigationData(ctx context.Context, lang string) (*topicModel.Navigation, error) {
+func (hwc *WebClient) GetNavigationData(ctx context.Context, lang string) (*topicModel.Navigation, error) {
 	if hwc.navigationCache == nil {
 		log.Warn(ctx, "no-op navigation cache")
 		return nil, nil
@@ -84,7 +82,7 @@ func getCachingKeyForNavigationLanguage(lang string) string {
 	return fmt.Sprintf("%s___%s", cache.NavigationCacheKey, lang)
 }
 
-func (hwc *HomepageWebClient) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
+func (hwc *WebClient) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
 	for _, lang := range hwc.languages {
 		langKey := getCachingKeyForLanguage(lang)
 		hwc.cache.AddUpdateFunc(langKey, hwc.GetHomePageUpdateFor(ctx, "", "", lang))
@@ -103,7 +101,7 @@ func (hwc *HomepageWebClient) StartBackgroundUpdate(ctx context.Context, errorCh
 	}
 }
 
-func (hwc *HomepageWebClient) Close() {
+func (hwc *WebClient) Close() {
 	hwc.cache.Close()
 
 	if hwc.navigationCache != nil {

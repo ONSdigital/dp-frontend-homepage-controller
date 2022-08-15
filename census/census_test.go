@@ -32,10 +32,6 @@ func doTestRequest(target string, req *http.Request, handlerFunc http.HandlerFun
 	return w
 }
 
-var accessToken string
-var collectionID string
-var lang string
-
 func TestUnitCensusHandlerSuccess(t *testing.T) {
 	t.Parallel()
 

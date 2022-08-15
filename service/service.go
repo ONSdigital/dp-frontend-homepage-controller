@@ -26,7 +26,7 @@ type Service struct {
 	Server             HTTPServer
 	clients            *homepage.Clients
 	ServiceList        *ExternalServiceList
-	HomePageClient     homepage.HomepageClienter
+	HomePageClient     homepage.Clienter
 	RendererClient     homepage.RenderClient
 }
 
@@ -59,15 +59,14 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 		log.Fatal(ctx, "failed to create health check", err)
 		return nil, err
 	}
-	if err := svc.registerCheckers(ctx, cfg); err != nil {
-		return nil, errors.Wrap(err, "unable to register checkers")
+	if registerErr := svc.registerCheckers(ctx, cfg); registerErr != nil {
+		return nil, errors.Wrap(registerErr, "unable to register checkers")
 	}
 
 	languages := strings.Split(cfg.Languages, ",")
 	if cfg.IsPublishingMode {
 		svc.HomePageClient = homepage.NewHomePagePublishingClient(ctx, svc.clients, languages)
 	} else {
-
 		svc.HomePageClient, err = homepage.NewHomePageWebClient(ctx, svc.clients, cfg.CacheUpdateInterval, languages)
 		if err != nil {
 			log.Fatal(ctx, "failed to create homepage web client", err)
@@ -148,9 +147,7 @@ func (svc *Service) Close(ctx context.Context) error {
 }
 
 func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (err error) {
-
 	hasErrors := false
-
 	if err = svc.HealthCheck.AddCheck("API router", svc.routerHealthClient.Checker); err != nil {
 		hasErrors = true
 		log.Error(ctx, "failed to add api router checker", err)
