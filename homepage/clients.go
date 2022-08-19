@@ -10,6 +10,7 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
 	"github.com/ONSdigital/dp-renderer/model"
+	topicCli "github.com/ONSdigital/dp-topic-api/sdk"
 )
 
 // ZebedeeClient is an interface with methods required for a zebedee client
@@ -36,4 +37,5 @@ type Clients struct {
 	Zebedee  ZebedeeClient
 	ImageAPI ImageClient
 	Renderer RenderClient
+	Topic    topicCli.Clienter
 }

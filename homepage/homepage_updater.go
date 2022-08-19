@@ -8,6 +8,8 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
+	topicModel "github.com/ONSdigital/dp-topic-api/models"
+	topicCli "github.com/ONSdigital/dp-topic-api/sdk"
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
@@ -95,5 +97,30 @@ func (hu *HomepageUpdater) GetHomePageUpdateFor(ctx context.Context, userAccessT
 		}
 
 		return homepageData, nil
+	}
+}
+
+func (hu *HomepageUpdater) UpdateNavigationData(ctx context.Context, lang string) func() *topicModel.Navigation {
+	return func() *topicModel.Navigation {
+		headers := topicCli.Headers{}
+		options := topicCli.Options{}
+
+		switch lang {
+		case "cy":
+			options.Lang = topicCli.Welsh
+		default:
+			options.Lang = topicCli.English
+		}
+
+		navigationData, err := hu.clients.Topic.GetNavigationPublic(ctx, headers, options)
+		if err != nil {
+			logData := log.Data{
+				"headers": headers,
+				"options": options,
+			}
+			log.Error(ctx, "failed to get navigation data from client", err, logData)
+		}
+
+		return navigationData
 	}
 }
