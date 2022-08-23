@@ -65,9 +65,9 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 
 	languages := strings.Split(cfg.Languages, ",")
 	if cfg.IsPublishingMode {
-		svc.HomePageClient = homepage.NewHomePagePublishingClient(ctx, svc.clients, languages)
+		svc.HomePageClient = homepage.NewPublishingClient(ctx, svc.clients, languages)
 	} else {
-		svc.HomePageClient, err = homepage.NewHomePageWebClient(ctx, svc.clients, cfg.CacheUpdateInterval, languages)
+		svc.HomePageClient, err = homepage.NewWebClient(ctx, svc.clients, cfg.CacheUpdateInterval, languages)
 		if err != nil {
 			log.Fatal(ctx, "failed to create homepage web client", err)
 			return nil, err

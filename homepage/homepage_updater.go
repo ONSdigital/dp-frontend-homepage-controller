@@ -79,11 +79,11 @@ func (hu *Updater) GetHomePageUpdateFor(ctx context.Context, userAccessToken, co
 			imageObjects := map[string]image.ImageDownload{}
 			for _, fc := range homepageContent.AroundONS {
 				if fc.ImageID != "" {
-					imageDetails, err := hu.clients.ImageAPI.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
+					imageVariant, err := hu.clients.ImageAPI.GetDownloadVariant(ctx, userAccessToken, "", "", fc.ImageID, ImageVariant)
 					if err != nil {
 						log.Error(ctx, "error getting image download variant", err, log.Data{"around-ons-entry": fc.Title})
 					}
-					imageObjects[fc.ImageID] = imageDetails
+					imageObjects[fc.ImageID] = imageVariant
 				}
 			}
 			mappedAroundONS = mapper.AroundONS(homepageContent, imageObjects)

@@ -18,7 +18,7 @@ type WebClient struct {
 	languages       []string
 }
 
-func NewHomePageWebClient(ctx context.Context, clients *Clients, updateInterval time.Duration, languages []string) (Clienter, error) {
+func NewWebClient(ctx context.Context, clients *Clients, updateInterval time.Duration, languages []string) (Clienter, error) {
 	homepageCache, err := cache.NewHomepageCache(ctx, &updateInterval)
 	if err != nil {
 		log.Error(ctx, "failed to create new homepage cache", err, log.Data{"update_interval": updateInterval})
