@@ -10,7 +10,6 @@ image_resource:
 
 inputs:
   - name: dp-frontend-homepage-controller
-    path: dp-frontend-homepage-controller
 
 caches:
   - path: go/
