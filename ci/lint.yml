@@ -6,10 +6,14 @@ image_resource:
   type: docker-image
   source:
     repository: golang
-    tag: latest
+    tag: 1.18.3
 
 inputs:
   - name: dp-frontend-homepage-controller
+    path: dp-frontend-homepage-controller
+
+caches:
+  - path: go/
 
 run:
   path: dp-frontend-homepage-controller/ci/scripts/lint.sh
