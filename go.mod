@@ -19,7 +19,7 @@ require (
 	github.com/smartystreets/goconvey v1.7.2
 )
 
-require github.com/kevinburke/go-bindata v3.23.0+incompatible // indirect
+require github.com/kevinburke/go-bindata v3.24.0+incompatible // indirect
 
 require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
