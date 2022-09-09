@@ -27,8 +27,15 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, homepa
 		return
 	}
 
+	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
+	if err != nil {
+		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	basePage := rend.NewBasePageModel()
-	m := mapper.Census(req, cfg, lang, basePage, navigationContent)
+	m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner)
 
 	enableCensusResults := helper.CheckTime(ctx, cfg.CensusFirstResults)
 
