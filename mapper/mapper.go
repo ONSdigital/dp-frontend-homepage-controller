@@ -40,7 +40,7 @@ type TrendInfo struct {
 var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
-func Homepage(cfg config.Config, enableCensusResults bool, localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, featuredContent *[]model.Feature, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner, navigationContent *topicModel.Navigation) model.Page {
+func Homepage(cfg config.Config, enableCensusResults bool, localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, featuredContent, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner, navigationContent *topicModel.Navigation) model.Page {
 	page := model.Page{
 		Data: model.Homepage{},
 		Page: basePage,
@@ -125,14 +125,14 @@ func MainFigure(ctx context.Context, id, datePeriod, differenceInterval string, 
 
 // FeaturedContent takes the homepageContent as returned from the client and returns an array of featured content
 func FeaturedContent(homepageData zebedee.HomepageContent, images map[string]image.ImageDownload) []model.Feature {
-	var mappedFeaturesContent []model.Feature
-	for _, fc := range homepageData.FeaturedContent {
-		mappedFeaturesContent = append(mappedFeaturesContent, model.Feature{
+	mappedFeaturesContent := make([]model.Feature, len(homepageData.FeaturedContent))
+	for index, fc := range homepageData.FeaturedContent {
+		mappedFeaturesContent[index] = model.Feature{
 			Title:       fc.Title,
 			Description: fc.Description,
 			URI:         fc.URI,
 			ImageURL:    images[fc.ImageID].Href,
-		})
+		}
 	}
 	return mappedFeaturesContent
 }

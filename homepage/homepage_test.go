@@ -33,12 +33,6 @@ func doTestRequest(target string, req *http.Request, handlerFunc http.HandlerFun
 	return w
 }
 
-var (
-	userAccessToken string
-	collectionID    string
-	lang            string
-)
-
 func TestUnitHomepageHandlerSuccess(t *testing.T) {
 	t.Parallel()
 
@@ -74,7 +68,6 @@ func TestUnitHomepageHandlerSuccess(t *testing.T) {
 				So(w.Code, ShouldEqual, http.StatusOK)
 
 				So(len(mockedRendererClient.BuildPageCalls()), ShouldEqual, 1)
-
 			})
 		})
 	})

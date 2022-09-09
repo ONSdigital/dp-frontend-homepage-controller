@@ -34,14 +34,8 @@ var funcDoGetHealthcheckErr = func(cfg *config.Config, buildTime string, gitComm
 	return nil, errHealthcheck
 }
 
-var funcDoGetHTTPServerNil = func(bindAddr string, router http.Handler) service.HTTPServer {
-	return nil
-}
-
 func TestRun(t *testing.T) {
-
 	Convey("Having a set of mocked dependencies", t, func() {
-
 		cfg, err := config.Get()
 		cfg.IsPublishingMode = true
 		So(err, ShouldBeNil)
@@ -100,9 +94,7 @@ func TestRun(t *testing.T) {
 				So(svcList.HealthCheck, ShouldBeFalse)
 			})
 		})
-
 		Convey("Given that Checkers cannot be registered", func() {
-
 			errAddheckFail := errors.New("Error(s) registering checkers for healthcheck")
 			hcMockAddFail := &mock.HealthCheckerMock{
 				AddCheckFunc: func(name string, checker healthcheck.Checker) error { return errAddheckFail },
@@ -154,9 +146,7 @@ func TestRun(t *testing.T) {
 				So(len(serverMock.ListenAndServeCalls()), ShouldEqual, 1)
 			})
 		})
-
 		Convey("Given that all dependencies are successfully initialised but the http server fails", func() {
-
 			initMock := &mock.InitialiserMock{
 				DoGetHealthClientFunc: funcDoGetHealthClientOk,
 				DoGetHealthCheckFunc:  funcDoGetHealthcheckOk,
@@ -178,9 +168,7 @@ func TestRun(t *testing.T) {
 }
 
 func TestClose(t *testing.T) {
-
 	Convey("Having a correctly initialised service", t, func() {
-
 		cfg, err := config.Get()
 		So(err, ShouldBeNil)
 
