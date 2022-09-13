@@ -261,11 +261,8 @@ func TestUnitMapper(t *testing.T) {
 	}
 
 	basePage := coreModel.NewPage("path/to/assets", "site-domain")
-
 	Convey("test homepage mapping works", t, func() {
-
 		page := Homepage(config.Config{}, false, "en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner, mockedNavigationData)
-
 		So(page.SiteDomain, ShouldResemble, basePage.SiteDomain)
 		So(page.PatternLibraryAssetsPath, ShouldResemble, basePage.PatternLibraryAssetsPath)
 		So(page.Type, ShouldEqual, "homepage")
@@ -311,7 +308,7 @@ func TestUnitMapper(t *testing.T) {
 			mockedTestData := zebedee.HomepageContent{}
 			mockedImageTestData := map[string]image.ImageDownload{}
 			featuredContent := FeaturedContent(mockedTestData, mockedImageTestData)
-			So(featuredContent, ShouldBeNil)
+			So(featuredContent, ShouldBeEmpty)
 		})
 
 		Convey("FeaturedContent maps mock data to page model correctly", func() {

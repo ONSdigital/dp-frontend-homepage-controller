@@ -19,15 +19,15 @@ var (
 	lockHomepageClienterMockStartBackgroundUpdate sync.RWMutex
 )
 
-// Ensure, that HomepageClienterMock does implement HomepageClienter.
+// Ensure, that HomepageClienterMock does implement Clienter.
 // If this is not the case, regenerate this file with moq.
-var _ HomepageClienter = &HomepageClienterMock{}
+var _ Clienter = &HomepageClienterMock{}
 
-// HomepageClienterMock is a mock implementation of HomepageClienter.
+// HomepageClienterMock is a mock implementation of Clienter.
 //
 //     func TestSomethingThatUsesHomepageClienter(t *testing.T) {
 //
-//         // make and configure a mocked HomepageClienter
+//         // make and configure a mocked Clienter
 //         mockedHomepageClienter := &HomepageClienterMock{
 //             AddNavigationCacheFunc: func(ctx context.Context, updateInterval time.Duration) error {
 // 	               panic("mock out the AddNavigationCache method")
@@ -46,7 +46,7 @@ var _ HomepageClienter = &HomepageClienterMock{}
 //             },
 //         }
 //
-//         // use mockedHomepageClienter in code that requires HomepageClienter
+//         // use mockedHomepageClienter in code that requires Clienter
 //         // and then make assertions.
 //
 //     }
@@ -109,7 +109,7 @@ type HomepageClienterMock struct {
 // AddNavigationCache calls AddNavigationCacheFunc.
 func (mock *HomepageClienterMock) AddNavigationCache(ctx context.Context, updateInterval time.Duration) error {
 	if mock.AddNavigationCacheFunc == nil {
-		panic("HomepageClienterMock.AddNavigationCacheFunc: method is nil but HomepageClienter.AddNavigationCache was just called")
+		panic("HomepageClienterMock.AddNavigationCacheFunc: method is nil but Clienter.AddNavigationCache was just called")
 	}
 	callInfo := struct {
 		Ctx            context.Context
@@ -144,7 +144,7 @@ func (mock *HomepageClienterMock) AddNavigationCacheCalls() []struct {
 // Close calls CloseFunc.
 func (mock *HomepageClienterMock) Close() {
 	if mock.CloseFunc == nil {
-		panic("HomepageClienterMock.CloseFunc: method is nil but HomepageClienter.Close was just called")
+		panic("HomepageClienterMock.CloseFunc: method is nil but Clienter.Close was just called")
 	}
 	callInfo := struct {
 	}{}
@@ -170,7 +170,7 @@ func (mock *HomepageClienterMock) CloseCalls() []struct {
 // GetHomePage calls GetHomePageFunc.
 func (mock *HomepageClienterMock) GetHomePage(ctx context.Context, userAccessToken string, collectionID string, lang string) (*model.HomepageData, error) {
 	if mock.GetHomePageFunc == nil {
-		panic("HomepageClienterMock.GetHomePageFunc: method is nil but HomepageClienter.GetHomePage was just called")
+		panic("HomepageClienterMock.GetHomePageFunc: method is nil but Clienter.GetHomePage was just called")
 	}
 	callInfo := struct {
 		Ctx             context.Context
@@ -213,7 +213,7 @@ func (mock *HomepageClienterMock) GetHomePageCalls() []struct {
 // GetNavigationData calls GetNavigationDataFunc.
 func (mock *HomepageClienterMock) GetNavigationData(ctx context.Context, lang string) (*models.Navigation, error) {
 	if mock.GetNavigationDataFunc == nil {
-		panic("HomepageClienterMock.GetNavigationDataFunc: method is nil but HomepageClienter.GetNavigationData was just called")
+		panic("HomepageClienterMock.GetNavigationDataFunc: method is nil but Clienter.GetNavigationData was just called")
 	}
 	callInfo := struct {
 		Ctx  context.Context
@@ -248,7 +248,7 @@ func (mock *HomepageClienterMock) GetNavigationDataCalls() []struct {
 // StartBackgroundUpdate calls StartBackgroundUpdateFunc.
 func (mock *HomepageClienterMock) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
 	if mock.StartBackgroundUpdateFunc == nil {
-		panic("HomepageClienterMock.StartBackgroundUpdateFunc: method is nil but HomepageClienter.StartBackgroundUpdate was just called")
+		panic("HomepageClienterMock.StartBackgroundUpdateFunc: method is nil but Clienter.StartBackgroundUpdate was just called")
 	}
 	callInfo := struct {
 		Ctx          context.Context

@@ -5,7 +5,7 @@ import (
 	"github.com/ONSdigital/dp-renderer/model"
 )
 
-//Page contains data re-used for each page type a Data struct for data specific to the page type
+// Page contains data re-used for each page type a Data struct for data specific to the page type
 type Page struct {
 	model.Page
 	Data Homepage `json:"data"`
@@ -20,7 +20,7 @@ type HomepageData struct {
 	ServiceMessage  string
 }
 
-//Homepage contains data specific to this page type
+// Homepage contains data specific to this page type
 type Homepage struct {
 	MainFigures        map[string]*MainFigure `json:"main_figures"`
 	HasMainFigures     bool                   `json:"has_main_figures"`
@@ -30,21 +30,21 @@ type Homepage struct {
 	AroundONS          []Feature              `json:"arounds_ons"`
 }
 
-//ReleaseCalendar is data for release calendar block
+// ReleaseCalendar is data for release calendar block
 type ReleaseCalendar struct {
 	Releases                         []Release `json:"releases"`
 	NumberOfReleases                 int       `json:"number_of_releases"`
 	NumberOfOtherReleasesInSevenDays int       `json:"number_of_other_releases"`
 }
 
-//Release is the data for an individual release
+// Release is the data for an individual release
 type Release struct {
 	Title       string `json:"title"`
 	URI         string `json:"uri"`
 	ReleaseDate string `json:"releaseDate"`
 }
 
-//MainFigure is the data for an individual timeseries
+// MainFigure is the data for an individual timeseries
 type MainFigure struct {
 	ID               string     `json:"id"`
 	Title            string     `json:"title"`
@@ -73,7 +73,7 @@ type Trend struct {
 	Period     string `json:"period"`
 }
 
-//Feature is data for linked content
+// Feature is data for linked content
 type Feature struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`

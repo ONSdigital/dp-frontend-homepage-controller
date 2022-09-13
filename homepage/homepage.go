@@ -34,13 +34,13 @@ type MainFigure struct {
 var mainFigureMap map[string]MainFigure
 
 // Handler handles requests to homepage endpoint
-func Handler(cfg *config.Config, homepageClient HomepageClienter, rend RenderClient) http.HandlerFunc {
+func Handler(cfg *config.Config, homepageClient Clienter, rend RenderClient) http.HandlerFunc {
 	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
 		handle(w, r, cfg, accessToken, collectionID, lang, homepageClient, rend)
 	})
 }
 
-func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAccessToken, collectionID, lang string, homepageClient HomepageClienter, rend RenderClient) {
+func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAccessToken, collectionID, lang string, homepageClient Clienter, rend RenderClient) {
 	ctx := req.Context()
 
 	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
@@ -135,28 +135,26 @@ func init() {
 		data:               zebedee.TimeseriesMainFigure{},
 		differenceInterval: mapper.PeriodYear,
 	}
-
 }
 
 func getLatestTimeSeriesData(ctx context.Context, zts []zebedee.TimeseriesMainFigure) zebedee.TimeseriesMainFigure {
 	var latest zebedee.TimeseriesMainFigure
-
-	for _, ts := range zts {
+	for i := 0; i < len(zts); i++ {
 		if latest.URI == "" {
-			latest = ts
+			latest = zts[i]
 		}
-		releaseDate, err := time.Parse(time.RFC3339, ts.Description.ReleaseDate)
+		releaseDate, err := time.Parse(time.RFC3339, zts[i].Description.ReleaseDate)
 		if err != nil {
-			log.Error(ctx, "failed to parse release date", err, log.Data{"release_date": ts.Description.ReleaseDate})
-			return ts
+			log.Error(ctx, "failed to parse release date", err, log.Data{"release_date": zts[i].Description.ReleaseDate})
+			return zts[i]
 		}
 		latestReleaseDate, err := time.Parse(time.RFC3339, latest.Description.ReleaseDate)
 		if err != nil {
 			log.Error(ctx, "failed to parse release date", err, log.Data{"release_date": latest.Description.ReleaseDate})
-			return ts
+			return zts[i]
 		}
 		if releaseDate.After(latestReleaseDate) {
-			latest = ts
+			latest = zts[i]
 		}
 	}
 	return latest
