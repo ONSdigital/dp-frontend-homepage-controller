@@ -10,7 +10,7 @@ require (
 	github.com/ONSdigital/dp-healthcheck v1.3.0
 	github.com/ONSdigital/dp-net v1.4.1
 	github.com/ONSdigital/dp-renderer v1.46.1
-	github.com/ONSdigital/dp-topic-api v0.13.3
+	github.com/ONSdigital/dp-topic-api v0.13.1
 	github.com/ONSdigital/log.go/v2 v2.2.0
 	github.com/gorilla/mux v1.8.0
 	github.com/kelseyhightower/envconfig v1.4.0
@@ -18,6 +18,8 @@ require (
 	github.com/shopspring/decimal v1.3.1
 	github.com/smartystreets/goconvey v1.7.2
 )
+
+require github.com/kevinburke/go-bindata v3.24.0+incompatible // indirect
 
 require (
 	github.com/BurntSushi/toml v1.1.0 // indirect
