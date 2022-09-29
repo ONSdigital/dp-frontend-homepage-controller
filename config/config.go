@@ -12,7 +12,6 @@ type Config struct {
 	BindAddr                      string        `envconfig:"BIND_ADDR"`
 	CacheNavigationUpdateInterval time.Duration `envconfig:"CACHE_NAVIGATION_UPDATE_INTERVAL"`
 	CacheUpdateInterval           time.Duration `envconfig:"CACHE_UPDATE_INTERVAL"`
-	CensusFirstResults            string        `envconfig:"CENSUS_FIRST_RESULTS"`
 	Debug                         bool          `envconfig:"DEBUG"`
 	EnableNewNavBar               bool          `envconfig:"ENABLE_NEW_NAVBAR"`
 	GracefulShutdownTimeout       time.Duration `envconfig:"GRACEFUL_SHUTDOWN_TIMEOUT"`
@@ -53,7 +52,6 @@ func get() (*Config, error) {
 		APIRouterURL:                  "http://localhost:23200/v1",
 		CacheNavigationUpdateInterval: 10 * time.Second,
 		CacheUpdateInterval:           10 * time.Second,
-		CensusFirstResults:            "Wednesday, 27-Jul-22 11:00:00 BST", // Use BST as timezone
 		Debug:                         false,
 		EnableNewNavBar:               false,
 		GracefulShutdownTimeout:       5 * time.Second,
