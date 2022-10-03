@@ -40,7 +40,7 @@ type TrendInfo struct {
 var decimalPointDisplayThreshold = decimal.NewFromInt(1000)
 
 // Homepage maps data to our homepage frontend model
-func Homepage(cfg config.Config, enableCensusResults bool, localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, featuredContent, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner, navigationContent *topicModel.Navigation) model.Page {
+func Homepage(cfg config.Config, localeCode string, basePage coreModel.Page, mainFigures map[string]*model.MainFigure, featuredContent, aroundONS *[]model.Feature, serviceMessage string, emergencyBannerContent zebedee.EmergencyBanner, navigationContent *topicModel.Navigation) model.Page {
 	page := model.Page{
 		Data: model.Homepage{},
 		Page: basePage,
@@ -56,7 +56,6 @@ func Homepage(cfg config.Config, enableCensusResults bool, localeCode string, ba
 	page.Data.MainFigures = mainFigures
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.FeatureFlags.SixteensVersion = "30948d6"
-	page.FeatureFlags.EnableCensusResults = enableCensusResults
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)
 	}

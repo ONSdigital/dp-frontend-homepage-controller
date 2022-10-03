@@ -19,7 +19,6 @@ func TestSpec(t *testing.T) {
 				So(cfg.BindAddr, ShouldEqual, ":24400")
 				So(cfg.CacheNavigationUpdateInterval, ShouldEqual, 10*time.Second)
 				So(cfg.CacheUpdateInterval, ShouldEqual, 10*time.Second)
-				So(cfg.CensusFirstResults, ShouldEqual, "Wednesday, 27-Jul-22 11:00:00 BST")
 				So(cfg.EnableNewNavBar, ShouldEqual, false)
 				So(cfg.GracefulShutdownTimeout, ShouldEqual, 5*time.Second)
 				So(cfg.HealthCheckInterval, ShouldEqual, 30*time.Second)
