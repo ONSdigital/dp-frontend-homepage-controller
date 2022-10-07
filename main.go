@@ -2,12 +2,14 @@ package main
 
 import (
 	"context"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service"
+	topicCli "github.com/ONSdigital/dp-topic-api/sdk"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/pkg/errors"
 )
@@ -54,6 +56,20 @@ func run(ctx context.Context) error {
 	if err != nil {
 		return errors.Wrap(err, "running service failed")
 	}
+
+	// Topics caching
+	svc.Cache.TopicCache, err = cache.NewTopicCache(ctx, &cfg.CacheCensusTopicUpdateInterval)
+	if err != nil {
+		log.Error(ctx, "failed to create topics cache", err)
+		return err
+	}
+
+	topicClient := topicCli.New("http://localhost:25300/topics")
+
+	svc.Cache.TopicCache.AddUpdateFunc(cache.CensusTopicID, cache.UpdateTopic(ctx, topicClient))
+
+	// Start caching
+	go svc.Cache.TopicCache.StartUpdates(ctx, svcErrors)
 
 	// Blocks until an os interrupt or a fatal error occurs
 	select {

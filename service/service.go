@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
+	topicModel "github.com/ONSdigital/dp-topic-api/models"
 	"strings"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
@@ -28,6 +30,10 @@ type Service struct {
 	ServiceList        *ExternalServiceList
 	HomePageClient     homepage.Clienter
 	RendererClient     homepage.RenderClient
+	Cache              struct {
+		*cache.TopicCache
+		CensusTopic topicModel.Topic
+	}
 }
 
 // Run the service
