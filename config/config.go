@@ -22,6 +22,7 @@ type Config struct {
 	PatternLibraryAssetsPath      string        `envconfig:"PATTERN_LIBRARY_ASSETS_PATH"`
 	SiteDomain                    string        `envconfig:"SITE_DOMAIN"`
 	SupportedLanguages            [2]string     `envconfig:"SUPPORTED_LANGUAGES"`
+	CensusTopicsSubsectionFeature bool          `envconfig:"CENSUS_TOPICS_SUBSECTION_FEATURE"`
 }
 
 var cfg *Config
