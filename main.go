@@ -2,14 +2,16 @@ package main
 
 import (
 	"context"
+	"github.com/pkg/errors"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/pkg/errors"
-
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
+	cachePrivate "github.com/ONSdigital/dp-frontend-homepage-controller/cache/private"
+	cachePublic "github.com/ONSdigital/dp-frontend-homepage-controller/cache/public"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service"
@@ -20,12 +22,15 @@ import (
 const serviceName = "dp-frontend-homepage-controller"
 
 var (
-	// BuildTime represents the time in which the service was built
-	BuildTime string
-	// GitCommit represents the commit (SHA-1) hash of the service that is running
-	GitCommit string
-	// Version represents the version of the service that is running
-	Version string
+	//// BuildTime represents the time in which the service was built
+	//BuildTime string
+	//// GitCommit represents the commit (SHA-1) hash of the service that is running
+	//GitCommit string
+	//// Version represents the version of the service that is running
+	//Version string
+	BuildTime string = "1601119818"
+	GitCommit string = "6584b786caac36b6214ffe04bf62f058d4021538"
+	Version   string = "v0.1.0"
 )
 
 func main() {
@@ -63,8 +68,14 @@ func run(ctx context.Context) error {
 		Topic:    topicCli.NewWithHealthClient(svc.RouterHealthClient),
 	}
 
-	if err = svc.Init(ctx, cfg, svcList, BuildTime, GitCommit, Version, svcErrors); err != nil {
+	if err := svc.Init(ctx, cfg, svcList, BuildTime, GitCommit, Version, svcErrors); err != nil {
 		return errors.Wrap(err, "running service failed")
+	}
+
+	if cfg.IsPublishingMode {
+		svc.Cache.CensusTopic.AddUpdateFunc(cache.CensusTopicID, cachePrivate.UpdateCensusTopic(ctx, cfg.ServiceAuthToken, svc.Clients.Topic))
+	} else {
+		svc.Cache.CensusTopic.AddUpdateFunc(cache.CensusTopicID, cachePublic.UpdateCensusTopic(ctx, cfg, svc.Clients.Topic))
 	}
 
 	err = svc.Run(ctx, cfg, svcList, svcErrors)

@@ -6,6 +6,7 @@ import (
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
@@ -17,6 +18,7 @@ import (
 
 // Service contains all the configs, server and clients to run the frontend homepage controller
 type Service struct {
+	Cache              cache.List
 	Config             *config.Config
 	RouterHealthClient *health.Client
 	HealthCheck        HealthChecker
@@ -137,7 +139,8 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 	}
 
 	languages := strings.Split(cfg.Languages, ",")
-	if cfg.IsPublishingMode {
+	//if cfg.IsPublishingMode { // TODO UNCOMMENT
+	if false { // TODO DELETE
 		svc.HomePageClient = homepage.NewPublishingClient(ctx, svc.Clients, languages)
 	} else {
 		svc.HomePageClient, err = homepage.NewWebClient(ctx, svc.Clients, cfg.CacheUpdateInterval, languages)
@@ -152,8 +155,26 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 			return err
 		}
 	}
+
+	svc.Cache.Navigation, err = cache.NewNavigationCache(ctx, &cfg.CacheNavigationUpdateInterval)
+	if err != nil {
+		log.Error(ctx, "failed to create navigation cache", err, log.Data{"update_interval": cfg.CacheNavigationUpdateInterval})
+		return err
+	}
+
 	// Start background polling of topics API for navbar data (changes)
 	go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
+
+	if cfg.CensusTopicsSubsectionFeature {
+		// Initialise topics caching
+		cache.CensusTopicID = cfg.CensusTopicID
+		svc.Cache.CensusTopic, err = cache.NewTopicCache(ctx, &cfg.CacheCensusTopicUpdateInterval)
+		if err != nil {
+			log.Error(ctx, "failed to create topics cache", err)
+			return err
+		}
+		go svc.Cache.CensusTopic.StartUpdates(ctx, svcErrors)
+	}
 
 	return nil
 }

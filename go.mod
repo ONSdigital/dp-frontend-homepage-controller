@@ -84,3 +84,7 @@ require (
 	golang.org/x/sys v0.0.0-20220825204002-c680a09ffe64 // indirect
 	golang.org/x/text v0.3.8 // indirect
 )
+
+
+replace github.com/ONSdigital/dp-topic-api => /Users/josefgasewicz/Work/ONSdigital/CensusJourney/dp-topic-api
+
