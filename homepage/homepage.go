@@ -44,7 +44,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAc
 
 	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
 	if err != nil {
-		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
+		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html content", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
