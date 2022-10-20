@@ -11,11 +11,7 @@
         </h2>
     </header>
     <div class="margin-top--0">
-        {{ if .FeatureFlags.EnableCensusResults }}
             {{ localise "Census2021FirstResults" .Language 1 }}
-        {{ else }}
-            {{ localise "Census2021Update" .Language 1 }}
-        {{ end }}
         <br>
     </div>
     <div class="margin-top--1">
