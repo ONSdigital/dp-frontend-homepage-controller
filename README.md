@@ -11,7 +11,6 @@ If on go 1.12 then ensure the project either resides outside of your `GOPATH` or
 ### Dependencies
 
 
-
 ### Configuration
 
 | Config                        | Description                                                                               | Default  |

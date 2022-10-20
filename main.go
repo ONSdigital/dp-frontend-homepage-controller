@@ -6,10 +6,15 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/service"
-	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/pkg/errors"
+
+	"github.com/ONSdigital/dp-api-clients-go/v2/image"
+	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/service"
+	topicCli "github.com/ONSdigital/dp-topic-api/sdk"
+	"github.com/ONSdigital/log.go/v2/log"
 )
 
 const serviceName = "dp-frontend-homepage-controller"
@@ -50,7 +55,19 @@ func run(ctx context.Context) error {
 	log.Info(ctx, "got service configuration", log.Data{"config": cfg})
 
 	// Start service
-	svc, err := service.Run(ctx, cfg, svcList, BuildTime, GitCommit, Version, svcErrors)
+	svc := service.New()
+	svc.InitiateServiceList(cfg, svcList)
+	svc.Clients = &homepage.Clients{
+		Zebedee:  zebedee.NewWithHealthClient(svc.RouterHealthClient),
+		ImageAPI: image.NewWithHealthClient(svc.RouterHealthClient),
+		Topic:    topicCli.NewWithHealthClient(svc.RouterHealthClient),
+	}
+
+	if err = svc.Init(ctx, cfg, svcList, BuildTime, GitCommit, Version, svcErrors); err != nil {
+		return errors.Wrap(err, "running service failed")
+	}
+
+	err = svc.Run(ctx, cfg, svcList, svcErrors)
 	if err != nil {
 		return errors.Wrap(err, "running service failed")
 	}

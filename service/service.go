@@ -5,14 +5,11 @@ import (
 	"strings"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
-	"github.com/ONSdigital/dp-api-clients-go/v2/image"
-	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
 	render "github.com/ONSdigital/dp-renderer"
-	topicCli "github.com/ONSdigital/dp-topic-api/sdk"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -21,72 +18,36 @@ import (
 // Service contains all the configs, server and clients to run the frontend homepage controller
 type Service struct {
 	Config             *config.Config
-	routerHealthClient *health.Client
+	RouterHealthClient *health.Client
 	HealthCheck        HealthChecker
 	Server             HTTPServer
-	clients            *homepage.Clients
+	Clients            *homepage.Clients
 	ServiceList        *ExternalServiceList
 	HomePageClient     homepage.Clienter
 	RendererClient     homepage.RenderClient
 }
 
-// Run the service
-func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceList, buildTime, gitCommit, version string, svcErrors chan error) (svc *Service, err error) {
-	log.Info(ctx, "Initialising service")
+func New() *Service {
+	return &Service{}
+}
 
-	// Initialise Service struct
-	svc = &Service{
-		Config:      cfg,
-		ServiceList: serviceList,
-	}
+// Run the service
+func (svc *Service) Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceList, svcErrors chan error) (err error) {
+	log.Info(ctx, "Initialising service")
 
 	// Initialise render client
 	rend := render.NewWithDefaultClient(assets.Asset, assets.AssetNames, cfg.PatternLibraryAssetsPath, cfg.SiteDomain)
 
-	// Get health client for api router
-	svc.routerHealthClient = serviceList.GetHealthClient("api-router", cfg.APIRouterURL)
-
-	// Initialise clients
-	svc.clients = &homepage.Clients{
-		Zebedee:  zebedee.NewWithHealthClient(svc.routerHealthClient),
-		ImageAPI: image.NewWithHealthClient(svc.routerHealthClient),
-		Topic:    topicCli.NewWithHealthClient(svc.routerHealthClient),
-	}
-
-	// Get healthcheck with checkers
-	svc.HealthCheck, err = serviceList.GetHealthCheck(cfg, buildTime, gitCommit, version)
-	if err != nil {
-		log.Fatal(ctx, "failed to create health check", err)
-		return nil, err
-	}
-	if registerErr := svc.registerCheckers(ctx, cfg); registerErr != nil {
-		return nil, errors.Wrap(registerErr, "unable to register checkers")
-	}
-
-	languages := strings.Split(cfg.Languages, ",")
-	if cfg.IsPublishingMode {
-		svc.HomePageClient = homepage.NewPublishingClient(ctx, svc.clients, languages)
-	} else {
-		svc.HomePageClient, err = homepage.NewWebClient(ctx, svc.clients, cfg.CacheUpdateInterval, languages)
-		if err != nil {
-			log.Fatal(ctx, "failed to create homepage web client", err)
-			return nil, err
-		}
-	}
-
-	if cfg.EnableNewNavBar {
-		if err := svc.HomePageClient.AddNavigationCache(ctx, cfg.CacheNavigationUpdateInterval); err != nil {
-			log.Fatal(ctx, "failed to add navigation cache to homepage client", err)
-			return nil, err
-		}
-	}
-
-	// Start background polling of topics API for navbar data (changes)
-	go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
-
 	// Initialise router
 	r := mux.NewRouter()
-	routes.Init(ctx, r, cfg, svc.HealthCheck.Handler, svc.HomePageClient, rend)
+	routes.Init(
+		ctx,
+		r,
+		cfg,
+		svc.HealthCheck.Handler,
+		svc.HomePageClient,
+		rend,
+	)
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
 
 	// Start Healthcheck and HTTP Server
@@ -96,8 +57,7 @@ func Run(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceLi
 			svcErrors <- errors.Wrap(err, "failure in http listen and serve")
 		}
 	}()
-
-	return svc, nil
+	return nil
 }
 
 // Close gracefully shuts the service down in the required order, with timeout
@@ -146,15 +106,54 @@ func (svc *Service) Close(ctx context.Context) error {
 	return nil
 }
 
-func (svc *Service) registerCheckers(ctx context.Context, cfg *config.Config) (err error) {
+func (svc *Service) RegisterCheckers(ctx context.Context) (err error) {
 	hasErrors := false
-	if err = svc.HealthCheck.AddCheck("API router", svc.routerHealthClient.Checker); err != nil {
+	if err = svc.HealthCheck.AddCheck("API router", svc.RouterHealthClient.Checker); err != nil {
 		hasErrors = true
 		log.Error(ctx, "failed to add api router checker", err)
 	}
-
 	if hasErrors {
 		return errors.New("Error(s) registering checkers for healthcheck")
 	}
+	return nil
+}
+
+func (svc *Service) InitiateServiceList(cfg *config.Config, svcList *ExternalServiceList) {
+	svc.Config = cfg
+	svc.ServiceList = svcList
+	svc.RouterHealthClient = svcList.GetHealthClient("api-router", cfg.APIRouterURL)
+}
+
+func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *ExternalServiceList, buildTime, gitCommit, version string, svcErrors chan error) (err error) {
+	// Get healthcheck with checkers
+	svc.HealthCheck, err = serviceList.GetHealthCheck(cfg, buildTime, gitCommit, version)
+	if err != nil {
+		log.Fatal(ctx, "failed to create health check", err)
+		return err
+	}
+	// Initialise clients
+	if registerErr := svc.RegisterCheckers(ctx); registerErr != nil {
+		return errors.Wrap(registerErr, "unable to register checkers")
+	}
+
+	languages := strings.Split(cfg.Languages, ",")
+	if cfg.IsPublishingMode {
+		svc.HomePageClient = homepage.NewPublishingClient(ctx, svc.Clients, languages)
+	} else {
+		svc.HomePageClient, err = homepage.NewWebClient(ctx, svc.Clients, cfg.CacheUpdateInterval, languages)
+		if err != nil {
+			log.Fatal(ctx, "failed to create homepage web client", err)
+			return err
+		}
+	}
+	if cfg.EnableNewNavBar {
+		if err := svc.HomePageClient.AddNavigationCache(ctx, cfg.CacheNavigationUpdateInterval); err != nil {
+			log.Fatal(ctx, "failed to add navigation cache to homepage client", err)
+			return err
+		}
+	}
+	// Start background polling of topics API for navbar data (changes)
+	go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
+
 	return nil
 }

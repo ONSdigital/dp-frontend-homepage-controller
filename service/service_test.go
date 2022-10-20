@@ -85,13 +85,17 @@ func TestRun(t *testing.T) {
 				DoGetHealthClientFunc: funcDoGetHealthClientOk,
 				DoGetHealthCheckFunc:  funcDoGetHealthcheckErr,
 			}
-			svcErrors := make(chan error, 1)
-			svcList := service.NewServiceList(initMock)
-			_, err := service.Run(ctx, cfg, svcList, testBuildTime, testGitCommit, testVersion, svcErrors)
+			mockSvcList := service.NewServiceList(initMock)
 
+			svcErrors := make(chan error, 1)
+			svc := service.New()
+
+			svc.InitiateServiceList(cfg, mockSvcList)
+
+			err := svc.Init(ctx, cfg, mockSvcList, testBuildTime, testGitCommit, testVersion, svcErrors)
 			Convey("Then service Run fails with the same error and the flag is not set. No further initialisations are attempted", func() {
 				So(err, ShouldResemble, errHealthcheck)
-				So(svcList.HealthCheck, ShouldBeFalse)
+				So(mockSvcList.HealthCheck, ShouldBeFalse)
 			})
 		})
 		Convey("Given that Checkers cannot be registered", func() {
@@ -109,7 +113,9 @@ func TestRun(t *testing.T) {
 			}
 			svcErrors := make(chan error, 1)
 			svcList := service.NewServiceList(initMock)
-			_, err := service.Run(ctx, cfg, svcList, testBuildTime, testGitCommit, testVersion, svcErrors)
+			svc := service.New()
+
+			err := svc.Init(ctx, cfg, svcList, testBuildTime, testGitCommit, testVersion, svcErrors)
 
 			Convey("Then service Run fails, but all checks try to register", func() {
 				So(err, ShouldNotBeNil)
@@ -127,13 +133,15 @@ func TestRun(t *testing.T) {
 				DoGetHTTPServerFunc:   funcDoGetHTTPServer,
 			}
 			svcErrors := make(chan error, 1)
-			svcList := service.NewServiceList(initMock)
 			serverWg.Add(1)
-			_, err := service.Run(ctx, cfg, svcList, testBuildTime, testGitCommit, testVersion, svcErrors)
-
+			svc := service.New()
+			mockSvcList := service.NewServiceList(initMock)
+			svc.InitiateServiceList(cfg, mockSvcList)
+			err := svc.Init(ctx, cfg, mockSvcList, testBuildTime, testGitCommit, testVersion, svcErrors)
+			err = svc.Run(ctx, cfg, mockSvcList, svcErrors)
 			Convey("Then service Run succeeds and all the flags are set", func() {
 				So(err, ShouldBeNil)
-				So(svcList.HealthCheck, ShouldBeTrue)
+				So(mockSvcList.HealthCheck, ShouldBeTrue)
 			})
 
 			Convey("The checkers are registered and the healthcheck and http server started", func() {
@@ -153,12 +161,15 @@ func TestRun(t *testing.T) {
 				DoGetHTTPServerFunc:   funcDoGetFailingHTTPSerer,
 			}
 			svcErrors := make(chan error, 1)
-			svcList := service.NewServiceList(initMock)
 			serverWg.Add(1)
-			_, err := service.Run(ctx, cfg, svcList, testBuildTime, testGitCommit, testVersion, svcErrors)
+			svc := service.New()
+			mockSvcList := service.NewServiceList(initMock)
+			svc.InitiateServiceList(cfg, mockSvcList)
+			err = svc.Init(ctx, cfg, mockSvcList, testBuildTime, testGitCommit, testVersion, svcErrors)
 			So(err, ShouldBeNil)
+			err = svc.Run(ctx, cfg, mockSvcList, svcErrors)
 
-			Convey("Then the error is returned in the error channel", func() {
+			Convey("Then the ersror is returned in the error channel", func() {
 				sErr := <-svcErrors
 				So(sErr.Error(), ShouldResemble, fmt.Sprintf("failure in http listen and serve: %s", errServer.Error()))
 				So(len(failingServerMock.ListenAndServeCalls()), ShouldEqual, 1)
