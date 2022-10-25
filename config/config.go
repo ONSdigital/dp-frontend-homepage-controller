@@ -22,7 +22,7 @@ type Config struct {
 	PatternLibraryAssetsPath      string        `envconfig:"PATTERN_LIBRARY_ASSETS_PATH"`
 	SiteDomain                    string        `envconfig:"SITE_DOMAIN"`
 	SupportedLanguages            [2]string     `envconfig:"SUPPORTED_LANGUAGES"`
-	CensusTopicSubsection         bool          `envconfig:"FEATURE_CENSUS_TOPIC_SUBSECTION"`
+	EnableCensusTopicSubsection   bool          `envconfig:"ENABLE_CENSUS_TOPIC_SUBSECTION"`
 }
 
 var cfg *Config
@@ -62,7 +62,7 @@ func get() (*Config, error) {
 		Languages:                     "en,cy",
 		SiteDomain:                    "localhost",
 		SupportedLanguages:            [2]string{"en", "cy"},
-		CensusTopicSubsection:         false,
+		EnableCensusTopicSubsection:   false,
 	}
 
 	return cfg, envconfig.Process("", cfg)

@@ -27,7 +27,7 @@ func TestSpec(t *testing.T) {
 				So(cfg.IsPublishingMode, ShouldEqual, false)
 				So(cfg.Languages, ShouldEqual, "en,cy")
 				So(cfg.SiteDomain, ShouldEqual, "localhost")
-				So(cfg.CensusTopicSubsection, ShouldEqual, false)
+				So(cfg.EnableCensusTopicSubsection, ShouldEqual, false)
 			})
 		})
 	})
