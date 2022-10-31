@@ -308,3 +308,15 @@ one = "Caiff canlyniadau Cyfrifiad 2021 eu rhyddhau fesul cam, gan ddechrau ar 2
 [Census2021FirstResults]
 description = "Mae canlyniadau cyntaf Cyfrifiad 2021 ar gael nawr. Dod o hyd i ddata a gwaith dadansoddi Cyfrifiad 2021."
 one = "Mae canlyniadau cyntaf Cyfrifiad 2021 ar gael nawr. Dod o hyd i ddata a gwaith dadansoddi Cyfrifiad 2021."
+
+[CensusTopics]
+description = "Pynciau'r cyfrifiad"
+one = "Pynciau'r cyfrifiad"
+
+[CensusTopicsSubhead]
+description = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
+one = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
+
+[CensusTopicsLink1]
+description = "Demograffeg a mudo"
+one = "Demograffeg a mudo"
