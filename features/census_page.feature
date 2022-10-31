@@ -50,43 +50,53 @@ Feature: Groups
     And the page should have the following content
     """
         {
-            "[data-test='search-4'] > h2": "Historic census data",
-            "[data-test='search-4'] > p": "Find census data and analysis for 2011 and earlier.",
-            "[data-test='search-4'] > ul > li:nth-child(1) > a": "Get all historic census data"
+            "[data-test='search-4'] > h2": "Census topics",
+            "[data-test='search-4'] > p": "Find census data and analysis using these topics.",
+            "[data-test='search-4'] > ul > li:nth-child(1) > a": "Demography and migration"
         }
     """
-    And the 6th link href value should be "/census/historiccensusdata"
-        # search container section #5
+    And the 6th link href value should be "/releases/demographyandmigrationcensus2021inenglandandwales"
+    # search container section #5
     And the page should have the following content
     """
         {
-            "[data-test='search-5'] > h2": "Planning for Census 2021",
-            "[data-test='search-5'] > p": "How we researched, prepared and planned for Census 2021.",
-            "[data-test='search-5'] > ul > li:nth-child(1) > a": "Planning for Census 2021"
+            "[data-test='search-5'] > h2": "Historic census data",
+            "[data-test='search-5'] > p": "Find census data and analysis for 2011 and earlier.",
+            "[data-test='search-5'] > ul > li:nth-child(1) > a": "Get all historic census data"
         }
     """
-    And the 7th link href value should be "census/planningforcensus2021"
+    And the 7th link href value should be "/census/historiccensusdata"
         # search container section #6
     And the page should have the following content
     """
         {
-            "[data-test='search-6'] > h2": "Contact us",
-            "[data-test='search-6'] > p": "If you need help, contact census customer services.",
-            "[data-test='search-6'] > ul > li:nth-child(1) > a": "Census customer services",
-            "[data-test='search-6'] > ul > li:nth-child(2) > a": "Request a 2011 census dataset"
+            "[data-test='search-6'] > h2": "Planning for Census 2021",
+            "[data-test='search-6'] > p": "How we researched, prepared and planned for Census 2021.",
+            "[data-test='search-6'] > ul > li:nth-child(1) > a": "Planning for Census 2021"
         }
     """
-    And the 8th link href value should be "/census/censuscustomerservices"
-    And the 9th link href value should be "/census/2011census/2011censusdata/2011censusadhoctables"
+    And the 8th link href value should be "census/planningforcensus2021"
         # search container section #7
     And the page should have the following content
     """
         {
-            "[data-test='search-7'] > h2": "Scotland and Northern Ireland censuses",
-            "[data-test='search-7'] > p": "We are responsible for the census in England and Wales.",
-            "[data-test='search-7'] > ul > li:nth-child(1) > a": "Scotland census ",
-            "[data-test='search-7'] > ul > li:nth-child(2) > a": "Northern Ireland census "
+            "[data-test='search-7'] > h2": "Contact us",
+            "[data-test='search-7'] > p": "If you need help, contact census customer services.",
+            "[data-test='search-7'] > ul > li:nth-child(1) > a": "Census customer services",
+            "[data-test='search-7'] > ul > li:nth-child(2) > a": "Request a 2011 census dataset"
         }
     """
-    And the 10th link href value should be "https://www.scotlandscensus.gov.uk/"
-    And the 11th link href value should be "https://www.nisra.gov.uk/statistics/census"
+    And the 9th link href value should be "/census/censuscustomerservices"
+    And the 10th link href value should be "/census/2011census/2011censusdata/2011censusadhoctables"
+        # search container section #8
+    And the page should have the following content
+    """
+        {
+            "[data-test='search-8'] > h2": "Scotland and Northern Ireland censuses",
+            "[data-test='search-8'] > p": "We are responsible for the census in England and Wales.",
+            "[data-test='search-8'] > ul > li:nth-child(1) > a": "Scotland census ",
+            "[data-test='search-8'] > ul > li:nth-child(2) > a": "Northern Ireland census "
+        }
+    """
+    And the 11th link href value should be "https://www.scotlandscensus.gov.uk/"
+    And the 12th link href value should be "https://www.nisra.gov.uk/statistics/census"
