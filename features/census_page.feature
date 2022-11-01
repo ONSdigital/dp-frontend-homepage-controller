@@ -52,10 +52,10 @@ Feature: Groups
         {
             "[data-test='search-4'] > h2": "Census topics",
             "[data-test='search-4'] > p": "Find census data and analysis using these topics.",
-            "[data-test='search-4'] > ul > li:nth-child(1) > a": "Demography and migration"
+            "[data-test='search-4'] > ul > li:nth-child(1) > a": "Topic summaries"
         }
     """
-    And the 6th link href value should be "/releases/demographyandmigrationcensus2021inenglandandwales"
+    And the 6th link href value should be "/census/aboutcensus/censusproducts/topicsummaries"
     # search container section #5
     And the page should have the following content
     """

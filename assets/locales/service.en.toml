@@ -308,5 +308,5 @@ description = "Find census data and analysis using these topics."
 one = "Find census data and analysis using these topics."
 
 [CensusTopicsLink1]
-description = "Demography and migration"
-one = "Demography and migration"
+description = "Topic summaries"
+one = "Topic summaries"
