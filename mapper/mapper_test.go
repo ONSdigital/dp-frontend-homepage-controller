@@ -262,7 +262,7 @@ func TestUnitMapper(t *testing.T) {
 
 	basePage := coreModel.NewPage("path/to/assets", "site-domain")
 	Convey("test homepage mapping works", t, func() {
-		page := Homepage(config.Config{}, false, "en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner, mockedNavigationData)
+		page := Homepage(config.Config{}, "en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner, mockedNavigationData)
 		So(page.SiteDomain, ShouldResemble, basePage.SiteDomain)
 		So(page.PatternLibraryAssetsPath, ShouldResemble, basePage.PatternLibraryAssetsPath)
 		So(page.Type, ShouldEqual, "homepage")
@@ -281,7 +281,7 @@ func TestUnitMapper(t *testing.T) {
 	})
 
 	Convey("empty emergency banner content, banner does not map", t, func() {
-		page := Homepage(config.Config{}, false, "en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, zebedee.EmergencyBanner{}, mockedNavigationData)
+		page := Homepage(config.Config{}, "en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, zebedee.EmergencyBanner{}, mockedNavigationData)
 
 		So(page.EmergencyBanner.Title, ShouldBeBlank)
 		So(page.EmergencyBanner.Type, ShouldBeBlank)
@@ -426,7 +426,7 @@ func TestUnitMapper(t *testing.T) {
 		var mockedNoFeaturedContent []model.Feature
 		var mockedNoMainFigures = make(map[string]*model.MainFigure)
 
-		gracefulDegradationPage := Homepage(config.Config{}, false, "en", basePage, mockedNoMainFigures, &mockedNoFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner, mockedNavigationData)
+		gracefulDegradationPage := Homepage(config.Config{}, "en", basePage, mockedNoMainFigures, &mockedNoFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner, mockedNavigationData)
 
 		So(gracefulDegradationPage.Data.HasFeaturedContent, ShouldEqual, false)
 		So(gracefulDegradationPage.Data.HasMainFigures, ShouldEqual, false)

@@ -9,7 +9,6 @@ import (
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/helper"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	dphandlers "github.com/ONSdigital/dp-net/handlers"
 	"github.com/ONSdigital/log.go/v2/log"
@@ -45,7 +44,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAc
 
 	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
 	if err != nil {
-		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
+		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html content", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -57,10 +56,8 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAc
 		return
 	}
 
-	enableCensusResults := helper.CheckTime(ctx, cfg.CensusFirstResults)
-
 	basePage := rend.NewBasePageModel()
-	m := mapper.Homepage(*cfg, enableCensusResults, lang, basePage, homepageContent.MainFigures, homepageContent.FeaturedContent, homepageContent.AroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner, navigationContent)
+	m := mapper.Homepage(*cfg, lang, basePage, homepageContent.MainFigures, homepageContent.FeaturedContent, homepageContent.AroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner, navigationContent)
 
 	rend.BuildPage(w, m, "homepage")
 

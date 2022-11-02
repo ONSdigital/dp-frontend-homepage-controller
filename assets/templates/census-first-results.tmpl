@@ -1,10 +1,10 @@
-<section class="ons-hero ons-grid--gutterless ons-hero--census">
+<section class="ons-hero--dark ons-grid--gutterless ons-hero--census">
     <div class="ons-hero__container ons-container">
-        <div class="ons-hero__details ons-hero__details--ondark ons-grid__col ons-col-6@m">
+        <div class="ons-hero__details ons-grid__col ons-col-6@m">
             <header>
-                <h1 class="ons-u-fs-xxxl">{{ localise "Census" .Language 1 }}</h1>
+                <h1 class="ons-u-fs-xxxl" data-test="hero-h1">{{ localise "Census" .Language 1 }}</h1>
             </header>
-        <p class="ons-hero__text">{{ localise "CensusSubhead" .Language 1 }}</p>
+        <p class="ons-hero__text" data-test="hero-p">{{ localise "CensusSubhead" .Language 1 }}</p>
     </div>
     <div class="ons-hero__circle-image">
         <img height="558" width="558" srcset="https://cdn.ons.gov.uk/assets/images/census/census-hero-ice-cream-girls-558px-cropped-x1.jpeg 1x, https://cdn.ons.gov.uk/assets/images/census/census-hero-ice-cream-girls-1116px-cropped-x1.jpeg 2x" src="https://cdn.ons.gov.uk/assets/images/census/census-hero-ice-cream-girls-558px-cropped-x1.jpeg" alt="">
@@ -19,7 +19,7 @@
 <div class="ons-container search__container ons-u-mt-l ons-u-mb-l">
     <div class="ons-grid ons-grid--column@xxs@s">
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
-            <div class="ons-card u-mt-l u-mb-l">
+            <div class="ons-card u-mt-l u-mb-l" data-test="search-1">
                 <h2 class="ons-u-fs-m" id="about-census">{{ localise "AboutTheCensus" .Language 1 }}</h2>
                 <p id="about-census-desc">{{ localise "AboutCensusSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
-            <div class="ons-card u-mt-l u-mb-l">
+            <div class="ons-card u-mt-l u-mb-l" data-test='search-2'>
                 <h2 class="ons-u-fs-m" id="census-data">{{ localise "Census2021Data" .Language 1 }}</h2>
                 <p id="census-data-desc">{{ localise "Census2021DataSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
-            <div class="ons-card">
+            <div class="ons-card" data-test='search-3'>
                 <h2 class="ons-u-fs-m" id="census-releases">{{ localise "CensusReleases" .Language 1 }}</h2>
                 <p id="census-releases-desc">{{ localise "ReleasedCensusSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
@@ -60,7 +60,20 @@
             </div>
         </div>
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
-            <div class="ons-card u-mt-l u-mb-l">
+            <div class="ons-card" data-test='search-4'>
+                <h2 class="ons-u-fs-m" id="other-census">{{ localise "CensusTopics" .Language 1 }}</h2>
+                <p id="other-census-desc">{{ localise "CensusTopicsSubhead" .Language 1 }}</p>
+                <ul class="ons-list ons-list--dashed">
+                    <li class="ons-list__item">
+                        <a href="/census/aboutcensus/censusproducts/topicsummaries" class="ons-list__link ons-external-link">
+                            {{ localise "CensusTopicsLink1" .Language 1 }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
+            <div class="ons-card u-mt-l u-mb-l" data-test='search-5'>
                 <h2 class="ons-u-fs-m" id="historical-data">{{ localise "HistoricCensusData" .Language 1 }}</h2>
                 <p id="historical-data-desc">{{ localise "HistoricCensusDataSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
@@ -71,7 +84,7 @@
             </div>
         </div>
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
-            <div class="ons-card">
+            <div class="ons-card" data-test='search-6'>
                 <h2 class="ons-u-fs-m" id="census-planning">{{ localise "CensusPlanningAndPreparation" .Language 1 }}</h2>
                 <p id="census-planning-desc">{{ localise "CensusPlanningAndPreparationSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
@@ -82,7 +95,7 @@
             </div>
         </div>
         <div class="ons-grid__col ons-col-6@m">
-            <div class="ons-card">
+            <div class="ons-card" data-test='search-7'>
                 <h2 class="ons-u-fs-m" id="contact-us">{{ localise "CensusContactUs" .Language 1 }}</h2>
                 <p id="contact-us-desc">{{ localise "CensusContactUsSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
@@ -96,7 +109,7 @@
             </div>
         </div>
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
-            <div class="ons-card">
+            <div class="ons-card" data-test='search-8'>
                 <h2 class="ons-u-fs-m" id="other-census">{{ localise "OtherCensus" .Language 1 }}</h2>
                 <p id="other-census-desc">{{ localise "OtherCensusSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">

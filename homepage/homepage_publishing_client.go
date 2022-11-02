@@ -1,7 +1,5 @@
 package homepage
 
-//go:generate moq -out mocks_homepage_publishing.go -pkg homepage . HomepageClienter
-
 import (
 	"context"
 	"fmt"

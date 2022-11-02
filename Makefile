@@ -13,9 +13,14 @@ audit:
 build: generate-prod
 	go build -tags 'production' -o $(BINPATH)/dp-frontend-homepage-controller -ldflags "-X main.BuildTime=$(BUILD_TIME) -X main.GitCommit=$(GIT_COMMIT) -X main.Version=$(VERSION)"
 
-lint:
+.PHONY: lint-local
+lint-local:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
 	golangci-lint run ./...
+
+.PHONY: lint
+lint:
+	exit
 
 .PHONY: debug
 debug: generate-debug
@@ -52,3 +57,10 @@ else
 	$(eval APP_RENDERER_VERSION=$(shell grep "github.com/ONSdigital/dp-renderer" go.mod | cut -d ' ' -f2 ))
 	$(eval CORE_ASSETS_PATH = $(shell go get github.com/ONSdigital/dp-renderer@$(APP_RENDERER_VERSION) && go list -f '{{.Dir}}' -m github.com/ONSdigital/dp-renderer))
 endif
+
+.PHONY: test-component
+test-component:
+	$(shell mkdir -p assets/dist)
+	$(shell touch assets/dist/scripts.js)
+	make generate-prod
+	go test -cover -tags 'production' -coverpkg=github.com/ONSdigital/dp-frontend-homepage-controller/... -component
