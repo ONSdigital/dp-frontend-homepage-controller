@@ -33,9 +33,10 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the 6th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-4'] > ul > li:nth-child(1) > a"))
 	ctx.Step(`^the 7th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-5'] > ul > li:nth-child(1) > a"))
 	ctx.Step(`^the 8th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-6'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 9th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-6'] > ul > li:nth-child(2) > a"))
-	ctx.Step(`^the 10th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-7'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 11th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-7'] > ul > li:nth-child(2) > a"))
+	ctx.Step(`^the 9th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-7'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 10th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-7'] > ul > li:nth-child(2) > a"))
+	ctx.Step(`^the 11th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-8'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 12th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-8'] > ul > li:nth-child(2) > a"))
 
 	ctx.BeforeScenario(func(*godog.Scenario) {
 		uiFeature.Reset()

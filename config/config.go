@@ -15,6 +15,7 @@ type Config struct {
 	CacheUpdateInterval            time.Duration `envconfig:"CACHE_UPDATE_INTERVAL"`
 	CensusTopicID                  string        `envconfig:"CENSUS_TOPIC_ID"`
 	Debug                          bool          `envconfig:"DEBUG"`
+	EnableCensusTopicSubsection    bool          `envconfig:"ENABLE_CENSUS_TOPIC_SUBSECTION"`
 	EnableNewNavBar                bool          `envconfig:"ENABLE_NEW_NAVBAR"`
 	GracefulShutdownTimeout        time.Duration `envconfig:"GRACEFUL_SHUTDOWN_TIMEOUT"`
 	HealthCheckCriticalTimeout     time.Duration `envconfig:"HEALTHCHECK_CRITICAL_TIMEOUT"`
@@ -22,10 +23,9 @@ type Config struct {
 	IsPublishingMode               bool          `envconfig:"IS_PUBLISHING_MODE"`
 	Languages                      string        `envconfig:"LANGUAGES"`
 	PatternLibraryAssetsPath       string        `envconfig:"PATTERN_LIBRARY_ASSETS_PATH"`
-	SiteDomain                     string        `envconfig:"SITE_DOMAIN"`
 	ServiceAuthToken               string        `envconfig:"SERVICE_AUTH_TOKEN"   json:"-"`
+	SiteDomain                     string        `envconfig:"SITE_DOMAIN"`
 	SupportedLanguages             [2]string     `envconfig:"SUPPORTED_LANGUAGES"`
-	CensusTopicsSubsectionFeature  bool          `envconfig:"CENSUS_TOPICS_SUBSECTION_FEATURE"`
 }
 
 var cfg *Config
@@ -41,7 +41,7 @@ func Get() (*Config, error) {
 	if cfgVar.Debug {
 		cfgVar.PatternLibraryAssetsPath = "http://localhost:9002/dist/assets"
 	} else {
-		cfgVar.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/67b5a7e"
+		cfgVar.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/297621d"
 	}
 	return cfgVar, nil
 }
@@ -57,19 +57,18 @@ func get() (*Config, error) {
 		CacheCensusTopicUpdateInterval: 5 * time.Second, // TODO 30 * time.Minute
 		CacheNavigationUpdateInterval:  10 * time.Second,
 		CacheUpdateInterval:            10 * time.Second,
-		//CensusTopicID:                  "4445",
-		CensusTopicID:                 "2747",
-		Debug:                         false,
-		EnableNewNavBar:               false,
-		CensusTopicsSubsectionFeature: true, // TODO Set to false
-		GracefulShutdownTimeout:       5 * time.Second,
-		HealthCheckCriticalTimeout:    90 * time.Second,
-		HealthCheckInterval:           30 * time.Second,
-		IsPublishingMode:              false,
-		Languages:                     "en,cy",
-		ServiceAuthToken:              "",
-		SiteDomain:                    "localhost",
-		SupportedLanguages:            [2]string{"en", "cy"},
+		CensusTopicID:                  "4445",
+		Debug:                          false,
+		EnableCensusTopicSubsection:    true, // TODO Set to false
+		EnableNewNavBar:                false,
+		GracefulShutdownTimeout:        5 * time.Second,
+		HealthCheckCriticalTimeout:     90 * time.Second,
+		HealthCheckInterval:            30 * time.Second,
+		IsPublishingMode:               false,
+		Languages:                      "en,cy",
+		ServiceAuthToken:               "",
+		SiteDomain:                     "localhost",
+		SupportedLanguages:             [2]string{"en", "cy"},
 	}
 
 	return cfg, envconfig.Process("", cfg)
