@@ -3,9 +3,10 @@ package public
 import (
 	"context"
 	"errors"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"net/http"
 	"sync"
+
+	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"github.com/ONSdigital/dp-topic-api/models"
