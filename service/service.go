@@ -165,7 +165,7 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 	// Start background polling of topics API for navbar data (changes)
 	go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
 
-	if cfg.CensusTopicsSubsectionFeature {
+	if cfg.EnableCensusTopicSubsection {
 		// Initialise topics caching
 		cache.CensusTopicID = cfg.CensusTopicID
 		svc.Cache.CensusTopic, err = cache.NewTopicCache(ctx, &cfg.CacheCensusTopicUpdateInterval)
