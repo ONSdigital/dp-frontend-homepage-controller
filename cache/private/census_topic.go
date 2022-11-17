@@ -60,8 +60,6 @@ func UpdateCensusTopic(ctx context.Context, censusTopicID, serviceAuthToken stri
 }
 
 func setTopicCachePublic(ctx context.Context, censusTopic models.TopicResponse, subtopics []models.TopicResponse) *cache.Topic {
-	fmt.Printf("got here, cenus topic: %v", censusTopic.Next)
-
 	censusTopicCache := &cache.Topic{
 		ID:              censusTopic.ID,
 		LocaliseKeyName: censusTopic.Next.Title,

@@ -20,15 +20,12 @@ import (
 const serviceName = "dp-frontend-homepage-controller"
 
 var (
-	//// BuildTime represents the time in which the service was built
-	//BuildTime string
-	//// GitCommit represents the commit (SHA-1) hash of the service that is running
-	//GitCommit string
-	//// Version represents the version of the service that is running
-	//Version string
-	BuildTime string = "1601119818"
-	GitCommit string = "6584b786caac36b6214ffe04bf62f058d4021538"
-	Version   string = "v0.1.0"
+	// BuildTime represents the time in which the service was built
+	BuildTime string
+	// GitCommit represents the commit (SHA-1) hash of the service that is running
+	GitCommit string
+	// Version represents the version of the service that is running
+	Version string
 )
 
 func main() {

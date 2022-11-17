@@ -54,12 +54,12 @@ func get() (*Config, error) {
 	cfg := &Config{
 		APIRouterURL:                   "http://localhost:23200/v1",
 		BindAddr:                       ":24400",
-		CacheCensusTopicUpdateInterval: 5 * time.Second, // TODO 30 * time.Minute
+		CacheCensusTopicUpdateInterval: 30 * time.Minute,
 		CacheNavigationUpdateInterval:  10 * time.Second,
 		CacheUpdateInterval:            10 * time.Second,
 		CensusTopicID:                  "4445",
 		Debug:                          false,
-		EnableCensusTopicSubsection:    true, // TODO Set to false
+		EnableCensusTopicSubsection:    false,
 		EnableNewNavBar:                false,
 		GracefulShutdownTimeout:        5 * time.Second,
 		HealthCheckCriticalTimeout:     90 * time.Second,

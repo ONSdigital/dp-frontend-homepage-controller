@@ -141,8 +141,7 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 	}
 
 	languages := strings.Split(cfg.Languages, ",")
-	//if cfg.IsPublishingMode { // TODO UNCOMMENT
-	if false { // TODO DELETE
+	if cfg.IsPublishingMode {
 		svc.HomePageClient = homepage.NewPublishingClient(ctx, svc.Clients, languages)
 	} else {
 		svc.HomePageClient, err = homepage.NewWebClient(ctx, svc.Clients, cfg.CacheUpdateInterval, languages)
@@ -166,10 +165,6 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 
 	// Start background polling of topics API for navbar data (changes)
 	go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
-
-	if cfg.EnableCensusTopicSubsection {
-
-	}
 
 	if cfg.EnableCensusTopicSubsection {
 		// Initialise topics caching
