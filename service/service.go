@@ -7,6 +7,8 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
+	cachePrivate "github.com/ONSdigital/dp-frontend-homepage-controller/cache/private"
+	cachePublic "github.com/ONSdigital/dp-frontend-homepage-controller/cache/public"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
@@ -166,6 +168,10 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 	go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
 
 	if cfg.EnableCensusTopicSubsection {
+
+	}
+
+	if cfg.EnableCensusTopicSubsection {
 		// Initialise topics caching
 		cache.CensusTopicID = cfg.CensusTopicID
 		svc.Cache.CensusTopic, err = cache.NewTopicCache(ctx, &cfg.CacheCensusTopicUpdateInterval)
@@ -173,6 +179,13 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 			log.Error(ctx, "failed to create topics cache", err)
 			return err
 		}
+
+		if cfg.IsPublishingMode {
+			svc.Cache.CensusTopic.AddUpdateFunc(cache.CensusTopicID, cachePrivate.UpdateCensusTopic(ctx, cfg.CensusTopicID, cfg.ServiceAuthToken, svc.Clients.Topic))
+		} else {
+			svc.Cache.CensusTopic.AddUpdateFunc(cache.CensusTopicID, cachePublic.UpdateCensusTopic(ctx, cfg.CensusTopicID, svc.Clients.Topic))
+		}
+
 		go svc.Cache.CensusTopic.StartUpdates(ctx, svcErrors)
 	}
 

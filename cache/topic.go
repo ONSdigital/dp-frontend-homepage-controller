@@ -77,8 +77,8 @@ func (dc *TopicCache) GetData(ctx context.Context, key string) (*Topic, error) {
 
 // AddUpdateFunc adds an update function to the topic cache for a topic with the `title` passed to the function
 // This update function will then be triggered once or at every fixed interval as per the prior setup of the TopicCache
-func (dc *TopicCache) AddUpdateFunc(title string, updateFunc func() *Topic) {
-	dc.UpdateFuncs[title] = func() (interface{}, error) {
+func (dc *TopicCache) AddUpdateFunc(id string, updateFunc func() *Topic) {
+	dc.UpdateFuncs[id] = func() (interface{}, error) {
 		// error handling is done within the updateFunc
 		return updateFunc(), nil
 	}

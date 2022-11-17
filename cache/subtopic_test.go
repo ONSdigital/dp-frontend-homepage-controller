@@ -5,7 +5,30 @@ import (
 	"testing"
 	"time"
 
+	"github.com/ONSdigital/dp-topic-api/models"
 	. "github.com/smartystreets/goconvey/convey"
+)
+
+var (
+	t = time.Date(2022, time.November, 23, 9, 30, 0, 0, time.Local)
+
+	subtopic1 = models.Topic{
+		ID:          "1234",
+		ReleaseDate: &t,
+		Title:       "Age",
+	}
+
+	subtopic2 = models.Topic{
+		ID:          "5678",
+		ReleaseDate: &t,
+		Title:       "Ethnicity",
+	}
+
+	subtopic3 = models.Topic{
+		ID:          "9012",
+		ReleaseDate: &t,
+		Title:       "Demography",
+	}
 )
 
 func TestAppendSubtopicID(t *testing.T) {
@@ -14,8 +37,8 @@ func TestAppendSubtopicID(t *testing.T) {
 	Convey("Given an empty SubtopicsIDs object", t, func() {
 		subtopicIDsStore := NewSubTopicsMap()
 
-		Convey("When AppendSubtopicID is called", func() {
-			subtopicIDsStore.AppendSubtopicID("1234")
+		Convey("When AppendSubtopicItems is called", func() {
+			subtopicIDsStore.AppendSubtopicItems(subtopic1)
 
 			Convey("Then the new subtopic id should be added to the map", func() {
 				So(subtopicIDsStore.Get("1234"), ShouldBeTrue)
@@ -27,8 +50,8 @@ func TestAppendSubtopicID(t *testing.T) {
 		subtopicIDsStore := NewSubTopicsMap()
 		subtopicIDsStore.subtopicsMap = nil
 
-		Convey("When AppendSubtopicID is called", func() {
-			subtopicIDsStore.AppendSubtopicID("1234")
+		Convey("When AppendSubtopicItems is called", func() {
+			subtopicIDsStore.AppendSubtopicItems(subtopic1)
 
 			Convey("Then the new subtopic id should be added to the map", func() {
 				So(subtopicIDsStore.Get("1234"), ShouldBeTrue)
@@ -38,15 +61,19 @@ func TestAppendSubtopicID(t *testing.T) {
 
 	Convey("Given an existing SubtopicsIDs object with data", t, func() {
 		subtopicIDsStore := NewSubTopicsMap()
-		subtopicIDsStore.subtopicsMap = map[string]bool{
-			"1234": true,
+		subtopicIDsStore.subtopicsMap = map[string]*models.Topic{
+			"1234": &subtopic1,
 		}
 
 		Convey("When AppendSubtopicID is called", func() {
-			subtopicIDsStore.AppendSubtopicID("5678")
+			subtopicIDsStore.AppendSubtopicItems(subtopic2)
 
 			Convey("Then the new subtopic id should be added to the map", func() {
 				So(subtopicIDsStore.Get("5678"), ShouldBeTrue)
+			})
+
+			Convey("And previous subtopic id should still be in the map", func() {
+				So(subtopicIDsStore.Get("1234"), ShouldBeTrue)
 			})
 		})
 	})
@@ -55,15 +82,15 @@ func TestAppendSubtopicID(t *testing.T) {
 		subtopicIDsStore := NewSubTopicsMap()
 
 		Convey("When AppendSubtopicID is called", func() {
-			go subtopicIDsStore.AppendSubtopicID("5678")
-			go subtopicIDsStore.AppendSubtopicID("9123")
+			go subtopicIDsStore.AppendSubtopicItems(subtopic2)
+			go subtopicIDsStore.AppendSubtopicItems(subtopic3)
 
 			Convey("Then the new subtopic ids should be added", func() {
 				// Wait for the goroutines to finish
 				time.Sleep(300 * time.Millisecond)
 
 				So(subtopicIDsStore.Get("5678"), ShouldBeTrue)
-				So(subtopicIDsStore.Get("9123"), ShouldBeTrue)
+				So(subtopicIDsStore.Get("9012"), ShouldBeTrue)
 			})
 		})
 	})
@@ -87,9 +114,9 @@ func TestGetSubtopicsIDsQuery(t *testing.T) {
 	Convey("Given a list of subtopics", t, func() {
 		subtopicIDsStore := SubtopicsIDs{
 			mutex: &sync.RWMutex{},
-			subtopicsMap: map[string]bool{
-				"1234": true,
-				"5678": true,
+			subtopicsMap: map[string]*models.Topic{
+				"1234": &subtopic1,
+				"5678": &subtopic2,
 			},
 		}
 

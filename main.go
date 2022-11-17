@@ -2,16 +2,14 @@ package main
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"os"
 	"os/signal"
 	"syscall"
 
+	"github.com/pkg/errors"
+
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
-	cachePrivate "github.com/ONSdigital/dp-frontend-homepage-controller/cache/private"
-	cachePublic "github.com/ONSdigital/dp-frontend-homepage-controller/cache/public"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service"
@@ -70,12 +68,6 @@ func run(ctx context.Context) error {
 
 	if err := svc.Init(ctx, cfg, svcList, BuildTime, GitCommit, Version, svcErrors); err != nil {
 		return errors.Wrap(err, "running service failed")
-	}
-
-	if cfg.IsPublishingMode {
-		svc.Cache.CensusTopic.AddUpdateFunc(cache.CensusTopicID, cachePrivate.UpdateCensusTopic(ctx, cfg.ServiceAuthToken, svc.Clients.Topic))
-	} else {
-		svc.Cache.CensusTopic.AddUpdateFunc(cache.CensusTopicID, cachePublic.UpdateCensusTopic(ctx, cfg, svc.Clients.Topic))
 	}
 
 	err = svc.Run(ctx, cfg, svcList, svcErrors)

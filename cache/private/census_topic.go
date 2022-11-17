@@ -3,8 +3,7 @@ package private
 import (
 	"context"
 	"errors"
-	"net/http"
-	"sync"
+	"fmt"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"github.com/ONSdigital/dp-topic-api/models"
@@ -16,10 +15,12 @@ import (
 // This function talks to the dp-topic-api via its private endpoints to retrieve the census topic and its subtopic ids
 // The data returned by the dp-topic-api is of type *models.PrivateSubtopics which is then transformed in this function for the controller
 // If an error has occurred, this is captured in log.Error and then an empty census topic is returned
-func UpdateCensusTopic(ctx context.Context, serviceAuthToken string, topicClient topicCli.Clienter) func() *cache.Topic {
+func UpdateCensusTopic(ctx context.Context, censusTopicID, serviceAuthToken string, topicClient topicCli.Clienter) func() *cache.Topic {
 	return func() *cache.Topic {
-		// get root topics from dp-topic-api
-		rootTopics, err := topicClient.GetRootTopicsPrivate(ctx, topicCli.Headers{ServiceAuthToken: serviceAuthToken})
+		// TODO can put two requests in Go routines
+
+		// get census topic from dp-topic-api
+		censusTopic, err := topicClient.GetTopicPrivate(ctx, topicCli.Headers{ServiceAuthToken: serviceAuthToken}, censusTopicID)
 		if err != nil {
 			logData := log.Data{
 				"req_headers": topicCli.Headers{},
@@ -28,11 +29,17 @@ func UpdateCensusTopic(ctx context.Context, serviceAuthToken string, topicClient
 			return cache.GetEmptyCensusTopic()
 		}
 
-		// deference root topics items to allow ranging through them
-		var rootTopicItems []models.TopicResponse
-		if rootTopics.PrivateItems != nil {
-			rootTopicItems = *rootTopics.PrivateItems
-		} else {
+		// get census subtopics from dp-topic-api
+		censusSubtopics, err := topicClient.GetSubtopicsPrivate(ctx, topicCli.Headers{ServiceAuthToken: serviceAuthToken}, censusTopicID)
+		if err != nil {
+			logData := log.Data{
+				"req_headers": topicCli.Headers{},
+			}
+			log.Error(ctx, "failed to get census subtopics from topic-api", err, logData)
+			return cache.GetEmptyCensusTopic()
+		}
+
+		if censusSubtopics.PrivateItems == nil {
 			err := errors.New("root topic public items is nil")
 			log.Error(ctx, "failed to deference root topics items pointer", err)
 			return cache.GetEmptyCensusTopic()
@@ -40,15 +47,7 @@ func UpdateCensusTopic(ctx context.Context, serviceAuthToken string, topicClient
 
 		var censusTopicCache *cache.Topic
 
-		// go through each root topic, find census topic and gets its data for caching which includes subtopic ids
-		for i := range rootTopicItems {
-			if rootTopicItems[i].Current.ID == cache.CensusTopicID {
-				subtopicsIDChan := make(chan string)
-
-				censusTopicCache = getRootTopicCachePrivate(ctx, serviceAuthToken, subtopicsIDChan, topicClient, *rootTopicItems[i].Current)
-				break
-			}
-		}
+		censusTopicCache = setTopicCachePublic(ctx, *censusTopic, *censusSubtopics.PrivateItems)
 
 		if censusTopicCache == nil {
 			err := errors.New("census root topic not found")
@@ -60,80 +59,22 @@ func UpdateCensusTopic(ctx context.Context, serviceAuthToken string, topicClient
 	}
 }
 
-func getRootTopicCachePrivate(ctx context.Context, serviceAuthToken string, subtopicsIDChan chan string, topicClient topicCli.Clienter, rootTopic models.Topic) *cache.Topic {
-	rootTopicCache := &cache.Topic{
-		ID:              rootTopic.ID,
-		LocaliseKeyName: rootTopic.Title,
+func setTopicCachePublic(ctx context.Context, censusTopic models.TopicResponse, subtopics []models.TopicResponse) *cache.Topic {
+	fmt.Printf("got here, cenus topic: %v", censusTopic.Next)
+
+	censusTopicCache := &cache.Topic{
+		ID:              censusTopic.ID,
+		LocaliseKeyName: censusTopic.Next.Title,
 	}
 
-	subtopicsIDMap := cache.NewSubTopicsMap()
-	subtopicsIDMap.AppendSubtopicID(rootTopic.ID)
-
-	var wg sync.WaitGroup
-	wg.Add(2)
-
-	// get subtopics ids
-	go func() {
-		defer wg.Done()
-		getSubtopicsIDsPrivate(ctx, serviceAuthToken, subtopicsIDChan, topicClient, rootTopic.ID)
-		close(subtopicsIDChan)
-	}()
-
-	// extract subtopic id from channel to update rootTopicCache
-	go func() {
-		defer wg.Done()
-		for subtopicID := range subtopicsIDChan {
-			subtopicsIDMap.AppendSubtopicID(subtopicID)
-		}
-	}()
-
-	wg.Wait()
-
-	rootTopicCache.List = subtopicsIDMap
-	rootTopicCache.Query = subtopicsIDMap.GetSubtopicsIDsQuery()
-
-	return rootTopicCache
-}
-
-func getSubtopicsIDsPrivate(ctx context.Context, serviceAuthToken string, subtopicsIDChan chan string, topicClient topicCli.Clienter, topLevelTopicID string) {
-	topicCliReqHeaders := topicCli.Headers{ServiceAuthToken: serviceAuthToken}
-
-	// get subtopics from dp-topic-api
-	subTopics, err := topicClient.GetSubtopicsPrivate(ctx, topicCliReqHeaders, topLevelTopicID)
-	if err != nil {
-		if err.Status() != http.StatusNotFound {
-			logData := log.Data{
-				"req_headers":        topicCliReqHeaders,
-				"top_level_topic_id": topLevelTopicID,
-			}
-			log.Error(ctx, "failed to get subtopics from topic-api", err, logData)
-		}
-
-		// stop as there are no subtopics items or failed to get subtopics
-		return
+	subtopicCache := cache.NewSubTopicsMap()
+	for i := range subtopics {
+		subtopicCache.AppendSubtopicItems(*subtopics[i].Next)
 	}
 
-	// deference sub topics items to allow ranging through them
-	if subTopics.PrivateItems == nil {
-		err := errors.New("sub topics private items is nil")
-		log.Error(ctx, "failed to deference sub topics items pointer", err)
-		return
-	}
-	subTopicItems := *subTopics.PrivateItems
+	censusTopicCache.List = subtopicCache
+	censusTopicCache.Query = subtopicCache.GetSubtopicsIDsQuery()
+	censusTopicCache.Query = fmt.Sprintf("%s,%s", censusTopic.ID, censusTopicCache.Query)
 
-	var wg sync.WaitGroup
-
-	// get subtopics ids of the subtopics items if they exist
-	for i := range subTopicItems {
-		wg.Add(1)
-
-		// send subtopic id to channel
-		subtopicsIDChan <- subTopicItems[i].ID
-
-		go func(index int) {
-			defer wg.Done()
-			getSubtopicsIDsPrivate(ctx, serviceAuthToken, subtopicsIDChan, topicClient, subTopicItems[index].ID)
-		}(i)
-	}
-	wg.Wait()
+	return censusTopicCache
 }

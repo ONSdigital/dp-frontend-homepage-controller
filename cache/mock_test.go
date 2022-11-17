@@ -44,7 +44,6 @@ func TestGetMockCensusTopic(t *testing.T) {
 			So(mockCensusTopic.Query, ShouldEqual, fmt.Sprintf("1234,5678,%s", CensusTopicID))
 			So(mockCensusTopic.List.Get("1234"), ShouldBeTrue)
 			So(mockCensusTopic.List.Get("5678"), ShouldBeTrue)
-			So(mockCensusTopic.List.Get(CensusTopicID), ShouldBeTrue)
 		})
 	})
 }

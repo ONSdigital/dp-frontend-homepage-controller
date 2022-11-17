@@ -20,7 +20,6 @@ func TestSpec(t *testing.T) {
 				So(cfg.CacheNavigationUpdateInterval, ShouldEqual, 10*time.Second)
 				So(cfg.CacheUpdateInterval, ShouldEqual, 10*time.Second)
 				So(cfg.EnableNewNavBar, ShouldEqual, false)
-				So(cfg.EnableCensusTopicSubsection, false)
 				So(cfg.GracefulShutdownTimeout, ShouldEqual, 5*time.Second)
 				So(cfg.HealthCheckInterval, ShouldEqual, 30*time.Second)
 				So(cfg.HealthCheckCriticalTimeout, ShouldEqual, 90*time.Second)
