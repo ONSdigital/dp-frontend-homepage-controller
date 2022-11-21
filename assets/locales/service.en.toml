@@ -310,3 +310,37 @@ one = "Find census data and analysis using these topics."
 [CensusTopicsLink1]
 description = "Topic summaries"
 one = "Topic summaries"
+
+# Census Topics---------------------------------------------------------------------------------------------------
+
+[DemographyMigration]
+description = "Demography and Migration"
+one = "Demography and Migration"
+
+[Education]
+description = "Education"
+one = "Education"
+
+[EthnicGroupIdentityLanguageReligion]
+description = "Ethnic group, national identity, language and religion"
+one = "Ethnic group, national identity, language and religion"
+
+[HealthDisabilityUnpaidCare]
+description = "Health, disability and unpaid care"
+one = "Health, disability and unpaid care"
+
+[Housing]
+description = "Housing"
+one = "Housing"
+
+[LabourMarketTravelToWork]
+description = "Labour market"
+one = "Labour market"
+
+[SexualOrientationGenderIdentity]
+description = "Sexual orientation and gender identity"
+one = "Housing"
+
+[Veterans]
+description = "Veterans"
+one = "Veterans"
