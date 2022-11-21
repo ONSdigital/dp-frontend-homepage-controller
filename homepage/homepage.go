@@ -1,7 +1,5 @@
 package homepage
 
-//go:generate moq -out mocks_homepage.go -pkg homepage . ZebedeeClient ImageClient RenderClient
-
 import (
 	"context"
 	"net/http"
@@ -10,7 +8,7 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
-	dphandlers "github.com/ONSdigital/dp-net/handlers"
+	dphandlers "github.com/ONSdigital/dp-net/v2/handlers"
 	"github.com/ONSdigital/log.go/v2/log"
 )
 

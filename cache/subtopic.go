@@ -35,6 +35,20 @@ func (t *SubtopicsIDs) Get(key string) bool {
 	return false
 }
 
+// GetSubtopicItems returns a list of subtopics for given topic
+func (t *SubtopicsIDs) GetSubtopicItems() map[string]*models.Topic {
+	t.mutex.RLock()
+	defer t.mutex.RUnlock()
+
+	subtopics := make(map[string]*models.Topic)
+
+	for id, value := range t.subtopicsMap {
+		subtopics[id] = value
+	}
+
+	return subtopics
+}
+
 // GetSubtopicsIDsQuery gets the subtopics ID query for a topic
 func (t *SubtopicsIDs) GetSubtopicsIDsQuery() string {
 	t.mutex.RLock()

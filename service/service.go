@@ -41,26 +41,32 @@ func (svc *Service) Run(ctx context.Context, cfg *config.Config, serviceList *Ex
 
 	// Initialise render client
 	rend := render.NewWithDefaultClient(assets.Asset, assets.AssetNames, cfg.PatternLibraryAssetsPath, cfg.SiteDomain)
-
+	log.Info(ctx, "got here 1")
 	// Initialise router
 	r := mux.NewRouter()
 	routes.Init(
 		ctx,
 		r,
 		cfg,
+		svc.Cache,
 		svc.HealthCheck.Handler,
 		svc.HomePageClient,
 		rend,
 	)
+	log.Info(ctx, "got here 2")
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
+	log.Info(ctx, "got here 3")
 
 	// Start Healthcheck and HTTP Server
 	svc.HealthCheck.Start(ctx)
+	log.Info(ctx, "got here 4")
 	go func() {
 		if err := svc.Server.ListenAndServe(); err != nil {
 			svcErrors <- errors.Wrap(err, "failure in http listen and serve")
 		}
 	}()
+
+	log.Info(ctx, "got here 5")
 	return nil
 }
 
@@ -157,17 +163,11 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 		}
 	}
 
-	svc.Cache.Navigation, err = cache.NewNavigationCache(ctx, &cfg.CacheNavigationUpdateInterval)
-	if err != nil {
-		log.Error(ctx, "failed to create navigation cache", err, log.Data{"update_interval": cfg.CacheNavigationUpdateInterval})
-		return err
-	}
-
 	// Start background polling of topics API for navbar data (changes)
 	go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
 
 	if cfg.EnableCensusTopicSubsection {
-		// Initialise topics caching
+		// Initialise caching census topics
 		cache.CensusTopicID = cfg.CensusTopicID
 		svc.Cache.CensusTopic, err = cache.NewTopicCache(ctx, &cfg.CacheCensusTopicUpdateInterval)
 		if err != nil {

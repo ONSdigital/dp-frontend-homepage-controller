@@ -50,7 +50,7 @@ func TestUnitHomepageHandlerSuccess(t *testing.T) {
 			},
 		}
 
-		mockedHomepageClienter := &HomepageClienterMock{
+		mockedHomepageClienter := &ClienterMock{
 			CloseFunc: func() {},
 			GetHomePageFunc: func(ctx context.Context, userAccessToken string, collectionID string, lang string) (*model.HomepageData, error) {
 				return &model.HomepageData{}, nil

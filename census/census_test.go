@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
@@ -48,7 +49,7 @@ func TestUnitCensusHandlerSuccess(t *testing.T) {
 			},
 		}
 
-		mockedHomepageClienter := &homepage.HomepageClienterMock{
+		mockedHomepageClienter := &homepage.ClienterMock{
 			CloseFunc: func() {},
 			GetHomePageFunc: func(ctx context.Context, userAccessToken string, collectionID string, lang string) (*model.HomepageData, error) {
 				return &model.HomepageData{}, nil
@@ -60,7 +61,7 @@ func TestUnitCensusHandlerSuccess(t *testing.T) {
 		}
 
 		Convey("When Read is called", func() {
-			w := doTestRequest("/census", req, Handler(cfg, mockedHomepageClienter, mockedRendererClient), nil)
+			w := doTestRequest("/census", req, Handler(cfg, cache.List{}, mockedHomepageClienter, mockedRendererClient), nil)
 
 			Convey("Then a 200 OK status should be returned", func() {
 				So(w.Code, ShouldEqual, http.StatusOK)

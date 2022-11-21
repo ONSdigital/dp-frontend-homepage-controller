@@ -12,23 +12,23 @@ import (
 )
 
 var (
-	lockHomepageClienterMockAddNavigationCache    sync.RWMutex
-	lockHomepageClienterMockClose                 sync.RWMutex
-	lockHomepageClienterMockGetHomePage           sync.RWMutex
-	lockHomepageClienterMockGetNavigationData     sync.RWMutex
-	lockHomepageClienterMockStartBackgroundUpdate sync.RWMutex
+	lockClienterMockAddNavigationCache    sync.RWMutex
+	lockClienterMockClose                 sync.RWMutex
+	lockClienterMockGetHomePage           sync.RWMutex
+	lockClienterMockGetNavigationData     sync.RWMutex
+	lockClienterMockStartBackgroundUpdate sync.RWMutex
 )
 
-// Ensure, that HomepageClienterMock does implement Clienter.
+// Ensure, that ClienterMock does implement Clienter.
 // If this is not the case, regenerate this file with moq.
-var _ Clienter = &HomepageClienterMock{}
+var _ Clienter = &ClienterMock{}
 
-// HomepageClienterMock is a mock implementation of Clienter.
+// ClienterMock is a mock implementation of Clienter.
 //
-//     func TestSomethingThatUsesHomepageClienter(t *testing.T) {
+//     func TestSomethingThatUsesClienter(t *testing.T) {
 //
 //         // make and configure a mocked Clienter
-//         mockedHomepageClienter := &HomepageClienterMock{
+//         mockedClienter := &ClienterMock{
 //             AddNavigationCacheFunc: func(ctx context.Context, updateInterval time.Duration) error {
 // 	               panic("mock out the AddNavigationCache method")
 //             },
@@ -46,11 +46,11 @@ var _ Clienter = &HomepageClienterMock{}
 //             },
 //         }
 //
-//         // use mockedHomepageClienter in code that requires Clienter
+//         // use mockedClienter in code that requires Clienter
 //         // and then make assertions.
 //
 //     }
-type HomepageClienterMock struct {
+type ClienterMock struct {
 	// AddNavigationCacheFunc mocks the AddNavigationCache method.
 	AddNavigationCacheFunc func(ctx context.Context, updateInterval time.Duration) error
 
@@ -107,9 +107,9 @@ type HomepageClienterMock struct {
 }
 
 // AddNavigationCache calls AddNavigationCacheFunc.
-func (mock *HomepageClienterMock) AddNavigationCache(ctx context.Context, updateInterval time.Duration) error {
+func (mock *ClienterMock) AddNavigationCache(ctx context.Context, updateInterval time.Duration) error {
 	if mock.AddNavigationCacheFunc == nil {
-		panic("HomepageClienterMock.AddNavigationCacheFunc: method is nil but Clienter.AddNavigationCache was just called")
+		panic("ClienterMock.AddNavigationCacheFunc: method is nil but Clienter.AddNavigationCache was just called")
 	}
 	callInfo := struct {
 		Ctx            context.Context
@@ -118,16 +118,16 @@ func (mock *HomepageClienterMock) AddNavigationCache(ctx context.Context, update
 		Ctx:            ctx,
 		UpdateInterval: updateInterval,
 	}
-	lockHomepageClienterMockAddNavigationCache.Lock()
+	lockClienterMockAddNavigationCache.Lock()
 	mock.calls.AddNavigationCache = append(mock.calls.AddNavigationCache, callInfo)
-	lockHomepageClienterMockAddNavigationCache.Unlock()
+	lockClienterMockAddNavigationCache.Unlock()
 	return mock.AddNavigationCacheFunc(ctx, updateInterval)
 }
 
 // AddNavigationCacheCalls gets all the calls that were made to AddNavigationCache.
 // Check the length with:
-//     len(mockedHomepageClienter.AddNavigationCacheCalls())
-func (mock *HomepageClienterMock) AddNavigationCacheCalls() []struct {
+//     len(mockedClienter.AddNavigationCacheCalls())
+func (mock *ClienterMock) AddNavigationCacheCalls() []struct {
 	Ctx            context.Context
 	UpdateInterval time.Duration
 } {
@@ -135,42 +135,42 @@ func (mock *HomepageClienterMock) AddNavigationCacheCalls() []struct {
 		Ctx            context.Context
 		UpdateInterval time.Duration
 	}
-	lockHomepageClienterMockAddNavigationCache.RLock()
+	lockClienterMockAddNavigationCache.RLock()
 	calls = mock.calls.AddNavigationCache
-	lockHomepageClienterMockAddNavigationCache.RUnlock()
+	lockClienterMockAddNavigationCache.RUnlock()
 	return calls
 }
 
 // Close calls CloseFunc.
-func (mock *HomepageClienterMock) Close() {
+func (mock *ClienterMock) Close() {
 	if mock.CloseFunc == nil {
-		panic("HomepageClienterMock.CloseFunc: method is nil but Clienter.Close was just called")
+		panic("ClienterMock.CloseFunc: method is nil but Clienter.Close was just called")
 	}
 	callInfo := struct {
 	}{}
-	lockHomepageClienterMockClose.Lock()
+	lockClienterMockClose.Lock()
 	mock.calls.Close = append(mock.calls.Close, callInfo)
-	lockHomepageClienterMockClose.Unlock()
+	lockClienterMockClose.Unlock()
 	mock.CloseFunc()
 }
 
 // CloseCalls gets all the calls that were made to Close.
 // Check the length with:
-//     len(mockedHomepageClienter.CloseCalls())
-func (mock *HomepageClienterMock) CloseCalls() []struct {
+//     len(mockedClienter.CloseCalls())
+func (mock *ClienterMock) CloseCalls() []struct {
 } {
 	var calls []struct {
 	}
-	lockHomepageClienterMockClose.RLock()
+	lockClienterMockClose.RLock()
 	calls = mock.calls.Close
-	lockHomepageClienterMockClose.RUnlock()
+	lockClienterMockClose.RUnlock()
 	return calls
 }
 
 // GetHomePage calls GetHomePageFunc.
-func (mock *HomepageClienterMock) GetHomePage(ctx context.Context, userAccessToken string, collectionID string, lang string) (*model.HomepageData, error) {
+func (mock *ClienterMock) GetHomePage(ctx context.Context, userAccessToken string, collectionID string, lang string) (*model.HomepageData, error) {
 	if mock.GetHomePageFunc == nil {
-		panic("HomepageClienterMock.GetHomePageFunc: method is nil but Clienter.GetHomePage was just called")
+		panic("ClienterMock.GetHomePageFunc: method is nil but Clienter.GetHomePage was just called")
 	}
 	callInfo := struct {
 		Ctx             context.Context
@@ -183,16 +183,16 @@ func (mock *HomepageClienterMock) GetHomePage(ctx context.Context, userAccessTok
 		CollectionID:    collectionID,
 		Lang:            lang,
 	}
-	lockHomepageClienterMockGetHomePage.Lock()
+	lockClienterMockGetHomePage.Lock()
 	mock.calls.GetHomePage = append(mock.calls.GetHomePage, callInfo)
-	lockHomepageClienterMockGetHomePage.Unlock()
+	lockClienterMockGetHomePage.Unlock()
 	return mock.GetHomePageFunc(ctx, userAccessToken, collectionID, lang)
 }
 
 // GetHomePageCalls gets all the calls that were made to GetHomePage.
 // Check the length with:
-//     len(mockedHomepageClienter.GetHomePageCalls())
-func (mock *HomepageClienterMock) GetHomePageCalls() []struct {
+//     len(mockedClienter.GetHomePageCalls())
+func (mock *ClienterMock) GetHomePageCalls() []struct {
 	Ctx             context.Context
 	UserAccessToken string
 	CollectionID    string
@@ -204,16 +204,16 @@ func (mock *HomepageClienterMock) GetHomePageCalls() []struct {
 		CollectionID    string
 		Lang            string
 	}
-	lockHomepageClienterMockGetHomePage.RLock()
+	lockClienterMockGetHomePage.RLock()
 	calls = mock.calls.GetHomePage
-	lockHomepageClienterMockGetHomePage.RUnlock()
+	lockClienterMockGetHomePage.RUnlock()
 	return calls
 }
 
 // GetNavigationData calls GetNavigationDataFunc.
-func (mock *HomepageClienterMock) GetNavigationData(ctx context.Context, lang string) (*models.Navigation, error) {
+func (mock *ClienterMock) GetNavigationData(ctx context.Context, lang string) (*models.Navigation, error) {
 	if mock.GetNavigationDataFunc == nil {
-		panic("HomepageClienterMock.GetNavigationDataFunc: method is nil but Clienter.GetNavigationData was just called")
+		panic("ClienterMock.GetNavigationDataFunc: method is nil but Clienter.GetNavigationData was just called")
 	}
 	callInfo := struct {
 		Ctx  context.Context
@@ -222,16 +222,16 @@ func (mock *HomepageClienterMock) GetNavigationData(ctx context.Context, lang st
 		Ctx:  ctx,
 		Lang: lang,
 	}
-	lockHomepageClienterMockGetNavigationData.Lock()
+	lockClienterMockGetNavigationData.Lock()
 	mock.calls.GetNavigationData = append(mock.calls.GetNavigationData, callInfo)
-	lockHomepageClienterMockGetNavigationData.Unlock()
+	lockClienterMockGetNavigationData.Unlock()
 	return mock.GetNavigationDataFunc(ctx, lang)
 }
 
 // GetNavigationDataCalls gets all the calls that were made to GetNavigationData.
 // Check the length with:
-//     len(mockedHomepageClienter.GetNavigationDataCalls())
-func (mock *HomepageClienterMock) GetNavigationDataCalls() []struct {
+//     len(mockedClienter.GetNavigationDataCalls())
+func (mock *ClienterMock) GetNavigationDataCalls() []struct {
 	Ctx  context.Context
 	Lang string
 } {
@@ -239,16 +239,16 @@ func (mock *HomepageClienterMock) GetNavigationDataCalls() []struct {
 		Ctx  context.Context
 		Lang string
 	}
-	lockHomepageClienterMockGetNavigationData.RLock()
+	lockClienterMockGetNavigationData.RLock()
 	calls = mock.calls.GetNavigationData
-	lockHomepageClienterMockGetNavigationData.RUnlock()
+	lockClienterMockGetNavigationData.RUnlock()
 	return calls
 }
 
 // StartBackgroundUpdate calls StartBackgroundUpdateFunc.
-func (mock *HomepageClienterMock) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
+func (mock *ClienterMock) StartBackgroundUpdate(ctx context.Context, errorChannel chan error) {
 	if mock.StartBackgroundUpdateFunc == nil {
-		panic("HomepageClienterMock.StartBackgroundUpdateFunc: method is nil but Clienter.StartBackgroundUpdate was just called")
+		panic("ClienterMock.StartBackgroundUpdateFunc: method is nil but Clienter.StartBackgroundUpdate was just called")
 	}
 	callInfo := struct {
 		Ctx          context.Context
@@ -257,16 +257,16 @@ func (mock *HomepageClienterMock) StartBackgroundUpdate(ctx context.Context, err
 		Ctx:          ctx,
 		ErrorChannel: errorChannel,
 	}
-	lockHomepageClienterMockStartBackgroundUpdate.Lock()
+	lockClienterMockStartBackgroundUpdate.Lock()
 	mock.calls.StartBackgroundUpdate = append(mock.calls.StartBackgroundUpdate, callInfo)
-	lockHomepageClienterMockStartBackgroundUpdate.Unlock()
+	lockClienterMockStartBackgroundUpdate.Unlock()
 	mock.StartBackgroundUpdateFunc(ctx, errorChannel)
 }
 
 // StartBackgroundUpdateCalls gets all the calls that were made to StartBackgroundUpdate.
 // Check the length with:
-//     len(mockedHomepageClienter.StartBackgroundUpdateCalls())
-func (mock *HomepageClienterMock) StartBackgroundUpdateCalls() []struct {
+//     len(mockedClienter.StartBackgroundUpdateCalls())
+func (mock *ClienterMock) StartBackgroundUpdateCalls() []struct {
 	Ctx          context.Context
 	ErrorChannel chan error
 } {
@@ -274,8 +274,8 @@ func (mock *HomepageClienterMock) StartBackgroundUpdateCalls() []struct {
 		Ctx          context.Context
 		ErrorChannel chan error
 	}
-	lockHomepageClienterMockStartBackgroundUpdate.RLock()
+	lockClienterMockStartBackgroundUpdate.RLock()
 	calls = mock.calls.StartBackgroundUpdate
-	lockHomepageClienterMockStartBackgroundUpdate.RUnlock()
+	lockClienterMockStartBackgroundUpdate.RUnlock()
 	return calls
 }

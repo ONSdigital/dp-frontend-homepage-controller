@@ -9,11 +9,17 @@ import (
 	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service/mock"
 	"github.com/ONSdigital/dp-healthcheck/healthcheck"
-	dphttp "github.com/ONSdigital/dp-net/http"
+	dphttp "github.com/ONSdigital/dp-net/v2/http"
+	"github.com/ONSdigital/dp-topic-api/models"
+	"github.com/ONSdigital/dp-topic-api/sdk"
+	topicErrs "github.com/ONSdigital/dp-topic-api/sdk/errors"
+	"github.com/ONSdigital/dp-topic-api/sdk/mocks"
 	"github.com/pkg/errors"
 	. "github.com/smartystreets/goconvey/convey"
 )
@@ -30,9 +36,30 @@ var (
 	errHealthcheck = errors.New("healthCheck error")
 )
 
-var funcDoGetHealthcheckErr = func(cfg *config.Config, buildTime string, gitCommit string, version string) (service.HealthChecker, error) {
-	return nil, errHealthcheck
-}
+var (
+	funcDoGetHealthcheckErr = func(cfg *config.Config, buildTime string, gitCommit string, version string) (service.HealthChecker, error) {
+		return nil, errHealthcheck
+	}
+
+	funcDoGetCacheList = func(ctx context.Context) (cache.List, error) {
+		testCensusTopicCache, err := cache.NewTopicCache(ctx, nil)
+		if err != nil {
+			return cache.List{}, err
+		}
+
+		testNavigationCache, err := cache.NewNavigationCache(ctx, nil)
+		if err != nil {
+			return cache.List{}, err
+		}
+
+		cacheList := cache.List{
+			CensusTopic: testCensusTopicCache,
+			Navigation:  testNavigationCache,
+		}
+
+		return cacheList, nil
+	}
+)
 
 func TestRun(t *testing.T) {
 	Convey("Having a set of mocked dependencies", t, func() {
@@ -43,6 +70,15 @@ func TestRun(t *testing.T) {
 		hcMock := &mock.HealthCheckerMock{
 			AddCheckFunc: func(name string, checker healthcheck.Checker) error { return nil },
 			StartFunc:    func(ctx context.Context) {},
+		}
+
+		mockedTopicClienter := &mocks.ClienterMock{
+			GetTopicPrivateFunc: func(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.TopicResponse, topicErrs.Error) {
+				return &models.TopicResponse{ID: "1234", Next: &models.Topic{ID: "1234", Title: "Census"}}, nil
+			},
+			GetSubtopicsPrivateFunc: func(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.PrivateSubtopics, topicErrs.Error) {
+				return &models.PrivateSubtopics{PrivateItems: &[]models.TopicResponse{{ID: "5678", Next: &models.Topic{ID: "5678", Title: "Age"}}}}, nil
+			},
 		}
 
 		serverWg := &sync.WaitGroup{}
@@ -80,6 +116,9 @@ func TestRun(t *testing.T) {
 			}
 		}
 
+		cacheList, err := funcDoGetCacheList(ctx)
+		So(err, ShouldBeNil)
+
 		Convey("Given that initialising Healthcheck returns an error", func() {
 			initMock := &mock.InitialiserMock{
 				DoGetHealthClientFunc: funcDoGetHealthClientOk,
@@ -89,6 +128,9 @@ func TestRun(t *testing.T) {
 
 			svcErrors := make(chan error, 1)
 			svc := service.New()
+			svc.Clients = &homepage.Clients{
+				Topic: mockedTopicClienter,
+			}
 
 			svc.InitiateServiceList(cfg, mockSvcList)
 
@@ -98,6 +140,7 @@ func TestRun(t *testing.T) {
 				So(mockSvcList.HealthCheck, ShouldBeFalse)
 			})
 		})
+
 		Convey("Given that Checkers cannot be registered", func() {
 			errAddheckFail := errors.New("Error(s) registering checkers for healthcheck")
 			hcMockAddFail := &mock.HealthCheckerMock{
@@ -114,6 +157,9 @@ func TestRun(t *testing.T) {
 			svcErrors := make(chan error, 1)
 			svcList := service.NewServiceList(initMock)
 			svc := service.New()
+			svc.Clients = &homepage.Clients{
+				Topic: mockedTopicClienter,
+			}
 
 			err := svc.Init(ctx, cfg, svcList, testBuildTime, testGitCommit, testVersion, svcErrors)
 
@@ -135,8 +181,13 @@ func TestRun(t *testing.T) {
 			svcErrors := make(chan error, 1)
 			serverWg.Add(1)
 			svc := service.New()
+			svc.Cache = cacheList
 			mockSvcList := service.NewServiceList(initMock)
 			svc.InitiateServiceList(cfg, mockSvcList)
+			svc.Clients = &homepage.Clients{
+				Topic: mockedTopicClienter,
+			}
+
 			err := svc.Init(ctx, cfg, mockSvcList, testBuildTime, testGitCommit, testVersion, svcErrors)
 			err = svc.Run(ctx, cfg, mockSvcList, svcErrors)
 			Convey("Then service Run succeeds and all the flags are set", func() {
@@ -163,8 +214,13 @@ func TestRun(t *testing.T) {
 			svcErrors := make(chan error, 1)
 			serverWg.Add(1)
 			svc := service.New()
+
 			mockSvcList := service.NewServiceList(initMock)
 			svc.InitiateServiceList(cfg, mockSvcList)
+			svc.Clients = &homepage.Clients{
+				Topic: mockedTopicClienter,
+			}
+
 			err = svc.Init(ctx, cfg, mockSvcList, testBuildTime, testGitCommit, testVersion, svcErrors)
 			So(err, ShouldBeNil)
 			err = svc.Run(ctx, cfg, mockSvcList, svcErrors)
