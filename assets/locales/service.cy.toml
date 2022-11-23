@@ -322,35 +322,50 @@ description = "Crynodebau pwnc"
 one = "Crynodebau pwnc"
 
 # Census Topics---------------------------------------------------------------------------------------------------
+[Ageing]
+description = "Heneiddio"
+one = "Heneiddio"
 
-[DemographyMigration]
-description = "Demography and Migration"
-one = "Demography and Migration"
+[Demography]
+description = "Demograffeg"
+one = "Demograffeg"
 
 [Education]
-description = "Education"
-one = "Education"
+description = "Addysg"
+one = "Addysg"
 
 [EthnicGroupIdentityLanguageReligion]
-description = "Ethnic group, national identity, language and religion"
-one = "Ethnic group, national identity, language and religion"
+description = "Grŵp ethnig, hunaniaeth genedlaethol, iaith a chrefydd"
+one = "Grŵp ethnig, hunaniaeth genedlaethol, iaith a chrefydd"
 
 [HealthDisabilityUnpaidCare]
-description = "Health, disability and unpaid care"
-one = "Health, disability and unpaid care"
+description = "Iechyd, anabledd a gofal di-dâl"
+one = "Iechyd, anabledd a gofal di-dâl"
+
+[HistoricCensus]
+description = "Cyfrifiadau hanesyddol"
+one = "Cyfrifiadau hanesyddol"
 
 [Housing]
-description = "Housing"
-one = "Housing"
+description = "Tai"
+one = "Tai"
 
-[LabourMarketTravelToWork]
-description = "Labour market"
-one = "Labour market"
+[InternationalMigration]
+description = "Mudo rhyngwladol"
+one = "Mudo rhyngwladol"
+
+[LabourMarket]
+description = "Y farchnad lafur"
+one = "Y farchnad lafur"
 
 [SexualOrientationGenderIdentity]
-description = "Sexual orientation and gender identity"
-one = "Housing"
+description = "Cyfeiriadedd rhywiol a hunaniaeth o ran rhywedd"
+one = "Cyfeiriadedd rhywiol a hunaniaeth o ran rhywedd"
 
-[Veterans]
-description = "Veterans"
-one = "Veterans"
+[TravelToWork]
+description = "Teithio i’r gwaith"
+one = "Teithio i’r gwaith"
+
+[UKArmedForcesVeterans]
+description = "Cyn-filwyr lluoedd arfog y DU"
+one = "Cyn-filwyr lluoedd arfog y DU"

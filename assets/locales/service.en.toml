@@ -312,10 +312,13 @@ description = "Topic summaries"
 one = "Topic summaries"
 
 # Census Topics---------------------------------------------------------------------------------------------------
+[Ageing]
+description = "Ageing"
+one = "Ageing"
 
-[DemographyMigration]
-description = "Demography and Migration"
-one = "Demography and Migration"
+[Demography]
+description = "Demography"
+one = "Demography"
 
 [Education]
 description = "Education"
@@ -329,11 +332,19 @@ one = "Ethnic group, national identity, language and religion"
 description = "Health, disability and unpaid care"
 one = "Health, disability and unpaid care"
 
+[HistoricCensus]
+description = "Historic census"
+one = "Historic census"
+
 [Housing]
 description = "Housing"
 one = "Housing"
 
-[LabourMarketTravelToWork]
+[InternationalMigration]
+description = "International migration"
+one = "International migration"
+
+[LabourMarket]
 description = "Labour market"
 one = "Labour market"
 
@@ -341,6 +352,10 @@ one = "Labour market"
 description = "Sexual orientation and gender identity"
 one = "Housing"
 
-[Veterans]
-description = "Veterans"
-one = "Veterans"
+[TravelToWork]
+description = "Travel to work"
+one = "Travel to work"
+
+[UKArmedForcesVeterans]
+description = "UK armed forces veterans"
+one = "UK armed forces veterans"
