@@ -309,14 +309,14 @@ one = "Caiff canlyniadau Cyfrifiad 2021 eu rhyddhau fesul cam, gan ddechrau ar 2
 description = "Mae canlyniadau cyntaf Cyfrifiad 2021 ar gael nawr. Dod o hyd i ddata a gwaith dadansoddi Cyfrifiad 2021."
 one = "Mae canlyniadau cyntaf Cyfrifiad 2021 ar gael nawr. Dod o hyd i ddata a gwaith dadansoddi Cyfrifiad 2021."
 
-[CensusTopics]
-description = "Pynciau'r cyfrifiad"
-one = "Pynciau'r cyfrifiad"
+[CensusGeography]
+description = "Daearyddiaeth"
+one = "Daearyddiaeth"
 
-[CensusTopicsSubhead]
-description = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
-one = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
+[CensusGeographySubhead]
+description = "Dewch o hyd i ddata Cyfrifiad 2021 ar gyfer gwahanol ardaloedd."
+one = "Dewch o hyd i ddata Cyfrifiad 2021 ar gyfer gwahanol ardaloedd."
 
-[CensusTopicsLink1]
-description = "Crynodebau pwnc"
-one = "Crynodebau pwnc"
+[CensusGeographyLink1]
+description = "Gwelwch ddata cyfrifiad ar fap"
+one = "Gwelwch ddata cyfrifiad ar fap"
