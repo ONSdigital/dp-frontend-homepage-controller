@@ -359,3 +359,29 @@ one = "Travel to work"
 [UKArmedForcesVeterans]
 description = "UK armed forces veterans"
 one = "UK armed forces veterans"
+
+# Census Topics Dates---------------------------------------------------------------------------------------------------
+
+[6Dec2022]
+description = "6 December 2022"
+one = "6 December 2022"
+
+[8Dec2022]
+description = "8 December 2022"
+one = "8 December 2022"
+
+[5Jan2023]
+description = "5 January 2023"
+one = "5 January 2023"
+
+[6Jan2023]
+description = "6 January 2023"
+one = "6 January 2023"
+
+[10Jan2023]
+description = "10 January 2023"
+one = "10 January 2023"
+
+[19Jan2023]
+description = "19 January 2023"
+one = "19 January 2023"
