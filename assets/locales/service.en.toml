@@ -299,6 +299,18 @@ one = "Results for Census 2021 will be released in stages, starting on 28 June 2
 description = "The first results from Census 2021 are out now. Find data and analysis from Census 2021."
 one = "The first results from Census 2021 are out now. Find data and analysis from Census 2021."
 
+[CensusTopics]
+description = "Census topics"
+one = "Census topics"
+
+[CensusTopicsSubhead]
+description = "Find census data and analysis using these topics."
+one = "Find census data and analysis using these topics."
+
+[CensusTopicsLink1]
+description = "Topic summaries"
+one = "Topic summaries"
+
 [CensusGeography]
 description = "Geography"
 one = "Geography"
