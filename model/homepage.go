@@ -28,8 +28,6 @@ type Homepage struct {
 	Featured           []Feature              `json:"featured"`
 	HasFeaturedContent bool                   `json:"has_featured_content"`
 	AroundONS          []Feature              `json:"arounds_ons"`
-	AvailableTopics    []Topics               `json:"available_topics"`
-	UnavailableTopics  []Topics               `json:"unavailable_topics"`
 }
 
 // ReleaseCalendar is data for release calendar block
@@ -44,13 +42,6 @@ type Release struct {
 	Title       string `json:"title"`
 	URI         string `json:"uri"`
 	ReleaseDate string `json:"releaseDate"`
-}
-
-// Topics is the data for topics
-type Topics struct {
-	Topic       string `json:"topic"`
-	ReleaseDate string `json:"release_date"`
-	URL         string `json:"url"`
 }
 
 // MainFigure is the data for an individual timeseries

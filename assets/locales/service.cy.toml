@@ -313,9 +313,13 @@ one = "Mae canlyniadau cyntaf Cyfrifiad 2021 ar gael nawr. Dod o hyd i ddata a g
 description = "Pynciau'r cyfrifiad"
 one = "Pynciau'r cyfrifiad"
 
-[CensusTopicsSubhead]
-description = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
-one = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
+[AvailableCensusTopics]
+description = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn:"
+one = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn:"
+
+[UnavailableCensusTopics]
+description = "Nid yw'r holl ddata ar gael. Caiff y pynciau hyn eu cyhoeddi ar y dyddiadau canlynol:"
+one = "Nid yw'r holl ddata ar gael. Caiff y pynciau hyn eu cyhoeddi ar y dyddiadau canlynol:"
 
 [CensusTopicsLink1]
 description = "Crynodebau pwnc"
@@ -384,14 +388,14 @@ one = "8 Rhagfyr 2022"
 description = "5 Ionawr 2023"
 one = "5 Ionawr 2023"
 
-[6Jan2023]
-description = "6 Ionawr 2023"
-one = "6 Ionawr 2023"
+[6Jan]
+description = "6 Ionawr"
+one = "6 Ionawr"
 
-[10Jan2023]
-description = "10 Ionawr 2023"
-one = "10 Ionawr 2023"
+[10Jan]
+description = "10 Ionawr"
+one = "10 Ionawr"
 
-[19Jan2023]
-description = "19 Ionawr 2023"
-one = "19 Ionawr 2023"
+[19Jan]
+description = "19 Ionawr"
+one = "19 Ionawr"

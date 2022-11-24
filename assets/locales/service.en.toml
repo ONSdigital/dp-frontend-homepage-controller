@@ -303,9 +303,13 @@ one = "The first results from Census 2021 are out now. Find data and analysis fr
 description = "Census topics"
 one = "Census topics"
 
-[CensusTopicsSubhead]
-description = "Find census data and analysis using these topics."
-one = "Find census data and analysis using these topics."
+[AvailableCensusTopics]
+description = "Find census data and analysis using these topics:"
+one = "Find census data and analysis using these topics:"
+
+[UnavailableCensusTopics]
+description = "Not all data is available. These topics will be published on the following dates:"
+one = "Not all data is available. These topics will be published on the following dates:"
 
 [CensusTopicsLink1]
 description = "Topic summaries"
@@ -362,26 +366,26 @@ one = "UK armed forces veterans"
 
 # Census Topics Dates---------------------------------------------------------------------------------------------------
 
-[6Dec2022]
-description = "6 December 2022"
-one = "6 December 2022"
+[6Dec]
+description = "6 December"
+one = "6 December"
 
-[8Dec2022]
-description = "8 December 2022"
-one = "8 December 2022"
+[8Dec]
+description = "8 December"
+one = "8 December"
 
-[5Jan2023]
-description = "5 January 2023"
-one = "5 January 2023"
+[5Jan]
+description = "5 January"
+one = "5 January"
 
-[6Jan2023]
-description = "6 January 2023"
-one = "6 January 2023"
+[6Jan]
+description = "6 January"
+one = "6 January"
 
-[10Jan2023]
-description = "10 January 2023"
-one = "10 January 2023"
+[10Jan]
+description = "10 January"
+one = "10 January"
 
-[19Jan2023]
-description = "19 January 2023"
-one = "19 January 2023"
+[19Jan]
+description = "19 January"
+one = "19 January"
