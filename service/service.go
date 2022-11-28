@@ -173,9 +173,15 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 		}
 
 		if cfg.IsPublishingMode {
-			svc.Cache.CensusTopic.AddUpdateFunc(cache.CensusTopicID, cachePrivate.UpdateCensusTopic(ctx, cfg.CensusTopicID, cfg.ServiceAuthToken, svc.Clients.Topic))
+			if err = svc.Cache.CensusTopic.AddUpdateFunc(ctx, cache.CensusTopicID, cachePrivate.UpdateCensusTopic(ctx, cfg.CensusTopicID, cfg.ServiceAuthToken, svc.Clients.Topic)); err != nil {
+				log.Error(ctx, "failed to create topics cache", err)
+				return err
+			}
 		} else {
-			svc.Cache.CensusTopic.AddUpdateFunc(cache.CensusTopicID, cachePublic.UpdateCensusTopic(ctx, cfg.CensusTopicID, svc.Clients.Topic))
+			if err = svc.Cache.CensusTopic.AddUpdateFunc(ctx, cache.CensusTopicID, cachePublic.UpdateCensusTopic(ctx, cfg.CensusTopicID, svc.Clients.Topic)); err != nil {
+				log.Error(ctx, "failed to create topics cache", err)
+				return err
+			}
 		}
 
 		go svc.Cache.CensusTopic.StartUpdates(ctx, svcErrors)

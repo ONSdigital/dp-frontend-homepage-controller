@@ -202,10 +202,32 @@ func TestAddUpdateFunc(t *testing.T) {
 		}
 
 		Convey("When AddUpdateFunc is called", func() {
-			mockTopicCache.AddUpdateFunc("test", topicUpdateFunc)
+			mockTopicCache.AddUpdateFunc(ctx, "test", topicUpdateFunc)
 
 			Convey("Then the update function is added to the cache", func() {
 				So(mockTopicCache.UpdateFuncs["test"], ShouldNotBeEmpty)
+			})
+		})
+	})
+
+	Convey("Given an update function to update a topic", t, func() {
+		mockTopicCache, err := NewTopicCache(ctx, nil)
+		So(err, ShouldBeNil)
+
+		topicUpdateFunc := func() *Topic {
+			return &Topic{
+				ID:              "test",
+				LocaliseKeyName: "Test",
+				Query:           "2453,1232",
+			}
+		}
+
+		Convey("When AddUpdateFunc is called with an empty id", func() {
+			err := mockTopicCache.AddUpdateFunc(ctx, "", topicUpdateFunc)
+
+			Convey("Then the update function is not added to the cache", func() {
+				So(err, ShouldResemble, ErrMissingCacheID)
+				So(mockTopicCache.UpdateFuncs, ShouldHaveLength, 0)
 			})
 		})
 	})

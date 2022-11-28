@@ -13,6 +13,11 @@ import (
 var (
 	// CensusTopicID is the id of the Census topic stored in mongodb which is accessible by using dp-topic-api
 	CensusTopicID string
+
+	// List of possible errors
+	ErrEmptyTopicCache     = errors.New("topicCacheData is nil")
+	ErrMissingCacheID      = errors.New("missing id value, set to empty string")
+	ErrTopicCacheWrongType = errors.New("topicCacheInterface is not type *Topic")
 )
 
 // TopicCache is a wrapper to dpcache.Cache which has additional fields and methods specifically for caching topics
@@ -51,25 +56,27 @@ func NewTopicCache(ctx context.Context, updateInterval *time.Duration) (*TopicCa
 	return topicCache, nil
 }
 
+// ErrTopicCacheKeyMissing to generate error message
+func ErrTopicCacheKeyMissing(key string) error {
+	return fmt.Errorf("cached topic data with key %s not found", key)
+}
+
 func (dc *TopicCache) GetData(ctx context.Context, key string) (*Topic, error) {
 	topicCacheInterface, ok := dc.Get(key)
 	if !ok {
-		err := fmt.Errorf("cached topic data with key %s not found", key)
-		log.Error(ctx, "failed to get cached topic data", err)
-		return getEmptyTopic(), err
+		log.Error(ctx, "failed to get cached topic data", ErrTopicCacheKeyMissing(key))
+		return getEmptyTopic(), ErrTopicCacheKeyMissing(key)
 	}
 
 	topicCacheData, ok := topicCacheInterface.(*Topic)
 	if !ok {
-		err := errors.New("topicCacheInterface is not type *Topic")
-		log.Error(ctx, "failed type assertion on topicCacheInterface", err)
-		return getEmptyTopic(), err
+		log.Error(ctx, "failed type assertion on topicCacheInterface", ErrTopicCacheWrongType)
+		return getEmptyTopic(), ErrTopicCacheWrongType
 	}
 
 	if topicCacheData == nil {
-		err := errors.New("topicCacheData is nil")
-		log.Error(ctx, "cached topic data is nil", err)
-		return getEmptyTopic(), err
+		log.Error(ctx, "cached topic data is nil", ErrEmptyTopicCache)
+		return getEmptyTopic(), ErrEmptyTopicCache
 	}
 
 	return topicCacheData, nil
@@ -77,11 +84,22 @@ func (dc *TopicCache) GetData(ctx context.Context, key string) (*Topic, error) {
 
 // AddUpdateFunc adds an update function to the topic cache for a topic with the `title` passed to the function
 // This update function will then be triggered once or at every fixed interval as per the prior setup of the TopicCache
-func (dc *TopicCache) AddUpdateFunc(id string, updateFunc func() *Topic) {
+func (dc *TopicCache) AddUpdateFunc(ctx context.Context, id string, updateFunc func() *Topic) error {
+	if id == "" {
+		log.Error(ctx, "failed to add update function to topic cache", ErrMissingCacheID)
+		return ErrMissingCacheID
+	}
+
+	if dc.UpdateFuncs[id] != nil {
+		log.Warn(ctx, "an update function already exists for id, continuing to overwrite update function", log.Data{"id": id})
+	}
+
 	dc.UpdateFuncs[id] = func() (interface{}, error) {
 		// error handling is done within the updateFunc
 		return updateFunc(), nil
 	}
+
+	return nil
 }
 
 func (dc *TopicCache) GetCensusData(ctx context.Context) (*Topic, error) {
