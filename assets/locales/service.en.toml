@@ -310,3 +310,15 @@ one = "Find census data and analysis using these topics."
 [CensusTopicsLink1]
 description = "Topic summaries"
 one = "Topic summaries"
+
+[CensusGeography]
+description = "Geography"
+one = "Geography"
+
+[CensusGeographySubhead]
+description = "Find Census 2021 data for different areas."
+one = "Find Census 2021 data for different areas."
+
+[CensusGeographyLink1]
+description = "View census data on a map"
+one = "View census data on a map"

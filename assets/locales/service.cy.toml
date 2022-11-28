@@ -320,3 +320,15 @@ one = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau 
 [CensusTopicsLink1]
 description = "Crynodebau pwnc"
 one = "Crynodebau pwnc"
+
+[CensusGeography]
+description = "Daearyddiaeth"
+one = "Daearyddiaeth"
+
+[CensusGeographySubhead]
+description = "Dewch o hyd i ddata Cyfrifiad 2021 ar gyfer gwahanol ardaloedd."
+one = "Dewch o hyd i ddata Cyfrifiad 2021 ar gyfer gwahanol ardaloedd."
+
+[CensusGeographyLink1]
+description = "Gwelwch ddata cyfrifiad ar fap"
+one = "Gwelwch ddata cyfrifiad ar fap"
