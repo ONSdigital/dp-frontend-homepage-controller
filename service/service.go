@@ -41,7 +41,7 @@ func (svc *Service) Run(ctx context.Context, cfg *config.Config, serviceList *Ex
 
 	// Initialise render client
 	rend := render.NewWithDefaultClient(assets.Asset, assets.AssetNames, cfg.PatternLibraryAssetsPath, cfg.SiteDomain)
-	log.Info(ctx, "got here 1")
+
 	// Initialise router
 	r := mux.NewRouter()
 	routes.Init(
@@ -53,20 +53,17 @@ func (svc *Service) Run(ctx context.Context, cfg *config.Config, serviceList *Ex
 		svc.HomePageClient,
 		rend,
 	)
-	log.Info(ctx, "got here 2")
+
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
-	log.Info(ctx, "got here 3")
 
 	// Start Healthcheck and HTTP Server
 	svc.HealthCheck.Start(ctx)
-	log.Info(ctx, "got here 4")
 	go func() {
 		if err := svc.Server.ListenAndServe(); err != nil {
 			svcErrors <- errors.Wrap(err, "failure in http listen and serve")
 		}
 	}()
 
-	log.Info(ctx, "got here 5")
 	return nil
 }
 
