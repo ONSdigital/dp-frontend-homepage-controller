@@ -11,18 +11,11 @@ import (
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
-type Clienter interface {
-	AddNavigationCache(ctx context.Context, updateInterval time.Duration) error
-	GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (*model.HomepageData, error)
-	GetNavigationData(ctx context.Context, lang string) (*topicModel.Navigation, error)
-	Close()
-	StartBackgroundUpdate(ctx context.Context, errorChannel chan error)
-}
-
 type PublishingClient struct {
 	Updater
-	navigationCache *cache.NavigationCache
-	languages       []string
+	censusTopicCache *cache.TopicCache
+	navigationCache  *cache.NavigationCache
+	languages        []string
 }
 
 func NewPublishingClient(ctx context.Context, clients *Clients, languages []string) Clienter {

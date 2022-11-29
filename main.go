@@ -63,7 +63,7 @@ func run(ctx context.Context) error {
 		Topic:    topicCli.NewWithHealthClient(svc.RouterHealthClient),
 	}
 
-	if err = svc.Init(ctx, cfg, svcList, BuildTime, GitCommit, Version, svcErrors); err != nil {
+	if err := svc.Init(ctx, cfg, svcList, BuildTime, GitCommit, Version, svcErrors); err != nil {
 		return errors.Wrap(err, "running service failed")
 	}
 

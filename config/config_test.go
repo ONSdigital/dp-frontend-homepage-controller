@@ -17,7 +17,8 @@ func TestSpec(t *testing.T) {
 			Convey("That the values should be set to the expected defaults", func() {
 				So(cfg.APIRouterURL, ShouldEqual, "http://localhost:23200/v1")
 				So(cfg.BindAddr, ShouldEqual, ":24400")
-				So(cfg.CacheNavigationUpdateInterval, ShouldEqual, 10*time.Second)
+				So(cfg.CacheCensusTopicUpdateInterval, ShouldEqual, 60*time.Second)
+				So(cfg.CacheNavigationUpdateInterval, ShouldEqual, 60*time.Second)
 				So(cfg.CacheUpdateInterval, ShouldEqual, 10*time.Second)
 				So(cfg.EnableNewNavBar, ShouldEqual, false)
 				So(cfg.GracefulShutdownTimeout, ShouldEqual, 5*time.Second)

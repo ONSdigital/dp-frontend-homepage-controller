@@ -2,6 +2,7 @@ package feature
 
 import (
 	"context"
+	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
@@ -122,7 +123,10 @@ func GetDownloadVariantFuncMock(ctx context.Context, userAuthToken, serviceAuthT
 	return image.ImageDownload{}, nil
 }
 
-func GetRootTopicsPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers) (*models.PublicSubtopics, apiError.Error) {
+func GetSubtopicsPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.PublicSubtopics, apiError.Error) {
+	// TODO Extend data setup when topic summaries work is completed, can use the
+	// id to determine different responses
+
 	return &models.PublicSubtopics{
 		Count:       0,
 		Offset:      0,
@@ -132,12 +136,15 @@ func GetRootTopicsPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers) (*
 	}, nil
 }
 
-func GetSubtopicsPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.PublicSubtopics, apiError.Error) {
-	return &models.PublicSubtopics{
-		Count:       0,
-		Offset:      0,
-		Limit:       0,
-		TotalCount:  0,
-		PublicItems: nil,
+func GetTopicPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.Topic, apiError.Error) {
+	// TODO Extend data setup when topic summaries work is completed, can use the
+	// id to determine different responses
+
+	releaseDate := time.Date(2022, time.November, 23, 9, 30, 0, 0, time.Local)
+
+	return &models.Topic{
+		ID:          id,
+		ReleaseDate: &releaseDate,
+		Title:       "",
 	}, nil
 }
