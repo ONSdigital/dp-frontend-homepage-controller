@@ -38,7 +38,7 @@
                         <a href="/search?topics={{ .Data.CensusSearchTopicID }}&filter=datasets" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>
                     </li>
                     <li class="ons-list__item">
-                        <a href="https://www.nomisweb.co.uk/census/2021/bulk" class="ons-list__link ons-external-link">
+                        <a href="https://www.nomisweb.co.uk/census/2021/bulk" target="_blank" rel="noopener" class="ons-list__link ons-external-link">
                             {{ localise "GetCensusDataLink2" .Language 1 }}
                             {{ template "icons/external-link" }}
                         </a>
@@ -69,7 +69,7 @@
                 <p id="other-census-desc">{{ localise "CensusGeographySubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
                     <li class="ons-list__item">
-                        <a href="/census/maps" class="ons-list__link ons-external-link">
+                        <a href="/census/maps" class="ons-list__link">
                             {{ localise "CensusGeographyLink1" .Language 1 }}
                         </a>
                     </li>
@@ -79,7 +79,7 @@
                 <p id="other-census-desc">{{ localise "CensusTopicsSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
                     <li class="ons-list__item">
-                        <a href="/census/aboutcensus/censusproducts/topicsummaries" class="ons-list__link ons-external-link">
+                        <a href="/census/aboutcensus/censusproducts/topicsummaries" class="ons-list__link">
                             {{ localise "CensusTopicsLink1" .Language 1 }}
                         </a>
                     </li>
@@ -129,13 +129,13 @@
                 <p id="other-census-desc">{{ localise "OtherCensusSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
                     <li class="ons-list__item">
-                        <a href="https://www.scotlandscensus.gov.uk/" class="ons-list__link ons-external-link">
+                        <a href="https://www.scotlandscensus.gov.uk/" target="_blank" rel="noopener" class="ons-list__link ons-external-link">
                             {{ localise "OtherCensusLink1" .Language 1 }}
                             {{ template "icons/external-link" }}
                         </a>
                     </li>
                     <li class="ons-list__item">
-                        <a href="https://www.nisra.gov.uk/statistics/census" class="ons-list__link ons-external-link">
+                        <a href="https://www.nisra.gov.uk/statistics/census" target="_blank" rel="noopener" class="ons-list__link ons-external-link">
                             {{ localise "OtherCensusLink2" .Language 1 }}
                             {{ template "icons/external-link" }}
                         </a>
