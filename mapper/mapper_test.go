@@ -452,7 +452,7 @@ func TestUnitCensus(t *testing.T) {
 		So(expectedMappedContent.Language, ShouldEqual, lang)
 		So(expectedMappedContent.PatternLibraryAssetsPath, ShouldEqual, cfg.PatternLibraryAssetsPath)
 		So(expectedMappedContent.Data.EnableCensusTopicSubsection, ShouldEqual, cfg.EnableCensusTopicSubsection)
-
+		So(expectedMappedContent.Data.CensusSearchTopicID, ShouldEqual, cfg.CensusTopicID)
 	})
 }
 
