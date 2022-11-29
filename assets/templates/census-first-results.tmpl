@@ -35,10 +35,13 @@
                 <p id="census-data-desc">{{ localise "Census2021DataSubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
                     <li class="ons-list__item">
-                        <a href="/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimatesenglandandwalescensus2021" class="ons-list__link">{{ localise "GetCensusDataEnglandWales" .Language 1 }}</a>
+                        <a href="/search?topics={{ .Data.CensusSearchTopicID }}&filter=datasets" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>
                     </li>
                     <li class="ons-list__item">
-                        <a href="/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimateswalescensus2021" class="ons-list__link">{{ localise "GetCensusDataWales" .Language 1 }}</a>
+                        <a href="https://www.nomisweb.co.uk/census/2021/bulk" class="ons-list__link ons-external-link">
+                            {{ localise "GetCensusDataLink2" .Language 1 }}
+                            {{ template "icons/external-link" }}
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -61,7 +64,7 @@
         </div>
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
             <div class="ons-card" data-test='search-4'>
-                {{ if .Data.EnableCensusTopicSubsection}}
+                {{ if .Data.EnableCensusTopicSubsection }}
                 <h2 class="ons-u-fs-m" id="other-census">{{ localise "CensusGeography" .Language 1 }}</h2>
                 <p id="other-census-desc">{{ localise "CensusGeographySubhead" .Language 1 }}</p>
                 <ul class="ons-list ons-list--dashed">
