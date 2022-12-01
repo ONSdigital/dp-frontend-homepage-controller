@@ -6,6 +6,9 @@ import (
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
+	cachePrivate "github.com/ONSdigital/dp-frontend-homepage-controller/cache/private"
+	cachePublic "github.com/ONSdigital/dp-frontend-homepage-controller/cache/public"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
@@ -17,6 +20,7 @@ import (
 
 // Service contains all the configs, server and clients to run the frontend homepage controller
 type Service struct {
+	Cache              cache.List
 	Config             *config.Config
 	RouterHealthClient *health.Client
 	HealthCheck        HealthChecker
@@ -44,10 +48,12 @@ func (svc *Service) Run(ctx context.Context, cfg *config.Config, serviceList *Ex
 		ctx,
 		r,
 		cfg,
+		svc.Cache,
 		svc.HealthCheck.Handler,
 		svc.HomePageClient,
 		rend,
 	)
+
 	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
 
 	// Start Healthcheck and HTTP Server
@@ -57,6 +63,7 @@ func (svc *Service) Run(ctx context.Context, cfg *config.Config, serviceList *Ex
 			svcErrors <- errors.Wrap(err, "failure in http listen and serve")
 		}
 	}()
+
 	return nil
 }
 
@@ -152,8 +159,33 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 			return err
 		}
 	}
+
 	// Start background polling of topics API for navbar data (changes)
 	go svc.HomePageClient.StartBackgroundUpdate(ctx, svcErrors)
+
+	if cfg.EnableCensusTopicSubsection {
+		// Initialise caching census topics
+		cache.CensusTopicID = cfg.CensusTopicID
+		svc.Cache.CensusTopic, err = cache.NewTopicCache(ctx, &cfg.CacheCensusTopicUpdateInterval)
+		if err != nil {
+			log.Error(ctx, "failed to create topics cache", err)
+			return err
+		}
+
+		if cfg.IsPublishingMode {
+			if err = svc.Cache.CensusTopic.AddUpdateFunc(ctx, cache.CensusTopicID, cachePrivate.UpdateCensusTopic(ctx, cfg.CensusTopicID, cfg.ServiceAuthToken, svc.Clients.Topic)); err != nil {
+				log.Error(ctx, "failed to create topics cache", err)
+				return err
+			}
+		} else {
+			if err = svc.Cache.CensusTopic.AddUpdateFunc(ctx, cache.CensusTopicID, cachePublic.UpdateCensusTopic(ctx, cfg.CensusTopicID, svc.Clients.Topic)); err != nil {
+				log.Error(ctx, "failed to create topics cache", err)
+				return err
+			}
+		}
+
+		go svc.Cache.CensusTopic.StartUpdates(ctx, svcErrors)
+	}
 
 	return nil
 }

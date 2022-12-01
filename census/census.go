@@ -3,27 +3,41 @@ package census
 import (
 	"net/http"
 
+	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	homepage "github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
-	dphandlers "github.com/ONSdigital/dp-net/handlers"
+	dphandlers "github.com/ONSdigital/dp-net/v2/handlers"
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
 // Handler handles requests to census endpoint
-func Handler(cfg *config.Config, homepageClient homepage.Clienter, rend RenderClient) http.HandlerFunc {
+func Handler(cfg *config.Config, cache cache.List, homepageClient homepage.Clienter, rend RenderClient) http.HandlerFunc {
 	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
-		handle(w, r, cfg, homepageClient, rend, accessToken, collectionID, lang)
+		handle(w, r, cfg, cache, homepageClient, rend, accessToken, collectionID, lang)
 	})
 }
 
-func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, homepageClient homepage.Clienter, rend RenderClient, userAccessToken, collectionID, lang string) {
+func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, cache cache.List, homepageClient homepage.Clienter, rend RenderClient, userAccessToken, collectionID, lang string) {
 	ctx := req.Context()
 	navigationContent, err := homepageClient.GetNavigationData(ctx, lang)
 	if err != nil {
 		log.Error(ctx, "failed to get navigation data", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
+	}
+
+	if cfg.EnableCensusTopicSubsection {
+		censusTopics, err := cache.CensusTopic.GetCensusData(ctx)
+		if err != nil {
+			log.Error(ctx, "failed to get census topic data", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		items := censusTopics.List.GetSubtopicItems()
+
+		log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
 	}
 
 	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
