@@ -44,13 +44,13 @@ func GetMockCensusTopic() *Topic {
 		Query:           fmt.Sprintf("1234,5678,%s", CensusTopicID),
 	}
 
-	subtopic1 := models.Topic{
+	subtopic1 := &models.Topic{
 		ID:          "1234",
 		ReleaseDate: &t,
 		Title:       "Age",
 	}
 
-	subtopic2 := models.Topic{
+	subtopic2 := &models.Topic{
 		ID:          "5678",
 		ReleaseDate: &t,
 		Title:       "Ethnicity",

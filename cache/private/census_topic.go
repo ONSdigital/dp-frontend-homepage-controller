@@ -65,7 +65,7 @@ func setTopicCachePublic(ctx context.Context, censusTopic models.TopicResponse, 
 
 	subtopicCache := cache.NewSubTopicsMap()
 	for _, subtopic := range subtopics {
-		subtopicCache.AppendSubtopicItems(*subtopic.Next)
+		subtopicCache.AppendSubtopicItems(subtopic.Next)
 	}
 
 	censusTopicCache.List = subtopicCache

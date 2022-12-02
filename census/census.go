@@ -12,13 +12,13 @@ import (
 )
 
 // Handler handles requests to census endpoint
-func Handler(cfg *config.Config, cache cache.List, homepageClient homepage.Clienter, rend RenderClient) http.HandlerFunc {
+func Handler(cfg *config.Config, c cache.List, homepageClient homepage.Clienter, rend RenderClient) http.HandlerFunc {
 	return dphandlers.ControllerHandler(func(w http.ResponseWriter, r *http.Request, lang, collectionID, accessToken string) {
-		handle(w, r, cfg, cache, homepageClient, rend, accessToken, collectionID, lang)
+		handle(w, r, cfg, c, homepageClient, rend, accessToken, collectionID, lang)
 	})
 }
 
-func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, cache cache.List, homepageClient homepage.Clienter, rend RenderClient, userAccessToken, collectionID, lang string) {
+func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cache.List, homepageClient homepage.Clienter, rend RenderClient, userAccessToken, collectionID, lang string) {
 	ctx := req.Context()
 	navigationContent, err := homepageClient.GetNavigationData(ctx, lang)
 	if err != nil {
@@ -28,7 +28,8 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, cache 
 	}
 
 	if cfg.EnableCensusTopicSubsection {
-		censusTopics, err := cache.CensusTopic.GetCensusData(ctx)
+		var censusTopics *cache.Topic
+		censusTopics, err = c.CensusTopic.GetCensusData(ctx)
 		if err != nil {
 			log.Error(ctx, "failed to get census topic data", err)
 			w.WriteHeader(http.StatusInternalServerError)

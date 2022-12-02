@@ -64,7 +64,7 @@ func (t *SubtopicsIDs) GetSubtopicsIDsQuery() string {
 }
 
 // AppendSubtopicID appends the subtopic id to the map stored in SubtopicsIDs with consideration to mutex locking
-func (t *SubtopicsIDs) AppendSubtopicItems(topic models.Topic) {
+func (t *SubtopicsIDs) AppendSubtopicItems(topic *models.Topic) {
 	t.mutex.Lock()
 	defer t.mutex.Unlock()
 
@@ -72,5 +72,5 @@ func (t *SubtopicsIDs) AppendSubtopicItems(topic models.Topic) {
 		t.subtopicsMap = make(map[string]*models.Topic)
 	}
 
-	t.subtopicsMap[topic.ID] = &topic
+	t.subtopicsMap[topic.ID] = topic
 }

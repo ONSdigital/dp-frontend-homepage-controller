@@ -13,9 +13,8 @@ import (
 
 type PublishingClient struct {
 	Updater
-	censusTopicCache *cache.TopicCache
-	navigationCache  *cache.NavigationCache
-	languages        []string
+	navigationCache *cache.NavigationCache
+	languages       []string
 }
 
 func NewPublishingClient(ctx context.Context, clients *Clients, languages []string) Clienter {
