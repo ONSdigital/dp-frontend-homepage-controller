@@ -33,7 +33,7 @@
             <div class="ons-card u-mt-l u-mb-l" data-test='search-2'>
                 <h2 class="ons-u-fs-m" id="census-data">{{ localise "Census2021Data" .Language 1 }}</h2>
                 <p id="census-data-desc">{{ localise "Census2021DataSubhead" .Language 1 }}</p>
-               {{ if FeatureFlag.EnableGetDataCard }}
+               {{ if FeatureFlags.EnableGetDataCard }}
                 <ul class="ons-list ons-list--dashed">
                     <li class="ons-list__item">
                         <a href="/search?topics={{ .Data.CensusSearchTopicID }}&filter=datasets" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>

@@ -11,7 +11,7 @@ require (
 	github.com/ONSdigital/dp-cookies v0.4.0
 	github.com/ONSdigital/dp-healthcheck v1.5.0
 	github.com/ONSdigital/dp-net/v2 v2.6.0
-	github.com/ONSdigital/dp-renderer v1.55.0
+	github.com/ONSdigital/dp-renderer v1.58.0
 	github.com/ONSdigital/dp-topic-api v0.15.0
 	github.com/ONSdigital/log.go v1.1.0
 	github.com/ONSdigital/log.go/v2 v2.3.0
@@ -55,7 +55,6 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/justinas/alice v1.2.0 // indirect
-	github.com/kevinburke/go-bindata v3.24.0+incompatible // indirect
 	github.com/klauspost/compress v1.15.6 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
