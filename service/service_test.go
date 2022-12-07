@@ -302,7 +302,7 @@ func TestClose(t *testing.T) {
 			timeoutServerMock := &mock.HTTPServerMock{
 				ListenAndServeFunc: func() error { return nil },
 				ShutdownFunc: func(ctx context.Context) error {
-					time.Sleep(2 * time.Millisecond)
+					time.Sleep(100 * time.Millisecond)
 					return nil
 				},
 			}
