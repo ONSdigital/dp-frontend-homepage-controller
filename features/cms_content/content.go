@@ -10,4 +10,8 @@ var Zebedee map[string]zebedee.TimeseriesMainFigure = map[string]zebedee.Timeser
 	IhyqQna.URI: IhyqQna,
 	IhyqPn2.URI: IhyqPn2,
 	L55o.URI:    L55o,
+	Lf24.URI:    Lf24,
+	Mgsx.URI:    Mgsx,
+	Fuu8.URI:    Fuu8,
+	Fux7.URI:    Fux7,
 }

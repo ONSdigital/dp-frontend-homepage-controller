@@ -158,8 +158,8 @@
                 <section class="col col--md-15 height-md--42">
                     <div class="margin-top--2 tile__subheading" data-test="empl-sub">Employment rate</div>
                     {{ if $EmploymentRate.Figure }}
-                        <div class="margin-top-md--2">Aged 16 to 64 seasonally adjusted ({{ datePeriodFormat $EmploymentRate.Date}})</div>
-                        <div class="tile__figure">{{ $EmploymentRate.Figure }}{{ $EmploymentRate.Unit }}</div>
+                        <div class="margin-top-md--2" data-test="empl-period">Aged 16 to 64 seasonally adjusted ({{ datePeriodFormat $EmploymentRate.Date}})</div>
+                        <div class="tile__figure" data-test="empl-value">{{ $EmploymentRate.Figure }}{{ $EmploymentRate.Unit }}</div>
                         {{if $EmploymentRate.ShowTrend}}
                             <p class="tile__trend">
                                 <span class="tile__trend__icon">
@@ -167,7 +167,7 @@
                                     {{if $EmploymentRate.Trend.IsDown}}&darr;{{ end }}
                                     {{if $EmploymentRate.Trend.IsFlat}}={{ end }}
                                 </span>
-                                <span class="tile__trend__text">{{ $EmploymentRate.Trend.Difference }} {{ localise "OnPrevious" .Language 1 }} {{ $EmploymentRate.Trend.Period }}</span>
+                                <span class="tile__trend__text" data-test="empl-trend">{{ $EmploymentRate.Trend.Difference }} {{ localise "OnPrevious" .Language 1 }} {{ $EmploymentRate.Trend.Period }}</span>
                             </p>
                         {{ end }}
                         <div class="margin-top--2">
@@ -184,10 +184,10 @@
                 </section>
                 <div class="col tile__split-bar print--hide width-md--14 margin-left-md--0 margin-top-md--3"></div>
                 <section class="col col--md-15 height-md--42">
-                    <div class="margin-top--1 tile__subheading" data-test="empl-rate-sub">Unemployment rate</div>
+                    <div class="margin-top--1 tile__subheading" data-test="unempl-sub">Unemployment rate</div>
                     {{ if $UnemploymentRate.Figure }}
-                        <div class="margin-top-md--2">Aged 16+ seasonally adjusted ({{ datePeriodFormat $UnemploymentRate.Date}})</div>
-                        <div class="tile__figure">{{ $UnemploymentRate.Figure }}{{ $UnemploymentRate.Unit }}</div>
+                        <div class="margin-top-md--2" data-test="unempl-period">Aged 16+ seasonally adjusted ({{ datePeriodFormat $UnemploymentRate.Date}})</div>
+                        <div class="tile__figure" data-test="unempl-value">{{ $UnemploymentRate.Figure }}{{ $UnemploymentRate.Unit }}</div>
                         {{if $UnemploymentRate.ShowTrend}}
                             <p class="tile__trend">
                                 <span class="tile__trend__icon">
@@ -195,7 +195,7 @@
                                     {{if $UnemploymentRate.Trend.IsDown}}&darr;{{ end }}
                                     {{if $UnemploymentRate.Trend.IsFlat}}={{ end }}
                                 </span>
-                                <span class="tile__trend__text">{{ $UnemploymentRate.Trend.Difference }} {{ localise "OnPrevious" .Language 1 }} {{ $UnemploymentRate.Trend.Period }}</span>
+                                <span class="tile__trend__text" data-test="unempl-trend">{{ $UnemploymentRate.Trend.Difference }} {{ localise "OnPrevious" .Language 1 }} {{ $UnemploymentRate.Trend.Period }}</span>
                             </p>
                         {{ end }}
                         <div class="margin-top--2">
@@ -216,9 +216,9 @@
             <article class="tile tile__content col col--md-14 margin-left-md--1 margin-bottom-md--2 height-md--52">
                 <header class="margin-top--1"><h2 class="margin-top--0 margin-right--0 margin-bottom--0 margin-left--0" data-test="inflation-h2"><span class="tile__title">Inflation</span></h2></header>
                 {{ if $Inflation.Figure }}
-                    <div class="margin-top--2">CPIH 12-month rate</div>
-                    <div class="margin-top--1">{{ datePeriodFormat $Inflation.Date }}</div>
-                    <div class="tile__figure">{{ $Inflation.Figure }}{{ $Inflation.Unit }}</div>
+                    <div class="margin-top--2" data-test="inflation-period">CPIH 12-month rate</div>
+                    <div class="margin-top--1" data-test="inflation-date">{{ datePeriodFormat $Inflation.Date }}</div>
+                    <div class="tile__figure"  data-test="inflation-value">{{ $Inflation.Figure }}{{ $Inflation.Unit }}</div>
                     {{if $Inflation.ShowTrend}}
                         <p class="tile__trend">
                             <span class="tile__trend__icon">
@@ -226,7 +226,7 @@
                                 {{if $Inflation.Trend.IsDown}}&darr;{{ end }}
                                 {{if $Inflation.Trend.IsFlat}}={{ end }}
                             </span>
-                            <span class="tile__trend__text">{{ $Inflation.Trend.Difference }} {{ localise "OnPrevious" .Language 1 }} {{ $Inflation.Trend.Period }}</span>
+                            <span class="tile__trend__text" data-test="inflation-trend">{{ $Inflation.Trend.Difference }} {{ localise "OnPrevious" .Language 1 }} {{ $Inflation.Trend.Period }}</span>
                         </p>
                     {{end}}
                     <div class="margin-top--2">
@@ -244,9 +244,9 @@
             <article class="tile tile__content col col--md-14 margin-left-md--1 margin-bottom-md--2 height-md--52">
                 <header class="margin-top--1"><h2 class="margin-top--0 margin-right--0 margin-bottom--0 margin-left--0" data-test="gdp-h2"><span class="tile__title">GDP</span></h2></header>
                 {{ if $GDP.Figure }}
-                    <div class="margin-top--2">Quarter on Quarter</div>
-                    <div class="margin-top--1">{{ datePeriodFormat $GDP.Date }}</div>
-                    <div class="tile__figure">{{ $GDP.Figure }}{{ $GDP.Unit}}</div>
+                    <div class="margin-top--2" data-test="gdp-period">Quarter on Quarter</div>
+                    <div class="margin-top--1" data-test="gdp-date">{{ datePeriodFormat $GDP.Date }}</div>
+                    <div class="tile__figure" data-test="gdp-value">{{ $GDP.Figure }}{{ $GDP.Unit}}</div>
                     {{if $GDP.ShowTrend}}
                         <p class="tile__trend">
                             <span class="tile__trend__icon">
@@ -254,7 +254,7 @@
                                 {{if $GDP.Trend.IsDown}}&darr;{{ end }}
                                 {{if $GDP.Trend.IsFlat}}={{ end }}
                             </span>
-                            <span class="tile__trend__text">{{ $GDP.Trend.Difference }} {{ localise "OnPrevious" .Language 1 }} {{ $GDP.Trend.Period }}</span>
+                            <span class="tile__trend__text" data-test="gdp-trend">{{ $GDP.Trend.Difference }} {{ localise "OnPrevious" .Language 1 }} {{ $GDP.Trend.Period }}</span>
                         </p>
                     {{ end }}
                     <div class="margin-top--2">
@@ -272,8 +272,8 @@
             <article class="tile tile__content margin-top-md--6 margin-left-md--1 height-md--43">
                 <header class="margin-top--1"><h2 class="margin-top--0 margin-right--0 margin-bottom--4 margin-left--0" data-test="ukpop-h2"><span class="tile__title">UK population</span></h2></header>
                 {{ if $Population.Figure }}
-                    <div class="margin-top--2">Mid-year estimate ({{ datePeriodFormat $Population.Date }})</div>
-                    <div class="tile__figure">{{ $Population.Figure }}</div>
+                    <div class="margin-top--2" data-test="ukpop-period">Mid-year estimate ({{ datePeriodFormat $Population.Date }})</div>
+                    <div class="tile__figure" data-test="ukpop-value">{{ $Population.Figure }}</div>
                     <div class="margin-top--2">
                         <a href="{{ $Population.FigureURIs.Analysis}}" class="tile__link" 
                             aria-label="Analysis for UK population" data-gtm-label="Analysis for UK population">Analysis

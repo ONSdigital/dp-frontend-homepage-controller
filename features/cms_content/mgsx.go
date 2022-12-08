@@ -13,6 +13,70 @@ var Mgsx zebedee.TimeseriesMainFigure = zebedee.TimeseriesMainFigure{
 	},
 	Months: []zebedee.TimeseriesDataPoint{
 		{
+			Label: "2021 JAN-MAR",
+			Value: "4.9",
+		},
+		{
+			Label: "2021 FEB-APR",
+			Value: "4.9",
+		},
+		{
+			Label: "2021 MAR-MAY",
+			Value: "4.9",
+		},
+		{
+			Label: "2021 APR-JUN",
+			Value: "4.7",
+		},
+		{
+			Label: "2021 MAY-JUL",
+			Value: "4.6",
+		},
+		{
+			Label: "2021 JUN-AUG",
+			Value: "4.4",
+		},
+		{
+			Label: "2021 JUL-SEP",
+			Value: "4.3",
+		},
+		{
+			Label: "2021 AUG-OCT",
+			Value: "4.2",
+		},
+		{
+			Label: "2021 SEP-NOV",
+			Value: "4.1",
+		},
+		{
+			Label: "2021 OCT-DEC",
+			Value: "4.0",
+		},
+		{
+			Label: "2021 NOV-JAN",
+			Value: "4.0",
+		},
+		{
+			Label: "2021 DEC-FEB",
+			Value: "3.8",
+		},
+		{
+			Label: "2022 JAN-MAR",
+			Value: "3.7",
+		},
+		{
+			Label: "2022 FEB-APR",
+			Value: "3.8",
+		},
+		{
+			Label: "2022 MAR-MAY",
+			Value: "3.8",
+		},
+		{
+			Label: "2022 APR-JUN",
+			Value: "3.8",
+		},
+		{
 			Label: "2022 MAY-JUL",
 			Value: "3.6",
 		},
@@ -22,6 +86,22 @@ var Mgsx zebedee.TimeseriesMainFigure = zebedee.TimeseriesMainFigure{
 		},
 	},
 	Quarters: []zebedee.TimeseriesDataPoint{
+		{
+			Label: "2021 Q1",
+			Value: "4.9",
+		},
+		{
+			Label: "2021 Q2",
+			Value: "4.7",
+		},
+		{
+			Label: "2021 Q3",
+			Value: "4.3",
+		},
+		{
+			Label: "2021 Q4",
+			Value: "4.0",
+		},
 		{
 			Label: "2022 Q1",
 			Value: "3.7",
