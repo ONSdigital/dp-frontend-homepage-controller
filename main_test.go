@@ -23,6 +23,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	component, _ := feature.New(goCtx)
 	url := fmt.Sprintf("http://%s%s", component.Config.SiteDomain, component.Config.BindAddr)
 	uiFeature := componenttest.NewUIFeature(url)
+	component.Config.EnableGetDataCard = true
 
 	// Custom steps
 	ctx.Step(`^the 1st link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-1'] > ul > li:nth-child(1) > a"))
