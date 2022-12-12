@@ -328,7 +328,7 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
 	page.Data.CensusSearchTopicID = cfg.CensusTopicID
-	page.FeatureFlags.EnableGetDataCard = cfg.EnableGetDataCard
+	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
 
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)
