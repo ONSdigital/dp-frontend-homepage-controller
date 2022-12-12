@@ -38,6 +38,25 @@ func TestComponent(t *testing.T) {
 
 		if status > 0 {
 			t.Fail()
+
+		} else {
+			var opts = godog.Options{
+				Output: colors.Colored(os.Stdout),
+				Format: "pretty",
+				Paths:  []string{"features/censusEnableGetDataCard", "features/homepage"},
+				Tags:   "~@avoid",
+			}
+
+			status = godog.TestSuite{
+				Name:                 "feature_tests",
+				ScenarioInitializer:  steps.InitializeScenarioWithGetDataCardEnabled,
+				TestSuiteInitializer: InitializeTestSuite,
+				Options:              &opts,
+			}.Run()
+
+			if status > 0 {
+				t.Fail()
+			}
 		}
 	} else {
 		t.Skip("component flag required to run component tests")

@@ -17,12 +17,21 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	url := fmt.Sprintf("http://%s%s", component.Config.SiteDomain, component.Config.BindAddr)
 	uiFeature := componenttest.NewUIFeature(url)
 
-	RegisterSteps(ctx, uiFeature)
+	RegisterSteps(ctx, component, uiFeature)
 }
 
-func RegisterSteps(ctx *godog.ScenarioContext, uiFeature *componenttest.UIFeature) {
+func InitializeScenarioWithGetDataCardEnabled(ctx *godog.ScenarioContext) {
 	goCtx := context.Background()
 	component, _ := feature.New(goCtx)
+	component.Config.EnableGetDataCard = true // Update configuration for enabling changes to "Get data card"
+	url := fmt.Sprintf("http://%s%s", component.Config.SiteDomain, component.Config.BindAddr)
+	uiFeature := componenttest.NewUIFeature(url)
+
+	RegisterSteps(ctx, component, uiFeature)
+}
+
+func RegisterSteps(ctx *godog.ScenarioContext, component *feature.HomePageComponent, uiFeature *componenttest.UIFeature) {
+	goCtx := context.Background()
 
 	// Custom steps
 	ctx.Step(`^the 1st link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-1'] > ul > li:nth-child(1) > a"))
