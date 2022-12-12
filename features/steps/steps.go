@@ -14,9 +14,15 @@ import (
 func InitializeScenario(ctx *godog.ScenarioContext) {
 	goCtx := context.Background()
 	component, _ := feature.New(goCtx)
-	component.Config.EnableGetDataCard = false
 	url := fmt.Sprintf("http://%s%s", component.Config.SiteDomain, component.Config.BindAddr)
 	uiFeature := componenttest.NewUIFeature(url)
+
+	RegisterSteps(ctx, uiFeature)
+}
+
+func RegisterSteps(ctx *godog.ScenarioContext, uiFeature *componenttest.UIFeature) {
+	goCtx := context.Background()
+	component, _ := feature.New(goCtx)
 
 	// Custom steps
 	ctx.Step(`^the 1st link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-1'] > ul > li:nth-child(1) > a"))
