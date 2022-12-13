@@ -59,7 +59,7 @@ func get() (*Config, error) {
 		CacheUpdateInterval:            10 * time.Second,
 		CensusTopicID:                  "4445",
 		Debug:                          false,
-		EnableCensusTopicSubsection:    false,
+		EnableCensusTopicSubsection:    true,
 		EnableNewNavBar:                false,
 		GracefulShutdownTimeout:        5 * time.Second,
 		HealthCheckCriticalTimeout:     90 * time.Second,
