@@ -18,6 +18,53 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
+var mockedNavigationData = &topicModel.Navigation{
+	Description: "A list of topical areas and their subtopics in english to generate the website navbar.",
+	Links: &topicModel.TopicLinks{
+		Self: &topicModel.LinkObject{
+			HRef: "/navigation",
+		},
+	},
+	Items: &[]topicModel.TopicNonReferential{
+		{
+			Title:       "Business, industry and trade",
+			Description: "Activities of businesses and industry in the UK, including data on the production and trade of goods and services, sales by retailers, characteristics of businesses, the construction and manufacturing sectors, and international trade.",
+			Name:        "business-industry-and-trade",
+			Label:       "Business, industry and trade",
+			Links: &topicModel.TopicLinks{
+				Self: &topicModel.LinkObject{
+					ID:   "businessindustryandtrade",
+					HRef: "/topics/businessindustryandtrade",
+				},
+			},
+			Uri: "/businessindustryandtrade",
+			SubtopicItems: &[]topicModel.TopicNonReferential{
+				{
+					Title:       "Business",
+					Description: "UK businesses registered for VAT and PAYE with regional breakdowns, including data on size (employment and turnover) and activity (type of industry), research and development, and business services.",
+					Name:        "business",
+					Label:       "Business",
+					Links: &topicModel.TopicLinks{
+						Self: &topicModel.LinkObject{
+							ID:   "business",
+							HRef: "/topics/business",
+						},
+					},
+					Uri: "/businessindustryandtrade/business",
+				},
+			},
+		},
+	},
+}
+
+var emergencyBanner = zebedee.EmergencyBanner{
+	Type:        "notable_death",
+	Title:       "Emergency banner title",
+	Description: "Emergency banner description",
+	URI:         "www.google.com",
+	LinkText:    "More info",
+}
+
 func TestUnitMapper(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
@@ -213,53 +260,6 @@ func TestUnitMapper(t *testing.T) {
 
 	serviceMessage := "Test service message"
 
-	emergencyBanner := zebedee.EmergencyBanner{
-		Type:        "notable_death",
-		Title:       "Emergency banner title",
-		Description: "Emergency banner description",
-		URI:         "www.google.com",
-		LinkText:    "More info",
-	}
-
-	mockedNavigationData := &topicModel.Navigation{
-		Description: "A list of topical areas and their subtopics in english to generate the website navbar.",
-		Links: &topicModel.TopicLinks{
-			Self: &topicModel.LinkObject{
-				HRef: "/navigation",
-			},
-		},
-		Items: &[]topicModel.TopicNonReferential{
-			{
-				Title:       "Business, industry and trade",
-				Description: "Activities of businesses and industry in the UK, including data on the production and trade of goods and services, sales by retailers, characteristics of businesses, the construction and manufacturing sectors, and international trade.",
-				Name:        "business-industry-and-trade",
-				Label:       "Business, industry and trade",
-				Links: &topicModel.TopicLinks{
-					Self: &topicModel.LinkObject{
-						ID:   "businessindustryandtrade",
-						HRef: "/topics/businessindustryandtrade",
-					},
-				},
-				Uri: "/businessindustryandtrade",
-				SubtopicItems: &[]topicModel.TopicNonReferential{
-					{
-						Title:       "Business",
-						Description: "UK businesses registered for VAT and PAYE with regional breakdowns, including data on size (employment and turnover) and activity (type of industry), research and development, and business services.",
-						Name:        "business",
-						Label:       "Business",
-						Links: &topicModel.TopicLinks{
-							Self: &topicModel.LinkObject{
-								ID:   "business",
-								HRef: "/topics/business",
-							},
-						},
-						Uri: "/businessindustryandtrade/business",
-					},
-				},
-			},
-		},
-	}
-
 	basePage := coreModel.NewPage("path/to/assets", "site-domain")
 	Convey("test homepage mapping works", t, func() {
 		page := Homepage(config.Config{}, "en", basePage, mockedMainFigures, &mockedFeaturedContent, &mockedAroundONS, serviceMessage, emergencyBanner, mockedNavigationData)
@@ -430,6 +430,29 @@ func TestUnitMapper(t *testing.T) {
 
 		So(gracefulDegradationPage.Data.HasFeaturedContent, ShouldEqual, false)
 		So(gracefulDegradationPage.Data.HasMainFigures, ShouldEqual, false)
+	})
+}
+
+func TestUnitCensus(t *testing.T) {
+	t.Parallel()
+	req := httptest.NewRequest("", "/", nil)
+	Convey("census mapper ffunc returns correct data", t, func() {
+		basePage := coreModel.NewPage("path/to/assets", "site-domain")
+		lang := "en"
+		cfg, err := config.Get()
+		if err != nil {
+			t.Error("failed to get config")
+		}
+
+		expectedMappedContent := Census(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner)
+
+		So(expectedMappedContent.URI, ShouldEqual, "/census")
+		So(expectedMappedContent.Type, ShouldEqual, "census")
+		So(expectedMappedContent.Metadata.Title, ShouldEqual, "Census")
+		So(expectedMappedContent.Language, ShouldEqual, lang)
+		So(expectedMappedContent.PatternLibraryAssetsPath, ShouldEqual, cfg.PatternLibraryAssetsPath)
+		So(expectedMappedContent.Data.EnableCensusTopicSubsection, ShouldEqual, cfg.EnableCensusTopicSubsection)
+		So(expectedMappedContent.Data.CensusSearchTopicID, ShouldEqual, cfg.CensusTopicID)
 	})
 }
 

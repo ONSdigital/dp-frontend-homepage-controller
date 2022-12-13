@@ -15,12 +15,13 @@ build: generate-prod
 
 .PHONY: lint-local
 lint-local:
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.2
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
 	golangci-lint run ./...
 
 .PHONY: lint
-lint:
-	exit
+lint: generate-prod
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
+	golangci-lint run ./...
 
 .PHONY: debug
 debug: generate-debug

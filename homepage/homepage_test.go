@@ -17,11 +17,6 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-type mockClientError struct{}
-
-func (e *mockClientError) Error() string { return "client error" }
-func (e *mockClientError) Code() int     { return http.StatusNotFound }
-
 // doTestRequest helper function that creates a router and mocks requests
 func doTestRequest(target string, req *http.Request, handlerFunc http.HandlerFunc, w *httptest.ResponseRecorder) *httptest.ResponseRecorder {
 	if w == nil {
@@ -50,7 +45,7 @@ func TestUnitHomepageHandlerSuccess(t *testing.T) {
 			},
 		}
 
-		mockedHomepageClienter := &HomepageClienterMock{
+		mockedHomepageClienter := &ClienterMock{
 			CloseFunc: func() {},
 			GetHomePageFunc: func(ctx context.Context, userAccessToken string, collectionID string, lang string) (*model.HomepageData, error) {
 				return &model.HomepageData{}, nil

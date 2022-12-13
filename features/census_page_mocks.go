@@ -2,9 +2,12 @@ package feature
 
 import (
 	"context"
+	"fmt"
+	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
+	content "github.com/ONSdigital/dp-frontend-homepage-controller/features/cms_content"
 	"github.com/ONSdigital/dp-topic-api/models"
 	"github.com/ONSdigital/dp-topic-api/sdk"
 	apiError "github.com/ONSdigital/dp-topic-api/sdk/errors"
@@ -73,56 +76,21 @@ func GetHomepageContentFuncMock(ctx context.Context, userAccessToken, collection
 }
 
 func GetTimeseriesMainFigureFuncMock(ctx context.Context, userAuthToken, collectionID, lang, uri string) (zebedee.TimeseriesMainFigure, error) {
-	return zebedee.TimeseriesMainFigure{
-		Months: []zebedee.TimeseriesDataPoint{
-			{
-				Value: "677.89",
-				Label: "Jan 2020",
-			},
-			{
-				Value: "679.56",
-				Label: "Feb 2020",
-			},
-		},
-		Years: []zebedee.TimeseriesDataPoint{
-			{
-				Value: "907.89",
-				Label: "2020",
-			},
-			{
-				Value: "1009.56",
-				Label: "2021",
-			},
-		},
-		Quarters: []zebedee.TimeseriesDataPoint{
-			{
-				Value: "13.97",
-				Label: "Q1",
-			},
-			{
-				Value: "14.68",
-				Label: "Q2",
-			},
-		},
-		RelatedDocuments: []zebedee.Related{
-			{
-				Title: "Related thing",
-				URI:   "test/uri/timeseries/123",
-			},
-		},
-		Description: zebedee.TimeseriesDescription{
-			CDID: "LOLZ",
-			Unit: "%",
-		},
-		URI: "test/uri/timeseries/456",
-	}, nil
+	c, ok := content.Zebedee[uri]
+	if !ok {
+		return zebedee.TimeseriesMainFigure{}, fmt.Errorf("unexpected uri: %s", uri)
+	}
+	return c, nil
 }
 
 func GetDownloadVariantFuncMock(ctx context.Context, userAuthToken, serviceAuthToken, collectionID, imageID, variant string) (image.ImageDownload, error) {
 	return image.ImageDownload{}, nil
 }
 
-func GetRootTopicsPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers) (*models.PublicSubtopics, apiError.Error) {
+func GetSubtopicsPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.PublicSubtopics, apiError.Error) {
+	// TODO Extend data setup when topic summaries work is completed, can use the
+	// id to determine different responses
+
 	return &models.PublicSubtopics{
 		Count:       0,
 		Offset:      0,
@@ -132,12 +100,15 @@ func GetRootTopicsPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers) (*
 	}, nil
 }
 
-func GetSubtopicsPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.PublicSubtopics, apiError.Error) {
-	return &models.PublicSubtopics{
-		Count:       0,
-		Offset:      0,
-		Limit:       0,
-		TotalCount:  0,
-		PublicItems: nil,
+func GetTopicPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.Topic, apiError.Error) {
+	// TODO Extend data setup when topic summaries work is completed, can use the
+	// id to determine different responses
+
+	releaseDate := time.Date(2022, time.November, 23, 9, 30, 0, 0, time.Local)
+
+	return &models.Topic{
+		ID:          id,
+		ReleaseDate: &releaseDate,
+		Title:       "",
 	}, nil
 }

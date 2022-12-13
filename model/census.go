@@ -12,8 +12,10 @@ type CensusPage struct {
 
 // Census is data for the census hub
 type Census struct {
-	AvailableTopics   []Topics `json:"available_topics"`
-	UnavailableTopics []Topics `json:"unavailable_topics"`
+	AvailableTopics             []Topics `json:"available_topics"`
+	UnavailableTopics           []Topics `json:"unavailable_topics"`
+	EnableCensusTopicSubsection bool     `json:"enable_census_topic_subsection"`
+	CensusSearchTopicID         string   `json:"census_search_topic_id"`
 }
 
 // Topics is the data for topics

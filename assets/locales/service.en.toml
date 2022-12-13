@@ -151,13 +151,13 @@ one = "Census 2021 data"
 description = "Find data for Census 2021."
 one = "Find data for Census 2021."
 
-[GetCensusDataEnglandWales]
-description = "Get census data (England and Wales)"
-one = "Get census data (England and Wales)"
+[GetCensusDataLink1]
+description = "Get census data"
+one = "Get census data"
 
-[GetCensusDataWales]
-description = "Get census data (Wales)"
-one = "Get census data (Wales)"
+[GetCensusDataLink2]
+description = "Bulk data"
+one = "Bulk data"
 
 [HistoricCensusData]
 description = "Historic census data"
@@ -303,6 +303,14 @@ one = "The first results from Census 2021 are out now. Find data and analysis fr
 description = "Census topics"
 one = "Census topics"
 
+[CensusTopicsSubhead]
+description = "Find census data and analysis using these topics."
+one = "Find census data and analysis using these topics."
+
+[CensusTopicsLink1]
+description = "Topic summaries"
+one = "Topic summaries"
+
 [AvailableCensusTopics]
 description = "Find census data and analysis using these topics:"
 one = "Find census data and analysis using these topics:"
@@ -311,9 +319,17 @@ one = "Find census data and analysis using these topics:"
 description = "Not all data is available. These topics will be published on the following dates:"
 one = "Not all data is available. These topics will be published on the following dates:"
 
-[CensusTopicsLink1]
-description = "Topic summaries"
-one = "Topic summaries"
+[CensusGeography]
+description = "Geography"
+one = "Geography"
+
+[CensusGeographySubhead]
+description = "Find Census 2021 data for different areas."
+one = "Find Census 2021 data for different areas."
+
+[CensusGeographyLink1]
+description = "View census data on a map"
+one = "View census data on a map"
 
 # Census Topics---------------------------------------------------------------------------------------------------
 [Ageing]

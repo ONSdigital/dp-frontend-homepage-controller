@@ -7,10 +7,16 @@ import (
 	"context"
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
-	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
+	"github.com/ONSdigital/dp-healthcheck/healthcheck"
 	"github.com/ONSdigital/dp-renderer/model"
 	"io"
 	"sync"
+)
+
+var (
+	lockZebedeeClientMockChecker                 sync.RWMutex
+	lockZebedeeClientMockGetHomepageContent      sync.RWMutex
+	lockZebedeeClientMockGetTimeseriesMainFigure sync.RWMutex
 )
 
 // Ensure, that ZebedeeClientMock does implement ZebedeeClient.
@@ -19,28 +25,28 @@ var _ ZebedeeClient = &ZebedeeClientMock{}
 
 // ZebedeeClientMock is a mock implementation of ZebedeeClient.
 //
-// 	func TestSomethingThatUsesZebedeeClient(t *testing.T) {
+//     func TestSomethingThatUsesZebedeeClient(t *testing.T) {
 //
-// 		// make and configure a mocked ZebedeeClient
-// 		mockedZebedeeClient := &ZebedeeClientMock{
-// 			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
-// 				panic("mock out the Checker method")
-// 			},
-// 			GetHomepageContentFunc: func(ctx context.Context, userAccessToken string, collectionID string, lang string, path string) (zebedee.HomepageContent, error) {
-// 				panic("mock out the GetHomepageContent method")
-// 			},
-// 			GetTimeseriesMainFigureFunc: func(ctx context.Context, userAuthToken string, collectionID string, lang string, uri string) (zebedee.TimeseriesMainFigure, error) {
-// 				panic("mock out the GetTimeseriesMainFigure method")
-// 			},
-// 		}
+//         // make and configure a mocked ZebedeeClient
+//         mockedZebedeeClient := &ZebedeeClientMock{
+//             CheckerFunc: func(ctx context.Context, check *healthcheck.CheckState) error {
+// 	               panic("mock out the Checker method")
+//             },
+//             GetHomepageContentFunc: func(ctx context.Context, userAccessToken string, collectionID string, lang string, path string) (zebedee.HomepageContent, error) {
+// 	               panic("mock out the GetHomepageContent method")
+//             },
+//             GetTimeseriesMainFigureFunc: func(ctx context.Context, userAuthToken string, collectionID string, lang string, uri string) (zebedee.TimeseriesMainFigure, error) {
+// 	               panic("mock out the GetTimeseriesMainFigure method")
+//             },
+//         }
 //
-// 		// use mockedZebedeeClient in code that requires ZebedeeClient
-// 		// and then make assertions.
+//         // use mockedZebedeeClient in code that requires ZebedeeClient
+//         // and then make assertions.
 //
-// 	}
+//     }
 type ZebedeeClientMock struct {
 	// CheckerFunc mocks the Checker method.
-	CheckerFunc func(ctx context.Context, check *health.CheckState) error
+	CheckerFunc func(ctx context.Context, check *healthcheck.CheckState) error
 
 	// GetHomepageContentFunc mocks the GetHomepageContent method.
 	GetHomepageContentFunc func(ctx context.Context, userAccessToken string, collectionID string, lang string, path string) (zebedee.HomepageContent, error)
@@ -55,7 +61,7 @@ type ZebedeeClientMock struct {
 			// Ctx is the ctx argument value.
 			Ctx context.Context
 			// Check is the check argument value.
-			Check *health.CheckState
+			Check *healthcheck.CheckState
 		}
 		// GetHomepageContent holds details about calls to the GetHomepageContent method.
 		GetHomepageContent []struct {
@@ -84,26 +90,23 @@ type ZebedeeClientMock struct {
 			URI string
 		}
 	}
-	lockChecker                 sync.RWMutex
-	lockGetHomepageContent      sync.RWMutex
-	lockGetTimeseriesMainFigure sync.RWMutex
 }
 
 // Checker calls CheckerFunc.
-func (mock *ZebedeeClientMock) Checker(ctx context.Context, check *health.CheckState) error {
+func (mock *ZebedeeClientMock) Checker(ctx context.Context, check *healthcheck.CheckState) error {
 	if mock.CheckerFunc == nil {
 		panic("ZebedeeClientMock.CheckerFunc: method is nil but ZebedeeClient.Checker was just called")
 	}
 	callInfo := struct {
 		Ctx   context.Context
-		Check *health.CheckState
+		Check *healthcheck.CheckState
 	}{
 		Ctx:   ctx,
 		Check: check,
 	}
-	mock.lockChecker.Lock()
+	lockZebedeeClientMockChecker.Lock()
 	mock.calls.Checker = append(mock.calls.Checker, callInfo)
-	mock.lockChecker.Unlock()
+	lockZebedeeClientMockChecker.Unlock()
 	return mock.CheckerFunc(ctx, check)
 }
 
@@ -112,15 +115,15 @@ func (mock *ZebedeeClientMock) Checker(ctx context.Context, check *health.CheckS
 //     len(mockedZebedeeClient.CheckerCalls())
 func (mock *ZebedeeClientMock) CheckerCalls() []struct {
 	Ctx   context.Context
-	Check *health.CheckState
+	Check *healthcheck.CheckState
 } {
 	var calls []struct {
 		Ctx   context.Context
-		Check *health.CheckState
+		Check *healthcheck.CheckState
 	}
-	mock.lockChecker.RLock()
+	lockZebedeeClientMockChecker.RLock()
 	calls = mock.calls.Checker
-	mock.lockChecker.RUnlock()
+	lockZebedeeClientMockChecker.RUnlock()
 	return calls
 }
 
@@ -142,9 +145,9 @@ func (mock *ZebedeeClientMock) GetHomepageContent(ctx context.Context, userAcces
 		Lang:            lang,
 		Path:            path,
 	}
-	mock.lockGetHomepageContent.Lock()
+	lockZebedeeClientMockGetHomepageContent.Lock()
 	mock.calls.GetHomepageContent = append(mock.calls.GetHomepageContent, callInfo)
-	mock.lockGetHomepageContent.Unlock()
+	lockZebedeeClientMockGetHomepageContent.Unlock()
 	return mock.GetHomepageContentFunc(ctx, userAccessToken, collectionID, lang, path)
 }
 
@@ -165,9 +168,9 @@ func (mock *ZebedeeClientMock) GetHomepageContentCalls() []struct {
 		Lang            string
 		Path            string
 	}
-	mock.lockGetHomepageContent.RLock()
+	lockZebedeeClientMockGetHomepageContent.RLock()
 	calls = mock.calls.GetHomepageContent
-	mock.lockGetHomepageContent.RUnlock()
+	lockZebedeeClientMockGetHomepageContent.RUnlock()
 	return calls
 }
 
@@ -189,9 +192,9 @@ func (mock *ZebedeeClientMock) GetTimeseriesMainFigure(ctx context.Context, user
 		Lang:          lang,
 		URI:           uri,
 	}
-	mock.lockGetTimeseriesMainFigure.Lock()
+	lockZebedeeClientMockGetTimeseriesMainFigure.Lock()
 	mock.calls.GetTimeseriesMainFigure = append(mock.calls.GetTimeseriesMainFigure, callInfo)
-	mock.lockGetTimeseriesMainFigure.Unlock()
+	lockZebedeeClientMockGetTimeseriesMainFigure.Unlock()
 	return mock.GetTimeseriesMainFigureFunc(ctx, userAuthToken, collectionID, lang, uri)
 }
 
@@ -212,11 +215,16 @@ func (mock *ZebedeeClientMock) GetTimeseriesMainFigureCalls() []struct {
 		Lang          string
 		URI           string
 	}
-	mock.lockGetTimeseriesMainFigure.RLock()
+	lockZebedeeClientMockGetTimeseriesMainFigure.RLock()
 	calls = mock.calls.GetTimeseriesMainFigure
-	mock.lockGetTimeseriesMainFigure.RUnlock()
+	lockZebedeeClientMockGetTimeseriesMainFigure.RUnlock()
 	return calls
 }
+
+var (
+	lockImageClientMockChecker            sync.RWMutex
+	lockImageClientMockGetDownloadVariant sync.RWMutex
+)
 
 // Ensure, that ImageClientMock does implement ImageClient.
 // If this is not the case, regenerate this file with moq.
@@ -224,25 +232,25 @@ var _ ImageClient = &ImageClientMock{}
 
 // ImageClientMock is a mock implementation of ImageClient.
 //
-// 	func TestSomethingThatUsesImageClient(t *testing.T) {
+//     func TestSomethingThatUsesImageClient(t *testing.T) {
 //
-// 		// make and configure a mocked ImageClient
-// 		mockedImageClient := &ImageClientMock{
-// 			CheckerFunc: func(ctx context.Context, check *health.CheckState) error {
-// 				panic("mock out the Checker method")
-// 			},
-// 			GetDownloadVariantFunc: func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string, variant string) (image.ImageDownload, error) {
-// 				panic("mock out the GetDownloadVariant method")
-// 			},
-// 		}
+//         // make and configure a mocked ImageClient
+//         mockedImageClient := &ImageClientMock{
+//             CheckerFunc: func(ctx context.Context, check *healthcheck.CheckState) error {
+// 	               panic("mock out the Checker method")
+//             },
+//             GetDownloadVariantFunc: func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string, variant string) (image.ImageDownload, error) {
+// 	               panic("mock out the GetDownloadVariant method")
+//             },
+//         }
 //
-// 		// use mockedImageClient in code that requires ImageClient
-// 		// and then make assertions.
+//         // use mockedImageClient in code that requires ImageClient
+//         // and then make assertions.
 //
-// 	}
+//     }
 type ImageClientMock struct {
 	// CheckerFunc mocks the Checker method.
-	CheckerFunc func(ctx context.Context, check *health.CheckState) error
+	CheckerFunc func(ctx context.Context, check *healthcheck.CheckState) error
 
 	// GetDownloadVariantFunc mocks the GetDownloadVariant method.
 	GetDownloadVariantFunc func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string, variant string) (image.ImageDownload, error)
@@ -254,7 +262,7 @@ type ImageClientMock struct {
 			// Ctx is the ctx argument value.
 			Ctx context.Context
 			// Check is the check argument value.
-			Check *health.CheckState
+			Check *healthcheck.CheckState
 		}
 		// GetDownloadVariant holds details about calls to the GetDownloadVariant method.
 		GetDownloadVariant []struct {
@@ -272,25 +280,23 @@ type ImageClientMock struct {
 			Variant string
 		}
 	}
-	lockChecker            sync.RWMutex
-	lockGetDownloadVariant sync.RWMutex
 }
 
 // Checker calls CheckerFunc.
-func (mock *ImageClientMock) Checker(ctx context.Context, check *health.CheckState) error {
+func (mock *ImageClientMock) Checker(ctx context.Context, check *healthcheck.CheckState) error {
 	if mock.CheckerFunc == nil {
 		panic("ImageClientMock.CheckerFunc: method is nil but ImageClient.Checker was just called")
 	}
 	callInfo := struct {
 		Ctx   context.Context
-		Check *health.CheckState
+		Check *healthcheck.CheckState
 	}{
 		Ctx:   ctx,
 		Check: check,
 	}
-	mock.lockChecker.Lock()
+	lockImageClientMockChecker.Lock()
 	mock.calls.Checker = append(mock.calls.Checker, callInfo)
-	mock.lockChecker.Unlock()
+	lockImageClientMockChecker.Unlock()
 	return mock.CheckerFunc(ctx, check)
 }
 
@@ -299,15 +305,15 @@ func (mock *ImageClientMock) Checker(ctx context.Context, check *health.CheckSta
 //     len(mockedImageClient.CheckerCalls())
 func (mock *ImageClientMock) CheckerCalls() []struct {
 	Ctx   context.Context
-	Check *health.CheckState
+	Check *healthcheck.CheckState
 } {
 	var calls []struct {
 		Ctx   context.Context
-		Check *health.CheckState
+		Check *healthcheck.CheckState
 	}
-	mock.lockChecker.RLock()
+	lockImageClientMockChecker.RLock()
 	calls = mock.calls.Checker
-	mock.lockChecker.RUnlock()
+	lockImageClientMockChecker.RUnlock()
 	return calls
 }
 
@@ -331,9 +337,9 @@ func (mock *ImageClientMock) GetDownloadVariant(ctx context.Context, userAuthTok
 		ImageID:          imageID,
 		Variant:          variant,
 	}
-	mock.lockGetDownloadVariant.Lock()
+	lockImageClientMockGetDownloadVariant.Lock()
 	mock.calls.GetDownloadVariant = append(mock.calls.GetDownloadVariant, callInfo)
-	mock.lockGetDownloadVariant.Unlock()
+	lockImageClientMockGetDownloadVariant.Unlock()
 	return mock.GetDownloadVariantFunc(ctx, userAuthToken, serviceAuthToken, collectionID, imageID, variant)
 }
 
@@ -356,11 +362,16 @@ func (mock *ImageClientMock) GetDownloadVariantCalls() []struct {
 		ImageID          string
 		Variant          string
 	}
-	mock.lockGetDownloadVariant.RLock()
+	lockImageClientMockGetDownloadVariant.RLock()
 	calls = mock.calls.GetDownloadVariant
-	mock.lockGetDownloadVariant.RUnlock()
+	lockImageClientMockGetDownloadVariant.RUnlock()
 	return calls
 }
+
+var (
+	lockRenderClientMockBuildPage        sync.RWMutex
+	lockRenderClientMockNewBasePageModel sync.RWMutex
+)
 
 // Ensure, that RenderClientMock does implement RenderClient.
 // If this is not the case, regenerate this file with moq.
@@ -368,22 +379,22 @@ var _ RenderClient = &RenderClientMock{}
 
 // RenderClientMock is a mock implementation of RenderClient.
 //
-// 	func TestSomethingThatUsesRenderClient(t *testing.T) {
+//     func TestSomethingThatUsesRenderClient(t *testing.T) {
 //
-// 		// make and configure a mocked RenderClient
-// 		mockedRenderClient := &RenderClientMock{
-// 			BuildPageFunc: func(w io.Writer, pageModel interface{}, templateName string)  {
-// 				panic("mock out the BuildPage method")
-// 			},
-// 			NewBasePageModelFunc: func() model.Page {
-// 				panic("mock out the NewBasePageModel method")
-// 			},
-// 		}
+//         // make and configure a mocked RenderClient
+//         mockedRenderClient := &RenderClientMock{
+//             BuildPageFunc: func(w io.Writer, pageModel interface{}, templateName string)  {
+// 	               panic("mock out the BuildPage method")
+//             },
+//             NewBasePageModelFunc: func() model.Page {
+// 	               panic("mock out the NewBasePageModel method")
+//             },
+//         }
 //
-// 		// use mockedRenderClient in code that requires RenderClient
-// 		// and then make assertions.
+//         // use mockedRenderClient in code that requires RenderClient
+//         // and then make assertions.
 //
-// 	}
+//     }
 type RenderClientMock struct {
 	// BuildPageFunc mocks the BuildPage method.
 	BuildPageFunc func(w io.Writer, pageModel interface{}, templateName string)
@@ -406,8 +417,6 @@ type RenderClientMock struct {
 		NewBasePageModel []struct {
 		}
 	}
-	lockBuildPage        sync.RWMutex
-	lockNewBasePageModel sync.RWMutex
 }
 
 // BuildPage calls BuildPageFunc.
@@ -424,9 +433,9 @@ func (mock *RenderClientMock) BuildPage(w io.Writer, pageModel interface{}, temp
 		PageModel:    pageModel,
 		TemplateName: templateName,
 	}
-	mock.lockBuildPage.Lock()
+	lockRenderClientMockBuildPage.Lock()
 	mock.calls.BuildPage = append(mock.calls.BuildPage, callInfo)
-	mock.lockBuildPage.Unlock()
+	lockRenderClientMockBuildPage.Unlock()
 	mock.BuildPageFunc(w, pageModel, templateName)
 }
 
@@ -443,9 +452,9 @@ func (mock *RenderClientMock) BuildPageCalls() []struct {
 		PageModel    interface{}
 		TemplateName string
 	}
-	mock.lockBuildPage.RLock()
+	lockRenderClientMockBuildPage.RLock()
 	calls = mock.calls.BuildPage
-	mock.lockBuildPage.RUnlock()
+	lockRenderClientMockBuildPage.RUnlock()
 	return calls
 }
 
@@ -456,9 +465,9 @@ func (mock *RenderClientMock) NewBasePageModel() model.Page {
 	}
 	callInfo := struct {
 	}{}
-	mock.lockNewBasePageModel.Lock()
+	lockRenderClientMockNewBasePageModel.Lock()
 	mock.calls.NewBasePageModel = append(mock.calls.NewBasePageModel, callInfo)
-	mock.lockNewBasePageModel.Unlock()
+	lockRenderClientMockNewBasePageModel.Unlock()
 	return mock.NewBasePageModelFunc()
 }
 
@@ -469,8 +478,8 @@ func (mock *RenderClientMock) NewBasePageModelCalls() []struct {
 } {
 	var calls []struct {
 	}
-	mock.lockNewBasePageModel.RLock()
+	lockRenderClientMockNewBasePageModel.RLock()
 	calls = mock.calls.NewBasePageModel
-	mock.lockNewBasePageModel.RUnlock()
+	lockRenderClientMockNewBasePageModel.RUnlock()
 	return calls
 }

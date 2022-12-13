@@ -28,12 +28,12 @@ Feature: Groups
         {
             "[data-test='search-2'] > h2": "Census 2021 data",
             "[data-test='search-2'] > p": "Find data for Census 2021.",
-            "[data-test='search-2'] > ul > li:nth-child(1) > a": "Get census data (England and Wales)",
-            "[data-test='search-2'] > ul > li:nth-child(2) > a": "Get census data (Wales)"
+            "[data-test='search-2'] > ul > li:nth-child(1) > a": "Get census data",
+            "[data-test='search-2'] > ul > li:nth-child(2) > a": "Bulk data "
         }
     """
-    And the 2nd link href value should be "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimatesenglandandwalescensus2021"
-    And the 3rd link href value should be "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimateswalescensus2021"
+    And the 2nd link href value should be "/search?topics=4445&filter=datasets"
+    And the 3rd link href value should be "https://www.nomisweb.co.uk/census/2021/bulk"
     # search container section #3
     And the page should have the following content
     """
