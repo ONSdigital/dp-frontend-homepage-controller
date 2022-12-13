@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"os"
-	"sync"
 	"testing"
 
 	"github.com/cucumber/godog"
@@ -23,8 +22,6 @@ func TestComponent(t *testing.T) {
 
 	if *componentFlag {
 		status := 0
-		var wg sync.WaitGroup
-		wg.Add(2)
 
 		var opts = godog.Options{
 			Output: colors.Colored(os.Stdout),
@@ -43,7 +40,6 @@ func TestComponent(t *testing.T) {
 		if status > 0 {
 			t.Fatal()
 		}
-		wg.Done()
 
 		opts = godog.Options{
 			Output: colors.Colored(os.Stdout),
@@ -62,7 +58,6 @@ func TestComponent(t *testing.T) {
 		if status > 0 {
 			t.Fatal()
 		}
-		wg.Done()
 	} else {
 		t.Skip("component flag required to run component tests")
 	}
