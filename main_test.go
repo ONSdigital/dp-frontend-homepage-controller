@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"os"
+	"sync"
 	"testing"
 
 	"github.com/cucumber/godog"
@@ -19,8 +20,11 @@ func InitializeTestSuite(ctx *godog.TestSuiteContext) {
 }
 
 func TestComponent(t *testing.T) {
+
 	if *componentFlag {
 		status := 0
+		var wg sync.WaitGroup
+		wg.Add(2)
 
 		var opts = godog.Options{
 			Output: colors.Colored(os.Stdout),
@@ -37,27 +41,28 @@ func TestComponent(t *testing.T) {
 		}.Run()
 
 		if status > 0 {
-			t.Fail()
-
-		} else {
-			var opts = godog.Options{
-				Output: colors.Colored(os.Stdout),
-				Format: "pretty",
-				Paths:  []string{"features/censusEnableGetDataCard", "features/homepage"},
-				Tags:   "~@avoid",
-			}
-
-			status = godog.TestSuite{
-				Name:                 "feature_tests",
-				ScenarioInitializer:  steps.InitializeScenarioWithGetDataCardEnabled,
-				TestSuiteInitializer: InitializeTestSuite,
-				Options:              &opts,
-			}.Run()
-
-			if status > 0 {
-				t.Fail()
-			}
+			t.Fatal()
 		}
+		wg.Done()
+
+		opts = godog.Options{
+			Output: colors.Colored(os.Stdout),
+			Format: "pretty",
+			Paths:  []string{"features/censusEnableGetDataCard", "features/homepage"},
+			Tags:   "~@avoid",
+		}
+
+		status = godog.TestSuite{
+			Name:                 "feature_tests",
+			ScenarioInitializer:  steps.InitializeScenarioWithGetDataCardEnabled,
+			TestSuiteInitializer: InitializeTestSuite,
+			Options:              &opts,
+		}.Run()
+
+		if status > 0 {
+			t.Fatal()
+		}
+		wg.Done()
 	} else {
 		t.Skip("component flag required to run component tests")
 	}
