@@ -161,6 +161,14 @@ one = "Data Cyfrifiad 2021"
 description = "Find data for Census 2021."
 one = "Dod o hyd i ddata ar gyfer Cyfrifiad 2021."
 
+[GetCensusDataEnglandWales]
+description = "Get census data (England and Wales)"
+one = "Cael gafael ar ddata'r cyfrifiad (Cymru a Lloegr)"
+
+[GetCensusDataWales]
+description = "Get census data (Wales)"
+one = "Cael gafael ar ddata'r cyfrifiad (Cymru)"
+
 [GetCensusDataLink1]
 description = "Get census data"
 one = "Cael gafael ar ddata’r cyfrifiad"
