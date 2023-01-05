@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"fmt"
 	"strings"
 	"sync"
 
@@ -11,66 +12,51 @@ import (
 // The subtopicsMap is used to keep a record of subtopics to be later used to generate the subtopics id `query` for a topic
 // and to check if the subtopic id given by a user exists
 type SubtopicsIDs struct {
-	mutex        *sync.RWMutex
-	subtopicsMap map[string]*models.Topic
+	subtopicsMap sync.Map
 }
 
 // NewSubTopicsMap creates a new subtopics id map to store subtopic ids with addition to mutex locking
 func NewSubTopicsMap() *SubtopicsIDs {
-	return &SubtopicsIDs{
-		mutex:        &sync.RWMutex{},
-		subtopicsMap: make(map[string]*models.Topic),
-	}
+	return &SubtopicsIDs{}
 }
 
 // Get returns a bool value for the given key (id) to inform that the subtopic id exists
 func (t *SubtopicsIDs) Get(key string) bool {
-	t.mutex.RLock()
-	defer t.mutex.RUnlock()
-
-	if t.subtopicsMap[key] != nil {
-		return true
-	}
-
-	return false
+	_, ok := t.subtopicsMap.Load(key)
+	return ok
 }
 
 // GetSubtopicItems returns a list of subtopics for given topic
 func (t *SubtopicsIDs) GetSubtopicItems() map[string]*models.Topic {
-	t.mutex.RLock()
-	defer t.mutex.RUnlock()
-
 	subtopics := make(map[string]*models.Topic)
-
-	for id, value := range t.subtopicsMap {
-		subtopics[id] = value
-	}
-
+	t.subtopicsMap.Range(func(key, value any) bool {
+		subtopics[fmt.Sprint(key)] = value.(*models.Topic)
+		return true
+	})
 	return subtopics
 }
 
 // GetSubtopicsIDsQuery gets the subtopics ID query for a topic
 func (t *SubtopicsIDs) GetSubtopicsIDsQuery() string {
-	t.mutex.RLock()
-	defer t.mutex.RUnlock()
-
-	ids := make([]string, 0, len(t.subtopicsMap))
-
-	for id := range t.subtopicsMap {
-		ids = append(ids, id)
+	lenSyncMap := func(m *sync.Map) int {
+		var i int
+		m.Range(func(k, v interface{}) bool {
+			i++
+			return true
+		})
+		return i
 	}
+
+	ids := make([]string, 0, lenSyncMap(&t.subtopicsMap))
+	t.subtopicsMap.Range(func(key, value any) bool {
+		ids = append(ids, fmt.Sprint(key))
+		return true
+	})
 
 	return strings.Join(ids, ",")
 }
 
 // AppendSubtopicID appends the subtopic id to the map stored in SubtopicsIDs with consideration to mutex locking
-func (t *SubtopicsIDs) AppendSubtopicItems(topic models.Topic) {
-	t.mutex.Lock()
-	defer t.mutex.Unlock()
-
-	if t.subtopicsMap == nil {
-		t.subtopicsMap = make(map[string]*models.Topic)
-	}
-
-	t.subtopicsMap[topic.ID] = &topic
+func (t *SubtopicsIDs) AppendSubtopicItems(topic *models.Topic) {
+	t.subtopicsMap.Store(topic.ID, topic)
 }

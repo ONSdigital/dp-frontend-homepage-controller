@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
+	//nolint:typecheck // assets may not exist as they are auto generated
 	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	cachePrivate "github.com/ONSdigital/dp-frontend-homepage-controller/cache/private"

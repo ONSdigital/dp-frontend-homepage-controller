@@ -12,6 +12,7 @@ type CensusPage struct {
 
 // Census contains data specific to the census hub page
 type Census struct {
-	EnableCensusTopicSubsection bool   `json:"enable_census_topic_subsection`
+	EnableCensusTopicSubsection bool   `json:"enable_census_topic_subsection"`
+	EnableGetDataCard           bool   `json:"enable_get_data_card"`
 	CensusSearchTopicID         string `json:"census_search_topic_id"`
 }

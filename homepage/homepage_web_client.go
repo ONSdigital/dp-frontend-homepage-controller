@@ -13,10 +13,9 @@ import (
 
 type WebClient struct {
 	Updater
-	cache            *cache.HomepageCache
-	censusTopicCache *cache.TopicCache
-	navigationCache  *cache.NavigationCache
-	languages        []string
+	cache           *cache.HomepageCache
+	navigationCache *cache.NavigationCache
+	languages       []string
 }
 
 func NewWebClient(ctx context.Context, clients *Clients, updateInterval time.Duration, languages []string) (Clienter, error) {
