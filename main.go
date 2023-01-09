@@ -42,7 +42,7 @@ func run(ctx context.Context) error {
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM)
 
-	// Create service initialiser and an error channel for fatal errors
+	// Create service initializer and an error channel for fatal errors
 	svcErrors := make(chan error, 1)
 	svcList := service.NewServiceList(&service.Init{})
 

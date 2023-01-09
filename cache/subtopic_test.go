@@ -1,7 +1,6 @@
 package cache
 
 import (
-	"sync"
 	"testing"
 	"time"
 
@@ -48,7 +47,6 @@ func TestAppendSubtopicID(t *testing.T) {
 
 	Convey("Given a nil map in the SubtopicsIDs object", t, func() {
 		subtopicIDsStore := NewSubTopicsMap()
-		subtopicIDsStore.subtopicsMap = nil
 
 		Convey("When AppendSubtopicItems is called", func() {
 			subtopicIDsStore.AppendSubtopicItems(subtopic1)
@@ -61,9 +59,7 @@ func TestAppendSubtopicID(t *testing.T) {
 
 	Convey("Given an existing SubtopicsIDs object with data", t, func() {
 		subtopicIDsStore := NewSubTopicsMap()
-		subtopicIDsStore.subtopicsMap = map[string]*models.Topic{
-			"1234": subtopic1,
-		}
+		subtopicIDsStore.subtopicsMap.Store("1234", subtopic1)
 
 		Convey("When AppendSubtopicID is called", func() {
 			subtopicIDsStore.AppendSubtopicItems(subtopic2)
@@ -112,13 +108,9 @@ func TestGetSubtopicsIDsQuery(t *testing.T) {
 	})
 
 	Convey("Given a list of subtopics", t, func() {
-		subtopicIDsStore := SubtopicsIDs{
-			mutex: &sync.RWMutex{},
-			subtopicsMap: map[string]*models.Topic{
-				"1234": subtopic1,
-				"5678": subtopic2,
-			},
-		}
+		subtopicIDsStore := SubtopicsIDs{}
+		subtopicIDsStore.subtopicsMap.Store("1234", subtopic1)
+		subtopicIDsStore.subtopicsMap.Store("5678", subtopic2)
 
 		Convey("When GetSubtopicsIDsQuery is called", func() {
 			subtopicsIDQuery := subtopicIDsStore.GetSubtopicsIDsQuery()
