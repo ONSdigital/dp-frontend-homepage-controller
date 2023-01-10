@@ -29,7 +29,7 @@ debug: generate-debug
 	HUMAN_LOG=1 DEBUG=1 $(BINPATH)/dp-frontend-homepage-controller
 
 .PHONY: debug-run
-debug-run:
+debug-run: generate-debug
 	HUMAN_LOG=1 DEBUG=1 go run -tags 'debug' -race -ldflags "-X main.BuildTime=$(BUILD_TIME) -X main.GitCommit=$(GIT_COMMIT) -X main.Version=$(VERSION)" main.go
 
 .PHONY: test
