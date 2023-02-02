@@ -2,7 +2,6 @@ package census
 
 import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
-	"github.com/davecgh/go-spew/spew"
 	"net/http"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
@@ -50,7 +49,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 			URL:   subTopics.Links.Self.HRef,
 		})
 	}
-	spew.Dump(availableItems, "AVAILABLE")
+
 	log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
 	//}
 

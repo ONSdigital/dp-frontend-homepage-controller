@@ -94,21 +94,9 @@
                         <h2 class="ons-u-fs-m" id="other-census">{{ localise "CensusTopics" .Language 1 }}</h2>
                         <p id="other-census-desc">{{ localise "AvailableCensusTopics" .Language 1 }}</p>
                         <div class="topics">
-                            <div class="current-topics-box">blahblahbalhabalsdlkfjdlskf</div>
-                            <div class="current-topics-box">blah</div>
-                            <div class="current-topics-box">blahblahbalhabalsdlkfjdlskf</div>
-                            <div class="current-topics-box">blahblahbalhabalsdlkfjdlskf</div>
-                            <div class="current-topics-box">blahs</div>
-                            <div class="current-topics-box">blahblahbalhabalsdlkfjdlskf</div>
-                        </div>
-                        <p class="margin-top--3">{{ localise "UnavailableCensusTopics" .Language 1 }}</p>
-                        <div class="topics">
-                            <div class="next-topics-box">blahblahbalhabalsdlkfjdlskf</div>
-                            <div class="next-topics-box">blah</div>
-                            <div class="next-topics-box">blahblahbalhabalsdlkfjdlskf</div>
-                            <div class="next-topics-box">blahblahbalhabalsdlklskf</div>
-                            <div class="next-topics-box">blah</div>
-                            <div class="next-topics-box">blahblahbalhabalsdlkfjdlskf</div>
+                        {{ range $index, $availableTopic := $availableTopics }}
+                            <a href="{{ $availableTopic.URL }}" class="current-topics-box" >{{ $availableTopic.Topic }}</a>
+                         {{ end }}
                         </div>
                     </div>
                 </div>
