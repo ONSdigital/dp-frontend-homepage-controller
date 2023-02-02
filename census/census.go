@@ -1,6 +1,7 @@
 package census
 
 import (
+	"github.com/davecgh/go-spew/spew"
 	"net/http"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
@@ -27,19 +28,20 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 		return
 	}
 
-	if cfg.EnableCensusTopicSubsection {
-		var censusTopics *cache.Topic
-		censusTopics, err = c.CensusTopic.GetCensusData(ctx)
-		if err != nil {
-			log.Error(ctx, "failed to get census topic data", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-
-		items := censusTopics.List.GetSubtopicItems()
-
-		log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
+	//if cfg.EnableCensusTopicSubsection {
+	var censusTopics *cache.Topic
+	censusTopics, err = c.CensusTopic.GetCensusData(ctx)
+	if err != nil {
+		log.Error(ctx, "failed to get census topic data", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
+
+	items := censusTopics.List.GetSubtopicItems()
+	spew.Dump(items, "WTF")
+
+	log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
+	//}
 
 	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
 	if err != nil {
@@ -49,7 +51,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 	}
 
 	basePage := rend.NewBasePageModel()
-	m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner)
+	m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner, censusTopics)
 
 	rend.BuildPage(w, m, "census-first-results")
 
