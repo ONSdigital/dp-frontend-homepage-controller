@@ -1,7 +1,9 @@
 package census
 
 import (
+	"fmt"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
+	"github.com/davecgh/go-spew/spew"
 	"net/http"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
@@ -46,9 +48,10 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 	for _, subTopics := range items {
 		availableItems = append(availableItems, model.Topics{
 			Topic: subTopics.Title,
-			URL:   subTopics.Links.Self.HRef,
+			URL:   fmt.Sprintf("/search?topics=%s", subTopics.ID),
 		})
 	}
+	spew.Dump(availableItems, "AVAILABLE")
 
 	log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
 	//}
