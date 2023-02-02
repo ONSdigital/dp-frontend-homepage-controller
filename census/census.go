@@ -1,6 +1,7 @@
 package census
 
 import (
+	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	"github.com/davecgh/go-spew/spew"
 	"net/http"
 
@@ -38,8 +39,18 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 	}
 
 	items := censusTopics.List.GetSubtopicItems()
-	spew.Dump(items, "WTF")
+	if items == nil || len(items) == 0 {
+		return
+	}
 
+	var availableItems []model.Topics
+	for _, subTopics := range items {
+		availableItems = append(availableItems, model.Topics{
+			Topic: subTopics.Title,
+			URL:   subTopics.Links.Self.HRef,
+		})
+	}
+	spew.Dump(availableItems, "AVAILABLE")
 	log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
 	//}
 
@@ -51,7 +62,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 	}
 
 	basePage := rend.NewBasePageModel()
-	m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner, censusTopics)
+	m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner, availableItems)
 
 	rend.BuildPage(w, m, "census-first-results")
 

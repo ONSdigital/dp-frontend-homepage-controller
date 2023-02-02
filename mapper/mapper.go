@@ -4,8 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
-	"github.com/davecgh/go-spew/spew"
 	"net/http"
 	"regexp"
 	"strings"
@@ -315,7 +313,7 @@ func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
 }
 
 // Census maps data to our census frontend model
-func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation, emergencyBannerContent zebedee.EmergencyBanner, censusSubTopics *cache.Topic) model.CensusPage {
+func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation, emergencyBannerContent zebedee.EmergencyBanner, censusSubTopics []model.Topics) model.CensusPage {
 	page := model.CensusPage{
 		Page: basePage,
 		Data: model.Census{},
@@ -330,15 +328,11 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
 	page.Data.CensusSearchTopicID = cfg.CensusTopicID
+	page.Data.AvailableTopics = censusSubTopics
 
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)
 	}
-
-	if censusSubTopics != nil {
-		page.Data.AvailableTopics = mapTopics(*cfg, censusSubTopics)
-	}
-	spew.Dump(page.Data.AvailableTopics, "WTF HERE")
 
 	return page
 }
@@ -351,24 +345,4 @@ func mapCookiePreferences(req *http.Request, preferencesIsSet *bool, policy *cor
 		Essential: preferencesCookie.Policy.Essential,
 		Usage:     preferencesCookie.Policy.Usage,
 	}
-}
-
-func mapTopics(cfg config.Config, availableTopics *cache.Topic) []model.Topics {
-	if !cfg.EnableCensusTopicSubsection {
-		return nil
-	}
-	var mappedTopics []model.Topics
-	items := availableTopics.List.GetSubtopicItems()
-	if items != nil {
-		var availableItems []model.Topics
-		for _, subTopics := range items {
-			availableItems = append(availableItems, model.Topics{
-				Topic: subTopics.Title,
-				URL:   subTopics.Links.Self.HRef,
-			})
-		}
-	}
-
-	return mappedTopics
-
 }
