@@ -344,6 +344,10 @@ one = "Demography"
 description = "Education"
 one = "Education"
 
+[Equalities]
+description = "Equalities"
+one = "Equalities"
+
 [EthnicGroupIdentityLanguageReligion]
 description = "Ethnic group, national identity, language and religion"
 one = "Ethnic group, national identity, language and religion"

@@ -337,6 +337,29 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	return page
 }
 
+func CensusLegacy(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation, emergencyBannerContent zebedee.EmergencyBanner) model.CensusPage {
+	page := model.CensusPage{
+		Page: basePage,
+		Data: model.Census{},
+	}
+
+	mapCookiePreferences(req, &page.Page.CookiesPreferencesSet, &page.Page.CookiesPolicy)
+	page.URI = "/census"
+	page.Type = "census"
+	page.Metadata.Title = "Census"
+	page.Language = localeCode
+	page.PatternLibraryAssetsPath = cfg.PatternLibraryAssetsPath
+	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
+	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
+	page.Data.CensusSearchTopicID = cfg.CensusTopicID
+
+	if navigationContent != nil {
+		page.NavigationContent = mapNavigationContent(*navigationContent)
+	}
+
+	return page
+}
+
 // mapCookiePreferences reads cookie policy and preferences cookies and then maps the values to the page model
 func mapCookiePreferences(req *http.Request, preferencesIsSet *bool, policy *coreModel.CookiesPolicy) {
 	preferencesCookie := cookies.GetCookiePreferences(req)

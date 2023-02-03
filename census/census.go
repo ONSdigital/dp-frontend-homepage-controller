@@ -3,8 +3,8 @@ package census
 import (
 	"fmt"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
-	"github.com/davecgh/go-spew/spew"
 	"net/http"
+	"sort"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
@@ -30,43 +30,58 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 		return
 	}
 
-	//if cfg.EnableCensusTopicSubsection {
-	var censusTopics *cache.Topic
-	censusTopics, err = c.CensusTopic.GetCensusData(ctx)
-	if err != nil {
-		log.Error(ctx, "failed to get census topic data", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	if cfg.EnableCensusTopicSubsection {
+		var censusTopics *cache.Topic
+		censusTopics, err = c.CensusTopic.GetCensusData(ctx)
+		if err != nil {
+			log.Error(ctx, "failed to get census topic data", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 
-	items := censusTopics.List.GetSubtopicItems()
-	if items == nil || len(items) == 0 {
-		return
-	}
+		items := censusTopics.List.GetSubtopicItems()
+		if items == nil || len(items) == 0 {
+			return
+		}
 
-	var availableItems []model.Topics
-	for _, subTopics := range items {
-		availableItems = append(availableItems, model.Topics{
-			Topic: subTopics.Title,
-			URL:   fmt.Sprintf("/search?topics=%s", subTopics.ID),
+		var availableItems []model.Topics
+		for _, subTopics := range items {
+			availableItems = append(availableItems, model.Topics{
+				Topic: subTopics.Title,
+				URL:   fmt.Sprintf("/search?topics=%s", subTopics.ID),
+			})
+		}
+		//sort available items alphabetically
+		sort.Slice(availableItems, func(i, j int) bool {
+			return availableItems[i].Topic < availableItems[j].Topic
 		})
+
+		log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
+
+		homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
+		if err != nil {
+			log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		basePage := rend.NewBasePageModel()
+		m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner, availableItems)
+
+		rend.BuildPage(w, m, "census-first-results")
+	} else {
+		homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
+		if err != nil {
+			log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		basePage := rend.NewBasePageModel()
+		m := mapper.CensusLegacy(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner)
+
+		rend.BuildPage(w, m, "census-topics")
 	}
-	spew.Dump(availableItems, "AVAILABLE")
-
-	log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
-	//}
-
-	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
-	if err != nil {
-		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	basePage := rend.NewBasePageModel()
-	m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner, availableItems)
-
-	rend.BuildPage(w, m, "census-first-results")
 
 	return
 }

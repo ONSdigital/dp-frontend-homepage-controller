@@ -354,6 +354,10 @@ one = "Demograffeg"
 description = "Addysg"
 one = "Addysg"
 
+[Equalities]
+description = "Cydraddoldeb"
+one = "Cydraddoldeb"
+
 [EthnicGroupIdentityLanguageReligion]
 description = "Grŵp ethnig, hunaniaeth genedlaethol, iaith a chrefydd"
 one = "Grŵp ethnig, hunaniaeth genedlaethol, iaith a chrefydd"
