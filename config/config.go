@@ -16,6 +16,7 @@ type Config struct {
 	CensusTopicID                  string        `envconfig:"CENSUS_TOPIC_ID"`
 	Debug                          bool          `envconfig:"DEBUG"`
 	EnableCensusTopicSubsection    bool          `envconfig:"ENABLE_CENSUS_TOPIC_SUBSECTION"`
+	EnableGetDataCard              bool          `envconfig:"ENABLE_GET_DATA_CARD"`
 	EnableNewNavBar                bool          `envconfig:"ENABLE_NEW_NAVBAR"`
 	GracefulShutdownTimeout        time.Duration `envconfig:"GRACEFUL_SHUTDOWN_TIMEOUT"`
 	HealthCheckCriticalTimeout     time.Duration `envconfig:"HEALTHCHECK_CRITICAL_TIMEOUT"`
@@ -59,7 +60,8 @@ func get() (*Config, error) {
 		CacheUpdateInterval:            10 * time.Second,
 		CensusTopicID:                  "4445",
 		Debug:                          false,
-		EnableCensusTopicSubsection:    false,
+		EnableCensusTopicSubsection:    true,
+		EnableGetDataCard:              true,
 		EnableNewNavBar:                false,
 		GracefulShutdownTimeout:        5 * time.Second,
 		HealthCheckCriticalTimeout:     90 * time.Second,

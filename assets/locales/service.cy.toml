@@ -161,6 +161,14 @@ one = "Data Cyfrifiad 2021"
 description = "Find data for Census 2021."
 one = "Dod o hyd i ddata ar gyfer Cyfrifiad 2021."
 
+[GetCensusDataEnglandWales]
+description = "Get census data (England and Wales)"
+one = "Cael gafael ar ddata'r cyfrifiad (Cymru a Lloegr)"
+
+[GetCensusDataWales]
+description = "Get census data (Wales)"
+one = "Cael gafael ar ddata'r cyfrifiad (Cymru)"
+
 [GetCensusDataLink1]
 description = "Get census data"
 one = "Cael gafael ar ddata’r cyfrifiad"
@@ -322,8 +330,8 @@ description = "Crynodebau pwnc"
 one = "Crynodebau pwnc"
 
 [AvailableCensusTopics]
-description = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn:"
-one = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn:"
+description = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
+one = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
 
 [UnavailableCensusTopics]
 description = "Nid yw'r holl ddata ar gael. Caiff y pynciau hyn eu cyhoeddi ar y dyddiadau canlynol:"

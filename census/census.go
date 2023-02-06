@@ -46,9 +46,14 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 
 		var availableItems []model.Topics
 		for _, subTopics := range items {
+			//do not map "Equalites" since there are no results for this topic
+			if subTopics.ID == "3195" {
+				continue
+			}
 			availableItems = append(availableItems, model.Topics{
 				Topic: subTopics.Title,
 				URL:   fmt.Sprintf("/search?topics=%s", subTopics.ID),
+				ID:    subTopics.ID,
 			})
 		}
 		//sort available items alphabetically

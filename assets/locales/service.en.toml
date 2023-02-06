@@ -151,6 +151,14 @@ one = "Census 2021 data"
 description = "Find data for Census 2021."
 one = "Find data for Census 2021."
 
+[GetCensusDataEnglandWales]
+description = "Get census data (England and Wales)"
+one = "Get census data (England and Wales)"
+
+[GetCensusDataWales]
+description = "Get census data (Wales)"
+one = "Get census data (Wales)"
+
 [GetCensusDataLink1]
 description = "Get census data"
 one = "Get census data"
@@ -312,8 +320,8 @@ description = "Topic summaries"
 one = "Topic summaries"
 
 [AvailableCensusTopics]
-description = "Find census data and analysis using these topics:"
-one = "Find census data and analysis using these topics:"
+description = "Find census data and analysis using these topics."
+one = "Find census data and analysis using these topics."
 
 [UnavailableCensusTopics]
 description = "Not all data is available. These topics will be published on the following dates:"

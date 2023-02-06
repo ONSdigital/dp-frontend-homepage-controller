@@ -352,6 +352,7 @@ func CensusLegacy(req *http.Request, cfg *config.Config, localeCode string, base
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
 	page.Data.CensusSearchTopicID = cfg.CensusTopicID
+	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
 
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)

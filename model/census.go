@@ -15,6 +15,7 @@ type Census struct {
 	AvailableTopics             []Topics `json:"available_topics"`
 	UnavailableTopics           []Topics `json:"unavailable_topics"`
 	EnableCensusTopicSubsection bool     `json:"enable_census_topic_subsection"`
+	EnableGetDataCard           bool     `json:"enable_get_data_card"`
 	CensusSearchTopicID         string   `json:"census_search_topic_id"`
 }
 
@@ -23,4 +24,5 @@ type Topics struct {
 	Topic       string `json:"topic"`
 	ReleaseDate string `json:"release_date"`
 	URL         string `json:"url"`
+	ID          string `json:"id"`
 }
