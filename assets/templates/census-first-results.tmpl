@@ -1,5 +1,3 @@
-{{ $availableTopics := .Data.AvailableTopics }}
-
 <section class="ons-hero--dark ons-grid--gutterless ons-hero--census">
     <div class="ons-hero__container ons-container">
         <div class="ons-hero__details ons-grid__col ons-col-6@m">
@@ -35,6 +33,7 @@
             <div class="ons-card u-mt-l u-mb-l" data-test='search-2'>
                 <h2 class="ons-u-fs-m" id="census-data">{{ localise "Census2021Data" .Language 1 }}</h2>
                 <p id="census-data-desc">{{ localise "Census2021DataSubhead" .Language 1 }}</p>
+               {{ if .Data.EnableGetDataCard }}
                 <ul class="ons-list ons-list--dashed">
                     <li class="ons-list__item">
                         <a href="/search?topics={{ .Data.CensusSearchTopicID }}&filter=datasets" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>
@@ -46,6 +45,16 @@
                         </a>
                     </li>
                 </ul>
+                {{ else }}
+                <ul class="ons-list ons-list--dashed">
+                    <li class="ons-list__item">
+                        <a href="/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimatesenglandandwalescensus2021" class="ons-list__link">{{ localise "GetCensusDataEnglandWales" .Language 1 }}</a>
+                    </li>
+                    <li class="ons-list__item">
+                        <a href="/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimateswalescensus2021" class="ons-list__link">{{ localise "GetCensusDataWales" .Language 1 }}</a>
+                    </li>
+                </ul>
+                {{ end }}
             </div>
         </div>
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
@@ -65,42 +74,30 @@
             </div>
         </div>
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
-                    <div class="ons-card" data-test='search-4'>
-                        {{ if .Data.EnableCensusTopicSubsection }}
-                        <h2 class="ons-u-fs-m" id="other-census">{{ localise "CensusGeography" .Language 1 }}</h2>
-                        <p id="other-census-desc">{{ localise "CensusGeographySubhead" .Language 1 }}</p>
-                        <ul class="ons-list ons-list--dashed">
-                            <li class="ons-list__item">
-                                <a href="/census/maps" class="ons-list__link">
-                                    {{ localise "CensusGeographyLink1" .Language 1 }}
-                                </a>
-                            </li>
-                        </ul>
-                        {{ else }}
-                        <h2 class="ons-u-fs-m" id="other-census">{{ localise "CensusTopics" .Language 1 }}</h2>
-                        <p id="other-census-desc">{{ localise "CensusTopicsSubhead" .Language 1 }}</p>
-                        <ul class="ons-list ons-list--dashed">
-                            <li class="ons-list__item">
-                                <a href="/census/aboutcensus/censusproducts/topicsummaries" class="ons-list__link">
-                                    {{ localise "CensusTopicsLink1" .Language 1 }}
-                                </a>
-                            </li>
-                        </ul>
-                        {{ end }}
-                    </div>
-                </div>
-        <div class="ons-grid__col ons-col-12@m ons-u-mb-l">
-                    <div class="ons-card" data-test='search-4'>
-                        <h2 class="ons-u-fs-m" id="other-census">{{ localise "CensusTopics" .Language 1 }}</h2>
-                        <p id="other-census-desc">{{ localise "AvailableCensusTopics" .Language 1 }}</p>
-                        <div class="ons-grid--column ons-grid--flex ons-grid--row@l ons-grid--row@m">
-                        {{ range $index, $availableTopic := $availableTopics }}
-                            <a href="{{ $availableTopic.URL }}" class="current-topics-box" >{{ $availableTopic.Topic }}</a>
-                        {{ end }}
-                        </div>
-                    </div>
-                </div>
-
+            <div class="ons-card" data-test='search-4'>
+                {{ if .Data.EnableCensusTopicSubsection }}
+                <h2 class="ons-u-fs-m" id="other-census">{{ localise "CensusGeography" .Language 1 }}</h2>
+                <p id="other-census-desc">{{ localise "CensusGeographySubhead" .Language 1 }}</p>
+                <ul class="ons-list ons-list--dashed">
+                    <li class="ons-list__item">
+                        <a href="/census/maps" class="ons-list__link">
+                            {{ localise "CensusGeographyLink1" .Language 1 }}
+                        </a>
+                    </li>
+                </ul>
+                {{ else }}
+                <h2 class="ons-u-fs-m" id="other-census">{{ localise "CensusTopics" .Language 1 }}</h2>
+                <p id="other-census-desc">{{ localise "CensusTopicsSubhead" .Language 1 }}</p>
+                <ul class="ons-list ons-list--dashed">
+                    <li class="ons-list__item">
+                        <a href="/census/aboutcensus/censusproducts/topicsummaries" class="ons-list__link">
+                            {{ localise "CensusTopicsLink1" .Language 1 }}
+                        </a>
+                    </li>
+                </ul>
+                {{ end }}
+            </div>
+        </div>
         <div class="ons-grid__col ons-col-6@m ons-u-mb-l">
             <div class="ons-card u-mt-l u-mb-l" data-test='search-5'>
                 <h2 class="ons-u-fs-m" id="historical-data">{{ localise "HistoricCensusData" .Language 1 }}</h2>

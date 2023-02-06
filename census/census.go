@@ -73,7 +73,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 		basePage := rend.NewBasePageModel()
 		m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner, availableItems)
 
-		rend.BuildPage(w, m, "census-first-results")
+		rend.BuildPage(w, m, "census-topics")
 	} else {
 		homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
 		if err != nil {
@@ -85,7 +85,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 		basePage := rend.NewBasePageModel()
 		m := mapper.CensusLegacy(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner)
 
-		rend.BuildPage(w, m, "census-topics")
+		rend.BuildPage(w, m, "census-first-results")
 	}
 
 	return

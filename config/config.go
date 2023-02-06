@@ -42,7 +42,7 @@ func Get() (*Config, error) {
 	if cfgVar.Debug {
 		cfgVar.PatternLibraryAssetsPath = "http://localhost:9002/dist/assets"
 	} else {
-		cfgVar.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/59a1729"
+		cfgVar.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/e74fcc2"
 	}
 	return cfgVar, nil
 }
@@ -60,8 +60,8 @@ func get() (*Config, error) {
 		CacheUpdateInterval:            10 * time.Second,
 		CensusTopicID:                  "4445",
 		Debug:                          false,
-		EnableCensusTopicSubsection:    true,
-		EnableGetDataCard:              true,
+		EnableCensusTopicSubsection:    false,
+		EnableGetDataCard:              false,
 		EnableNewNavBar:                false,
 		GracefulShutdownTimeout:        5 * time.Second,
 		HealthCheckCriticalTimeout:     90 * time.Second,
