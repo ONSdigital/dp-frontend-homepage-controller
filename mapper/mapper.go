@@ -25,7 +25,10 @@ const (
 	// PeriodQuarter is the string value for quarter time period
 	PeriodQuarter = "quarter"
 	// PeriodMonth is the string value for month time period
-	PeriodMonth = "month"
+	PeriodMonth    = "month"
+	CensusURI      = "/census"
+	CensusPageType = "census"
+	CensusTitle    = "Census"
 )
 
 // TrendInfo, stores all trend data for processing
@@ -320,9 +323,9 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	}
 
 	mapCookiePreferences(req, &page.Page.CookiesPreferencesSet, &page.Page.CookiesPolicy)
-	page.URI = "/census"
-	page.Type = "census"
-	page.Metadata.Title = "Census"
+	page.URI = CensusURI
+	page.Type = CensusPageType
+	page.Metadata.Title = CensusTitle
 	page.Language = localeCode
 	page.PatternLibraryAssetsPath = cfg.PatternLibraryAssetsPath
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
@@ -345,9 +348,9 @@ func CensusLegacy(req *http.Request, cfg *config.Config, localeCode string, base
 	}
 
 	mapCookiePreferences(req, &page.Page.CookiesPreferencesSet, &page.Page.CookiesPolicy)
-	page.URI = "/census"
-	page.Type = "census"
-	page.Metadata.Title = "Census"
+	page.URI = CensusURI
+	page.Type = CensusPageType
+	page.Metadata.Title = CensusTitle
 	page.Language = localeCode
 	page.PatternLibraryAssetsPath = cfg.PatternLibraryAssetsPath
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
