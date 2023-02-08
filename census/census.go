@@ -52,7 +52,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 			}
 			availableItems = append(availableItems, model.Topics{
 				Topic: subTopics.Title,
-				URL:   fmt.Sprintf("/search?topics=%s,%s", cfg.CensusTopicID, subTopics.ID),
+				URL:   fmt.Sprintf("/search?topics=%s", subTopics.ID),
 				ID:    subTopics.ID,
 			})
 		}
