@@ -65,6 +65,14 @@ var emergencyBanner = zebedee.EmergencyBanner{
 	LinkText:    "More info",
 }
 
+var availableItems = []model.Topics{
+	{
+		Topic: "Demography",
+		URL:   "/search?topics=4445,1234",
+		ID:    "1234",
+	},
+}
+
 func TestUnitMapper(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
@@ -436,7 +444,7 @@ func TestUnitMapper(t *testing.T) {
 func TestUnitCensus(t *testing.T) {
 	t.Parallel()
 	req := httptest.NewRequest("", "/", nil)
-	Convey("census mapper ffunc returns correct data", t, func() {
+	Convey("census mapper func returns correct data", t, func() {
 		basePage := coreModel.NewPage("path/to/assets", "site-domain")
 		lang := "en"
 		cfg, err := config.Get()
@@ -444,7 +452,32 @@ func TestUnitCensus(t *testing.T) {
 			t.Error("failed to get config")
 		}
 
-		expectedMappedContent := Census(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner)
+		expectedMappedContent := Census(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner, availableItems)
+
+		So(expectedMappedContent.URI, ShouldEqual, "/census")
+		So(expectedMappedContent.Type, ShouldEqual, "census")
+		So(expectedMappedContent.Metadata.Title, ShouldEqual, "Census")
+		So(expectedMappedContent.Language, ShouldEqual, lang)
+		So(expectedMappedContent.PatternLibraryAssetsPath, ShouldEqual, cfg.PatternLibraryAssetsPath)
+		So(expectedMappedContent.Data.EnableCensusTopicSubsection, ShouldEqual, cfg.EnableCensusTopicSubsection)
+		So(expectedMappedContent.Data.CensusSearchTopicID, ShouldEqual, cfg.CensusTopicID)
+		So(expectedMappedContent.Data.EnableGetDataCard, ShouldEqual, false)
+		So(expectedMappedContent.Data.AvailableTopics, ShouldResemble, availableItems)
+	})
+}
+
+func TestUnitCensusLegacy(t *testing.T) {
+	t.Parallel()
+	req := httptest.NewRequest("", "/", nil)
+	Convey("census mapper func returns correct data", t, func() {
+		basePage := coreModel.NewPage("path/to/assets", "site-domain")
+		lang := "en"
+		cfg, err := config.Get()
+		if err != nil {
+			t.Error("failed to get config")
+		}
+
+		expectedMappedContent := CensusLegacy(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner)
 
 		So(expectedMappedContent.URI, ShouldEqual, "/census")
 		So(expectedMappedContent.Type, ShouldEqual, "census")

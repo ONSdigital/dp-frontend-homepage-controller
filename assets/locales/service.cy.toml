@@ -329,6 +329,14 @@ one = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau 
 description = "Crynodebau pwnc"
 one = "Crynodebau pwnc"
 
+[AvailableCensusTopics]
+description = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
+one = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
+
+[UnavailableCensusTopics]
+description = "Nid yw'r holl ddata ar gael. Caiff y pynciau hyn eu cyhoeddi ar y dyddiadau canlynol:"
+one = "Nid yw'r holl ddata ar gael. Caiff y pynciau hyn eu cyhoeddi ar y dyddiadau canlynol:"
+
 [CensusGeography]
 description = "Daearyddiaeth"
 one = "Daearyddiaeth"
@@ -340,3 +348,82 @@ one = "Dewch o hyd i ddata Cyfrifiad 2021 ar gyfer gwahanol ardaloedd."
 [CensusGeographyLink1]
 description = "Gwelwch ddata cyfrifiad ar fap"
 one = "Gwelwch ddata cyfrifiad ar fap"
+
+# Census Topics---------------------------------------------------------------------------------------------------
+[Ageing]
+description = "Heneiddio"
+one = "Heneiddio"
+
+[Demography]
+description = "Demograffeg"
+one = "Demograffeg"
+
+[Education]
+description = "Addysg"
+one = "Addysg"
+
+[Equalities]
+description = "Cydraddoldeb"
+one = "Cydraddoldeb"
+
+[EthnicGroupIdentityLanguageReligion]
+description = "Grŵp ethnig, hunaniaeth genedlaethol, iaith a chrefydd"
+one = "Grŵp ethnig, hunaniaeth genedlaethol, iaith a chrefydd"
+
+[HealthDisabilityUnpaidCare]
+description = "Iechyd, anabledd a gofal di-dâl"
+one = "Iechyd, anabledd a gofal di-dâl"
+
+[HistoricCensus]
+description = "Cyfrifiadau hanesyddol"
+one = "Cyfrifiadau hanesyddol"
+
+[Housing]
+description = "Tai"
+one = "Tai"
+
+[InternationalMigration]
+description = "Mudo rhyngwladol"
+one = "Mudo rhyngwladol"
+
+[LabourMarket]
+description = "Y farchnad lafur"
+one = "Y farchnad lafur"
+
+[SexualOrientationGenderIdentity]
+description = "Cyfeiriadedd rhywiol a hunaniaeth o ran rhywedd"
+one = "Cyfeiriadedd rhywiol a hunaniaeth o ran rhywedd"
+
+[TravelToWork]
+description = "Teithio i’r gwaith"
+one = "Teithio i’r gwaith"
+
+[UKArmedForcesVeterans]
+description = "Cyn-filwyr lluoedd arfog y DU"
+one = "Cyn-filwyr lluoedd arfog y DU"
+
+# Census Topics Dates---------------------------------------------------------------------------------------------------
+
+[6Dec2022]
+description = "6 Rhagfyr 2022"
+one = "6 Rhagfyr 2022"
+
+[8Dec2022]
+description = "8 Rhagfyr 2022"
+one = "8 Rhagfyr 2022"
+
+[5Jan2023]
+description = "5 Ionawr 2023"
+one = "5 Ionawr 2023"
+
+[6Jan]
+description = "6 Ionawr"
+one = "6 Ionawr"
+
+[10Jan]
+description = "10 Ionawr"
+one = "10 Ionawr"
+
+[19Jan]
+description = "19 Ionawr"
+one = "19 Ionawr"

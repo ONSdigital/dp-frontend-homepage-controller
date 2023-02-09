@@ -319,6 +319,14 @@ one = "Find census data and analysis using these topics."
 description = "Topic summaries"
 one = "Topic summaries"
 
+[AvailableCensusTopics]
+description = "Find census data and analysis using these topics."
+one = "Find census data and analysis using these topics."
+
+[UnavailableCensusTopics]
+description = "Not all data is available. These topics will be published on the following dates:"
+one = "Not all data is available. These topics will be published on the following dates:"
+
 [CensusGeography]
 description = "Geography"
 one = "Geography"
@@ -330,3 +338,82 @@ one = "Find Census 2021 data for different areas."
 [CensusGeographyLink1]
 description = "View census data on a map"
 one = "View census data on a map"
+
+# Census Topics---------------------------------------------------------------------------------------------------
+[Ageing]
+description = "Ageing"
+one = "Ageing"
+
+[Demography]
+description = "Demography"
+one = "Demography"
+
+[Education]
+description = "Education"
+one = "Education"
+
+[Equalities]
+description = "Equalities"
+one = "Equalities"
+
+[EthnicGroupIdentityLanguageReligion]
+description = "Ethnic group, national identity, language and religion"
+one = "Ethnic group, national identity, language and religion"
+
+[HealthDisabilityUnpaidCare]
+description = "Health, disability and unpaid care"
+one = "Health, disability and unpaid care"
+
+[HistoricCensus]
+description = "Historic census"
+one = "Historic census"
+
+[Housing]
+description = "Housing"
+one = "Housing"
+
+[InternationalMigration]
+description = "International migration"
+one = "International migration"
+
+[LabourMarket]
+description = "Labour market"
+one = "Labour market"
+
+[SexualOrientationGenderIdentity]
+description = "Sexual orientation and gender identity"
+one = "Housing"
+
+[TravelToWork]
+description = "Travel to work"
+one = "Travel to work"
+
+[UKArmedForcesVeterans]
+description = "UK armed forces veterans"
+one = "UK armed forces veterans"
+
+# Census Topics Dates---------------------------------------------------------------------------------------------------
+
+[6Dec]
+description = "6 December"
+one = "6 December"
+
+[8Dec]
+description = "8 December"
+one = "8 December"
+
+[5Jan]
+description = "5 January"
+one = "5 January"
+
+[6Jan]
+description = "6 January"
+one = "6 January"
+
+[10Jan]
+description = "10 January"
+one = "10 January"
+
+[19Jan]
+description = "19 January"
+one = "19 January"

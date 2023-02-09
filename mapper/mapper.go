@@ -25,7 +25,10 @@ const (
 	// PeriodQuarter is the string value for quarter time period
 	PeriodQuarter = "quarter"
 	// PeriodMonth is the string value for month time period
-	PeriodMonth = "month"
+	PeriodMonth    = "month"
+	CensusURI      = "/census"
+	CensusPageType = "census"
+	CensusTitle    = "Census"
 )
 
 // TrendInfo, stores all trend data for processing
@@ -313,16 +316,41 @@ func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
 }
 
 // Census maps data to our census frontend model
-func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation, emergencyBannerContent zebedee.EmergencyBanner) model.CensusPage {
+func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation, emergencyBannerContent zebedee.EmergencyBanner, censusSubTopics []model.Topics) model.CensusPage {
 	page := model.CensusPage{
 		Page: basePage,
 		Data: model.Census{},
 	}
 
 	mapCookiePreferences(req, &page.Page.CookiesPreferencesSet, &page.Page.CookiesPolicy)
-	page.URI = "/census"
-	page.Type = "census"
-	page.Metadata.Title = "Census"
+	page.URI = CensusURI
+	page.Type = CensusPageType
+	page.Metadata.Title = CensusTitle
+	page.Language = localeCode
+	page.PatternLibraryAssetsPath = cfg.PatternLibraryAssetsPath
+	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
+	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
+	page.Data.CensusSearchTopicID = cfg.CensusTopicID
+	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
+	page.Data.AvailableTopics = censusSubTopics
+
+	if navigationContent != nil {
+		page.NavigationContent = mapNavigationContent(*navigationContent)
+	}
+
+	return page
+}
+
+func CensusLegacy(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation, emergencyBannerContent zebedee.EmergencyBanner) model.CensusPage {
+	page := model.CensusPage{
+		Page: basePage,
+		Data: model.Census{},
+	}
+
+	mapCookiePreferences(req, &page.Page.CookiesPreferencesSet, &page.Page.CookiesPolicy)
+	page.URI = CensusURI
+	page.Type = CensusPageType
+	page.Metadata.Title = CensusTitle
 	page.Language = localeCode
 	page.PatternLibraryAssetsPath = cfg.PatternLibraryAssetsPath
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)

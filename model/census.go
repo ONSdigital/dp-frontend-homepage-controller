@@ -10,9 +10,19 @@ type CensusPage struct {
 	Data Census `json:"data"`
 }
 
-// Census contains data specific to the census hub page
+// Census is data for the census hub
 type Census struct {
-	EnableCensusTopicSubsection bool   `json:"enable_census_topic_subsection"`
-	EnableGetDataCard           bool   `json:"enable_get_data_card"`
-	CensusSearchTopicID         string `json:"census_search_topic_id"`
+	AvailableTopics             []Topics `json:"available_topics"`
+	UnavailableTopics           []Topics `json:"unavailable_topics"`
+	EnableCensusTopicSubsection bool     `json:"enable_census_topic_subsection"`
+	EnableGetDataCard           bool     `json:"enable_get_data_card"`
+	CensusSearchTopicID         string   `json:"census_search_topic_id"`
+}
+
+// Topics is the data for topics
+type Topics struct {
+	Topic       string `json:"topic"`
+	ReleaseDate string `json:"release_date"`
+	URL         string `json:"url"`
+	ID          string `json:"id"`
 }

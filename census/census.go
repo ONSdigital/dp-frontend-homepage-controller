@@ -1,12 +1,15 @@
 package census
 
 import (
+	"fmt"
 	"net/http"
+	"sort"
 
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	homepage "github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
+	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	dphandlers "github.com/ONSdigital/dp-net/v2/handlers"
 	"github.com/ONSdigital/log.go/v2/log"
 )
@@ -37,21 +40,53 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 		}
 
 		items := censusTopics.List.GetSubtopicItems()
+		if items == nil || len(items) == 0 {
+			return
+		}
+
+		var availableItems []model.Topics
+		for _, subTopics := range items {
+			// do not map "Equalities" since there are no results for this topic
+			if subTopics.ID == "3195" {
+				continue
+			}
+			availableItems = append(availableItems, model.Topics{
+				Topic: subTopics.Title,
+				URL:   fmt.Sprintf("/search?topics=%s", subTopics.ID),
+				ID:    subTopics.ID,
+			})
+		}
+		// sort available items alphabetically
+		sort.Slice(availableItems, func(i, j int) bool {
+			return availableItems[i].Topic < availableItems[j].Topic
+		})
 
 		log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
+
+		homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
+		if err != nil {
+			log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		basePage := rend.NewBasePageModel()
+		m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner, availableItems)
+
+		rend.BuildPage(w, m, "census-topics")
+	} else {
+		homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
+		if err != nil {
+			log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		basePage := rend.NewBasePageModel()
+		m := mapper.CensusLegacy(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner)
+
+		rend.BuildPage(w, m, "census-first-results")
 	}
-
-	homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
-	if err != nil {
-		log.Error(ctx, "HOMEPAGE_RESPONSE_FAILED. failed to get homepage html", err)
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	basePage := rend.NewBasePageModel()
-	m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner)
-
-	rend.BuildPage(w, m, "census-first-results")
 
 	return
 }
