@@ -47,7 +47,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 		var availableItems []model.Topics
 		for _, subTopics := range items {
 			// do not map "Equalities" since there are no results for this topic
-			if subTopics.ID == "3195" {
+			if subTopics.Title == "Equalities" {
 				continue
 			}
 			availableItems = append(availableItems, model.Topics{
