@@ -316,7 +316,7 @@ func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
 }
 
 // Census maps data to our census frontend model
-func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation, emergencyBannerContent zebedee.EmergencyBanner, censusSubTopics []model.Topics) model.CensusPage {
+func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation, emergencyBannerContent zebedee.EmergencyBanner, censusSubTopics []model.Topics, censusSubTopicIDs string) model.CensusPage {
 	page := model.CensusPage{
 		Page: basePage,
 		Data: model.Census{},
@@ -333,6 +333,7 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	page.Data.CensusSearchTopicID = cfg.CensusTopicID
 	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
 	page.Data.AvailableTopics = censusSubTopics
+	page.Data.GetDataURL = censusSubTopicIDs
 
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)
