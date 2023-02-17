@@ -332,6 +332,7 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
 	page.Data.CensusSearchTopicID = cfg.CensusTopicID
 	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
+	page.Data.DatasetFinderEnabled = cfg.DatasetFinderEnabled
 	page.Data.AvailableTopics = censusSubTopics
 
 	if navigationContent != nil {
@@ -357,6 +358,7 @@ func CensusLegacy(req *http.Request, cfg *config.Config, localeCode string, base
 	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
 	page.Data.CensusSearchTopicID = cfg.CensusTopicID
 	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
+	page.Data.DatasetFinderEnabled = cfg.DatasetFinderEnabled
 
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)
