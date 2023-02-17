@@ -67,6 +67,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 		}
 
 		availableIDs := strings.Join(availableTopicIDs, ",")
+		availableIDs = fmt.Sprintf("/search?topics=%s&filter=datasets", availableIDs)
 
 		log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
 
