@@ -73,6 +73,8 @@ var availableItems = []model.Topics{
 	},
 }
 
+var availableIDs = "/search?topics=1234,5678,9876&filter=datasets"
+
 func TestUnitMapper(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
@@ -452,7 +454,7 @@ func TestUnitCensus(t *testing.T) {
 			t.Error("failed to get config")
 		}
 
-		expectedMappedContent := Census(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner, availableItems)
+		expectedMappedContent := Census(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner, availableItems, availableIDs)
 
 		So(expectedMappedContent.URI, ShouldEqual, "/census")
 		So(expectedMappedContent.Type, ShouldEqual, "census")
@@ -463,6 +465,7 @@ func TestUnitCensus(t *testing.T) {
 		So(expectedMappedContent.Data.CensusSearchTopicID, ShouldEqual, cfg.CensusTopicID)
 		So(expectedMappedContent.Data.EnableGetDataCard, ShouldEqual, false)
 		So(expectedMappedContent.Data.AvailableTopics, ShouldResemble, availableItems)
+		So(expectedMappedContent.Data.GetDataURL, ShouldEqual, availableIDs)
 	})
 }
 
