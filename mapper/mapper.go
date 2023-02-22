@@ -316,7 +316,7 @@ func hasMainFigures(mainFigures map[string]*model.MainFigure) bool {
 }
 
 // Census maps data to our census frontend model
-func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation, emergencyBannerContent zebedee.EmergencyBanner, censusSubTopics []model.Topics, censusSubTopicIDs string) model.CensusPage {
+func Census(req *http.Request, cfg *config.Config, localeCode string, basePage coreModel.Page, navigationContent *topicModel.Navigation, emergencyBannerContent zebedee.EmergencyBanner, censusSubTopics []model.Topics) model.CensusPage {
 	page := model.CensusPage{
 		Page: basePage,
 		Data: model.Census{},
@@ -332,8 +332,9 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
 	page.Data.CensusSearchTopicID = cfg.CensusTopicID
 	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
+	page.Data.DatasetFinderEnabled = cfg.DatasetFinderEnabled
 	page.Data.AvailableTopics = censusSubTopics
-	page.Data.GetDataURL = censusSubTopicIDs
+	page.Data.GetCensusDataURL = getSubTopicIDs(censusSubTopics)
 
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)
@@ -358,6 +359,7 @@ func CensusLegacy(req *http.Request, cfg *config.Config, localeCode string, base
 	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
 	page.Data.CensusSearchTopicID = cfg.CensusTopicID
 	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
+	page.Data.DatasetFinderEnabled = cfg.DatasetFinderEnabled
 
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)
@@ -374,4 +376,16 @@ func mapCookiePreferences(req *http.Request, preferencesIsSet *bool, policy *cor
 		Essential: preferencesCookie.Policy.Essential,
 		Usage:     preferencesCookie.Policy.Usage,
 	}
+}
+
+func getSubTopicIDs(subTopics []model.Topics) string {
+	availableTopicIDs := make([]string, 0, len(subTopics))
+	for _, availableItemID := range subTopics {
+		availableTopicIDs = append(availableTopicIDs, availableItemID.ID)
+	}
+
+	availableIDs := strings.Join(availableTopicIDs, ",")
+	availableIDs = fmt.Sprintf("?topics=%s&filter=datasets", availableIDs)
+
+	return availableIDs
 }

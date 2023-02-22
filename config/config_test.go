@@ -30,6 +30,7 @@ func TestSpec(t *testing.T) {
 				So(cfg.SiteDomain, ShouldEqual, "localhost")
 				So(cfg.EnableCensusTopicSubsection, ShouldEqual, false)
 				So(cfg.EnableGetDataCard, ShouldEqual, false)
+				So(cfg.DatasetFinderEnabled, ShouldEqual, false)
 			})
 		})
 	})

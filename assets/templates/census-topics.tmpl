@@ -37,7 +37,11 @@
                 {{ if .Data.EnableGetDataCard }}
                 <ul class="ons-list ons-list--dashed">
                     <li class="ons-list__item">
-                        <a href="{{ .Data.GetDataURL }}" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>
+                        {{ if .Data.DatasetFinderEnabled }}
+                        <a href="/census/find-a-dataset{{ .Data.GetCensusDataURL }}" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>
+                        {{ else }}
+                        <a href="/search{{ .Data.GetCensusDataURL }}" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>
+                        {{ end }}
                     </li>
                     <li class="ons-list__item">
                         <a href="https://www.nomisweb.co.uk/census/2021/bulk" target="_blank" rel="noopener" class="ons-list__link ons-external-link">

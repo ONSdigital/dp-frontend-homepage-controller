@@ -2,10 +2,6 @@ package census
 
 import (
 	"fmt"
-	"net/http"
-	"sort"
-	"strings"
-
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	homepage "github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
@@ -13,6 +9,8 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	dphandlers "github.com/ONSdigital/dp-net/v2/handlers"
 	"github.com/ONSdigital/log.go/v2/log"
+	"net/http"
+	"sort"
 )
 
 // Handler handles requests to census endpoint
@@ -62,14 +60,6 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 			return availableItems[i].Topic < availableItems[j].Topic
 		})
 
-		availableTopicIDs := make([]string, 0, len(availableItems))
-		for _, availableItemID := range availableItems {
-			availableTopicIDs = append(availableTopicIDs, availableItemID.ID)
-		}
-
-		availableIDs := strings.Join(availableTopicIDs, ",")
-		availableIDs = fmt.Sprintf("/search?topics=%s&filter=datasets", availableIDs)
-
 		log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
 
 		homepageContent, err := homepageClient.GetHomePage(ctx, userAccessToken, collectionID, lang)
@@ -80,7 +70,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 		}
 
 		basePage := rend.NewBasePageModel()
-		m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner, availableItems, availableIDs)
+		m := mapper.Census(req, cfg, lang, basePage, navigationContent, homepageContent.EmergencyBanner, availableItems)
 
 		rend.BuildPage(w, m, "census-topics")
 	} else {
