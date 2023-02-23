@@ -457,7 +457,7 @@ func TestUnitCensus(t *testing.T) {
 			t.Error("failed to get config")
 		}
 
-		censusDataURLQuery := getCensusDataURLQuery(availableItems)
+		expectedCensusDataURLQuery := getCensusDataURLQuery(availableItems)
 
 		expectedMappedContent := Census(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner, availableItems)
 
@@ -470,7 +470,7 @@ func TestUnitCensus(t *testing.T) {
 		So(expectedMappedContent.Data.CensusSearchTopicID, ShouldEqual, cfg.CensusTopicID)
 		So(expectedMappedContent.Data.EnableGetDataCard, ShouldEqual, false)
 		So(expectedMappedContent.Data.AvailableTopics, ShouldResemble, availableItems)
-		So(expectedMappedContent.Data.GetCensusDataURLQuery, ShouldEqual, censusDataURLQuery)
+		So(expectedMappedContent.Data.GetCensusDataURLQuery, ShouldEqual, expectedCensusDataURLQuery)
 		So(expectedMappedContent.Data.DatasetFinderEnabled, ShouldEqual, false)
 	})
 }
