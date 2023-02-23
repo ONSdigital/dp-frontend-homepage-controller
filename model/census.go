@@ -18,7 +18,7 @@ type Census struct {
 	EnableGetDataCard           bool     `json:"enable_get_data_card"`
 	DatasetFinderEnabled        bool     `json:"dataset_finder_enabled"`
 	CensusSearchTopicID         string   `json:"census_search_topic_id"`
-	GetCensusDataURL            string   `json:"get_data_url"`
+	GetCensusDataURLQuery       string   `json:"get_census_data_url_query"`
 }
 
 // Topics is the data for topics
