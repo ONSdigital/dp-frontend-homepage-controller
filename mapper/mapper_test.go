@@ -68,12 +68,17 @@ var emergencyBanner = zebedee.EmergencyBanner{
 var availableItems = []model.Topics{
 	{
 		Topic: "Demography",
-		URL:   "/search?topics=4445,1234",
+		URL:   "/search?topics=1234",
 		ID:    "1234",
+	},
+	{
+		Topic: "Ageing",
+		URL:   "/search?topics=4567",
+		ID:    "4567",
 	},
 }
 
-var availableIDs = "/search?topics=1234,5678,9876&filter=datasets"
+var availableIDs = "?topics=1234,4567&filter=datasets"
 
 func TestUnitMapper(t *testing.T) {
 	t.Parallel()
@@ -454,7 +459,9 @@ func TestUnitCensus(t *testing.T) {
 			t.Error("failed to get config")
 		}
 
-		expectedMappedContent := Census(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner, availableItems, availableIDs)
+		subTopicIDs := getSubTopicIDs(availableItems)
+
+		expectedMappedContent := Census(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner, availableItems)
 
 		So(expectedMappedContent.URI, ShouldEqual, "/census")
 		So(expectedMappedContent.Type, ShouldEqual, "census")
@@ -465,7 +472,8 @@ func TestUnitCensus(t *testing.T) {
 		So(expectedMappedContent.Data.CensusSearchTopicID, ShouldEqual, cfg.CensusTopicID)
 		So(expectedMappedContent.Data.EnableGetDataCard, ShouldEqual, false)
 		So(expectedMappedContent.Data.AvailableTopics, ShouldResemble, availableItems)
-		So(expectedMappedContent.Data.GetDataURL, ShouldEqual, availableIDs)
+		So(expectedMappedContent.Data.GetCensusDataURL, ShouldEqual, subTopicIDs)
+		So(expectedMappedContent.Data.DatasetFinderEnabled, ShouldEqual, false)
 	})
 }
 
