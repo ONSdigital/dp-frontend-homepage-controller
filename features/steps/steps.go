@@ -20,16 +20,6 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	RegisterSteps(ctx, component, uiFeature)
 }
 
-func InitializeScenarioWithGetDataCardEnabled(ctx *godog.ScenarioContext) {
-	goCtx := context.Background()
-	component, _ := feature.New(goCtx)
-	component.Config.EnableGetDataCard = true // Update configuration for enabling changes to "Get data card"
-	url := fmt.Sprintf("http://%s%s", component.Config.SiteDomain, component.Config.BindAddr)
-	uiFeature := componenttest.NewUIFeature(url)
-
-	RegisterSteps(ctx, component, uiFeature)
-}
-
 func RegisterSteps(ctx *godog.ScenarioContext, component *feature.HomePageComponent, uiFeature *componenttest.UIFeature) {
 	goCtx := context.Background()
 

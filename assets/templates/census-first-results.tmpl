@@ -39,7 +39,7 @@
                         {{ if .Data.DatasetFinderEnabled }}
                         <a href="/census/find-a-dataset{{ .Data.GetCensusDataURL }}" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>
                         {{ else }}
-                        <a href="/search{ .Data.GetCensusDataURL }}" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>
+                        <a href="/search{{ .Data.GetCensusDataURL }}" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>
                         {{ end }} 
                     </li>
                     <li class="ons-list__item">
