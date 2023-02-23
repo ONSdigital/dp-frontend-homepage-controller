@@ -78,8 +78,6 @@ var availableItems = []model.Topics{
 	},
 }
 
-var availableIDs = "?topics=1234,4567&filter=datasets"
-
 func TestUnitMapper(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
