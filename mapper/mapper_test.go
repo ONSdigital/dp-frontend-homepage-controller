@@ -457,7 +457,7 @@ func TestUnitCensus(t *testing.T) {
 			t.Error("failed to get config")
 		}
 
-		expectedCensusDataURLQuery := getCensusDataURLQuery(availableItems)
+		expectedCensusDataURLQuery := "?topics=1234,4567&filter=datasets"
 
 		expectedMappedContent := Census(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner, availableItems)
 
