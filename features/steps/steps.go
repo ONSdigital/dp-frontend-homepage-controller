@@ -36,6 +36,7 @@ func RegisterSteps(ctx *godog.ScenarioContext, component *feature.HomePageCompon
 	ctx.Step(`^the 10th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-7'] > ul > li:nth-child(2) > a"))
 	ctx.Step(`^the 11th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-8'] > ul > li:nth-child(1) > a"))
 	ctx.Step(`^the 12th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-8'] > ul > li:nth-child(2) > a"))
+	ctx.Step(`^the census href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-link'] > a"))
 
 	ctx.BeforeScenario(func(*godog.Scenario) {
 		uiFeature.Reset()
