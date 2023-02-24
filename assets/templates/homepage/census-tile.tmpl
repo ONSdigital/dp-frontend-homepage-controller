@@ -1,4 +1,4 @@
-<article class="tile tile__content promo__background--plum-gradient col col--lg-29 margin-top-lg--2 margin-top-md--2 margin-left-lg--1 height-lg--31 hide--sm">
+<article class="tile tile__content promo__background--plum-gradient col col--lg-29 margin-top-lg--2 margin-top-md--2 margin-left-lg--1 height-lg--31 hide--sm" data-test="census">
     <header class="margin-top--1">
         <h2 class="margin-top--0 margin-right--0 margin-bottom--0 margin-left--0">
                 {{ if eq .Language "en" }}
@@ -14,7 +14,7 @@
             {{ localise "Census2021Results" .Language 1 }}
         <br>
     </div>
-    <div class="margin-top--1">
+    <div class="margin-top--1" data-test="census-link">
         <a class="text--white font-weight-700 underline-link" href="/census">{{ localise "CensusFindOut" .Language 1 }}</a>
     </div>
 </article>

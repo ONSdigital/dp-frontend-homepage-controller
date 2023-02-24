@@ -55,3 +55,11 @@ Feature: Groups
             "[data-test='ukpop-value']": "67,081,000"
         }
     """
+    # Census
+        And the page should have the following content
+        """
+            {
+                "[data-test='census'] > div": "Results from Census 2021 are out now. Find data and analysis from Census 2021.\n",
+                "[data-test='census-link'] > a": "Find out more about census"
+            }
+        """
