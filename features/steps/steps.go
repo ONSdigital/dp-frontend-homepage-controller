@@ -3,6 +3,7 @@ package steps
 import (
 	"context"
 	"fmt"
+
 	"github.com/chromedp/chromedp"
 	"github.com/cucumber/godog"
 	"github.com/stretchr/testify/assert"
@@ -33,9 +34,10 @@ func RegisterSteps(ctx *godog.ScenarioContext, component *feature.HomePageCompon
 	ctx.Step(`^the 7th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-5'] > ul > li:nth-child(1) > a"))
 	ctx.Step(`^the 8th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-6'] > ul > li:nth-child(1) > a"))
 	ctx.Step(`^the 9th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-7'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 10th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-7'] > ul > li:nth-child(2) > a"))
-	ctx.Step(`^the 11th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-8'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 12th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-8'] > ul > li:nth-child(2) > a"))
+	ctx.Step(`^the 10th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-8'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 11th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-8'] > ul > li:nth-child(2) > a"))
+	ctx.Step(`^the 12th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-9'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 13th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-9'] > ul > li:nth-child(2) > a"))
 	ctx.Step(`^the census href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-link'] > a"))
 
 	ctx.BeforeScenario(func(*godog.Scenario) {

@@ -339,6 +339,18 @@ one = "Find Census 2021 data for different areas."
 description = "View census data on a map"
 one = "View census data on a map"
 
+[CensusDictionary]
+description = "Census 2021 dictionary"
+one = "Census 2021 dictionary"
+
+[CensusDictionarySubhead]
+description = "Definitions, variables and classifications to help when using Census 2021 data."
+one = "Definitions, variables and classifications to help when using Census 2021 data."
+
+[CensusDictionaryDataLink1]
+description = "Census 2021 dictionary"
+one = "Census 2021 dictionary"
+
 # Census Topics---------------------------------------------------------------------------------------------------
 [Ageing]
 description = "Ageing"
