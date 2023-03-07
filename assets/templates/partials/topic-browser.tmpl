@@ -1,0 +1,13 @@
+{{ $availableTopics := .Data.AvailableTopics }}
+
+<div class="ons-grid__col ons-col-12@m ons-u-mb-l">
+    <div class="ons-card" data-test='search-4'>
+        <h2 class="ons-u-fs-m" id="other-census">{{ localise "CensusTopics" .Language 1 }}</h2>
+        <p id="other-census-desc">{{ localise "AvailableCensusTopics" .Language 1 }}</p>
+        <div class="ons-grid--column ons-grid--flex ons-grid--row@l ons-grid--row@m">
+            {{ range $index, $availableTopic := $availableTopics }}
+                <a href="{{ $availableTopic.URL }}" class="current-topics" >{{ $availableTopic.Topic }}</a>
+            {{ end }}
+        </div>
+    </div>
+</div>
