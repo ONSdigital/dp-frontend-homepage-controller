@@ -357,10 +357,6 @@ one = "Geiriadur Cyfrifiad 2021"
 description = "Diffiniadau, newidynnau a dosbarthiadau er mwyn helpu wrth ddefnyddio data Cyfrifiad 2021."
 one = "Diffiniadau, newidynnau a dosbarthiadau er mwyn helpu wrth ddefnyddio data Cyfrifiad 2021."
 
-[CensusDictionaryDataLink1]
-description = "Geiriadur Cyfrifiad 2021"
-one = "Geiriadur Cyfrifiad 2021"
-
 # Census Topics---------------------------------------------------------------------------------------------------
 [Ageing]
 description = "Heneiddio"
