@@ -25,19 +25,31 @@ func RegisterSteps(ctx *godog.ScenarioContext, component *feature.HomePageCompon
 	goCtx := context.Background()
 
 	// Custom steps
-	ctx.Step(`^the 1st link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-1'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 2nd link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-2'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 3rd link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-2'] > ul > li:nth-child(2) > a"))
-	ctx.Step(`^the 4th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-3'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 5th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-3'] > ul > li:nth-child(2) > a"))
-	ctx.Step(`^the 6th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-4'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 7th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-5'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 8th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-6'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 9th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-7'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 10th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-8'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 11th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-8'] > ul > li:nth-child(2) > a"))
-	ctx.Step(`^the 12th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-9'] > ul > li:nth-child(1) > a"))
-	ctx.Step(`^the 13th link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='search-9'] > ul > li:nth-child(2) > a"))
+	ctx.Step(`^the census about link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-about'] > ul > li:nth-child(1) > a"))
+
+	ctx.Step(`^the 1st census data link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-data'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 2nd census data link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-data'] > ul > li:nth-child(2) > a"))
+
+	ctx.Step(`^the 1st census data link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-data'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 2nd census data link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-data'] > ul > li:nth-child(2) > a"))
+
+	ctx.Step(`^the 1st census releases link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-releases'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 2nd census releases link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-releases'] > ul > li:nth-child(2) > a"))
+
+	ctx.Step(`^the census topics link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-topics'] > ul > li:nth-child(1) > a"))
+
+	ctx.Step(`^the census dictionary link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-dictionary'] > ul > li:nth-child(1) > a"))
+
+	ctx.Step(`^the census historic link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-historic'] > ul > li:nth-child(1) > a"))
+
+	ctx.Step(`^the census planning link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-planning'] > ul > li:nth-child(1) > a"))
+
+	ctx.Step(`^the 1st census contact link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-contact'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 2nd census contact link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-contact'] > ul > li:nth-child(2) > a"))
+
+	ctx.Step(`^the 1st census other link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-other'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 2nd census other link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-other'] > ul > li:nth-child(2) > a"))
+
 	ctx.Step(`^the census href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-link'] > a"))
 
 	ctx.BeforeScenario(func(*godog.Scenario) {

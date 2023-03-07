@@ -21,7 +21,7 @@ Feature: Groups
             "[data-test='census-about'] > ul > li:nth-child(1) > a": "About the census"
         }
     """
-    And the 1st link href value should be "census/aboutcensus"
+    And the census about link href value should be "census/aboutcensus"
     # search container section #2
     And the page should have the following content
     """
@@ -32,20 +32,20 @@ Feature: Groups
             "[data-test='census-data'] > ul > li:nth-child(2) > a": "Get census data (Wales)"
         }
     """
-    And the 2nd link href value should be "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimatesenglandandwalescensus2021"
-    And the 3rd link href value should be "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimateswalescensus2021"
+    And the 1st census data link href value should be "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimatesenglandandwalescensus2021"
+    And the 2nd census data link href value should be "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimateswalescensus2021"
     # search container section #3
     And the page should have the following content
     """
         {
-            "[data-test='search-3'] > h2": "Census releases",
-            "[data-test='search-3'] > p": "See what we've published, and our plans for the future.",
-            "[data-test='search-3'] > ul > li:nth-child(1) > a": "Release calendar",
-            "[data-test='search-3'] > ul > li:nth-child(2) > a": "First results and timeline"
+            "[data-test='census-releases'] > h2": "Census releases",
+            "[data-test='census-releases'] > p": "See what we've published, and our plans for the future.",
+            "[data-test='census-releases'] > ul > li:nth-child(1) > a": "Release calendar",
+            "[data-test='census-releases'] > ul > li:nth-child(2) > a": "First results and timeline"
         }
     """
-    And the 4th link href value should be "/releasecalendar?query=census&fromDateDay=&fromDateMonth=&fromDateYear=&toDateDay=&toDateMonth=&toDateYear=&view=upcoming"
-    And the 5th link href value should be "/census/censustransformationprogramme/census2021outputs/releaseplans"
+    And the 1st census releases link href value should be "/releasecalendar?query=census&fromDateDay=&fromDateMonth=&fromDateYear=&toDateDay=&toDateMonth=&toDateYear=&view=upcoming"
+    And the 2nd census releases link href value should be "/census/censustransformationprogramme/census2021outputs/releaseplans"
     # search container section #4
     And the page should have the following content
     """
@@ -55,7 +55,7 @@ Feature: Groups
             "[data-test='census-topics'] > ul > li:nth-child(1) > a": "Topic summaries"
         }
     """
-    And the 6th link href value should be "/census/aboutcensus/censusproducts/topicsummaries"
+    And the census topics link href value should be "/census/aboutcensus/censusproducts/topicsummaries"
     # search container section #5
     And the page should have the following content
     """
@@ -65,7 +65,7 @@ Feature: Groups
             "[data-test='census-dictionary'] > ul > li:nth-child(1) > a": "Census 2021 dictionary"
         }
     """
-    And the 7th link href value should be "/census/census2021dictionary"
+    And the census dictionary link href value should be "/census/census2021dictionary"
         # search container section #6
     And the page should have the following content
     """
@@ -75,7 +75,7 @@ Feature: Groups
             "[data-test='census-historic'] > ul > li:nth-child(1) > a": "Get all historic census data"
         }
     """
-    And the 8th link href value should be "/census/historiccensusdata"
+    And the census historic link href value should be "/census/historiccensusdata"
         # search container section #7
     And the page should have the following content
     """
@@ -85,7 +85,7 @@ Feature: Groups
             "[data-test='census-planning'] > ul > li:nth-child(1) > a": "Planning for Census 2021"
         }
     """
-    And the 9th link href value should be "census/planningforcensus2021"
+    And the census planning link href value should be "census/planningforcensus2021"
         # search container section #8
     And the page should have the following content
     """
@@ -96,8 +96,8 @@ Feature: Groups
             "[data-test='census-contact'] > ul > li:nth-child(2) > a": "Request a 2011 census dataset"
         }
     """
-    And the 10th link href value should be "/census/censuscustomerservices"
-    And the 11th link href value should be "/census/2011census/2011censusdata/2011censusadhoctables"
+    And the 1st census contact link href value should be "/census/censuscustomerservices"
+    And the 2nd census contact link href value should be "/census/2011census/2011censusdata/2011censusadhoctables"
         # search container section #9
     And the page should have the following content
     """
@@ -108,5 +108,5 @@ Feature: Groups
             "[data-test='census-other'] > ul > li:nth-child(2) > a": "Northern Ireland census "
         }
     """
-    And the 12th link href value should be "https://www.scotlandscensus.gov.uk/"
-    And the 13th link href value should be "https://www.nisra.gov.uk/statistics/census"
+    And the 1st census other link href value should be "https://www.scotlandscensus.gov.uk/"
+    And the 2nd census other link href value should be "https://www.nisra.gov.uk/statistics/census"
