@@ -16,9 +16,9 @@ Feature: Groups
     And the page should have the following content
     """
         {
-            "[data-test='search-1'] > h2": "About the census",
-            "[data-test='search-1'] > p": "Find out what the census is and why it's important for all of us.",
-            "[data-test='search-1'] > ul > li:nth-child(1) > a": "About the census"
+            "[data-test='census-about'] > h2": "About the census",
+            "[data-test='census-about'] > p": "Find out what the census is and why it's important for all of us.",
+            "[data-test='census-about'] > ul > li:nth-child(1) > a": "About the census"
         }
     """
     And the 1st link href value should be "census/aboutcensus"
@@ -26,10 +26,10 @@ Feature: Groups
     And the page should have the following content
     """
         {
-            "[data-test='search-2'] > h2": "Census 2021 data",
-            "[data-test='search-2'] > p": "Find data for Census 2021.",
-            "[data-test='search-2'] > ul > li:nth-child(1) > a": "Get census data (England and Wales)",
-            "[data-test='search-2'] > ul > li:nth-child(2) > a": "Get census data (Wales)"
+            "[data-test='census-data'] > h2": "Census 2021 data",
+            "[data-test='census-data'] > p": "Find data for Census 2021.",
+            "[data-test='census-data'] > ul > li:nth-child(1) > a": "Get census data (England and Wales)",
+            "[data-test='census-data'] > ul > li:nth-child(2) > a": "Get census data (Wales)"
         }
     """
     And the 2nd link href value should be "/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationandhouseholdestimatesenglandandwalescensus2021"
@@ -50,9 +50,9 @@ Feature: Groups
     And the page should have the following content
     """
         {
-            "[data-test='search-4'] > h2": "Census topics",
-            "[data-test='search-4'] > p": "Find census data and analysis using these topics.",
-            "[data-test='search-4'] > ul > li:nth-child(1) > a": "Topic summaries"
+            "[data-test='census-topics'] > h2": "Census topics",
+            "[data-test='census-topics'] > p": "Find census data and analysis using these topics.",
+            "[data-test='census-topics'] > ul > li:nth-child(1) > a": "Topic summaries"
         }
     """
     And the 6th link href value should be "/census/aboutcensus/censusproducts/topicsummaries"
@@ -60,9 +60,9 @@ Feature: Groups
     And the page should have the following content
     """
         {
-            "[data-test='search-5'] > h2": "Census 2021 dictionary",
-            "[data-test='search-5'] > p": "Definitions, variables and classifications to help when using Census 2021 data.",
-            "[data-test='search-5'] > ul > li:nth-child(1) > a": "Census 2021 dictionary"
+            "[data-test='census-dictionary'] > h2": "Census 2021 dictionary",
+            "[data-test='census-dictionary'] > p": "Definitions, variables and classifications to help when using Census 2021 data.",
+            "[data-test='census-dictionary'] > ul > li:nth-child(1) > a": "Census 2021 dictionary"
         }
     """
     And the 7th link href value should be "/census/census2021dictionary"
@@ -70,9 +70,9 @@ Feature: Groups
     And the page should have the following content
     """
         {
-            "[data-test='search-6'] > h2": "Historic census data",
-            "[data-test='search-6'] > p": "Find census data and analysis for 2011 and earlier.",
-            "[data-test='search-6'] > ul > li:nth-child(1) > a": "Get all historic census data"
+            "[data-test='census-historic'] > h2": "Historic census data",
+            "[data-test='census-historic'] > p": "Find census data and analysis for 2011 and earlier.",
+            "[data-test='census-historic'] > ul > li:nth-child(1) > a": "Get all historic census data"
         }
     """
     And the 8th link href value should be "/census/historiccensusdata"
@@ -80,9 +80,9 @@ Feature: Groups
     And the page should have the following content
     """
         {
-            "[data-test='search-7'] > h2": "Planning for Census 2021",
-            "[data-test='search-7'] > p": "How we researched, prepared and planned for Census 2021.",
-            "[data-test='search-7'] > ul > li:nth-child(1) > a": "Planning for Census 2021"
+            "[data-test='census-planning'] > h2": "Planning for Census 2021",
+            "[data-test='census-planning'] > p": "How we researched, prepared and planned for Census 2021.",
+            "[data-test='census-planning'] > ul > li:nth-child(1) > a": "Planning for Census 2021"
         }
     """
     And the 9th link href value should be "census/planningforcensus2021"
@@ -90,10 +90,10 @@ Feature: Groups
     And the page should have the following content
     """
         {
-            "[data-test='search-8'] > h2": "Contact us",
-            "[data-test='search-8'] > p": "If you need help, contact census customer services.",
-            "[data-test='search-8'] > ul > li:nth-child(1) > a": "Census customer services",
-            "[data-test='search-8'] > ul > li:nth-child(2) > a": "Request a 2011 census dataset"
+            "[data-test='census-contact'] > h2": "Contact us",
+            "[data-test='census-contact'] > p": "If you need help, contact census customer services.",
+            "[data-test='census-contact'] > ul > li:nth-child(1) > a": "Census customer services",
+            "[data-test='census-contact'] > ul > li:nth-child(2) > a": "Request a 2011 census dataset"
         }
     """
     And the 10th link href value should be "/census/censuscustomerservices"
@@ -102,10 +102,10 @@ Feature: Groups
     And the page should have the following content
     """
         {
-            "[data-test='search-9'] > h2": "Scotland and Northern Ireland censuses",
-            "[data-test='search-9'] > p": "We are responsible for the census in England and Wales.",
-            "[data-test='search-9'] > ul > li:nth-child(1) > a": "Scotland census ",
-            "[data-test='search-9'] > ul > li:nth-child(2) > a": "Northern Ireland census "
+            "[data-test='census-other'] > h2": "Scotland and Northern Ireland censuses",
+            "[data-test='census-other'] > p": "We are responsible for the census in England and Wales.",
+            "[data-test='census-other'] > ul > li:nth-child(1) > a": "Scotland census ",
+            "[data-test='census-other'] > ul > li:nth-child(2) > a": "Northern Ireland census "
         }
     """
     And the 12th link href value should be "https://www.scotlandscensus.gov.uk/"
