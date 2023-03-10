@@ -58,7 +58,7 @@ func Homepage(cfg config.Config, localeCode string, basePage coreModel.Page, mai
 	page.Language = localeCode
 	page.Data.MainFigures = mainFigures
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
-	page.FeatureFlags.SixteensVersion = "8466e33"
+	page.FeatureFlags.SixteensVersion = "3de3b17"
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)
 	}
