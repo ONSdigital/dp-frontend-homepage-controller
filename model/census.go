@@ -19,6 +19,8 @@ type Census struct {
 	DatasetFinderEnabled        bool     `json:"dataset_finder_enabled"`
 	CensusSearchTopicID         string   `json:"census_search_topic_id"`
 	GetCensusDataURLQuery       string   `json:"get_census_data_url_query"`
+	EnableFeedbackAPI           bool     `json:"enable_feedback_api"`
+	FeedbackAPIURL              string   `json:"feedback_api_url"`
 }
 
 // Topics is the data for topics

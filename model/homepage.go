@@ -28,6 +28,8 @@ type Homepage struct {
 	Featured           []Feature              `json:"featured"`
 	HasFeaturedContent bool                   `json:"has_featured_content"`
 	AroundONS          []Feature              `json:"arounds_ons"`
+	EnableFeedbackAPI  bool                   `json:"enable_feedback_api"`
+	FeedbackAPIURL     string                 `json:"feedback_api_url"`
 }
 
 // ReleaseCalendar is data for release calendar block

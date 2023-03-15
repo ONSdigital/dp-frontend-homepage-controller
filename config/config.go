@@ -28,6 +28,9 @@ type Config struct {
 	ServiceAuthToken               string        `envconfig:"SERVICE_AUTH_TOKEN"   json:"-"`
 	SiteDomain                     string        `envconfig:"SITE_DOMAIN"`
 	SupportedLanguages             [2]string     `envconfig:"SUPPORTED_LANGUAGES"`
+	EnableFeedbackAPI              bool          `envconfig:"ENABLE_FEEDBACK_API"`
+	FeedbackAPIURL                 string        `envconfig:"FEEDBACK_API_URL"`
+	SixteensVersion                string        `envconfig:"SIXTEENS_VERSION"`
 }
 
 var cfg *Config
@@ -43,7 +46,7 @@ func Get() (*Config, error) {
 	if cfgVar.Debug {
 		cfgVar.PatternLibraryAssetsPath = "http://localhost:9002/dist/assets"
 	} else {
-		cfgVar.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/e74fcc2"
+		cfgVar.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/fdcd213"
 	}
 	return cfgVar, nil
 }
@@ -73,6 +76,9 @@ func get() (*Config, error) {
 		ServiceAuthToken:               "",
 		SiteDomain:                     "localhost",
 		SupportedLanguages:             [2]string{"en", "cy"},
+		EnableFeedbackAPI:              false,
+		FeedbackAPIURL:                 "http://localhost:23200/v1/feedback",
+		SixteensVersion:                "2366f2e",
 	}
 
 	return cfg, envconfig.Process("", cfg)
