@@ -167,6 +167,10 @@ one = "Get census data"
 description = "Bulk data"
 one = "Bulk data"
 
+[CreateACustomDatasetLink]
+description = "Create a custom dataset"
+one = "Create a custom dataset"
+
 [HistoricCensusData]
 description = "Historic census data"
 one = "Historic census data"

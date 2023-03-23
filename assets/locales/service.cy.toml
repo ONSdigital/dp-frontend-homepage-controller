@@ -177,6 +177,10 @@ one = "Cael gafael ar ddata’r cyfrifiad"
 description = "Bulk data"
 one = "Swmp Ddata"
 
+[CreateACustomDatasetLink]
+description = "Create a custom dataset"
+one = "Creu set ddata wedi’i deilwra"
+
 [HistoricCensusData]
 description = "Historic census data"
 one = "Data hanesyddol y cyfrifiad"

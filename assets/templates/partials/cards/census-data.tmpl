@@ -11,6 +11,13 @@
                         <a href="/search{{ .Data.GetCensusDataURLQuery }}" class="ons-list__link">{{ localise "GetCensusDataLink1" .Language 1 }}</a>
                     {{ end }} 
                 </li>
+                {{ if .Data.EnableCustomDataset }}
+                <li class="ons-list__item">
+                    <a href="/datasets/create" target="_blank" rel="noopener" class="ons-list__link">
+                        {{ localise "CreateACustomDatasetLink" .Language 1 }}
+                    </a>
+                </li>
+                {{ end }}
                 <li class="ons-list__item">
                     <a href="https://www.nomisweb.co.uk/census/2021/bulk" target="_blank" rel="noopener" class="ons-list__link ons-external-link">
                         {{ localise "GetCensusDataLink2" .Language 1 }}

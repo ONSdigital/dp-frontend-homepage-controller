@@ -334,6 +334,7 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
 	page.Data.CensusSearchTopicID = cfg.CensusTopicID
 	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
+	page.Data.EnableCustomDataset = cfg.EnableCustomDataset
 	page.Data.DatasetFinderEnabled = cfg.DatasetFinderEnabled
 	page.Data.AvailableTopics = censusSubTopics
 	page.Data.GetCensusDataURLQuery = getCensusDataURLQuery(censusSubTopics)

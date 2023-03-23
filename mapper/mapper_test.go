@@ -472,6 +472,7 @@ func TestUnitCensus(t *testing.T) {
 		So(expectedMappedContent.Data.AvailableTopics, ShouldResemble, availableItems)
 		So(expectedMappedContent.Data.GetCensusDataURLQuery, ShouldEqual, expectedCensusDataURLQuery)
 		So(expectedMappedContent.Data.DatasetFinderEnabled, ShouldEqual, false)
+		So(expectedMappedContent.Data.EnableCustomDataset, ShouldEqual, false)
 	})
 }
 
