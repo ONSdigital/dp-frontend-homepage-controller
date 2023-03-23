@@ -364,6 +364,7 @@ func CensusLegacy(req *http.Request, cfg *config.Config, localeCode string, base
 	page.Data.EnableCensusTopicSubsection = cfg.EnableCensusTopicSubsection
 	page.Data.CensusSearchTopicID = cfg.CensusTopicID
 	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
+	page.Data.EnableCustomDataset = cfg.EnableCustomDataset
 	page.Data.DatasetFinderEnabled = cfg.DatasetFinderEnabled
 	page.FeatureFlags.EnableFeedbackAPI = cfg.EnableFeedbackAPI
 	page.FeatureFlags.FeedbackAPIURL = cfg.FeedbackAPIURL

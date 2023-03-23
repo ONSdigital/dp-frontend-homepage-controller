@@ -110,3 +110,43 @@ Feature: Groups
     """
     And the 1st census other link href value should be "https://www.scotlandscensus.gov.uk/"
     And the 2nd census other link href value should be "https://www.nisra.gov.uk/statistics/census"
+ Scenario: GET /census and checking the response status 200
+    When the census hub flags are enabled
+    And I navigate to "/census"
+    Then the improve this page banner should be visible
+    # hero content
+    Then element "[data-test='hero-h1']" should be visible
+    And element "[data-test='hero-p']" should be visible
+    And the page should have the following content
+    """
+        {
+            "[data-test='hero-h1']": "Census",
+            "[data-test='hero-p']": "The census takes place every 10 years. It gives us a picture of all the people and households in England and Wales."
+        }
+    """
+    # search container section #1
+    And the page should have the following content
+    """
+        {
+            "[data-test='census-about'] > h2": "About the census",
+            "[data-test='census-about'] > p": "Find out what the census is and why it's important for all of us.",
+            "[data-test='census-about'] > ul > li:nth-child(1) > a": "About the census"
+        }
+    """
+    And the census about link href value should be "census/aboutcensus"
+    # search container section #2
+    And the page should have the following content
+    """
+        {
+            "[data-test='census-data'] > h2": "Census 2021 data",
+            "[data-test='census-data'] > p": "Find data for Census 2021.",
+            "[data-test='census-data'] > ul > li:nth-child(1) > a": "Get census data",
+            "[data-test='census-data'] > ul > li:nth-child(2) > a": "Create a custom dataset",
+            "[data-test='census-data'] > ul > li:nth-child(3) > a": "Bulk data"
+        }
+    """
+    And the 1st census data link href value should be "/census/find-a-dataset"
+    And the 2nd census data link href value should be "/datasets/create"
+    And the 3rd census data link href value should be "https://www.nomisweb.co.uk/census/2021/bulk"
+
+
