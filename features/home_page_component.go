@@ -15,6 +15,7 @@ import (
 	coreModel "github.com/ONSdigital/dp-renderer/model"
 	top "github.com/ONSdigital/dp-topic-api/sdk/mocks"
 	"github.com/ONSdigital/log.go/log"
+	"github.com/cucumber/godog"
 )
 
 type HomePageComponent struct {
@@ -129,4 +130,15 @@ func (c *HomePageComponent) DoGetHealthClient(name, url string) *health.Client {
 func (c *HomePageComponent) DoGetHealthCheck(cfg *config.Config, buildTime, gitCommit, version string) (service.HealthChecker, error) {
 	// HealthChecker
 	return NewHealthCheckerMock(), nil
+}
+
+func (c *HomePageComponent) RegisterSteps(ctx *godog.ScenarioContext) {
+	ctx.Step(`^the census hub flags are enabled`, c.CensusHubFlagsAreEnabled)
+}
+
+func (c *HomePageComponent) CensusHubFlagsAreEnabled() error {
+	c.Config.EnableCustomDataset = true
+	c.Config.EnableGetDataCard = true
+	c.Config.DatasetFinderEnabled = true
+	return nil
 }
