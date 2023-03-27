@@ -396,7 +396,7 @@ func getCensusDataURLQuery(subTopics []model.Topics, cfg *config.Config) string 
 
 	if cfg.DatasetFinderEnabled {
 		return fmt.Sprintf("?topics=%s", availableIDs)
-	} else {
-		return fmt.Sprintf("?topics=%s&filter=datasets", availableIDs)
 	}
+
+	return fmt.Sprintf("?topics=%s&filter=datasets", availableIDs)
 }
