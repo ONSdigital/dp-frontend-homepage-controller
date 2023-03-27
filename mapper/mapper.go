@@ -337,7 +337,7 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	page.Data.EnableCustomDataset = cfg.EnableCustomDataset
 	page.Data.DatasetFinderEnabled = cfg.DatasetFinderEnabled
 	page.Data.AvailableTopics = censusSubTopics
-	page.Data.GetCensusDataURLQuery = getCensusDataURLQuery(censusSubTopics)
+	page.Data.GetCensusDataURLQuery = getCensusDataURLQuery(censusSubTopics, cfg)
 	page.FeatureFlags.EnableFeedbackAPI = cfg.EnableFeedbackAPI
 	page.FeatureFlags.FeedbackAPIURL = cfg.FeedbackAPIURL
 
@@ -386,7 +386,7 @@ func mapCookiePreferences(req *http.Request, preferencesIsSet *bool, policy *cor
 	}
 }
 
-func getCensusDataURLQuery(subTopics []model.Topics) string {
+func getCensusDataURLQuery(subTopics []model.Topics, cfg *config.Config) string {
 	availableTopicIDs := make([]string, 0, len(subTopics))
 	for _, availableItemID := range subTopics {
 		availableTopicIDs = append(availableTopicIDs, availableItemID.ID)
@@ -394,5 +394,9 @@ func getCensusDataURLQuery(subTopics []model.Topics) string {
 
 	availableIDs := strings.Join(availableTopicIDs, ",")
 
-	return fmt.Sprintf("?topics=%s&filter=datasets", availableIDs)
+	if cfg.DatasetFinderEnabled {
+		return fmt.Sprintf("?topics=%s", availableIDs)
+	} else {
+		return fmt.Sprintf("?topics=%s&filter=datasets", availableIDs)
+	}
 }
