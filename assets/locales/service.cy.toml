@@ -350,8 +350,16 @@ description = "Dewch o hyd i ddata Cyfrifiad 2021 ar gyfer gwahanol ardaloedd."
 one = "Dewch o hyd i ddata Cyfrifiad 2021 ar gyfer gwahanol ardaloedd."
 
 [CensusGeographyLink1]
+description = "Dod o hyd i ffeithiau a ffigurau am ardaloedd"
+one = "Dod o hyd i ffeithiau a ffigurau am ardaloedd"
+
+[CensusGeographyLink2]
 description = "Gwelwch ddata cyfrifiad ar fap"
 one = "Gwelwch ddata cyfrifiad ar fap"
+
+[CensusGeographyLink3]
+description = "Creu proffil ardal penodol"
+one = "Creu proffil ardal penodol"
 
 [CensusDictionary]
 description = "Geiriadur Cyfrifiad 2021"

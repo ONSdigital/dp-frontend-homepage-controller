@@ -340,8 +340,16 @@ description = "Find Census 2021 data for different areas."
 one = "Find Census 2021 data for different areas."
 
 [CensusGeographyLink1]
+description = "Find facts and figures about areas"
+one = "Find facts and figures about areas"
+
+[CensusGeographyLink2]
 description = "View census data on a map"
 one = "View census data on a map"
+
+[CensusGeographyLink3]
+description = "Build a custom area profile"
+one = "Build a custom area profile"
 
 [CensusDictionary]
 description = "Census 2021 dictionary"
