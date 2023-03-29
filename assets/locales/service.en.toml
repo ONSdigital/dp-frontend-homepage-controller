@@ -324,8 +324,8 @@ description = "Topic summaries"
 one = "Topic summaries"
 
 [AvailableCensusTopics]
-description = "Find census data and analysis using these topics."
-one = "Find census data and analysis using these topics."
+description = "Find census data, analysis and quality information using these topics."
+one = "Find census data, analysis and quality information using these topics."
 
 [UnavailableCensusTopics]
 description = "Not all data is available. These topics will be published on the following dates:"

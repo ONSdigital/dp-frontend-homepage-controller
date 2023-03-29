@@ -334,8 +334,8 @@ description = "Crynodebau pwnc"
 one = "Crynodebau pwnc"
 
 [AvailableCensusTopics]
-description = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
-one = "Dod o hyd i waith dadansoddi a data'r cyfrifiad gan ddefnyddio'r pynciau hyn."
+description = "Dod o hyd i waith dadansoddi, gwybodaeth ansawdd a data’r cyfrifiad gan ddefnyddio’r pynciau hyn."
+one = "Dod o hyd i waith dadansoddi, gwybodaeth ansawdd a data’r cyfrifiad gan ddefnyddio’r pynciau hyn."
 
 [UnavailableCensusTopics]
 description = "Nid yw'r holl ddata ar gael. Caiff y pynciau hyn eu cyhoeddi ar y dyddiadau canlynol:"
