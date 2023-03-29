@@ -35,31 +35,29 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 		censusTopics, err = c.CensusTopic.GetCensusData(ctx)
 		if err != nil {
 			log.Error(ctx, "failed to get census topic data", err)
-			w.WriteHeader(http.StatusInternalServerError)
-			return
 		}
 
 		items := censusTopics.List.GetSubtopicItems()
-		if items == nil || len(items) == 0 {
-			return
-		}
 
 		var availableItems []model.Topics
-		for _, subTopics := range items {
-			// do not map "Equalities" or "Historic census" since there are no results for these topics
-			if subTopics.Title == "Equalities" || subTopics.Title == "Historic census" {
-				continue
+
+		if items != nil && len(items) > 0 {
+			for _, subTopics := range items {
+				// do not map "Equalities" or "Historic census" since there are no results for these topics
+				if subTopics.Title == "Equalities" || subTopics.Title == "Historic census" {
+					continue
+				}
+				availableItems = append(availableItems, model.Topics{
+					Topic: subTopics.Title,
+					URL:   fmt.Sprintf("/search?topics=%s", subTopics.ID),
+					ID:    subTopics.ID,
+				})
 			}
-			availableItems = append(availableItems, model.Topics{
-				Topic: subTopics.Title,
-				URL:   fmt.Sprintf("/search?topics=%s", subTopics.ID),
-				ID:    subTopics.ID,
+			// sort available items alphabetically
+			sort.Slice(availableItems, func(i, j int) bool {
+				return availableItems[i].Topic < availableItems[j].Topic
 			})
 		}
-		// sort available items alphabetically
-		sort.Slice(availableItems, func(i, j int) bool {
-			return availableItems[i].Topic < availableItems[j].Topic
-		})
 
 		log.Info(ctx, "census topics", log.Data{"census_topics": censusTopics, "items": items})
 

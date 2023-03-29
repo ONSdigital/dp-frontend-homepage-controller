@@ -1,12 +1,24 @@
 {{ $availableTopics := .Data.AvailableTopics }}
+{{ $numTopics := len .Data.AvailableTopics }}
 
 <div class="ons-grid__col ons-col-12@m ons-u-mb-l">
     <div class="ons-card" data-test='census-topic-browser'>
         <h2 class="ons-u-fs-m" id="other-census">{{ localise "CensusTopics" .Language 1 }}</h2>
         <p id="other-census-desc">{{ localise "AvailableCensusTopics" .Language 1 }}</p>
         <div class="ons-grid--column ons-grid--flex ons-grid--row@l ons-grid--row@m">
-            {{ range $index, $availableTopic := $availableTopics }}
-                <a href="{{ $availableTopic.URL }}" class="current-topics" >{{ $availableTopic.Topic }}</a>
+
+            {{ if eq $numTopics 0 }}
+                <div class="ons-panel ons-panel--warn ons-panel--no-title">
+                    <span class="ons-panel__icon" aria-hidden="true">!</span>
+                    <span class="ons-panel__assistive-text ons-u-vh">Error: </span>
+                    <div class="ons-panel__body">
+                        <p>Topics are not available, please try again later</p>
+                    </div>
+                </div>
+            {{ else }}
+                {{ range $index, $availableTopic := $availableTopics }}
+                    <a href="{{ $availableTopic.URL }}" class="current-topics" >{{ $availableTopic.Topic }}</a>
+                {{ end }}
             {{ end }}
         </div>
     </div>
