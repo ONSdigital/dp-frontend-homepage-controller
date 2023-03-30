@@ -57,7 +57,7 @@ var (
 	testCensusRootTopic = models.Topic{
 		ID:          cache.CensusTopicID,
 		Title:       testCensusTitle,
-		SubtopicIds: []string{"5678", "9012"},
+		SubtopicIds: &[]string{"5678", "9012"},
 	}
 
 	testCensusSubTopic1 = models.Topic{
@@ -141,7 +141,7 @@ func TestUpdateCensusTopic(t *testing.T) {
 			GetTopicPrivateFunc: func(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.TopicResponse, topicCliErr.Error) {
 				return &models.TopicResponse{
 					ID:   "1234",
-					Next: &models.Topic{ID: "1234", Title: "Census", SubtopicIds: []string{}},
+					Next: &models.Topic{ID: "1234", Title: "Census", SubtopicIds: &[]string{}},
 				}, nil
 			},
 

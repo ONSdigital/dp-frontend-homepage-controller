@@ -28,7 +28,7 @@ var (
 	testCensusRootTopic = models.Topic{
 		ID:          testCensusTopicID,
 		Title:       testCensusTitle,
-		SubtopicIds: []string{testCensusSubTopicID1, testCensusSubTopicID2},
+		SubtopicIds: &[]string{testCensusSubTopicID1, testCensusSubTopicID2},
 	}
 
 	testCensusSubTopics = &models.PublicSubtopics{
@@ -118,7 +118,7 @@ func TestUpdateCensusTopic(t *testing.T) {
 	Convey("Given census topics public items is nil", t, func() {
 		censusTopicNilClient := &mockTopicCli.ClienterMock{
 			GetTopicPublicFunc: func(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.Topic, topicCliErr.Error) {
-				return &models.Topic{ID: "1234", Title: "Census", SubtopicIds: []string{}}, nil
+				return &models.Topic{ID: "1234", Title: "Census", SubtopicIds: &[]string{}}, nil
 			},
 			GetSubtopicsPublicFunc: func(ctx context.Context, reqHeaders sdk.Headers, id string) (*models.PublicSubtopics, topicCliErr.Error) {
 				return nil, topicCliErr.StatusError{

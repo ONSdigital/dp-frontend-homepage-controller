@@ -24,7 +24,7 @@ func TestSpec(t *testing.T) {
 				So(cfg.GracefulShutdownTimeout, ShouldEqual, 5*time.Second)
 				So(cfg.HealthCheckInterval, ShouldEqual, 30*time.Second)
 				So(cfg.HealthCheckCriticalTimeout, ShouldEqual, 90*time.Second)
-				So(cfg.PatternLibraryAssetsPath, ShouldEqual, "//cdn.ons.gov.uk/dp-design-system/fdcd213")
+				So(cfg.PatternLibraryAssetsPath, ShouldEqual, "//cdn.ons.gov.uk/dp-design-system/c44b4f8")
 				So(cfg.IsPublishingMode, ShouldEqual, false)
 				So(cfg.Languages, ShouldEqual, "en,cy")
 				So(cfg.SiteDomain, ShouldEqual, "localhost")

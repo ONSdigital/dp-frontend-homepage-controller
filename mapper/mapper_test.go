@@ -37,7 +37,7 @@ var mockedNavigationData = &topicModel.Navigation{
 					HRef: "/topics/businessindustryandtrade",
 				},
 			},
-			Uri: "/businessindustryandtrade",
+			URI: "/businessindustryandtrade",
 			SubtopicItems: &[]topicModel.TopicNonReferential{
 				{
 					Title:       "Business",
@@ -50,7 +50,7 @@ var mockedNavigationData = &topicModel.Navigation{
 							HRef: "/topics/business",
 						},
 					},
-					Uri: "/businessindustryandtrade/business",
+					URI: "/businessindustryandtrade/business",
 				},
 			},
 		},
