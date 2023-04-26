@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"strings"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	//nolint:typecheck // assets may not exist as they are auto generated
@@ -144,11 +143,10 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 		return errors.Wrap(registerErr, "unable to register checkers")
 	}
 
-	languages := strings.Split(cfg.Languages, ",")
 	if cfg.IsPublishingMode {
-		svc.HomePageClient = homepage.NewPublishingClient(ctx, svc.Clients, languages)
+		svc.HomePageClient = homepage.NewPublishingClient(ctx, svc.Clients, cfg.SupportedLanguages)
 	} else {
-		svc.HomePageClient, err = homepage.NewWebClient(ctx, svc.Clients, cfg.CacheUpdateInterval, languages)
+		svc.HomePageClient, err = homepage.NewWebClient(ctx, svc.Clients, cfg.CacheUpdateInterval, cfg.SupportedLanguages)
 		if err != nil {
 			log.Fatal(ctx, "failed to create homepage web client", err)
 			return err
