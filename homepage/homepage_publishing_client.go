@@ -17,7 +17,7 @@ type PublishingClient struct {
 	languages       []string
 }
 
-func NewPublishingClient(ctx context.Context, clients *Clients, languages []string) Clienter {
+func NewPublishingClient(clients *Clients, languages []string) Clienter {
 	return &PublishingClient{
 		Updater: Updater{
 			clients: clients,
