@@ -41,7 +41,7 @@ Feature: Groups
             "[data-test='census-releases'] > h2": "Census releases",
             "[data-test='census-releases'] > p": "See what we've published, and our plans for the future.",
             "[data-test='census-releases'] > ul > li:nth-child(1) > a": "Release calendar",
-            "[data-test='census-releases'] > ul > li:nth-child(2) > a": "First results and timeline"
+            "[data-test='census-releases'] > ul > li:nth-child(2) > a": "Results and timeline"
         }
     """
     And the 1st census releases link href value should be "/releasecalendar?query=census&fromDateDay=&fromDateMonth=&fromDateYear=&toDateDay=&toDateMonth=&toDateYear=&view=upcoming"

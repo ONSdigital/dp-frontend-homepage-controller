@@ -34,6 +34,7 @@ func NewWebClient(ctx context.Context, clients *Clients, updateInterval time.Dur
 	}, nil
 }
 
+//nolint:revive //ignore unused parameter ctx
 func (hwc *WebClient) GetHomePage(ctx context.Context, userAccessToken, collectionID, lang string) (*model.HomepageData, error) {
 	homepageData, ok := hwc.cache.Get(getCachingKeyForLanguage(lang))
 	if ok {

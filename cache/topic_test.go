@@ -8,8 +8,6 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-const englishLang string = "en"
-
 func TestNewTopicCache(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
@@ -65,7 +63,7 @@ func TestGetData(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
 
-	mockCacheList, err := GetMockCacheList(ctx, englishLang)
+	mockCacheList, err := GetMockCacheList(ctx)
 	if err != nil {
 		t.Error("failed to get mock census topic cache list")
 	}
@@ -147,7 +145,7 @@ func TestGetCensusData(t *testing.T) {
 	t.Parallel()
 	ctx := context.Background()
 
-	mockCacheList, err := GetMockCacheList(ctx, englishLang)
+	mockCacheList, err := GetMockCacheList(ctx)
 	if err != nil {
 		t.Error("failed to get mock census topic cache list")
 	}

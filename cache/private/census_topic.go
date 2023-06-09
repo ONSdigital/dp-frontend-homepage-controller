@@ -45,7 +45,7 @@ func UpdateCensusTopic(ctx context.Context, censusTopicID, serviceAuthToken stri
 			return cache.GetEmptyCensusTopic()
 		}
 
-		censusTopicCache := setTopicCachePublic(ctx, *censusTopic, *censusSubtopics.PrivateItems)
+		censusTopicCache := setTopicCachePublic(*censusTopic, *censusSubtopics.PrivateItems)
 
 		if censusTopicCache == nil {
 			err := errors.New("census root topic not found")
@@ -57,7 +57,7 @@ func UpdateCensusTopic(ctx context.Context, censusTopicID, serviceAuthToken stri
 	}
 }
 
-func setTopicCachePublic(ctx context.Context, censusTopic models.TopicResponse, subtopics []models.TopicResponse) *cache.Topic {
+func setTopicCachePublic(censusTopic models.TopicResponse, subtopics []models.TopicResponse) *cache.Topic {
 	censusTopicCache := &cache.Topic{
 		ID:              censusTopic.ID,
 		LocaliseKeyName: censusTopic.Next.Title,

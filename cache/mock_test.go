@@ -8,15 +8,13 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-const testLang = "en"
-
 func TestGetMockCacheList(t *testing.T) {
 	t.Parallel()
 
 	ctx := context.Background()
 
 	Convey("When GetMockCacheList is called", t, func() {
-		cacheList, err := GetMockCacheList(ctx, testLang)
+		cacheList, err := GetMockCacheList(ctx)
 
 		Convey("Then the list of cache should be returned", func() {
 			So(cacheList, ShouldNotBeNil)
