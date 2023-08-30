@@ -164,8 +164,8 @@ description = "Get census data"
 one = "Get census data"
 
 [GetCensusDataLink2]
-description = "Bulk data"
-one = "Bulk data"
+description = "Census 2021 data on NOMIS"
+one = "Census 2021 data on NOMIS"
 
 [CreateACustomDatasetLink]
 description = "Create a custom dataset"
