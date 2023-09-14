@@ -10,7 +10,7 @@ import (
 type Config struct {
 	APIRouterURL                   string        `envconfig:"API_ROUTER_URL"`
 	BindAddr                       string        `envconfig:"BIND_ADDR"`
-	CacheCensusTopicUpdateInterval time.Duration `envconfig:"CACHE_CENSUS_TOPICS_UPDATE_INTERVAL"`
+	CacheCensusTopicUpdateInterval time.Duration `envconfig:"CACHE_CENSUS_TOPIC_UPDATE_INTERVAL"`
 	CacheNavigationUpdateInterval  time.Duration `envconfig:"CACHE_NAVIGATION_UPDATE_INTERVAL"`
 	CacheUpdateInterval            time.Duration `envconfig:"CACHE_UPDATE_INTERVAL"`
 	CensusTopicID                  string        `envconfig:"CENSUS_TOPIC_ID"`
@@ -23,8 +23,8 @@ type Config struct {
 	EnableNewNavBar                bool          `envconfig:"ENABLE_NEW_NAVBAR"`
 	FeedbackAPIURL                 string        `envconfig:"FEEDBACK_API_URL"`
 	GracefulShutdownTimeout        time.Duration `envconfig:"GRACEFUL_SHUTDOWN_TIMEOUT"`
-	HealthCheckCriticalTimeout     time.Duration `envconfig:"HEALTHCHECK_CRITICAL_TIMEOUT"`
-	HealthCheckInterval            time.Duration `envconfig:"HEALTHCHECK_INTERVAL"`
+	HealthCheckCriticalTimeout     time.Duration `envconfig:"HEALTH_CHECK_CRITICAL_TIMEOUT"`
+	HealthCheckInterval            time.Duration `envconfig:"HEALTH_CHECK_INTERVAL"`
 	IsPublishingMode               bool          `envconfig:"IS_PUBLISHING_MODE"`
 	PatternLibraryAssetsPath       string        `envconfig:"PATTERN_LIBRARY_ASSETS_PATH"`
 	ServiceAuthToken               string        `envconfig:"SERVICE_AUTH_TOKEN"   json:"-"`
