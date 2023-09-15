@@ -144,7 +144,7 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 	}
 
 	if cfg.IsPublishingMode {
-		svc.HomePageClient = homepage.NewPublishingClient(ctx, svc.Clients, cfg.SupportedLanguages)
+		svc.HomePageClient = homepage.NewPublishingClient(svc.Clients, cfg.SupportedLanguages)
 	} else {
 		svc.HomePageClient, err = homepage.NewWebClient(ctx, svc.Clients, cfg.CacheUpdateInterval, cfg.SupportedLanguages)
 		if err != nil {
