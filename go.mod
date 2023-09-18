@@ -39,7 +39,7 @@ require (
 	github.com/ONSdigital/go-ns v0.0.0-20210916104633-ac1c1c52327e // indirect
 	github.com/aws/aws-sdk-go v1.44.232 // indirect
 	github.com/c2h5oh/datasize v0.0.0-20220606134207-859f65c6625b // indirect
-	github.com/chromedp/cdproto v0.0.0-20230909221021-38a8736298fe // indirect
+	github.com/chromedp/cdproto v0.0.0-20230914224007-a15a36ccbc2e // indirect
 	github.com/chromedp/sysutil v1.0.0 // indirect
 	github.com/cucumber/gherkin-go/v19 v19.0.3 // indirect
 	github.com/cucumber/gherkin/go/v26 v26.2.0 // indirect
@@ -64,7 +64,7 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/justinas/alice v1.2.0 // indirect
-	github.com/klauspost/compress v1.16.7 // indirect
+	github.com/klauspost/compress v1.17.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
@@ -78,6 +78,7 @@ require (
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/square/mongo-lock v0.0.0-20230808145049-cfcf499f6bf0 // indirect
+	github.com/stretchr/objx v0.5.1 // indirect
 	github.com/unrolled/render v1.6.0 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
