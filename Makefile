@@ -13,11 +13,6 @@ audit:
 build: generate-prod
 	go build -tags 'production' -o $(BINPATH)/dp-frontend-homepage-controller -ldflags "-X main.BuildTime=$(BUILD_TIME) -X main.GitCommit=$(GIT_COMMIT) -X main.Version=$(VERSION)"
 
-.PHONY: lint-local
-lint-local:
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
-	golangci-lint run ./...
-
 .PHONY: lint
 lint: generate-prod
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.2

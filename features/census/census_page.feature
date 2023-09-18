@@ -41,7 +41,7 @@ Feature: Groups
             "[data-test='census-releases'] > h2": "Census releases",
             "[data-test='census-releases'] > p": "See what we've published, and our plans for the future.",
             "[data-test='census-releases'] > ul > li:nth-child(1) > a": "Release calendar",
-            "[data-test='census-releases'] > ul > li:nth-child(2) > a": "First results and timeline"
+            "[data-test='census-releases'] > ul > li:nth-child(2) > a": "Results and timeline"
         }
     """
     And the 1st census releases link href value should be "/releasecalendar?query=census&fromDateDay=&fromDateMonth=&fromDateYear=&toDateDay=&toDateMonth=&toDateYear=&view=upcoming"
@@ -142,11 +142,11 @@ Feature: Groups
             "[data-test='census-data'] > p": "Find data for Census 2021.",
             "[data-test='census-data'] > ul > li:nth-child(1) > a": "Get census data",
             "[data-test='census-data'] > ul > li:nth-child(2) > a": "Create a custom dataset",
-            "[data-test='census-data'] > ul > li:nth-child(3) > a": "Bulk data"
+            "[data-test='census-data'] > ul > li:nth-child(3) > a": "Census 2021 data on NOMIS"
         }
     """
     And the 1st census data link href value should be "/census/find-a-dataset"
     And the 2nd census data link href value should be "/datasets/create"
-    And the 3rd census data link href value should be "https://www.nomisweb.co.uk/census/2021/bulk"
+    And the 3rd census data link href value should be "https://www.nomisweb.co.uk/sources/census_2021"
 
 

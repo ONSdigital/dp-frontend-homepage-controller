@@ -174,8 +174,8 @@ description = "Get census data"
 one = "Cael gafael ar ddata’r cyfrifiad"
 
 [GetCensusDataLink2]
-description = "Bulk data"
-one = "Swmp Ddata"
+description = "Census 2021 data on NOMIS"
+one = "Data Cyfrifiad 2021 ar Nomis"
 
 [CreateACustomDatasetLink]
 description = "Create a custom dataset"
@@ -230,8 +230,8 @@ description = "See what we've published, and our plans for the future."
 one = "Gweld yr hyn rydym wedi'i gyhoeddi, a'n cynlluniau ar gyfer y dyfodol."
 
 [ReleasedCensusLink2]
-description = "First results and timeline"
-one = "Canlyniadau cyntaf ac amserlen"
+description = "Results and timeline"
+one = "Canlyniadau ac amserlen"
 
 [CensusPlanning]
 description = "Census planning and preparation"
