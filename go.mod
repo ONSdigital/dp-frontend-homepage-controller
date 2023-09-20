@@ -15,7 +15,7 @@ require (
 	github.com/ONSdigital/dp-healthcheck v1.6.1
 	github.com/ONSdigital/dp-net/v2 v2.11.0
 	github.com/ONSdigital/dp-renderer/v2 v2.3.0
-	github.com/ONSdigital/dp-topic-api v0.19.0
+	github.com/ONSdigital/dp-topic-api v0.20.0
 	github.com/ONSdigital/log.go v1.1.0
 	github.com/ONSdigital/log.go/v2 v2.4.1
 	github.com/chromedp/chromedp v0.9.2
