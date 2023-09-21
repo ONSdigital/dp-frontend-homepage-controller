@@ -16,7 +16,7 @@ If on go 1.12 then ensure the project either resides outside of your `GOPATH` or
 |-------------------------------------|----------------------------------------------------------------------------------------|---------------------------|
 | API_ROUTER_URL                      | The URL of the [dp-api-router](https://github.com/ONSdigital/dp-api-router)            | http://localhost:23200/v1 |
 | BIND_ADDR                           | The Port to run on                                                                     | :24400                    |
-| CACHE_CENSUS_TOPIC_UPDATE_INTERVAL | Duration for census topic cache updates                                                | 1 minute                  |
+| CACHE_CENSUS_TOPICS_UPDATE_INTERVAL | Duration for census topic cache updates                                                | 1 minute                  |
 | CACHE_NAVIGATION_UPDATE_INTERVAL    | Duration for navigation cache updates                                                  | 1 minute                  |
 | CACHE_UPDATE_INTERVAL               | Duration for homepage cache updation                                                   | 10 seconds                |
 | CENSUS_TOPIC_ID                     | Root census id (for getting census topics)                                             | 4445                      |
@@ -29,8 +29,8 @@ If on go 1.12 then ensure the project either resides outside of your `GOPATH` or
 | ENABLE_NEW_NAVBAR                   | Enables Topic API driven Nav bar                                                       | false                     |
 | FEEDBACK_API_URL                    |                                                                                        |                           |
 | GRACEFUL_SHUTDOWN_TIMEOUT           | Time to wait during graceful shutdown                                                  | 5 seconds                 |
-| HEALTH_CHECK_CRITICAL_TIMEOUT       | Amount of time to pass since last healthy health check to be deemed a critical failure | 90 seconds                |
-| HEALTH_CHECK_INTERVAL               | Interval between health checks                                                         | 30 seconds                |
+| HEALTHCHECK_CRITICAL_TIMEOUT       | Amount of time to pass since last healthy health check to be deemed a critical failure | 90 seconds                |
+| HEALTHCHECK_INTERVAL               | Interval between health checks                                                         | 30 seconds                |
 | IS_PUBLISHING_MODE                  | Mode in which service is running                                                       | false                     |
 | PATTERN_LIBRARY_ASSETS_PATH         |                                                                                        |                           |
 | SERVICE_AUTH_TOKEN                  |                                                                                        |                           |
