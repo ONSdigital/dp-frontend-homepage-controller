@@ -16,7 +16,7 @@ build: generate-prod
 .PHONY: lint
 lint: generate-prod
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.54.2
-	golangci-lint run ./...a
+	golangci-lint run ./...
 
 .PHONY: debug
 debug: generate-debug
