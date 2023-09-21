@@ -29,8 +29,8 @@ If on go 1.12 then ensure the project either resides outside of your `GOPATH` or
 | ENABLE_NEW_NAVBAR                   | Enables Topic API driven Nav bar                                                       | false                     |
 | FEEDBACK_API_URL                    |                                                                                        |                           |
 | GRACEFUL_SHUTDOWN_TIMEOUT           | Time to wait during graceful shutdown                                                  | 5 seconds                 |
-| HEALTHCHECK_CRITICAL_TIMEOUT       | Amount of time to pass since last healthy health check to be deemed a critical failure | 90 seconds                |
-| HEALTHCHECK_INTERVAL               | Interval between health checks                                                         | 30 seconds                |
+| HEALTHCHECK_CRITICAL_TIMEOUT        | Amount of time to pass since last healthy health check to be deemed a critical failure | 90 seconds                |
+| HEALTHCHECK_INTERVAL                | Interval between health checks                                                         | 30 seconds                |
 | IS_PUBLISHING_MODE                  | Mode in which service is running                                                       | false                     |
 | PATTERN_LIBRARY_ASSETS_PATH         |                                                                                        |                           |
 | SERVICE_AUTH_TOKEN                  |                                                                                        |                           |
