@@ -46,7 +46,7 @@ func Get() (*Config, error) {
 	if cfgVar.Debug {
 		cfgVar.PatternLibraryAssetsPath = "http://localhost:9002/dist/assets"
 	} else {
-		cfgVar.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/c44b4f8"
+		cfgVar.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/3f77ec1"
 	}
 	return cfgVar, nil
 }
@@ -78,7 +78,7 @@ func get() (*Config, error) {
 		ServiceAuthToken:               "",
 		SiteDomain:                     "localhost",
 		SupportedLanguages:             []string{"en", "cy"},
-		SixteensVersion:                "2366f2e",
+		SixteensVersion:                "749a88b",
 	}
 
 	return cfg, envconfig.Process("", cfg)
