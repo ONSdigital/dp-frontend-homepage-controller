@@ -1,6 +1,6 @@
 module github.com/ONSdigital/dp-frontend-homepage-controller
 
-go 1.20
+go 1.21
 
 replace github.com/spf13/cobra => github.com/spf13/cobra v1.4.0
 
