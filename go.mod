@@ -14,7 +14,7 @@ require (
 	github.com/ONSdigital/dp-cookies v0.4.0
 	github.com/ONSdigital/dp-healthcheck v1.6.1
 	github.com/ONSdigital/dp-net/v2 v2.11.0
-	github.com/ONSdigital/dp-renderer/v2 v2.3.0
+	github.com/ONSdigital/dp-renderer/v2 v2.4.0
 	github.com/ONSdigital/dp-topic-api v0.20.0
 	github.com/ONSdigital/log.go v1.1.0
 	github.com/ONSdigital/log.go/v2 v2.4.1
@@ -66,7 +66,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/smarty/assertions v1.15.1 // indirect
-	github.com/spf13/afero v1.9.5 // indirect
+	github.com/spf13/afero v1.10.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/unrolled/render v1.6.0 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
