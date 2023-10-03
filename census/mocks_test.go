@@ -4,7 +4,7 @@
 package census
 
 import (
-	"github.com/ONSdigital/dp-renderer/model"
+	"github.com/ONSdigital/dp-renderer/v2/model"
 	"io"
 	"sync"
 )

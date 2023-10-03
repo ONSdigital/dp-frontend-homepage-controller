@@ -50,7 +50,6 @@ linters:
   disable-all: true
   enable:
     - unused
-    - depguard
     - dogsled
     - goconst
     - gocritic

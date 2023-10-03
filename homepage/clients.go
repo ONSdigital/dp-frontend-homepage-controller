@@ -12,7 +12,7 @@ import (
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
-	rendModel "github.com/ONSdigital/dp-renderer/model"
+	rendModel "github.com/ONSdigital/dp-renderer/v2/model"
 	topicModel "github.com/ONSdigital/dp-topic-api/models"
 	topicCli "github.com/ONSdigital/dp-topic-api/sdk"
 )
