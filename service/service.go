@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
+	"github.com/justinas/alice"
+
 	//nolint:typecheck // assets may not exist as they are auto generated
 	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
@@ -13,6 +15,7 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
 	render "github.com/ONSdigital/dp-renderer/v2"
+	"github.com/ONSdigital/dp-renderer/v2/middleware/renderror"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -44,6 +47,10 @@ func (svc *Service) Run(ctx context.Context, cfg *config.Config, serviceList *Ex
 
 	// Initialise router
 	r := mux.NewRouter()
+	middleware := []alice.Constructor{
+		renderror.Handler(rend),
+	}
+	newAlice := alice.New(middleware...).Then(r)
 	routes.Init(
 		ctx,
 		r,
@@ -54,7 +61,7 @@ func (svc *Service) Run(ctx context.Context, cfg *config.Config, serviceList *Ex
 		rend,
 	)
 
-	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, r)
+	svc.Server = serviceList.GetHTTPServer(cfg.BindAddr, newAlice)
 
 	// Start Healthcheck and HTTP Server
 	svc.HealthCheck.Start(ctx)
