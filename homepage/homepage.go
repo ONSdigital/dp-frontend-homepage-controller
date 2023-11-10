@@ -87,10 +87,8 @@ func getTrendInfo(ctx context.Context, userAccessToken, collectionID, lang strin
 }
 
 func init() {
-	cfg, err := config.Get()
-	if err != nil {
-		// do something
-	}
+	// TODO short lived and will be removed.
+	cfg, _ := config.Get()
 
 	mainFigureMap = make(map[string]MainFigure)
 
