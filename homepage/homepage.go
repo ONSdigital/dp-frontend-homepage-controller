@@ -99,16 +99,16 @@ func init() {
 			trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/s2qm/lms",
 			datePeriod:         mapper.PeriodMonth,
 			data:               zebedee.TimeseriesMainFigure{},
-			differenceInterval: mapper.PeriodYear,
+			differenceInterval: mapper.PeriodMonth,
 		}
 
 		// Unemployment
 		mainFigureMap["unemp"] = MainFigure{
-			uris:               []string{"/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/s2pu/lms"},
+			uris:               []string{"/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/s2pu/lms"},
 			trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/s2qk/lms",
 			datePeriod:         mapper.PeriodMonth,
 			data:               zebedee.TimeseriesMainFigure{},
-			differenceInterval: mapper.PeriodYear,
+			differenceInterval: mapper.PeriodMonth,
 		}
 	} else {
 		// Employment
