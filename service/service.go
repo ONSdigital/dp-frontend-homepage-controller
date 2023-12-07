@@ -5,6 +5,8 @@ import (
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/justinas/alice"
+	"go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 
 	//nolint:typecheck // assets may not exist as they are auto generated
 	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
@@ -47,8 +49,10 @@ func (svc *Service) Run(ctx context.Context, cfg *config.Config, serviceList *Ex
 
 	// Initialise router
 	r := mux.NewRouter()
+	r.Use(otelmux.Middleware(cfg.OTServiceName))
 	middleware := []alice.Constructor{
 		renderror.Handler(rend),
+		otelhttp.NewMiddleware(cfg.OTServiceName),
 	}
 	newAlice := alice.New(middleware...).Then(r)
 	routes.Init(
