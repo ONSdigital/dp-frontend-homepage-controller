@@ -31,6 +31,7 @@ If on go 1.12 then ensure the project either resides outside of your `GOPATH` or
 | GRACEFUL_SHUTDOWN_TIMEOUT           | Time to wait during graceful shutdown                                                  | 5 seconds                                 |
 | HEALTHCHECK_CRITICAL_TIMEOUT        | Amount of time to pass since last healthy health check to be deemed a critical failure | 90 seconds                                |
 | HEALTHCHECK_INTERVAL                | Interval between health checks                                                         | 30 seconds                                |
+| OTEL_BATCH_TIMEOUT                  | 5s                                                                                     | Interval between pushes to OT Collector   |
 | OTEL_EXPORTER_OTLP_ENDPOINT         | http://localhost:4317                                                                  | URL for OpenTelemetry endpoint            |
 | OTEL_SERVICE_NAME                   | "dp-frontend-homepage-controller"                                                      | Service name to report to telemetry tools |
 | IS_PUBLISHING_MODE                  | Mode in which service is running                                                       | false                                     |
