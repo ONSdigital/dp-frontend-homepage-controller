@@ -179,7 +179,7 @@ one = "Data Cyfrifiad 2021 ar Nomis"
 
 [CreateACustomDatasetLink]
 description = "Create a custom dataset"
-one = "Creu set ddata wedi’i deilwra"
+one = "Creu set ddata arbennig"
 
 [HistoricCensusData]
 description = "Historic census data"
