@@ -83,7 +83,7 @@ func init() {
 	var err error
 	cfg, err = config.Get()
 	if err != nil {
-		panic("failed to get config")
+		panic("failed to get config" + err.Error())
 	}
 }
 
