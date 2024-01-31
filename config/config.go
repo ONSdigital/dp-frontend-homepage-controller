@@ -60,7 +60,7 @@ func get() (*Config, error) {
 		return cfg, nil
 	}
 
-	cfg := &Config{
+	cfg = &Config{
 		APIRouterURL:                   "http://localhost:23200/v1",
 		BindAddr:                       ":24400",
 		CacheCensusTopicUpdateInterval: 1 * time.Minute,
