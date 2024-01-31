@@ -46,12 +46,6 @@ func Get() (*Config, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	if cfgVar.Debug {
-		cfgVar.PatternLibraryAssetsPath = "http://localhost:9002/dist/assets"
-	} else {
-		cfgVar.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/e0a75c3"
-	}
 	return cfgVar, nil
 }
 
@@ -89,5 +83,16 @@ func get() (*Config, error) {
 		SixteensVersion:                "749a88b",
 	}
 
-	return cfg, envconfig.Process("", cfg)
+	err := envconfig.Process("", cfg)
+	if err != nil {
+		return nil, err
+	}
+
+	if cfg.Debug {
+		cfg.PatternLibraryAssetsPath = "http://localhost:9002/dist/assets"
+	} else {
+		cfg.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/e0a75c3"
+	}
+
+	return cfg, nil
 }

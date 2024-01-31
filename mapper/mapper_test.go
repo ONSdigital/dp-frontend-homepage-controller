@@ -77,6 +77,15 @@ var availableItems = []model.Topics{
 		ID:    "4567",
 	},
 }
+var cfg *config.Config
+
+func init() {
+	var err error
+	cfg, err = config.Get()
+	if err != nil {
+		panic("failed to get config")
+	}
+}
 
 func TestUnitMapper(t *testing.T) {
 	t.Parallel()
@@ -452,10 +461,6 @@ func TestUnitCensus(t *testing.T) {
 	Convey("census mapper func returns correct data", t, func() {
 		basePage := coreModel.NewPage("path/to/assets", "site-domain")
 		lang := "en"
-		cfg, err := config.Get()
-		if err != nil {
-			t.Error("failed to get config")
-		}
 
 		expectedCensusDataURLQuery := "?topics=1234,4567&filter=datasets"
 
@@ -482,10 +487,6 @@ func TestUnitCensusLegacy(t *testing.T) {
 	Convey("census mapper func returns correct data", t, func() {
 		basePage := coreModel.NewPage("path/to/assets", "site-domain")
 		lang := "en"
-		cfg, err := config.Get()
-		if err != nil {
-			t.Error("failed to get config")
-		}
 
 		expectedMappedContent := CensusLegacy(req, cfg, lang, basePage, mockedNavigationData, emergencyBanner)
 
