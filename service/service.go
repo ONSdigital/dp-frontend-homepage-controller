@@ -49,11 +49,16 @@ func (svc *Service) Run(ctx context.Context, cfg *config.Config, serviceList *Ex
 
 	// Initialise router
 	r := mux.NewRouter()
-	r.Use(otelmux.Middleware(cfg.OTServiceName))
+
 	middleware := []alice.Constructor{
 		renderror.Handler(rend),
-		otelhttp.NewMiddleware(cfg.OTServiceName),
 	}
+
+	if cfg.OtelEnabled {
+		r.Use(otelmux.Middleware(cfg.OTServiceName))
+		middleware = append(middleware, otelhttp.NewMiddleware(cfg.OTServiceName))
+	}
+
 	newAlice := alice.New(middleware...).Then(r)
 	routes.Init(
 		ctx,

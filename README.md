@@ -34,6 +34,7 @@ If on go 1.12 then ensure the project either resides outside of your `GOPATH` or
 | OTEL_BATCH_TIMEOUT                  | 5s                                                                                     | Interval between pushes to OT Collector   |
 | OTEL_EXPORTER_OTLP_ENDPOINT         | http://localhost:4317                                                                  | URL for OpenTelemetry endpoint            |
 | OTEL_SERVICE_NAME                   | "dp-frontend-homepage-controller"                                                      | Service name to report to telemetry tools |
+| OTEL_ENABLED                        | false                                                                                  | Feature flag to enable OpenTelemetry     |                       
 | IS_PUBLISHING_MODE                  | Mode in which service is running                                                       | false                                     |
 | PATTERN_LIBRARY_ASSETS_PATH         |                                                                                        |                                           |
 | SERVICE_AUTH_TOKEN                  |                                                                                        |                                           |
