@@ -92,42 +92,22 @@ func init() {
 
 	mainFigureMap = make(map[string]MainFigure)
 
-	if cfg.EnableUpdatedMainFigures {
-		// Employment
-		mainFigureMap["emp"] = MainFigure{
-			uris:               []string{"/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/s2pw/lms"},
-			trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/s2qm/lms",
-			datePeriod:         mapper.PeriodMonth,
-			data:               zebedee.TimeseriesMainFigure{},
-			differenceInterval: mapper.PeriodYear,
-		}
+	// Employment
+	mainFigureMap["emp"] = MainFigure{
+		uris:               []string{"/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms"},
+		trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/fux7/lms",
+		datePeriod:         mapper.PeriodMonth,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodYear,
+	}
 
-		// Unemployment
-		mainFigureMap["unemp"] = MainFigure{
-			uris:               []string{"/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/s2pu/lms"},
-			trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/s2qk/lms",
-			datePeriod:         mapper.PeriodMonth,
-			data:               zebedee.TimeseriesMainFigure{},
-			differenceInterval: mapper.PeriodYear,
-		}
-	} else {
-		// Employment
-		mainFigureMap["emp"] = MainFigure{
-			uris:               []string{"/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/lf24/lms"},
-			trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/fux7/lms",
-			datePeriod:         mapper.PeriodMonth,
-			data:               zebedee.TimeseriesMainFigure{},
-			differenceInterval: mapper.PeriodYear,
-		}
-
-		// Unemployment
-		mainFigureMap["unemp"] = MainFigure{
-			uris:               []string{"/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms"},
-			trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/fuu8/lms",
-			datePeriod:         mapper.PeriodMonth,
-			data:               zebedee.TimeseriesMainFigure{},
-			differenceInterval: mapper.PeriodYear,
-		}
+	// Unemployment
+	mainFigureMap["unemp"] = MainFigure{
+		uris:               []string{"/employmentandlabourmarket/peoplenotinwork/unemployment/timeseries/mgsx/lms"},
+		trendURI:           "/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/timeseries/fuu8/lms",
+		datePeriod:         mapper.PeriodMonth,
+		data:               zebedee.TimeseriesMainFigure{},
+		differenceInterval: mapper.PeriodYear,
 	}
 
 	// Inflation (CPIH)
