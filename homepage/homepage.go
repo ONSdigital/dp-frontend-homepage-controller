@@ -87,9 +87,6 @@ func getTrendInfo(ctx context.Context, userAccessToken, collectionID, lang strin
 }
 
 func init() {
-	// TODO short lived and will be removed.
-	cfg, _ := config.Get()
-
 	mainFigureMap = make(map[string]MainFigure)
 
 	// Employment
