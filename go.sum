@@ -34,8 +34,8 @@ github.com/ONSdigital/dp-net/v2 v2.11.2 h1:S5WfcXHva1V8ZkVLS7ZhsvQjf3PPCkCM++NdG
 github.com/ONSdigital/dp-net/v2 v2.11.2/go.mod h1:yZ0lIzM4WfIr6Ujl1lpkCsPHay0n/VQfZJUZjlYB8MY=
 github.com/ONSdigital/dp-otel-go v0.0.7 h1:O4F+7CTYbPeY9kF550RC8x8WJtILBZfcHL/38EdaWZU=
 github.com/ONSdigital/dp-otel-go v0.0.7/go.mod h1:3dIbySH98wXfHOx/zWLBPv4W/QsBiMarSfKavG2xTOw=
-github.com/ONSdigital/dp-renderer/v2 v2.10.0 h1:5g6dz04fX3cGRl5RnNIcK7Pi6WhRHnbpUncyEvawfds=
-github.com/ONSdigital/dp-renderer/v2 v2.10.0/go.mod h1:ZtSTy8nQ+ewawVFAoPEIEn1u+JszHZgl4ir4hhfasIg=
+github.com/ONSdigital/dp-renderer/v2 v2.15.0 h1:gDqI1a9MbPMTbLh6YNwwUkn6AypsY47titAbzQ7Xb10=
+github.com/ONSdigital/dp-renderer/v2 v2.15.0/go.mod h1:AHj6nM4lQmzCyvtLQ2L3FKki9olVC9yKS4V+iP1WFbM=
 github.com/ONSdigital/dp-topic-api v0.22.0 h1:qUYGiG1js2/rsQtZlw9D9A6HEOzKDVcuu0lQi2ltIhQ=
 github.com/ONSdigital/dp-topic-api v0.22.0/go.mod h1:5uowhMBoWUX1HJWnW38GrXLqEj2x50zLysBm/YOv9V4=
 github.com/ONSdigital/go-ns v0.0.0-20191104121206-f144c4ec2e58/go.mod h1:iWos35il+NjbvDEqwtB736pyHru0MPFE/LqcwkV1wDc=
@@ -61,7 +61,7 @@ github.com/chromedp/chromedp v0.9.5 h1:viASzruPJOiThk7c5bueOUY91jGLJVximoEMGoH93
 github.com/chromedp/chromedp v0.9.5/go.mod h1:D4I2qONslauw/C7INoCir1BJkSwBYMyZgx8X276z3+Y=
 github.com/chromedp/sysutil v1.0.0 h1:+ZxhTpfpZlmchB58ih/LBHX52ky7w2VhQVKQMucy3Ic=
 github.com/chromedp/sysutil v1.0.0/go.mod h1:kgWmDdq8fTzXYcKIBqIYvRRTnYb9aNS9moAV0xufSww=
-github.com/cpuguy83/go-md2man/v2 v2.0.1/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
+github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/cucumber/gherkin/go/v26 v26.2.0 h1:EgIjePLWiPeslwIWmNQ3XHcypPsWAHoMCz/YEBKP4GI=
 github.com/cucumber/gherkin/go/v26 v26.2.0/go.mod h1:t2GAPnB8maCT4lkHL99BDCVNzCh1d7dBhCLt150Nr/0=
 github.com/cucumber/godog v0.14.0 h1:h/K4t7XBxsFBF+UJEahNqJ1/2VHVepRXCSq3WWWnehs=
@@ -132,7 +132,7 @@ github.com/hokaccha/go-prettyjson v0.0.0-20190818114111-108c894c2c0e/go.mod h1:p
 github.com/hokaccha/go-prettyjson v0.0.0-20210113012101-fb4e108d2519/go.mod h1:pFlLw2CfqZiIBOx6BuCeRLCrfxBJipTY0nIOF/VbGcI=
 github.com/hokaccha/go-prettyjson v0.0.0-20211117102719-0474bc63780f h1:7LYC+Yfkj3CTRcShK0KOL/w6iTiKyqqBA9a41Wnggw8=
 github.com/hokaccha/go-prettyjson v0.0.0-20211117102719-0474bc63780f/go.mod h1:pFlLw2CfqZiIBOx6BuCeRLCrfxBJipTY0nIOF/VbGcI=
-github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=
+github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/josharian/intern v1.0.0 h1:vlS4z54oSdjm0bgjRigI+G1HpF+tI+9rE5LLzOg8HmY=
 github.com/josharian/intern v1.0.0/go.mod h1:5DoeVV0s6jJacbCEi61lwdGj/aVlrQvzHFFd8Hwg//Y=
 github.com/jtolds/gls v4.20.0+incompatible h1:xdiiI2gbIgH/gLH7ADydsJ1uDOEzR8yvV7C0MuV77Wo=
@@ -194,7 +194,7 @@ github.com/smartystreets/goconvey v1.8.1 h1:qGjIddxOk4grTu9JPOU31tVfq3cNdBlNa5sS
 github.com/smartystreets/goconvey v1.8.1/go.mod h1:+/u4qLyY6x1jReYOp7GOM2FSt8aP9CzCZL03bI28W60=
 github.com/spf13/afero v1.11.0 h1:WJQKhtpdm3v2IzqG8VMqrr6Rf3UYpEF239Jy9wNepM8=
 github.com/spf13/afero v1.11.0/go.mod h1:GH9Y3pIexgf1MTIWtNGyogA5MwRIDXGUr+hbWNoBjkY=
-github.com/spf13/cobra v1.4.0/go.mod h1:Wo4iy3BUC+X2Fybo0PDqwJIv3dNRiZLHQymsfxlB84g=
+github.com/spf13/cobra v1.7.0/go.mod h1:uLxZILRyS/50WlhOIKD7W6V5bgeIt+4sICxh6uRMrb0=
 github.com/spf13/pflag v1.0.5 h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=
 github.com/spf13/pflag v1.0.5/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
