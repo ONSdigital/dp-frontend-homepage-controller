@@ -7,8 +7,12 @@ This project uses go modules, ensure that go version 1.12 or above is in use.
 If on go 1.12 then ensure the project either resides outside of your `GOPATH` or `GO111MODULE` is set to true
 
 1. To start the service use make, `make debug`
+2. Clone `sixteens`
+    1. Run `npm run dev`
 
 ### Dependencies
+- sixteens - Serves CSS and JS for the page
+- No further dependencies other than those defined in `go.mod`
 
 ### Configuration
 
