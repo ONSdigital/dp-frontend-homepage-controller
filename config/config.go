@@ -65,7 +65,7 @@ func get() (*Config, error) {
 		Debug:                          false,
 		EnableCensusTopicSubsection:    false,
 		EnableCustomDataset:            false,
-		EnableFeedbackAPI:              true,
+		EnableFeedbackAPI:              false,
 		EnableGetDataCard:              false,
 		EnableNewNavBar:                false,
 		FeedbackAPIURL:                 "http://localhost:23200/v1/feedback",
