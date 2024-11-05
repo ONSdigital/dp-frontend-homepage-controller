@@ -3,8 +3,7 @@ dp-frontend-homepage-controller
 
 ### Getting started
 
-This project uses go modules, ensure that go version 1.12 or above is in use.
-If on go 1.23 then ensure the project either resides outside of your `GOPATH` or `GO111MODULE` is set to true
+To run this service
 
 1. Run sixteens locally using `npm run dev`
 2. Run `make debug` to start the service on <http://localhost:24400>
