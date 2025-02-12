@@ -437,3 +437,15 @@ one = "10 January"
 [19Jan]
 description = "19 January"
 one = "19 January"
+
+[PreviewSiteTitle]
+description = "Try our new preview site"
+one = "Try our new preview site"
+
+[PreviewSiteText]
+description = "We are improving the ONS website, with brand new navigation, page designs and content."
+one = "We are improving the ONS website, with brand new navigation, page designs and content."
+
+[PreviewSiteLink]
+description = "Explore the ONS preview site"
+one = "Explore the ONS preview site"
