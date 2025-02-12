@@ -22,14 +22,15 @@ type HomepageData struct {
 
 // Homepage contains data specific to this page type
 type Homepage struct {
-	MainFigures        map[string]*MainFigure `json:"main_figures"`
-	HasMainFigures     bool                   `json:"has_main_figures"`
-	ReleaseCalendar    ReleaseCalendar        `json:"release_calendar"`
-	Featured           []Feature              `json:"featured"`
-	HasFeaturedContent bool                   `json:"has_featured_content"`
-	AroundONS          []Feature              `json:"arounds_ons"`
-	EnableFeedbackAPI  bool                   `json:"enable_feedback_api"`
-	FeedbackAPIURL     string                 `json:"feedback_api_url"`
+	MainFigures           map[string]*MainFigure `json:"main_figures"`
+	HasMainFigures        bool                   `json:"has_main_figures"`
+	ReleaseCalendar       ReleaseCalendar        `json:"release_calendar"`
+	Featured              []Feature              `json:"featured"`
+	HasFeaturedContent    bool                   `json:"has_featured_content"`
+	AroundONS             []Feature              `json:"arounds_ons"`
+	EnableFeedbackAPI     bool                   `json:"enable_feedback_api"`
+	FeedbackAPIURL        string                 `json:"feedback_api_url"`
+	EnablePreviewSiteTile bool                   `json:"enable_preview_site_tile"`
 }
 
 // ReleaseCalendar is data for release calendar block

@@ -21,6 +21,7 @@ type Config struct {
 	EnableGetDataCard              bool          `envconfig:"ENABLE_GET_DATA_CARD"`
 	EnableCustomDataset            bool          `envconfig:"ENABLE_CUSTOM_DATASET"`
 	EnableNewNavBar                bool          `envconfig:"ENABLE_NEW_NAVBAR"`
+	EnablePreviewSiteTile          bool          `envconfig:"ENABLE_PREVIEW_SITE_TILE"`
 	FeedbackAPIURL                 string        `envconfig:"FEEDBACK_API_URL"`
 	GracefulShutdownTimeout        time.Duration `envconfig:"GRACEFUL_SHUTDOWN_TIMEOUT"`
 	HealthCheckCriticalTimeout     time.Duration `envconfig:"HEALTHCHECK_CRITICAL_TIMEOUT"`
@@ -68,6 +69,7 @@ func get() (*Config, error) {
 		EnableFeedbackAPI:              false,
 		EnableGetDataCard:              false,
 		EnableNewNavBar:                false,
+		EnablePreviewSiteTile:          false,
 		FeedbackAPIURL:                 "http://localhost:23200/v1/feedback",
 		GracefulShutdownTimeout:        5 * time.Second,
 		HealthCheckCriticalTimeout:     90 * time.Second,
