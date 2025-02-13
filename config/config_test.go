@@ -25,6 +25,7 @@ func TestSpec(t *testing.T) {
 				So(cfg.EnableFeedbackAPI, ShouldEqual, false)
 				So(cfg.EnableGetDataCard, ShouldEqual, false)
 				So(cfg.EnableNewNavBar, ShouldEqual, false)
+				So(cfg.EnablePreviewSiteTile, ShouldEqual, false)
 				So(cfg.FeedbackAPIURL, ShouldEqual, "http://localhost:23200/v1/feedback")
 				So(cfg.GracefulShutdownTimeout, ShouldEqual, 5*time.Second)
 				So(cfg.HealthCheckCriticalTimeout, ShouldEqual, 90*time.Second)

@@ -4,7 +4,11 @@
         {{ template "homepage/main-figures" . }}
 
         <div>
-            {{ template "homepage/census-tile" . }}
+            {{ if .Data.EnablePreviewSiteTile }}
+                {{ template "homepage/preview-site-tile" . }}
+            {{ else }}
+                {{ template "homepage/census-tile" . }}
+            {{ end }}
         </div>
     </div>
     {{ template "homepage/promos" . }}
