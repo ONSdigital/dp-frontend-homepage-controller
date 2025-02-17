@@ -62,6 +62,7 @@ func Homepage(cfg config.Config, localeCode string, basePage coreModel.Page, mai
 	page.FeatureFlags.EnableFeedbackAPI = cfg.EnableFeedbackAPI
 	page.FeatureFlags.FeedbackAPIURL = cfg.FeedbackAPIURL
 	page.Data.EnablePreviewSiteTile = cfg.EnablePreviewSiteTile
+	page.Data.PreviewSiteURL = cfg.PreviewSiteURL
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)
 	}

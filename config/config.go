@@ -22,6 +22,7 @@ type Config struct {
 	EnableCustomDataset            bool          `envconfig:"ENABLE_CUSTOM_DATASET"`
 	EnableNewNavBar                bool          `envconfig:"ENABLE_NEW_NAVBAR"`
 	EnablePreviewSiteTile          bool          `envconfig:"ENABLE_PREVIEW_SITE_TILE"`
+	PreviewSiteURL                 string        `envconfig:"PREVIEW_SITE_URL"`
 	FeedbackAPIURL                 string        `envconfig:"FEEDBACK_API_URL"`
 	GracefulShutdownTimeout        time.Duration `envconfig:"GRACEFUL_SHUTDOWN_TIMEOUT"`
 	HealthCheckCriticalTimeout     time.Duration `envconfig:"HEALTHCHECK_CRITICAL_TIMEOUT"`
@@ -70,6 +71,7 @@ func get() (*Config, error) {
 		EnableGetDataCard:              false,
 		EnableNewNavBar:                false,
 		EnablePreviewSiteTile:          false,
+		PreviewSiteURL:                 "https://nwp-prototype.ons.gov.uk/",
 		FeedbackAPIURL:                 "http://localhost:23200/v1/feedback",
 		GracefulShutdownTimeout:        5 * time.Second,
 		HealthCheckCriticalTimeout:     90 * time.Second,

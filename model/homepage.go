@@ -31,6 +31,7 @@ type Homepage struct {
 	EnableFeedbackAPI     bool                   `json:"enable_feedback_api"`
 	FeedbackAPIURL        string                 `json:"feedback_api_url"`
 	EnablePreviewSiteTile bool                   `json:"enable_preview_site_tile"`
+	PreviewSiteURL        string                 `json:"preview_site_url"`
 }
 
 // ReleaseCalendar is data for release calendar block
