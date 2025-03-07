@@ -27,7 +27,6 @@ To run this service
 | DEBUG                               |                                                                                        |                                           |
 | ENABLE_CENSUS_TOPIC_SUBSECTION      | Displays topics subsection                                                             | false                                     |
 | ENABLE_CUSTOM_DATASET               | Displays link to custom dataset builder                                                | false                                     |
-| ENABLE_FEEDBACK_API                 | Enable the feedback API for use in the feedback form (as opposed to the controller)    | false                                     |
 | ENABLE_GET_DATA_CARD                | Displays Get Data Card                                                                 | false                                     |
 | ENABLE_NEW_NAVBAR                   | Enables Topic API driven Nav bar                                                       | false                                     |
 | FEEDBACK_API_URL                    |                                                                                        |                                           |

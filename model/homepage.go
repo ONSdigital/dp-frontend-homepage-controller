@@ -28,7 +28,6 @@ type Homepage struct {
 	Featured              []Feature              `json:"featured"`
 	HasFeaturedContent    bool                   `json:"has_featured_content"`
 	AroundONS             []Feature              `json:"arounds_ons"`
-	EnableFeedbackAPI     bool                   `json:"enable_feedback_api"`
 	FeedbackAPIURL        string                 `json:"feedback_api_url"`
 	EnablePreviewSiteTile bool                   `json:"enable_preview_site_tile"`
 	PreviewSiteURL        string                 `json:"preview_site_url"`

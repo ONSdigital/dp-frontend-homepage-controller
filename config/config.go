@@ -17,7 +17,6 @@ type Config struct {
 	DatasetFinderEnabled           bool          `envconfig:"DATASET_FINDER_ENABLED"`
 	Debug                          bool          `envconfig:"DEBUG"`
 	EnableCensusTopicSubsection    bool          `envconfig:"ENABLE_CENSUS_TOPIC_SUBSECTION"`
-	EnableFeedbackAPI              bool          `envconfig:"ENABLE_FEEDBACK_API"`
 	EnableGetDataCard              bool          `envconfig:"ENABLE_GET_DATA_CARD"`
 	EnableCustomDataset            bool          `envconfig:"ENABLE_CUSTOM_DATASET"`
 	EnableNewNavBar                bool          `envconfig:"ENABLE_NEW_NAVBAR"`
@@ -67,7 +66,6 @@ func get() (*Config, error) {
 		Debug:                          false,
 		EnableCensusTopicSubsection:    false,
 		EnableCustomDataset:            false,
-		EnableFeedbackAPI:              false,
 		EnableGetDataCard:              false,
 		EnableNewNavBar:                false,
 		EnablePreviewSiteTile:          false,
