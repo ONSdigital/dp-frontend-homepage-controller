@@ -1,23 +1,26 @@
-dp-frontend-homepage-controller
-================
+# dp-frontend-homepage-controller
 
-### Getting started
+## Getting started
 
 To run this service
 
 1. Run sixteens locally using `npm run dev`
 2. Run `make debug` to start the service on <http://localhost:24400>
 
-### Dependencies
+## Dependencies
+
 - sixteens - Serves CSS and JS for the page
-- golang 1.23.x 
+- dp-design-system
+- golang 1.24.x
+- zebedee
+- dp-topic-api
 - No further dependencies other than those defined in `go.mod`
 
-### Configuration
+## Configuration
 
 | Config                              | Description                                                                            | Default                                   |
 |-------------------------------------|----------------------------------------------------------------------------------------|-------------------------------------------|
-| API_ROUTER_URL                      | The URL of the [dp-api-router](https://github.com/ONSdigital/dp-api-router)            | http://localhost:23200/v1                 |
+| API_ROUTER_URL                      | The URL of the [dp-api-router](https://github.com/ONSdigital/dp-api-router)            | <http://localhost:23200/v1>                |
 | BIND_ADDR                           | The Port to run on                                                                     | :24400                                    |
 | CACHE_CENSUS_TOPICS_UPDATE_INTERVAL | Duration for census topic cache updates                                                | 1 minute                                  |
 | CACHE_NAVIGATION_UPDATE_INTERVAL    | Duration for navigation cache updates                                                  | 1 minute                                  |
@@ -35,9 +38,9 @@ To run this service
 | HEALTHCHECK_CRITICAL_TIMEOUT        | Amount of time to pass since last healthy health check to be deemed a critical failure | 90 seconds                                |
 | HEALTHCHECK_INTERVAL                | Interval between health checks                                                         | 30 seconds                                |
 | OTEL_BATCH_TIMEOUT                  | 5s                                                                                     | Interval between pushes to OT Collector   |
-| OTEL_EXPORTER_OTLP_ENDPOINT         | http://localhost:4317                                                                  | URL for OpenTelemetry endpoint            |
+| OTEL_EXPORTER_OTLP_ENDPOINT         | <http://localhost:4317>                                                                  | URL for OpenTelemetry endpoint            |
 | OTEL_SERVICE_NAME                   | "dp-frontend-homepage-controller"                                                      | Service name to report to telemetry tools |
-| OTEL_ENABLED                        | false                                                                                  | Feature flag to enable OpenTelemetry     |                       
+| OTEL_ENABLED                        | false                                                                                  | Feature flag to enable OpenTelemetry      |
 | IS_PUBLISHING_MODE                  | Mode in which service is running                                                       | false                                     |
 | PATTERN_LIBRARY_ASSETS_PATH         |                                                                                        |                                           |
 | SERVICE_AUTH_TOKEN                  |                                                                                        |                                           |
@@ -45,12 +48,12 @@ To run this service
 | SITE_DOMAIN                         |                                                                                        | localhost                                 |
 | SUPPORTED_LANGUAGES                 | Languages which are supported separated by comma                                       | en,cy                                     |
 
-### Contributing
+## Contributing
 
 See [CONTRIBUTING](CONTRIBUTING.md) for details.
 
-### License
+## License
 
-Copyright © 2021, Office for National Statistics (https://www.ons.gov.uk)
+Copyright © 2025, Office for National Statistics (<https://www.ons.gov.uk>)
 
 Released under MIT license, see [LICENSE](LICENSE.md) for details.
