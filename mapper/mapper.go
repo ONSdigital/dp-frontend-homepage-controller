@@ -59,7 +59,6 @@ func Homepage(cfg config.Config, localeCode string, basePage coreModel.Page, mai
 	page.Data.MainFigures = mainFigures
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.FeatureFlags.SixteensVersion = cfg.SixteensVersion
-	page.FeatureFlags.EnableFeedbackAPI = cfg.EnableFeedbackAPI
 	page.FeatureFlags.FeedbackAPIURL = cfg.FeedbackAPIURL
 	page.Data.EnablePreviewSiteTile = cfg.EnablePreviewSiteTile
 	page.Data.PreviewSiteURL = cfg.PreviewSiteURL
@@ -340,7 +339,6 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 	page.Data.DatasetFinderEnabled = cfg.DatasetFinderEnabled
 	page.Data.AvailableTopics = censusSubTopics
 	page.Data.GetCensusDataURLQuery = getCensusDataURLQuery(censusSubTopics, cfg)
-	page.FeatureFlags.EnableFeedbackAPI = cfg.EnableFeedbackAPI
 	page.FeatureFlags.FeedbackAPIURL = cfg.FeedbackAPIURL
 
 	if navigationContent != nil {
@@ -368,7 +366,6 @@ func CensusLegacy(req *http.Request, cfg *config.Config, localeCode string, base
 	page.Data.EnableGetDataCard = cfg.EnableGetDataCard
 	page.Data.EnableCustomDataset = cfg.EnableCustomDataset
 	page.Data.DatasetFinderEnabled = cfg.DatasetFinderEnabled
-	page.FeatureFlags.EnableFeedbackAPI = cfg.EnableFeedbackAPI
 	page.FeatureFlags.FeedbackAPIURL = cfg.FeedbackAPIURL
 
 	if navigationContent != nil {

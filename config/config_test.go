@@ -22,7 +22,6 @@ func TestSpec(t *testing.T) {
 				So(cfg.CacheUpdateInterval, ShouldEqual, 10*time.Second)
 				So(cfg.DatasetFinderEnabled, ShouldEqual, false)
 				So(cfg.EnableCensusTopicSubsection, ShouldEqual, false)
-				So(cfg.EnableFeedbackAPI, ShouldEqual, false)
 				So(cfg.EnableGetDataCard, ShouldEqual, false)
 				So(cfg.EnableNewNavBar, ShouldEqual, false)
 				So(cfg.EnablePreviewSiteTile, ShouldEqual, false)
