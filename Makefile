@@ -14,9 +14,13 @@ build: generate-prod
 	go build -tags 'production' -o $(BINPATH)/dp-frontend-homepage-controller -ldflags "-X main.BuildTime=$(BUILD_TIME) -X main.GitCommit=$(GIT_COMMIT) -X main.Version=$(VERSION)"
 
 .PHONY: lint
-lint: generate-prod
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.54.2
-	golangci-lint run ./...
+lint: ## Used in ci to run linters against Go code
+	cp assets/data.go assets/data.go.bak
+	echo 'func Asset(_ string) ([]byte, error) { return nil, nil }' >> assets/data.go
+	echo 'func AssetNames() []string { return []string{} }' >> assets/data.go
+	gofmt -w assets/data.go
+	golangci-lint run ./... || { echo "Linting failed, restoring original data.go"; mv assets/data.go.bak assets/data.go; exit 1; }
+	mv assets/data.go.bak assets/data.go
 
 .PHONY: debug
 debug: generate-debug
