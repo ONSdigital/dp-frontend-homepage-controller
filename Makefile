@@ -15,12 +15,12 @@ build: generate-prod
 
 .PHONY: lint
 lint: ## Used in ci to run linters against Go code
-	cp assets/data.go assets/data.go.bak
-	echo 'func Asset(_ string) ([]byte, error) { return nil, nil }' >> assets/data.go
-	echo 'func AssetNames() []string { return []string{} }' >> assets/data.go
-	gofmt -w assets/data.go
-	golangci-lint run ./... || { echo "Linting failed, restoring original data.go"; mv assets/data.go.bak assets/data.go; exit 1; }
-	mv assets/data.go.bak assets/data.go
+	cp assets/assets.go assets/assets.go.bak
+	echo 'func Asset(_ string) ([]byte, error) { return nil, nil }' >> assets/assets.go
+	echo 'func AssetNames() []string { return []string{} }' >> assets/assets.go
+	gofmt -w assets/assets.go
+	golangci-lint run ./... || { echo "Linting failed, restoring original assets.go"; mv assets/assets.go.bak assets/assets.go; exit 1; }
+	mv assets/assets.go.bak assets/assets.go
 
 .PHONY: debug
 debug: generate-debug
@@ -44,7 +44,7 @@ generate-debug: fetch-dp-renderer
 	# fetch the renderer library and build the dev version
 	go install github.com/kevinburke/go-bindata/v4/...@latest
 	cd assets; go-bindata -prefix $(CORE_ASSETS_PATH)/assets -debug -o data.go -pkg assets locales/... templates/... $(CORE_ASSETS_PATH)/assets/locales/... $(CORE_ASSETS_PATH)/assets/templates/...
-	{ printf "// +build debug\n"; cat assets/data.go; } > assets/debug.go.new
+	{ printf "//go:build debug\n"; cat assets/data.go; } > assets/debug.go.new
 	mv assets/debug.go.new assets/data.go
 
 .PHONY: generate-prod
@@ -52,7 +52,7 @@ generate-prod: fetch-dp-renderer
 	# fetch the renderer library and build the prod version
 	go install github.com/kevinburke/go-bindata/v4/...@latest
 	cd assets; go-bindata -prefix $(CORE_ASSETS_PATH)/assets -o data.go -pkg assets locales/... templates/... $(CORE_ASSETS_PATH)/assets/locales/... $(CORE_ASSETS_PATH)/assets/templates/...
-	{ printf "// +build production\n"; cat assets/data.go; } > assets/data.go.new
+	{ printf "//go:build production\n"; cat assets/data.go; } > assets/data.go.new
 	mv assets/data.go.new assets/data.go
 
 .PHONY: fetch-dp-renderer
