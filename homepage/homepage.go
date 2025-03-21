@@ -58,8 +58,6 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, userAc
 	m := mapper.Homepage(*cfg, lang, basePage, homepageContent.MainFigures, homepageContent.FeaturedContent, homepageContent.AroundONS, homepageContent.ServiceMessage, homepageContent.EmergencyBanner, navigationContent)
 
 	rend.BuildPage(w, m, "homepage")
-
-	return
 }
 
 func getTrendInfo(ctx context.Context, userAccessToken, collectionID, lang string, zcli ZebedeeClient, figure MainFigure) mapper.TrendInfo {

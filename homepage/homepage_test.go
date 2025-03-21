@@ -32,7 +32,7 @@ func TestUnitHomepageHandlerSuccess(t *testing.T) {
 	t.Parallel()
 
 	Convey("Given a valid request", t, func() {
-		req := httptest.NewRequest("GET", "/", nil)
+		req := httptest.NewRequest("GET", "/", http.NoBody)
 		req.Header.Set("X-Florence-Token", "testuser")
 
 		cfg, err := config.Get()

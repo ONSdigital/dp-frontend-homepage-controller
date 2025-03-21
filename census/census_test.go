@@ -32,7 +32,7 @@ func TestUnitCensusHandlerSuccess(t *testing.T) {
 	t.Parallel()
 
 	Convey("Given a valid request", t, func() {
-		req := httptest.NewRequest("GET", "/census", nil)
+		req := httptest.NewRequest("GET", "/census", http.NoBody)
 
 		cfg, err := config.Get()
 		So(err, ShouldBeNil)

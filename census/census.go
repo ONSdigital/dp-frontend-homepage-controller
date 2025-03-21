@@ -41,7 +41,7 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 
 		var availableItems []model.Topics
 
-		if items != nil && len(items) > 0 {
+		if len(items) > 0 {
 			for _, subTopics := range items {
 				// do not map "Equalities" or "Historic census" since there are no results for these topics
 				if subTopics.Title == "Equalities" || subTopics.Title == "Historic census" {
@@ -85,6 +85,5 @@ func handle(w http.ResponseWriter, req *http.Request, cfg *config.Config, c cach
 
 		rend.BuildPage(w, m, "census-first-results")
 	}
-
 	return
 }

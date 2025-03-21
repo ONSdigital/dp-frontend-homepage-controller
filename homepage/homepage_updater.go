@@ -42,7 +42,6 @@ func (hu *Updater) GetHomePageUpdateFor(ctx context.Context, userAccessToken, co
 				latestMainFigure := getLatestTimeSeriesData(ctx, zebResponses)
 				mappedMainFigure := mapper.MainFigure(ctx, id, figure.datePeriod, figure.differenceInterval, latestMainFigure, trendInfo)
 				responses <- mappedMainFigure
-				return
 			}(ctx, hu.clients.Zebedee, id, figure)
 		}
 		wg.Wait()

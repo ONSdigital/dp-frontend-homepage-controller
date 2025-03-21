@@ -457,7 +457,7 @@ func TestUnitMapper(t *testing.T) {
 
 func TestUnitCensus(t *testing.T) {
 	t.Parallel()
-	req := httptest.NewRequest("", "/", nil)
+	req := httptest.NewRequest("", "/", http.NoBody)
 	Convey("census mapper func returns correct data", t, func() {
 		basePage := coreModel.NewPage("path/to/assets", "site-domain")
 		lang := "en"
@@ -483,7 +483,7 @@ func TestUnitCensus(t *testing.T) {
 
 func TestUnitCensusLegacy(t *testing.T) {
 	t.Parallel()
-	req := httptest.NewRequest("", "/", nil)
+	req := httptest.NewRequest("", "/", http.NoBody)
 	Convey("census mapper func returns correct data", t, func() {
 		basePage := coreModel.NewPage("path/to/assets", "site-domain")
 		lang := "en"
@@ -502,7 +502,7 @@ func TestUnitCensusLegacy(t *testing.T) {
 }
 
 func TestUnitMapCookiesPreferences(t *testing.T) {
-	req := httptest.NewRequest("", "/", nil)
+	req := httptest.NewRequest("", "/", http.NoBody)
 	pageModel := coreModel.Page{
 		CookiesPreferencesSet: false,
 		CookiesPolicy: coreModel.CookiesPolicy{

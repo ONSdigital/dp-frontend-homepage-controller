@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
@@ -42,8 +43,10 @@ func (h *HealthCheckerMock) Handler(w http.ResponseWriter, req *http.Request) {}
 func New(ctx context.Context) (*HomePageComponent, error) {
 	svcErrors := make(chan error, 1)
 	c := &HomePageComponent{
-		errorChan:      svcErrors,
-		HTTPServer:     &http.Server{},
+		errorChan: svcErrors,
+		HTTPServer: &http.Server{
+			ReadHeaderTimeout: 5 * time.Second,
+		},
 		ServiceRunning: false,
 	}
 

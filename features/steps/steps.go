@@ -55,13 +55,15 @@ func RegisterSteps(ctx *godog.ScenarioContext, component *feature.HomePageCompon
 
 	ctx.Step(`^the census href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-link'] > a"))
 
-	ctx.BeforeScenario(func(*godog.Scenario) {
+	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		uiFeature.Reset()
+		return ctx, nil
 	})
 
-	ctx.AfterScenario(func(*godog.Scenario, error) {
+	ctx.After(func(ctx context.Context, sc *godog.Scenario, err error) (context.Context, error) {
 		uiFeature.Close()
 		component.StopService(goCtx)
+		return ctx, nil
 	})
 
 	component.RegisterSteps(ctx)

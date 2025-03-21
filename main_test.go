@@ -19,7 +19,6 @@ func InitializeTestSuite(ctx *godog.TestSuiteContext) {
 }
 
 func TestComponent(t *testing.T) {
-
 	if *componentFlag {
 		status := 0
 
