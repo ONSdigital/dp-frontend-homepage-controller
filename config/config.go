@@ -82,7 +82,7 @@ func get() (*Config, error) {
 		ServiceAuthToken:               "",
 		SiteDomain:                     "localhost",
 		SupportedLanguages:             []string{"en", "cy"},
-		SixteensVersion:                "bc2c02c",
+		SixteensVersion:                "7c4a856",
 	}
 
 	err := envconfig.Process("", cfg)
