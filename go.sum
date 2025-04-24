@@ -32,6 +32,8 @@ github.com/ONSdigital/dp-net v1.5.0 h1:H47O5N+eXyXCYqPoQGWwuK12uLds3pCgzxpYwepg+
 github.com/ONSdigital/dp-net v1.5.0/go.mod h1:d/S4n6FJlQwmVIa2rnVt1HnAUgM8XsG0QEJBQp48uGg=
 github.com/ONSdigital/dp-net/v2 v2.13.0 h1:uYeoSTvmC9vb7YZRZWQ8NzZDl+eAU8gkKWhtq8Fagb8=
 github.com/ONSdigital/dp-net/v2 v2.13.0/go.mod h1:oN2p+QIKx0pz4K1bgHGvXA/9WkuMrh1F/3HtHoCc0CA=
+github.com/ONSdigital/dp-net/v3 v3.3.0 h1:NAH9z+nvbJxoK6OnDpOyJJ+52dqBhVtaugk5bqEDt0Y=
+github.com/ONSdigital/dp-net/v3 v3.3.0/go.mod h1:ur4LLCvd2xW2jpa785pElE6HB2bPvszZxdAjqv0XFGg=
 github.com/ONSdigital/dp-otel-go v0.0.7 h1:O4F+7CTYbPeY9kF550RC8x8WJtILBZfcHL/38EdaWZU=
 github.com/ONSdigital/dp-otel-go v0.0.7/go.mod h1:3dIbySH98wXfHOx/zWLBPv4W/QsBiMarSfKavG2xTOw=
 github.com/ONSdigital/dp-renderer/v2 v2.19.0 h1:5d4NTbaQ8MHn/7aRRHXuYDqxXNHDiXnaNjihdn2+xIA=

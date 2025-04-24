@@ -15,7 +15,7 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service/mock"
 	"github.com/ONSdigital/dp-healthcheck/healthcheck"
-	dphttp "github.com/ONSdigital/dp-net/v2/http"
+	dphttp "github.com/ONSdigital/dp-net/v3/http"
 	"github.com/ONSdigital/dp-topic-api/models"
 	"github.com/ONSdigital/dp-topic-api/sdk"
 	topicErrs "github.com/ONSdigital/dp-topic-api/sdk/errors"

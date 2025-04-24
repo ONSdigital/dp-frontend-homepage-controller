@@ -12,7 +12,7 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service/mock"
 	"github.com/ONSdigital/dp-healthcheck/healthcheck"
-	dphttp "github.com/ONSdigital/dp-net/v2/http"
+	dphttp "github.com/ONSdigital/dp-net/v3/http"
 	coreModel "github.com/ONSdigital/dp-renderer/v2/model"
 	top "github.com/ONSdigital/dp-topic-api/sdk/mocks"
 	"github.com/ONSdigital/log.go/log"

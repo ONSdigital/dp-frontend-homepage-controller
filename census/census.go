@@ -10,7 +10,7 @@ import (
 	homepage "github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/mapper"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
-	dphandlers "github.com/ONSdigital/dp-net/v2/handlers"
+	dphandlers "github.com/ONSdigital/dp-net/v3/handlers"
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
