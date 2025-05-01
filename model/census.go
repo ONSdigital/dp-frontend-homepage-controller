@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/ONSdigital/dp-renderer/v2/model"
+	"github.com/ONSdigital/dis-design-system-go/model"
 )
 
 // Page contains data re-used for each page type a Data struct for data specific to the page type

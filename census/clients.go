@@ -5,7 +5,7 @@ package census
 import (
 	"io"
 
-	"github.com/ONSdigital/dp-renderer/v2/model"
+	"github.com/ONSdigital/dis-design-system-go/model"
 )
 
 // RenderClient is an interface with methods required for rendering a template from a page model

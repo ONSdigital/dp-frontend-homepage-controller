@@ -36,6 +36,7 @@ type Config struct {
 	SiteDomain                     string        `envconfig:"SITE_DOMAIN"`
 	SupportedLanguages             []string      `envconfig:"SUPPORTED_LANGUAGES"`
 	SixteensVersion                string        `envconfig:"SIXTEENS_VERSION"`
+	RendererVersion                string        `envconfig:"APP_RENDERER_VERSION"`
 }
 
 var cfg *Config
@@ -83,6 +84,7 @@ func get() (*Config, error) {
 		SiteDomain:                     "localhost",
 		SupportedLanguages:             []string{"en", "cy"},
 		SixteensVersion:                "bc2c02c",
+		RendererVersion:                "bob",
 	}
 
 	err := envconfig.Process("", cfg)
@@ -90,11 +92,13 @@ func get() (*Config, error) {
 		return nil, err
 	}
 
-	if cfg.Debug {
-		cfg.PatternLibraryAssetsPath = "http://localhost:9002/dist/assets"
-	} else {
-		cfg.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/6d9a222"
-	}
+	// if cfg.Debug {
+	// 	cfg.PatternLibraryAssetsPath = "http://localhost:9002/dist/assets" + cfg.RendererVersion
+	// } else {
+	// 	cfg.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dis-design-system-go/" + cfg.RendererVersion
+	// }
+
+	cfg.PatternLibraryAssetsPath = "//ons-dp-sandbox-cdn.s3.eu-west-2.amazonaws.com/dis-design-system-go/" + cfg.RendererVersion
 
 	return cfg, nil
 }

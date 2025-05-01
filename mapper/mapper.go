@@ -8,12 +8,12 @@ import (
 	"regexp"
 	"strings"
 
+	coreModel "github.com/ONSdigital/dis-design-system-go/model"
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-cookies/cookies"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	model "github.com/ONSdigital/dp-frontend-homepage-controller/model"
-	coreModel "github.com/ONSdigital/dp-renderer/v2/model"
 	topicModel "github.com/ONSdigital/dp-topic-api/models"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/shopspring/decimal"
