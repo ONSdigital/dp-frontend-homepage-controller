@@ -92,9 +92,6 @@ func GetSubtopicsPublicFuncMock(ctx context.Context, reqHeaders sdk.Headers, id 
 	// id to determine different responses
 
 	return &models.PublicSubtopics{
-		Count:       0,
-		Offset:      0,
-		Limit:       0,
 		TotalCount:  0,
 		PublicItems: nil,
 	}, nil
