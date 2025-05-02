@@ -15,7 +15,7 @@ import (
 	dphttp "github.com/ONSdigital/dp-net/v3/http"
 	coreModel "github.com/ONSdigital/dp-renderer/v2/model"
 	top "github.com/ONSdigital/dp-topic-api/sdk/mocks"
-	"github.com/ONSdigital/log.go/log"
+	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/cucumber/godog"
 )
 
@@ -116,7 +116,7 @@ func New(ctx context.Context) (*HomePageComponent, error) {
 func (c *HomePageComponent) StopService(ctx context.Context) {
 	err := c.svc.Close(ctx)
 	if err != nil {
-		log.Error(err)
+		log.Error(ctx, "error in stopping service", err)
 	}
 }
 
