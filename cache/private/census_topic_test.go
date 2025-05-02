@@ -33,9 +33,6 @@ var (
 
 	// census sub topic level (when GetSubTopics is called with `testCensusTopicID` - testRootCensusTopic)
 	testCensusSubTopicsPrivate = &models.PrivateSubtopics{
-		Count:        2,
-		Offset:       0,
-		Limit:        50,
 		TotalCount:   2,
 		PrivateItems: &[]models.TopicResponse{testCensusSubtopicResponse1, testCensusSubtopicResponse2},
 	}

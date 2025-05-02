@@ -32,9 +32,6 @@ var (
 	}
 
 	testCensusSubTopics = &models.PublicSubtopics{
-		Count:       2,
-		Offset:      0,
-		Limit:       50,
 		TotalCount:  2,
 		PublicItems: &[]models.Topic{testCensusSubTopic1, testCensusSubTopic2},
 	}
