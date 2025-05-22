@@ -82,7 +82,7 @@ func get() (*Config, error) {
 		ServiceAuthToken:               "",
 		SiteDomain:                     "localhost",
 		SupportedLanguages:             []string{"en", "cy"},
-		SixteensVersion:                "7c4a856",
+		SixteensVersion:                "662bc97",
 	}
 
 	err := envconfig.Process("", cfg)
@@ -93,7 +93,7 @@ func get() (*Config, error) {
 	if cfg.Debug {
 		cfg.PatternLibraryAssetsPath = "http://localhost:9002/dist/assets"
 	} else {
-		cfg.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/27f731a"
+		cfg.PatternLibraryAssetsPath = "//cdn.ons.gov.uk/dp-design-system/28d6b95"
 	}
 
 	return cfg, nil
