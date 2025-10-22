@@ -8,11 +8,11 @@ import (
 	"io"
 	"time"
 
+	rendModel "github.com/ONSdigital/dis-design-system-go/model"
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	health "github.com/ONSdigital/dp-healthcheck/healthcheck"
-	rendModel "github.com/ONSdigital/dp-renderer/v2/model"
 	topicModel "github.com/ONSdigital/dp-topic-api/models"
 	topicCli "github.com/ONSdigital/dp-topic-api/sdk"
 )

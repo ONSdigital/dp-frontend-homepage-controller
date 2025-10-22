@@ -7,11 +7,11 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	coreModel "github.com/ONSdigital/dis-design-system-go/model"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
-	coreModel "github.com/ONSdigital/dp-renderer/v2/model"
 	topicModel "github.com/ONSdigital/dp-topic-api/models"
 	"github.com/gorilla/mux"
 	. "github.com/smartystreets/goconvey/convey"

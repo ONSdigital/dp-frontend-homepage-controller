@@ -10,8 +10,8 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/model"
 	topicModel "github.com/ONSdigital/dp-topic-api/models"
 
+	coreModel "github.com/ONSdigital/dis-design-system-go/model"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
-	coreModel "github.com/ONSdigital/dp-renderer/v2/model"
 
 	"github.com/gorilla/mux"
 	. "github.com/smartystreets/goconvey/convey"

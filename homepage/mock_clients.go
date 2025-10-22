@@ -5,12 +5,13 @@ package homepage
 
 import (
 	"context"
+	"io"
+	"sync"
+
+	"github.com/ONSdigital/dis-design-system-go/model"
 	"github.com/ONSdigital/dp-api-clients-go/v2/image"
 	"github.com/ONSdigital/dp-api-clients-go/v2/zebedee"
 	"github.com/ONSdigital/dp-healthcheck/healthcheck"
-	"github.com/ONSdigital/dp-renderer/v2/model"
-	"io"
-	"sync"
 )
 
 var (
@@ -25,25 +26,25 @@ var _ ZebedeeClient = &ZebedeeClientMock{}
 
 // ZebedeeClientMock is a mock implementation of ZebedeeClient.
 //
-//     func TestSomethingThatUsesZebedeeClient(t *testing.T) {
+//	    func TestSomethingThatUsesZebedeeClient(t *testing.T) {
 //
-//         // make and configure a mocked ZebedeeClient
-//         mockedZebedeeClient := &ZebedeeClientMock{
-//             CheckerFunc: func(ctx context.Context, check *healthcheck.CheckState) error {
-// 	               panic("mock out the Checker method")
-//             },
-//             GetHomepageContentFunc: func(ctx context.Context, userAccessToken string, collectionID string, lang string, path string) (zebedee.HomepageContent, error) {
-// 	               panic("mock out the GetHomepageContent method")
-//             },
-//             GetTimeseriesMainFigureFunc: func(ctx context.Context, userAuthToken string, collectionID string, lang string, uri string) (zebedee.TimeseriesMainFigure, error) {
-// 	               panic("mock out the GetTimeseriesMainFigure method")
-//             },
-//         }
+//	        // make and configure a mocked ZebedeeClient
+//	        mockedZebedeeClient := &ZebedeeClientMock{
+//	            CheckerFunc: func(ctx context.Context, check *healthcheck.CheckState) error {
+//		               panic("mock out the Checker method")
+//	            },
+//	            GetHomepageContentFunc: func(ctx context.Context, userAccessToken string, collectionID string, lang string, path string) (zebedee.HomepageContent, error) {
+//		               panic("mock out the GetHomepageContent method")
+//	            },
+//	            GetTimeseriesMainFigureFunc: func(ctx context.Context, userAuthToken string, collectionID string, lang string, uri string) (zebedee.TimeseriesMainFigure, error) {
+//		               panic("mock out the GetTimeseriesMainFigure method")
+//	            },
+//	        }
 //
-//         // use mockedZebedeeClient in code that requires ZebedeeClient
-//         // and then make assertions.
+//	        // use mockedZebedeeClient in code that requires ZebedeeClient
+//	        // and then make assertions.
 //
-//     }
+//	    }
 type ZebedeeClientMock struct {
 	// CheckerFunc mocks the Checker method.
 	CheckerFunc func(ctx context.Context, check *healthcheck.CheckState) error
@@ -112,7 +113,8 @@ func (mock *ZebedeeClientMock) Checker(ctx context.Context, check *healthcheck.C
 
 // CheckerCalls gets all the calls that were made to Checker.
 // Check the length with:
-//     len(mockedZebedeeClient.CheckerCalls())
+//
+//	len(mockedZebedeeClient.CheckerCalls())
 func (mock *ZebedeeClientMock) CheckerCalls() []struct {
 	Ctx   context.Context
 	Check *healthcheck.CheckState
@@ -153,7 +155,8 @@ func (mock *ZebedeeClientMock) GetHomepageContent(ctx context.Context, userAcces
 
 // GetHomepageContentCalls gets all the calls that were made to GetHomepageContent.
 // Check the length with:
-//     len(mockedZebedeeClient.GetHomepageContentCalls())
+//
+//	len(mockedZebedeeClient.GetHomepageContentCalls())
 func (mock *ZebedeeClientMock) GetHomepageContentCalls() []struct {
 	Ctx             context.Context
 	UserAccessToken string
@@ -200,7 +203,8 @@ func (mock *ZebedeeClientMock) GetTimeseriesMainFigure(ctx context.Context, user
 
 // GetTimeseriesMainFigureCalls gets all the calls that were made to GetTimeseriesMainFigure.
 // Check the length with:
-//     len(mockedZebedeeClient.GetTimeseriesMainFigureCalls())
+//
+//	len(mockedZebedeeClient.GetTimeseriesMainFigureCalls())
 func (mock *ZebedeeClientMock) GetTimeseriesMainFigureCalls() []struct {
 	Ctx           context.Context
 	UserAuthToken string
@@ -232,22 +236,22 @@ var _ ImageClient = &ImageClientMock{}
 
 // ImageClientMock is a mock implementation of ImageClient.
 //
-//     func TestSomethingThatUsesImageClient(t *testing.T) {
+//	    func TestSomethingThatUsesImageClient(t *testing.T) {
 //
-//         // make and configure a mocked ImageClient
-//         mockedImageClient := &ImageClientMock{
-//             CheckerFunc: func(ctx context.Context, check *healthcheck.CheckState) error {
-// 	               panic("mock out the Checker method")
-//             },
-//             GetDownloadVariantFunc: func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string, variant string) (image.ImageDownload, error) {
-// 	               panic("mock out the GetDownloadVariant method")
-//             },
-//         }
+//	        // make and configure a mocked ImageClient
+//	        mockedImageClient := &ImageClientMock{
+//	            CheckerFunc: func(ctx context.Context, check *healthcheck.CheckState) error {
+//		               panic("mock out the Checker method")
+//	            },
+//	            GetDownloadVariantFunc: func(ctx context.Context, userAuthToken string, serviceAuthToken string, collectionID string, imageID string, variant string) (image.ImageDownload, error) {
+//		               panic("mock out the GetDownloadVariant method")
+//	            },
+//	        }
 //
-//         // use mockedImageClient in code that requires ImageClient
-//         // and then make assertions.
+//	        // use mockedImageClient in code that requires ImageClient
+//	        // and then make assertions.
 //
-//     }
+//	    }
 type ImageClientMock struct {
 	// CheckerFunc mocks the Checker method.
 	CheckerFunc func(ctx context.Context, check *healthcheck.CheckState) error
@@ -302,7 +306,8 @@ func (mock *ImageClientMock) Checker(ctx context.Context, check *healthcheck.Che
 
 // CheckerCalls gets all the calls that were made to Checker.
 // Check the length with:
-//     len(mockedImageClient.CheckerCalls())
+//
+//	len(mockedImageClient.CheckerCalls())
 func (mock *ImageClientMock) CheckerCalls() []struct {
 	Ctx   context.Context
 	Check *healthcheck.CheckState
@@ -345,7 +350,8 @@ func (mock *ImageClientMock) GetDownloadVariant(ctx context.Context, userAuthTok
 
 // GetDownloadVariantCalls gets all the calls that were made to GetDownloadVariant.
 // Check the length with:
-//     len(mockedImageClient.GetDownloadVariantCalls())
+//
+//	len(mockedImageClient.GetDownloadVariantCalls())
 func (mock *ImageClientMock) GetDownloadVariantCalls() []struct {
 	Ctx              context.Context
 	UserAuthToken    string
@@ -379,22 +385,22 @@ var _ RenderClient = &RenderClientMock{}
 
 // RenderClientMock is a mock implementation of RenderClient.
 //
-//     func TestSomethingThatUsesRenderClient(t *testing.T) {
+//	    func TestSomethingThatUsesRenderClient(t *testing.T) {
 //
-//         // make and configure a mocked RenderClient
-//         mockedRenderClient := &RenderClientMock{
-//             BuildPageFunc: func(w io.Writer, pageModel interface{}, templateName string)  {
-// 	               panic("mock out the BuildPage method")
-//             },
-//             NewBasePageModelFunc: func() model.Page {
-// 	               panic("mock out the NewBasePageModel method")
-//             },
-//         }
+//	        // make and configure a mocked RenderClient
+//	        mockedRenderClient := &RenderClientMock{
+//	            BuildPageFunc: func(w io.Writer, pageModel interface{}, templateName string)  {
+//		               panic("mock out the BuildPage method")
+//	            },
+//	            NewBasePageModelFunc: func() model.Page {
+//		               panic("mock out the NewBasePageModel method")
+//	            },
+//	        }
 //
-//         // use mockedRenderClient in code that requires RenderClient
-//         // and then make assertions.
+//	        // use mockedRenderClient in code that requires RenderClient
+//	        // and then make assertions.
 //
-//     }
+//	    }
 type RenderClientMock struct {
 	// BuildPageFunc mocks the BuildPage method.
 	BuildPageFunc func(w io.Writer, pageModel interface{}, templateName string)
@@ -441,7 +447,8 @@ func (mock *RenderClientMock) BuildPage(w io.Writer, pageModel interface{}, temp
 
 // BuildPageCalls gets all the calls that were made to BuildPage.
 // Check the length with:
-//     len(mockedRenderClient.BuildPageCalls())
+//
+//	len(mockedRenderClient.BuildPageCalls())
 func (mock *RenderClientMock) BuildPageCalls() []struct {
 	W            io.Writer
 	PageModel    interface{}
@@ -473,7 +480,8 @@ func (mock *RenderClientMock) NewBasePageModel() model.Page {
 
 // NewBasePageModelCalls gets all the calls that were made to NewBasePageModel.
 // Check the length with:
-//     len(mockedRenderClient.NewBasePageModelCalls())
+//
+//	len(mockedRenderClient.NewBasePageModelCalls())
 func (mock *RenderClientMock) NewBasePageModelCalls() []struct {
 } {
 	var calls []struct {

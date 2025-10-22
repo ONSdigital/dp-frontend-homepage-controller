@@ -9,6 +9,8 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 
 	//nolint:typecheck // assets may not exist as they are auto generated
+	render "github.com/ONSdigital/dis-design-system-go"
+	"github.com/ONSdigital/dis-design-system-go/middleware/renderror"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/assets"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/cache"
 	cachePrivate "github.com/ONSdigital/dp-frontend-homepage-controller/cache/private"
@@ -16,8 +18,6 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/routes"
-	render "github.com/ONSdigital/dp-renderer/v2"
-	"github.com/ONSdigital/dp-renderer/v2/middleware/renderror"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"

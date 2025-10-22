@@ -4,9 +4,10 @@
 package census
 
 import (
-	"github.com/ONSdigital/dp-renderer/v2/model"
 	"io"
 	"sync"
+
+	"github.com/ONSdigital/dis-design-system-go/model"
 )
 
 var (
@@ -20,22 +21,22 @@ var _ RenderClient = &RenderClientMock{}
 
 // RenderClientMock is a mock implementation of RenderClient.
 //
-//     func TestSomethingThatUsesRenderClient(t *testing.T) {
+//	    func TestSomethingThatUsesRenderClient(t *testing.T) {
 //
-//         // make and configure a mocked RenderClient
-//         mockedRenderClient := &RenderClientMock{
-//             BuildPageFunc: func(w io.Writer, pageModel interface{}, templateName string)  {
-// 	               panic("mock out the BuildPage method")
-//             },
-//             NewBasePageModelFunc: func() model.Page {
-// 	               panic("mock out the NewBasePageModel method")
-//             },
-//         }
+//	        // make and configure a mocked RenderClient
+//	        mockedRenderClient := &RenderClientMock{
+//	            BuildPageFunc: func(w io.Writer, pageModel interface{}, templateName string)  {
+//		               panic("mock out the BuildPage method")
+//	            },
+//	            NewBasePageModelFunc: func() model.Page {
+//		               panic("mock out the NewBasePageModel method")
+//	            },
+//	        }
 //
-//         // use mockedRenderClient in code that requires RenderClient
-//         // and then make assertions.
+//	        // use mockedRenderClient in code that requires RenderClient
+//	        // and then make assertions.
 //
-//     }
+//	    }
 type RenderClientMock struct {
 	// BuildPageFunc mocks the BuildPage method.
 	BuildPageFunc func(w io.Writer, pageModel interface{}, templateName string)
@@ -82,7 +83,8 @@ func (mock *RenderClientMock) BuildPage(w io.Writer, pageModel interface{}, temp
 
 // BuildPageCalls gets all the calls that were made to BuildPage.
 // Check the length with:
-//     len(mockedRenderClient.BuildPageCalls())
+//
+//	len(mockedRenderClient.BuildPageCalls())
 func (mock *RenderClientMock) BuildPageCalls() []struct {
 	W            io.Writer
 	PageModel    interface{}
@@ -114,7 +116,8 @@ func (mock *RenderClientMock) NewBasePageModel() model.Page {
 
 // NewBasePageModelCalls gets all the calls that were made to NewBasePageModel.
 // Check the length with:
-//     len(mockedRenderClient.NewBasePageModelCalls())
+//
+//	len(mockedRenderClient.NewBasePageModelCalls())
 func (mock *RenderClientMock) NewBasePageModelCalls() []struct {
 } {
 	var calls []struct {

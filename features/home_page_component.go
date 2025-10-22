@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	coreModel "github.com/ONSdigital/dis-design-system-go/model"
 	"github.com/ONSdigital/dp-api-clients-go/v2/health"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/config"
 	"github.com/ONSdigital/dp-frontend-homepage-controller/homepage"
@@ -13,7 +14,6 @@ import (
 	"github.com/ONSdigital/dp-frontend-homepage-controller/service/mock"
 	"github.com/ONSdigital/dp-healthcheck/healthcheck"
 	dphttp "github.com/ONSdigital/dp-net/v3/http"
-	coreModel "github.com/ONSdigital/dp-renderer/v2/model"
 	top "github.com/ONSdigital/dp-topic-api/sdk/mocks"
 	"github.com/ONSdigital/log.go/v2/log"
 	"github.com/cucumber/godog"
