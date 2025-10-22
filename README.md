@@ -10,8 +10,8 @@ To run this service
 ## Dependencies
 
 - sixteens - Serves CSS and JS for the page
-- dp-design-system
-- golang 1.24.x
+- dis-design-system-go
+- golang 1.25.x
 - zebedee
 - dp-topic-api
 - No further dependencies other than those defined in `go.mod`
