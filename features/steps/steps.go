@@ -25,7 +25,8 @@ func RegisterSteps(ctx *godog.ScenarioContext, component *feature.HomePageCompon
 	goCtx := context.Background()
 
 	// Custom steps
-	ctx.Step(`^the census about link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-about'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 1st census about link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-about'] > ul > li:nth-child(1) > a"))
+	ctx.Step(`^the 2nd census about link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-about'] > ul > li:nth-child(2) > a"))
 
 	ctx.Step(`^the 1st census data link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-data'] > ul > li:nth-child(1) > a"))
 	ctx.Step(`^the 2nd census data link href value should be "([^"]*)"`, selectedLinkShouldHaveHREF(uiFeature, "[data-test='census-data'] > ul > li:nth-child(2) > a"))

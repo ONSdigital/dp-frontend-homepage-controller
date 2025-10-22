@@ -136,12 +136,16 @@ description = "About the census"
 one = "About the census"
 
 [AboutCensusSubhead]
-description = "Find out what the census is and why it's important for all of us."
-one = "Find out what the census is and why it's important for all of us."
+description = "Find out what the census is, why it's important and how we are preparing for Census 2031."
+one = "Find out what the census is, why it's important and how we are preparing for Census 2031."
 
 [AboutCensusLink1]
 description = "About the census"
 one = "About the census"
+
+[AboutCensusLink2]
+description = "Census 2031"
+one = "Census 2031"
 
 [Census2021Data]
 description = "Census 2021 data"

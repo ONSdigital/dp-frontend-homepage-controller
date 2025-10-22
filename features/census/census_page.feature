@@ -17,11 +17,13 @@ Feature: Groups
     """
         {
             "[data-test='census-about'] > h2": "About the census",
-            "[data-test='census-about'] > p": "Find out what the census is and why it's important for all of us.",
+            "[data-test='census-about'] > p": "Find out what the census is, why it's important and how we are preparing for Census 2031.",
             "[data-test='census-about'] > ul > li:nth-child(1) > a": "About the census"
+            "[data-test='census-about'] > ul > li:nth-child(2) > a": "Census 2031"
         }
     """
-    And the census about link href value should be "census/aboutcensus"
+    And the 1st census about link href value should be "census/aboutcensus"
+    And the 2nd census about link href value should be "census/aboutcensus/census2031"
     # search container section #2
     And the page should have the following content
     """
@@ -129,11 +131,13 @@ Feature: Groups
     """
         {
             "[data-test='census-about'] > h2": "About the census",
-            "[data-test='census-about'] > p": "Find out what the census is and why it's important for all of us.",
+            "[data-test='census-about'] > p": "Find out what the census is, why it's important and how we are preparing for Census 2031.",
             "[data-test='census-about'] > ul > li:nth-child(1) > a": "About the census"
+            "[data-test='census-about'] > ul > li:nth-child(2) > a": "Census 2031"
         }
     """
-    And the census about link href value should be "census/aboutcensus"
+    And the 1st census about link href value should be "census/aboutcensus"
+    And the 2nd census about link href value should be "census/aboutcensus/census2031"
     # search container section #2
     And the page should have the following content
     """

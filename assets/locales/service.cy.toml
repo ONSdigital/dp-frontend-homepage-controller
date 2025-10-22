@@ -146,12 +146,16 @@ description = "About the census"
 one = "Ynglŷn â'r cyfrifiad"
 
 [AboutCensusSubhead]
-description = "Find out what the census is and why it's important for all of us."
-one = "Dysgwch beth yw'r cyfrifiad a pham mae'n bwysig i bob un ohonom."
+description = "Find out what the census is, why it's important and how we are preparing for Census 2031."
+one = "Dysgwch beth yw’r cyfrifiad, pam ei fod yn bwysig, a sut rydym yn paratoi ar gyfer Cyfrifiad 2031."
 
 [AboutCensusLink1]
 description = "About the census"
 one = "Ynglŷn â'r cyfrifiad"
+
+[AboutCensusLink2]
+description = "Census 2031"
+one = "Cyfrifiad 2031 "
 
 [Census2021Data]
 description = "Census 2021 data"
