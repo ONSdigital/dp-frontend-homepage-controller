@@ -187,7 +187,7 @@ func mapEmergencyBanner(bannerData zebedee.EmergencyBanner) coreModel.EmergencyB
 	emptyBannerObj := zebedee.EmergencyBanner{}
 	if bannerData != emptyBannerObj {
 		mappedEmergencyBanner.Title = bannerData.Title
-		mappedEmergencyBanner.Type = strings.Replace(bannerData.Type, "_", "-", -1)
+		mappedEmergencyBanner.Type = strings.ReplaceAll(bannerData.Type, "_", "-")
 		mappedEmergencyBanner.Description = bannerData.Description
 		mappedEmergencyBanner.URI = bannerData.URI
 		mappedEmergencyBanner.LinkText = bannerData.LinkText
@@ -270,7 +270,7 @@ func formatTrend(diff decimal.Decimal, unit string) string {
 
 // formats large numbers to contain comma separators e.g. 1000000 => 1,000,000
 func formatCommas(str string) string {
-	re := regexp.MustCompile("(\\d+)(\\d{3})")
+	re := regexp.MustCompile(`(\d+)(\d{3})`)
 	for n := ""; n != str; {
 		n = str
 		str = re.ReplaceAllString(str, "$1,$2")
@@ -325,7 +325,7 @@ func Census(req *http.Request, cfg *config.Config, localeCode string, basePage c
 		Data: model.Census{},
 	}
 
-	mapCookiePreferences(req, &page.Page.CookiesPreferencesSet, &page.Page.CookiesPolicy)
+	mapCookiePreferences(req, &page.CookiesPreferencesSet, &page.CookiesPolicy)
 	page.URI = CensusURI
 	page.Type = CensusPageType
 	page.Metadata.Title = CensusTitle
@@ -354,7 +354,7 @@ func CensusLegacy(req *http.Request, cfg *config.Config, localeCode string, base
 		Data: model.Census{},
 	}
 
-	mapCookiePreferences(req, &page.Page.CookiesPreferencesSet, &page.Page.CookiesPolicy)
+	mapCookiePreferences(req, &page.CookiesPreferencesSet, &page.CookiesPolicy)
 	page.URI = CensusURI
 	page.Type = CensusPageType
 	page.Metadata.Title = CensusTitle
