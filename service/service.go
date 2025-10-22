@@ -199,7 +199,7 @@ func (svc *Service) Init(ctx context.Context, cfg *config.Config, serviceList *E
 			}
 		}
 
-		go svc.Cache.CensusTopic.StartUpdates(ctx, svcErrors)
+		go svc.Cache.CensusTopic.StartAndManageUpdates(ctx, svcErrors)
 	}
 
 	return nil

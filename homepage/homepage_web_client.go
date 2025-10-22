@@ -95,7 +95,7 @@ func (hwc *WebClient) StartBackgroundUpdate(ctx context.Context, errorChannel ch
 		}
 	}
 
-	go hwc.cache.StartUpdates(ctx, errorChannel)
+	go hwc.cache.StartAndManageUpdates(ctx, errorChannel)
 
 	if hwc.navigationCache != nil {
 		go hwc.navigationCache.StartUpdates(ctx, errorChannel)
