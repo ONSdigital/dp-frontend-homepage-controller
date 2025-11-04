@@ -1,7 +1,7 @@
 github.com/BurntSushi/toml v1.5.0 h1:W5quZX/G/csjUnuI8SUYlsHs9M38FC7znL0lIO+DvMg=
 github.com/BurntSushi/toml v1.5.0/go.mod h1:ukJfTF/6rtPPRCnwkur4qwRxa8vTRFBF0uk2lLoLwho=
-github.com/ONSdigital/dis-design-system-go v1.0.0 h1:mxWuZzr3cxzNNCNMN1jLqK2nAr+nZt4zim/l/F0AThQ=
-github.com/ONSdigital/dis-design-system-go v1.0.0/go.mod h1:9ERtk4XWBSLhO5N+3Ea6gfhv+o10I4gxxBqmnHZNE/Y=
+github.com/ONSdigital/dis-design-system-go v1.1.1 h1:VSJzVDviKpnvLhnXWgGSTNjVFASJRnvhvb/+h55lnOA=
+github.com/ONSdigital/dis-design-system-go v1.1.1/go.mod h1:r6bXYLXydqNMpYDKcz6CKaVH2Kbq3XIxMyGlbicE0Xc=
 github.com/ONSdigital/dp-api-clients-go/v2 v2.269.0 h1:13QGPBu/NmIwmPhSP0yTlPEp/U1u22dEdyi8lN5guhA=
 github.com/ONSdigital/dp-api-clients-go/v2 v2.269.0/go.mod h1:bLseTP21r8LCStUEeOdVPyqtrTomOFP/azPjKWW4deA=
 github.com/ONSdigital/dp-cache v0.6.0 h1:AcZ7iowt8ZK0ExxTOn8nwUuvhTZOS+aypjFekLiCsQ4=

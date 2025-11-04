@@ -1,9 +1,9 @@
 module github.com/ONSdigital/dp-frontend-homepage-controller
 
-go 1.25
+go 1.24.0
 
 require (
-	github.com/ONSdigital/dis-design-system-go v1.0.0
+	github.com/ONSdigital/dis-design-system-go v1.1.1
 	github.com/ONSdigital/dp-api-clients-go/v2 v2.269.0
 	github.com/ONSdigital/dp-cache v0.6.0
 	github.com/ONSdigital/dp-component-test v0.20.0
