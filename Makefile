@@ -14,13 +14,8 @@ build: generate-prod
 	go build -tags 'production' -o $(BINPATH)/dp-frontend-homepage-controller -ldflags "-X main.BuildTime=$(BUILD_TIME) -X main.GitCommit=$(GIT_COMMIT) -X main.Version=$(VERSION) -X github.com/ONSdigital/dp-frontend-homepage-controller/config.RendererVersion=$(APP_RENDERER_VERSION)"
 
 .PHONY: lint
-lint: ## Used in ci to run linters against Go code
-	cp assets/assets.go assets/assets.go.bak
-	echo 'func Asset(_ string) ([]byte, error) { return nil, nil }' >> assets/assets.go
-	echo 'func AssetNames() []string { return []string{} }' >> assets/assets.go
-	gofmt -w assets/assets.go
-	golangci-lint run ./... || { echo "Linting failed, restoring original assets.go"; mv assets/assets.go.bak assets/assets.go; exit 1; }
-	mv assets/assets.go.bak assets/assets.go
+lint: generate-prod ## Used in ci to run linters against Go code
+	golangci-lint run ./... --build-tags='production'
 
 .PHONY: debug
 debug: generate-debug
