@@ -117,7 +117,7 @@ func TestUnitMapper(t *testing.T) {
 		RetrieveTrendFailed:  false,
 	}
 
-	var mockedZebedeeData []zebedee.TimeseriesMainFigure
+	mockedZebedeeData := make([]zebedee.TimeseriesMainFigure, 0, 1)
 	mockedZebedeeData = append(mockedZebedeeData, zebedee.TimeseriesMainFigure{
 		Months: []zebedee.TimeseriesDataPoint{
 			{
@@ -149,7 +149,7 @@ func TestUnitMapper(t *testing.T) {
 				Label: "Q2",
 			},
 		},
-		RelatedDocuments: []zebedee.Related{
+		RelatedDocuments: []zebedee.Link{
 			{
 				Title: "Related thing",
 				URI:   "test/uri/timeseries/123",
