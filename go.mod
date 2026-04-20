@@ -4,7 +4,7 @@ go 1.26
 
 require (
 	github.com/ONSdigital/dis-design-system-go v1.4.0
-	github.com/ONSdigital/dp-api-clients-go/v2 v2.277.0
+	github.com/ONSdigital/dp-api-clients-go/v2 v2.273.0
 	github.com/ONSdigital/dp-cache v0.6.1
 	github.com/ONSdigital/dp-component-test v1.4.4-alpha
 	github.com/ONSdigital/dp-cookies v0.7.1
