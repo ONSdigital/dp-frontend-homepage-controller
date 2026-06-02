@@ -67,6 +67,9 @@ linters:
           - revive
         path: _test\.go
       - linters:
+          - goconst
+        path: features/
+      - linters:
           - revive
         path: main.go|features|cache
       - linters:
