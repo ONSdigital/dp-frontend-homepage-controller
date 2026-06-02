@@ -11,6 +11,8 @@ import (
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
+const logKeyReqHeaders = "req_headers"
+
 // UpdateCensusTopic is a function to update the census topic cache in publishing (private) mode.
 // This function talks to the dp-topic-api via its private endpoints to retrieve the census topic and its subtopic ids
 // The data returned by the dp-topic-api is of type *models.PrivateSubtopics which is then transformed in this function for the controller
@@ -23,7 +25,7 @@ func UpdateCensusTopic(ctx context.Context, censusTopicID, serviceAuthToken stri
 		censusTopic, err := topicClient.GetTopicPrivate(ctx, topicCli.Headers{ServiceAuthToken: serviceAuthToken}, censusTopicID)
 		if err != nil {
 			logData := log.Data{
-				"req_headers": topicCli.Headers{},
+				logKeyReqHeaders: topicCli.Headers{},
 			}
 			log.Error(ctx, "failed to get root topics from topic-api", err, logData)
 			return cache.GetEmptyCensusTopic()
@@ -33,7 +35,7 @@ func UpdateCensusTopic(ctx context.Context, censusTopicID, serviceAuthToken stri
 		censusSubtopics, err := topicClient.GetSubtopicsPrivate(ctx, topicCli.Headers{ServiceAuthToken: serviceAuthToken}, censusTopicID)
 		if err != nil {
 			logData := log.Data{
-				"req_headers": topicCli.Headers{},
+				logKeyReqHeaders: topicCli.Headers{},
 			}
 			log.Error(ctx, "failed to get census subtopics from topic-api", err, logData)
 			return cache.GetEmptyCensusTopic()

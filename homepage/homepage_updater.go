@@ -13,6 +13,8 @@ import (
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
+const langCyUpdater = "cy"
+
 type Updater struct {
 	clients *Clients
 }
@@ -31,7 +33,7 @@ func (hu *Updater) GetHomePageUpdateFor(ctx context.Context, userAccessToken, co
 				for _, uri := range figure.uris {
 					zebResponse, err := zcli.GetTimeseriesMainFigure(ctx, userAccessToken, collectionID, lang, uri)
 					if err != nil {
-						log.Error(ctx, "error getting timeseries data", err, log.Data{"timeseries-data": uri})
+						log.Error(ctx, "error getting timeseries data", err, log.Data{logKeyTimeseriesData: uri})
 						mappedErrorFigure := &model.MainFigure{ID: id}
 						responses <- mappedErrorFigure
 						return
@@ -106,7 +108,7 @@ func (hu *Updater) UpdateNavigationData(ctx context.Context, lang string) func()
 		options := topicCli.Options{}
 
 		switch lang {
-		case "cy":
+		case langCyUpdater:
 			options.Lang = topicCli.Welsh
 		default:
 			options.Lang = topicCli.English

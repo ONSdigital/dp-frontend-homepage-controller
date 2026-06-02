@@ -11,6 +11,8 @@ import (
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
+const logKeyUpdateInterval = "update_interval"
+
 type PublishingClient struct {
 	Updater
 	navigationCache *cache.NavigationCache
@@ -33,7 +35,7 @@ func (hpc *PublishingClient) GetHomePage(ctx context.Context, userAccessToken, c
 func (hpc *PublishingClient) AddNavigationCache(ctx context.Context, updateInterval time.Duration) error {
 	navigationCache, err := cache.NewNavigationCache(ctx, &updateInterval)
 	if err != nil {
-		log.Error(ctx, "failed to create navigation cache", err, log.Data{"update_interval": updateInterval})
+		log.Error(ctx, "failed to create navigation cache", err, log.Data{logKeyUpdateInterval: updateInterval})
 		return err
 	}
 

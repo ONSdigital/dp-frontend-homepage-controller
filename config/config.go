@@ -7,6 +7,11 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
+const (
+	langEn = "en"
+	langCy = "cy"
+)
+
 // Config represents service configuration for dp-frontend-homepage-controller
 type Config struct {
 	APIRouterURL                   string        `envconfig:"API_ROUTER_URL"`
@@ -84,7 +89,7 @@ func get() (*Config, error) {
 		IsPublishingMode:               false,
 		ServiceAuthToken:               "",
 		SiteDomain:                     "localhost",
-		SupportedLanguages:             []string{"en", "cy"},
+		SupportedLanguages:             []string{langEn, langCy},
 		SixteensVersion:                "418c927",
 	}
 

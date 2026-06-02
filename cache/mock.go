@@ -8,6 +8,11 @@ import (
 	"github.com/ONSdigital/dp-topic-api/models"
 )
 
+const (
+	mockTitleAge       = "Age"
+	mockTitleEthnicity = "Ethnicity"
+)
+
 // GetMockCacheList returns a mocked list of cache which contains the census topic cache and navigation cache
 func GetMockCacheList(ctx context.Context) (*List, error) {
 	testCensusTopicCache, err := getMockCensusTopicCache(ctx)
@@ -47,13 +52,13 @@ func GetMockCensusTopic() *Topic {
 	subtopic1 := &models.Topic{
 		ID:          "1234",
 		ReleaseDate: &t,
-		Title:       "Age",
+		Title:       mockTitleAge,
 	}
 
 	subtopic2 := &models.Topic{
 		ID:          "5678",
 		ReleaseDate: &t,
-		Title:       "Ethnicity",
+		Title:       mockTitleEthnicity,
 	}
 
 	mockCensusTopic.List = NewSubTopicsMap()

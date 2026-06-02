@@ -18,6 +18,9 @@ const (
 
 	// ImageVariant is the image variant to use for the homepage
 	ImageVariant = "original"
+
+	logKeyTimeseriesData = "timeseries-data"
+	logKeyReleaseDate    = "release_date"
 )
 
 type MainFigure struct {
@@ -72,8 +75,8 @@ func getTrendInfo(ctx context.Context, userAccessToken, collectionID, lang strin
 			// Error getting timeseries, log it but continue to construct rest of main figure tile
 			retrieveTrendFailed = true
 			log.Error(ctx, "error getting timeseries data for trend indication", err, log.Data{
-				"timeseries-data": figure.trendURI,
-				"trendResponse":   trendResponse,
+				logKeyTimeseriesData: figure.trendURI,
+				"trendResponse":      trendResponse,
 			})
 		}
 	}
@@ -138,12 +141,12 @@ func getLatestTimeSeriesData(ctx context.Context, zts []zebedee.TimeseriesMainFi
 		}
 		releaseDate, err := time.Parse(time.RFC3339, zts[i].Description.ReleaseDate)
 		if err != nil {
-			log.Error(ctx, "failed to parse release date", err, log.Data{"release_date": zts[i].Description.ReleaseDate})
+			log.Error(ctx, "failed to parse release date", err, log.Data{logKeyReleaseDate: zts[i].Description.ReleaseDate})
 			return zts[i]
 		}
 		latestReleaseDate, err := time.Parse(time.RFC3339, latest.Description.ReleaseDate)
 		if err != nil {
-			log.Error(ctx, "failed to parse release date", err, log.Data{"release_date": latest.Description.ReleaseDate})
+			log.Error(ctx, "failed to parse release date", err, log.Data{logKeyReleaseDate: latest.Description.ReleaseDate})
 			return zts[i]
 		}
 		if releaseDate.After(latestReleaseDate) {

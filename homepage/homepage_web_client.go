@@ -21,7 +21,7 @@ type WebClient struct {
 func NewWebClient(ctx context.Context, clients *Clients, updateInterval time.Duration, languages []string) (Clienter, error) {
 	homepageCache, err := cache.NewHomepageCache(ctx, &updateInterval)
 	if err != nil {
-		log.Error(ctx, "failed to create new homepage cache", err, log.Data{"update_interval": updateInterval})
+		log.Error(ctx, "failed to create new homepage cache", err, log.Data{logKeyUpdateInterval: updateInterval})
 		return nil, err
 	}
 

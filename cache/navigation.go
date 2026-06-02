@@ -24,7 +24,7 @@ func NewNavigationCache(ctx context.Context, updateInterval *time.Duration) (*Na
 	cache, err := dpcache.NewCache(ctx, config)
 	if err != nil || cache == nil {
 		logData := log.Data{
-			"config": config,
+			logKeyConfig: config,
 		}
 		log.Error(ctx, "failed to create cache from dpcache", err, logData)
 		return nil, err

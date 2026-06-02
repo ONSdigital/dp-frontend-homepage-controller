@@ -9,6 +9,8 @@ import (
 	"github.com/ONSdigital/log.go/v2/log"
 )
 
+const logKeyConfig = "config"
+
 // HomepageCache is a wrapper to dpcache.Cache which has additional fields and methods specifically for caching homepage data
 type HomepageCache struct {
 	*dpcache.Cache
@@ -24,7 +26,7 @@ func NewHomepageCache(ctx context.Context, updateInterval *time.Duration) (*Home
 	cache, err := dpcache.NewCache(ctx, config)
 	if err != nil || cache == nil {
 		logData := log.Data{
-			"config": config,
+			logKeyConfig: config,
 		}
 		log.Error(ctx, "failed to create cache from dpcache", err, logData)
 		return nil, err
