@@ -77,7 +77,7 @@ func get() (*Config, error) {
 		EnableGetDataCard:              false,
 		EnableNewNavBar:                false,
 		EnablePreviewSiteTile:          false,
-		PreviewSiteURL:                 "https://nwp-prototype.ons.gov.uk/",
+		PreviewSiteURL:                 "https://www.ons.gov.uk/explore-local-statistics/",
 		FeedbackAPIURL:                 "http://localhost:23200/v1/feedback",
 		GracefulShutdownTimeout:        5 * time.Second,
 		HealthCheckCriticalTimeout:     90 * time.Second,

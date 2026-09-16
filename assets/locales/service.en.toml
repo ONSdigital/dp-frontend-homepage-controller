@@ -443,13 +443,13 @@ description = "19 January"
 one = "19 January"
 
 [PreviewSiteTitle]
-description = "Try our new preview site"
-one = "Try our new preview site"
+description = "Explore local statistics"
+one = "Explore local statistics"
 
 [PreviewSiteText]
-description = "We are improving the ONS website, with brand new navigation, page designs and content."
-one = "We are improving the ONS website, with brand new navigation, page designs and content."
+description = "Find, compare and visualise statistics about places within the UK."
+one = "Find, compare and visualise statistics about places within the UK."
 
 [PreviewSiteLink]
-description = "Explore the ONS preview site"
-one = "Explore the ONS preview site"
+description = "Start exploring the data"
+one = "Start exploring the data"
