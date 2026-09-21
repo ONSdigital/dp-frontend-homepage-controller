@@ -89,8 +89,10 @@ func get() (*Config, error) {
 		IsPublishingMode:               false,
 		ServiceAuthToken:               "",
 		SiteDomain:                     "localhost",
+		SixteensVersion:                "73c6f22",
+		SpotlightURL:                   "https://www.ons.gov.uk/explore-local-statistics/",
 		SupportedLanguages:             []string{langEn, langCy},
-		SixteensVersion:                "418c927",
+		SixteensVersion:                "117f34c",
 	}
 
 	err := envconfig.Process("", cfg)
