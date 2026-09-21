@@ -26,8 +26,6 @@ type Config struct {
 	EnableGetDataCard              bool          `envconfig:"ENABLE_GET_DATA_CARD"`
 	EnableCustomDataset            bool          `envconfig:"ENABLE_CUSTOM_DATASET"`
 	EnableNewNavBar                bool          `envconfig:"ENABLE_NEW_NAVBAR"`
-	EnablePreviewSiteTile          bool          `envconfig:"ENABLE_PREVIEW_SITE_TILE"`
-	PreviewSiteURL                 string        `envconfig:"PREVIEW_SITE_URL"`
 	FeedbackAPIURL                 string        `envconfig:"FEEDBACK_API_URL"`
 	GracefulShutdownTimeout        time.Duration `envconfig:"GRACEFUL_SHUTDOWN_TIMEOUT"`
 	HealthCheckCriticalTimeout     time.Duration `envconfig:"HEALTHCHECK_CRITICAL_TIMEOUT"`
@@ -40,8 +38,9 @@ type Config struct {
 	PatternLibraryAssetsPath       string        `envconfig:"PATTERN_LIBRARY_ASSETS_PATH"`
 	ServiceAuthToken               string        `envconfig:"SERVICE_AUTH_TOKEN"   json:"-"`
 	SiteDomain                     string        `envconfig:"SITE_DOMAIN"`
-	SupportedLanguages             []string      `envconfig:"SUPPORTED_LANGUAGES"`
 	SixteensVersion                string        `envconfig:"SIXTEENS_VERSION"`
+	SpotlightURL                   string        `envconfig:"SPOTLIGHT_URL"`
+	SupportedLanguages             []string      `envconfig:"SUPPORTED_LANGUAGES"`
 }
 
 var cfg *Config
@@ -76,8 +75,6 @@ func get() (*Config, error) {
 		EnableCustomDataset:            false,
 		EnableGetDataCard:              false,
 		EnableNewNavBar:                false,
-		EnablePreviewSiteTile:          false,
-		PreviewSiteURL:                 "https://www.ons.gov.uk/explore-local-statistics/",
 		FeedbackAPIURL:                 "http://localhost:23200/v1/feedback",
 		GracefulShutdownTimeout:        5 * time.Second,
 		HealthCheckCriticalTimeout:     90 * time.Second,
@@ -92,7 +89,6 @@ func get() (*Config, error) {
 		SixteensVersion:                "73c6f22",
 		SpotlightURL:                   "https://www.ons.gov.uk/explore-local-statistics/",
 		SupportedLanguages:             []string{langEn, langCy},
-		SixteensVersion:                "117f34c",
 	}
 
 	err := envconfig.Process("", cfg)

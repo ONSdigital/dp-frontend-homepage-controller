@@ -60,8 +60,7 @@ func Homepage(cfg config.Config, localeCode string, basePage coreModel.Page, mai
 	page.EmergencyBanner = mapEmergencyBanner(emergencyBannerContent)
 	page.FeatureFlags.SixteensVersion = cfg.SixteensVersion
 	page.FeatureFlags.FeedbackAPIURL = cfg.FeedbackAPIURL
-	page.Data.EnablePreviewSiteTile = cfg.EnablePreviewSiteTile
-	page.Data.PreviewSiteURL = cfg.PreviewSiteURL
+	page.Data.SpotlightURL = cfg.SpotlightURL
 	if navigationContent != nil {
 		page.NavigationContent = mapNavigationContent(*navigationContent)
 	}
