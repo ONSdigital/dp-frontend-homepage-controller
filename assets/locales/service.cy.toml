@@ -457,8 +457,8 @@ description = "Archwilio ystadegau lleol"
 one = "Archwilio ystadegau lleol"
 
 [SpotlightText]
-description = "Dewch o hyd i ystadegau am leoedd yn y Deyrnas Unedig, eu cymharu a’u cyflwyno’n weledol."
-one = "Dewch o hyd i ystadegau am leoedd yn y Deyrnas Unedig, eu cymharu a’u cyflwyno’n weledol."
+description = "Cymharu ystadegau am leoedd yn y DU a’u cyflwyno’n weledol."
+one = "Cymharu ystadegau am leoedd yn y DU a’u cyflwyno’n weledol."
 
 [SpotlightLinkText]
 description = "Dechrau archwilio’r data"
