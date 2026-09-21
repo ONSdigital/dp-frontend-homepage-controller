@@ -442,14 +442,14 @@ one = "10 January"
 description = "19 January"
 one = "19 January"
 
-[PreviewSiteTitle]
+[SpotlightTitle]
 description = "Explore local statistics"
 one = "Explore local statistics"
 
-[PreviewSiteText]
+[SpotlightText]
 description = "Find, compare and visualise statistics about places within the UK."
 one = "Find, compare and visualise statistics about places within the UK."
 
-[PreviewSiteLink]
+[SpotlightLinkText]
 description = "Start exploring the data"
 one = "Start exploring the data"

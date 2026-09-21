@@ -452,14 +452,14 @@ one = "10 Ionawr"
 description = "19 Ionawr"
 one = "19 Ionawr"
 
-[PreviewSiteTitle]
+[SpotlightTitle]
 description = "Archwilio ystadegau lleol"
 one = "Archwilio ystadegau lleol"
 
-[PreviewSiteText]
+[SpotlightText]
 description = "Dewch o hyd i ystadegau am leoedd yn y Deyrnas Unedig, eu cymharu a’u cyflwyno’n weledol."
 one = "Dewch o hyd i ystadegau am leoedd yn y Deyrnas Unedig, eu cymharu a’u cyflwyno’n weledol."
 
-[PreviewSiteLink]
+[SpotlightLinkText]
 description = "Dechrau archwilio’r data"
 one = "Dechrau archwilio’r data"
