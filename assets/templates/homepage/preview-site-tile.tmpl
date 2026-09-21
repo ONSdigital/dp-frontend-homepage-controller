@@ -1,15 +1,14 @@
 <article class="tile tile--swoosh col col--lg-29 margin-top-lg--2 margin-top-md--2 margin-left-lg--1 height-lg--31" data-test="preview-site">
     <div class="tile__content-wrapper">
-        <header>
+        <header class="tile__heading">
             <h2 class="tile__title--highlighted margin-left--0 padding-bottom--0">
                 {{ localise "SpotlightTitle" .Language 1 }}
             </h2>
         </header>
-        <div class="tile__text-description tile__text-description--white font-weight-400 margin-top--0">
+        <div class="tile__description tile__text-description tile__text-description--white font-weight-400 margin-top--0">
                 {{ localise "SpotlightText" .Language 1 }}
-            <br>
         </div>
-        <a href={{ .Data.PreviewSiteURL }} class="tile__link--icon" data-test="preview-site-link" target="_blank" rel="noopener">
+        <a href={{ .Data.PreviewSiteURL }} class="tile__cta tile__link--icon" data-test="preview-site-link" target="_blank" rel="noopener">
             <span class="text--white font-weight-400 underline-link">{{ localise "SpotlightLinkText" .Language 1 }}</span>
             <svg class="tile__link-icon" width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="icon-external-link">
