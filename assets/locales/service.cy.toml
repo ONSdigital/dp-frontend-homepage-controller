@@ -29,7 +29,7 @@ other = "Four, five or more than six but not six Foos (Welsh)"
 
 [ReleaseCalendar]
 description = "Release calendar"
-one = "Calendar datganiadau"
+one = "Calendr datganiadau"
 
 [SurveyFindOut]
 description = "It's never been more important"
